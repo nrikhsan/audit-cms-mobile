@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:audit_cms/pages/home/itemHome/items_home.dart';
 import 'package:audit_cms/style/custom_style.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +14,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   String currentTime = '';
+  String currentDate = '';
+  late Timer timer;
 
+
+  @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _updateTime();
+      _updateDate();
     });
   }
 
@@ -29,16 +33,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _updateDate() {
+    setState(() {
+      currentDate = DateFormat('dd, MMMM yyyy').format(DateTime.now());
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    String currentDate = DateFormat('dd, MMMM yyyy').format(DateTime.now());
+    currentDate = DateFormat('dd, MMMM yyyy').format(DateTime.now());
+    currentTime = DateFormat.Hm().format(DateTime.now());
 
     return Scaffold(
-      backgroundColor: CustomColors.lightGrey,
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
-        backgroundColor: CustomColors.lightGrey,
-        title: Text('Waldi'),
+        backgroundColor: CustomColors.white,
+        title: Text('Waldi ganteng'),
         titleTextStyle: CustomStyles.textBold,
         titleSpacing: 5,
         leading: Icon(Icons.account_circle, size: 35, color: CustomColors.grey),
@@ -48,6 +65,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Card(
+            color: CustomColors.white,
             margin: EdgeInsets.only(left: 10, right: 10, top: 25),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -92,7 +110,16 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          )
+          ),
+
+          SizedBox(height: 25),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+              child: Text('Menu', style: CustomStyles.textBold)),
+
+          SizedBox(height: 15),
+          ItemsHome(),
+
         ],
       ),
     );

@@ -2,14 +2,14 @@ import 'package:audit_cms/style/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+class ReschedulePage extends StatefulWidget {
+  const ReschedulePage({super.key});
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  State<ReschedulePage> createState() => _ReschedulePageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _ReschedulePageState extends State<ReschedulePage> {
 
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -18,31 +18,29 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.white,
-      appBar: AppBar(
-        backgroundColor: CustomColors.white,
-        title: Text('Laporan audit wilayah'),
-        titleTextStyle: CustomStyles.textBold,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: (){
-                showFilterReport();
-              }, icon: Icon(Icons.tune_rounded, size: 25, color: CustomColors.grey)
-          )
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showFilterReport();
+        },
+        backgroundColor: CustomColors.orange,
+        child: Icon(Icons.tune, color: CustomColors.white, size: 30),
       ),
     );
   }
 
   void showFilterReport() {
     showModalBottomSheet(
-      backgroundColor: CustomColors.white,
-      isScrollControlled: true,
+        backgroundColor: CustomColors.white,
+        isScrollControlled: true,
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return Container(
             height: 330,
-            padding: EdgeInsets.only(top: 10, right: 10, left: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 50),
+            padding: EdgeInsets.only(
+                top: 10, right: 10, left: 10, bottom: MediaQuery
+                .of(context)
+                .viewInsets
+                .bottom + 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -68,16 +66,17 @@ class _ReportPageState extends State<ReportPage> {
                         readOnly: true,
                         controller: _startDateController,
                         decoration: CustomStyles.customInputDecorationStartDate,
-                        onTap: ()async{
+                        onTap: () async {
                           final DateTime? picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(2001),
                               lastDate: DateTime.now()
                           );
-                          if(picked != null){
+                          if (picked != null) {
                             setState(() {
-                              _startDateController.text = DateFormat('dd, MMMM yyyy').format(picked);
+                              _startDateController.text =
+                                  DateFormat('dd, MMMM yyyy').format(picked);
                             });
                           }
                         },
@@ -90,16 +89,17 @@ class _ReportPageState extends State<ReportPage> {
                         readOnly: true,
                         controller: _endDateController,
                         decoration: CustomStyles.customInputDecorationEndDate,
-                        onTap: ()async{
+                        onTap: () async {
                           final DateTime? picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(2001),
                               lastDate: DateTime.now()
                           );
-                          if(picked != null){
+                          if (picked != null) {
                             setState(() {
-                              _endDateController.text = DateFormat('dd, MMMM yyyy').format(picked);
+                              _endDateController.text =
+                                  DateFormat('dd, MMMM yyyy').format(picked);
                             });
                           }
                         },
@@ -112,13 +112,14 @@ class _ReportPageState extends State<ReportPage> {
                 Center(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton,
-                        backgroundColor: CustomColors.blue
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue
                       ),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
-                  },
-                      child: Text('Simpan data filter', style: CustomStyles.textMediumWhite)
+                      },
+                      child: Text('Simpan data filter',
+                          style: CustomStyles.textMediumWhite)
                   ),
                 )
               ],

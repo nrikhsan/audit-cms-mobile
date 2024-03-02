@@ -20,20 +20,23 @@ class _BottomNavPageState extends State<BottomNavPage> {
   ];
 
   void onItemTapped(int index) {
-    setState(() {
-      currentIndex = index;
-    });
+    if(mounted){
+      setState(() {
+        currentIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       body: listPage[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onItemTapped,
           elevation: 3,
           selectedItemColor: CustomColors.blue,
-          backgroundColor: CustomColors.lightGrey,
+          backgroundColor: CustomColors.white,
           selectedFontSize: 13,
           unselectedFontSize: 13,
           selectedLabelStyle: CustomStyles.textRegular,

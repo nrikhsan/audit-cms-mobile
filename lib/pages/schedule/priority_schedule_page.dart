@@ -2,14 +2,14 @@ import 'package:audit_cms/style/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+class PrioritySchedulePage extends StatefulWidget {
+  const PrioritySchedulePage({super.key});
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  State<PrioritySchedulePage> createState() => _PrioritySchedulePageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _PrioritySchedulePageState extends State<PrioritySchedulePage> {
 
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -17,27 +17,21 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.white,
-      appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: Text('Laporan audit wilayah'),
-        titleTextStyle: CustomStyles.textBold,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: (){
-                showFilterReport();
-              }, icon: Icon(Icons.tune_rounded, size: 25, color: CustomColors.grey)
-          )
-        ],
-      ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showFilterReport();
+          },
+          backgroundColor: CustomColors.orange,
+          child: Icon(Icons.tune, color: CustomColors.white, size: 30),
+        ),
     );
   }
 
   void showFilterReport() {
     showModalBottomSheet(
-      backgroundColor: CustomColors.white,
-      isScrollControlled: true,
+        backgroundColor: CustomColors.white,
+        isScrollControlled: true,
         context: context,
         builder: (BuildContext context){
           return Container(
@@ -112,12 +106,12 @@ class _ReportPageState extends State<ReportPage> {
                 Center(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton,
-                        backgroundColor: CustomColors.blue
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
                         Navigator.pop(context);
-                  },
+                      },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite)
                   ),
                 )
