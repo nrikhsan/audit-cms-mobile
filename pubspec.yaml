@@ -1,6 +1,6 @@
 name: audit_cms
 description: "Audit cms"
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -15,6 +15,9 @@ dependencies:
   dio: ^5.4.1
   intl: ^0.17.0
   shared_preferences: ^2.2.2
+  get: ^4.6.6
+  flutter_spinkit: ^5.2.0
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:
