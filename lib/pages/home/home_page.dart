@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:audit_cms/pages/clarification/clarification_page.dart';
+import 'package:audit_cms/pages/lha/lha_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -199,6 +201,10 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                                       final id = listHome[index].id;
                                       if (id == 1) {
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePageAuditArea()));
+                                      }else if(id == 2){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditArea()));
+                                      }else if(id == 4){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const ClarificationPageAuditArea()));
                                       }
                                     },
                                     icon: listHome[index].icon,
@@ -253,6 +259,10 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                               final id = listHome[index].id;
                               if (id == 1) {
                                 Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePageAuditArea()));
+                              }else if(id == 2){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditArea()));
+                              }else if(id == 4){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => const ClarificationPageAuditArea()));
                               }
                             },
                             icon: listHome[index].icon

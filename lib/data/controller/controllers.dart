@@ -1,7 +1,12 @@
+import 'package:audit_cms/data/core/response/response_detail_clarification.dart';
+import 'package:audit_cms/data/core/response/response_clarification.dart';
+import 'package:audit_cms/data/core/response/response_detail_lha.dart';
+import 'package:audit_cms/data/core/response/response_detail_schedule.dart';
 import 'package:get/get.dart';
 import '../../helper/prefs/token_manager.dart';
 import '../core/repositories/repositories.dart';
 import '../core/response/response_dropdown.dart';
+import '../core/response/response_lha.dart';
 import '../core/response/response_schedules.dart';
 
 class ControllerAllData extends GetxController{
@@ -18,6 +23,11 @@ class ControllerAllData extends GetxController{
   final RxList<Area> area = <Area>[].obs;
   final RxList<Branch> branch = <Branch>[].obs;
   final RxList<Status> status = <Status>[].obs;
+  final RxList<LhaAuditArea>lha = <LhaAuditArea>[].obs;
+  var detailSchedule =  Rxn<ResponseDetailSchedule>();
+  var detailLhaAuditArea = Rxn<ResponseDetailLha>();
+  final RxList<Clarification> clarificationAuitArea = <Clarification>[].obs;
+  var detailClarificationAuditArea = Rxn<ResponseDetailClarification>();
 
   ControllerAllData(this.repository);
 
@@ -30,6 +40,8 @@ class ControllerAllData extends GetxController{
     loadArea();
     loadBranch();
     loadStatus();
+    loadLhaAuditArea();
+    loadClarificationAuditArea();
     super.onInit();
 
   }
@@ -120,6 +132,15 @@ class ControllerAllData extends GetxController{
     }
   }
 
+  void getDetailSchedule(int id)async{
+    try{
+      final responseDetailSchedule = await repository.getDetailSchedule(id);
+      detailSchedule.value = responseDetailSchedule;
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+
   void loadAuditor()async{
     try{
       final responseAuditor = await repository.getAuditor();
@@ -171,6 +192,81 @@ class ControllerAllData extends GetxController{
     try{
       final response = await repository.getReschedules();
       resSchedules.assignAll(response.schedules ?? []);
+    }catch(error){
+      throw Exception(error);
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  void loadLhaAuditArea()async{
+    isLoading(true);
+    try{
+      final response = await repository.getLhaAuditArea();
+      lha.assignAll(response.lha ?? []);
+    }catch(error){
+      throw Exception(error);
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  void filterLhaAuditArea(String startDate, String endDate, String branch, String auditor)async{
+    isLoading(true);
+    try{
+      final response = await repository.filterLhaAuditArea(startDate, endDate, branch, auditor);
+      lha.assignAll(response.lha ?? []);
+    }catch(error){
+      throw Exception(error);
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  void getDetailLhaAuditArea(int id)async{
+    try{
+      final response = await repository.getDetailLhaAuditArea(id);
+      detailLhaAuditArea.value = response;
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+
+  void editLha(int id, String lhaDescription)async{
+  try{
+    final response = await repository.editLha(id, lhaDescription);
+    message(response.toString());
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+  
+  void loadClarificationAuditArea() async{
+    isLoading(true);
+    try {
+      final response = await repository.getClarificationAuditArea();
+      clarificationAuitArea.assignAll(response.clarification ?? []);
+    } catch (error) {
+      throw Exception(error);
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  void getDetailClarificationAuditArea(int id)async{
+    try{
+      final detail = await repository.getDetailClarificationAuditArea(id);
+      detailClarificationAuditArea.value = detail;
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+
+  void filterClarificationAuditArea(String startDate, String endDate, String branch, String auditor)async{
+    isLoading(true);
+    try{
+      final response = await repository.filterClarificationAuditArea(startDate, endDate, branch, auditor);
+      clarificationAuitArea.assignAll(response.clarification ?? []);
     }catch(error){
       throw Exception(error);
     }finally{

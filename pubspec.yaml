@@ -18,6 +18,12 @@ dependencies:
   get: ^4.6.6
   flutter_spinkit: ^5.2.0
   flutter_speed_dial: ^7.0.0
+  webview_flutter: ^4.7.0
+  url_launcher: ^6.2.5
+  path_provider: ^2.1.2
+  permission_handler: ^11.3.0
+  syncfusion_flutter_pdfviewer: any
+  downloads_path_provider_28: ^0.1.2
 
 dev_dependencies:
   flutter_test:

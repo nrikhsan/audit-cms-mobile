@@ -1,3 +1,5 @@
+import 'package:audit_cms/data/core/response/response_schedules.dart';
+import 'package:audit_cms/pages/schedule/detail_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -96,7 +98,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final schedule = controllerAllData.mainSchedules[index];
-                          return Card(
+                          return GestureDetector(
+                            child: Card(
                             margin: const EdgeInsets.all(10),
                             elevation: 0,
                             shape: OutlineInputBorder(
@@ -127,6 +130,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 ],
                               ),
                             ),
+                          ),
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                          },
                           );
                         },
                       );
@@ -177,7 +184,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           itemCount: controllerAllData.specialSchedules.length,
                           itemBuilder: (_, index){
                             final schedule = controllerAllData.specialSchedules[index];
-                            return Card(
+                            return GestureDetector(
+                              child: Card(
                               margin: const EdgeInsets.all(10),
                               elevation: 0,
                               shape: OutlineInputBorder(
@@ -208,6 +216,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                   ],
                                 ),
                               ),
+                            ),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                            },
                             );
                           }
                       );
@@ -256,7 +268,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           itemCount: controllerAllData.resSchedules.length,
                           itemBuilder: (_, index){
                             final reschedules = controllerAllData.resSchedules[index];
-                            return Card(
+                            return GestureDetector(
+                              child: Card(
                               margin: const EdgeInsets.all(10),
                               elevation: 0,
                               shape: OutlineInputBorder(
@@ -287,6 +300,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                   ],
                                 ),
                               ),
+                            ),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: reschedules.id!)));
+                            },
                             );
                           }
                       );
