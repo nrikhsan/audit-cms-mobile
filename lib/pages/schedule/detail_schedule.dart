@@ -1,4 +1,4 @@
-import 'package:audit_cms/data/controller/controllers.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class DetailSChedulePageAuditAreaState extends StatefulWidget {
 
 class _DetailSChedulePageAuditAreaStateState
     extends State<DetailSChedulePageAuditAreaState> {
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _DetailSChedulePageAuditAreaStateState
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAllData.detailSchedule.value;
+          final detail = controllerAllData.detailScheduleAuditArea.value;
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {

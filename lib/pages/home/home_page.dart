@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:audit_cms/pages/bap/bap_page.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
+import 'package:audit_cms/pages/follow_up/follow_up_page.dart';
+import 'package:audit_cms/pages/kka/kka_page.dart';
 import 'package:audit_cms/pages/lha/lha_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -107,7 +110,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
             Card(
               elevation: 0,
               color: CustomColors.white,
-              margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
+              margin: const EdgeInsets.only(left: 15, right: 15, top: 25),
               shape: OutlineInputBorder(
                   borderSide: const BorderSide(color: CustomColors.lightGrey),
                   borderRadius: BorderRadius.circular(10)),
@@ -160,12 +163,12 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                    margin: const EdgeInsets.only(left: 10, top: 25),
+                    margin: const EdgeInsets.only(left: 15, top: 25),
                     child: Text('Main menu', style: CustomStyles.textBold18Px)),
 
                 GestureDetector(
                   child: Container(
-                      margin: const EdgeInsets.only(left: 10, top: 25, right: 10),
+                      margin: const EdgeInsets.only(left: 10, top: 25, right: 15),
                       child: Text('Lihat semua', style: CustomStyles.textMediumGrey15Px)),
                   onTap: (){
                     showModalAllMenu(context, listHome);
@@ -176,7 +179,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
             SizedBox(
               height: 125,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: listHome.length,
@@ -203,8 +206,14 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePageAuditArea()));
                                       }else if(id == 2){
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditArea()));
+                                      }else if(id == 3){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const KkaPageAuditArea()));
                                       }else if(id == 4){
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const ClarificationPageAuditArea()));
+                                      }else if(id == 6){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const BapAuditAreaPage()));
+                                      }else if(id == 5){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditArea()));
                                       }
                                     },
                                     icon: listHome[index].icon,
@@ -261,8 +270,14 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                                 Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePageAuditArea()));
                               }else if(id == 2){
                                 Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditArea()));
+                              }else if(id == 3){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => const KkaPageAuditArea()));
                               }else if(id == 4){
                                 Navigator.push(context, MaterialPageRoute(builder: (_) => const ClarificationPageAuditArea()));
+                              }else if(id == 6){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => const BapAuditAreaPage()));
+                              }else if(id == 5){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditArea()));
                               }
                             },
                             icon: listHome[index].icon
@@ -272,6 +287,16 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                         final id = listHome[index].id;
                         if (id == 1) {
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePageAuditArea()));
+                        }else if(id == 2){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditArea()));
+                        }else if(id == 3){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const KkaPageAuditArea()));
+                        }else if(id == 4){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const ClarificationPageAuditArea()));
+                        }else if(id == 6){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const BapAuditAreaPage()));
+                        }else if(id == 5){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditArea()));
                         }
                       },
                     );

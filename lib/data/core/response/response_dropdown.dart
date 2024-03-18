@@ -1,107 +1,107 @@
-class ResponseAuditor {
-  List<Auditor>? auditor;
+class ResponseAuditorAuditArea {
+  List<ModelListAuditorAuditArea>? auditor;
 
-  ResponseAuditor({this.auditor});
+  ResponseAuditorAuditArea({this.auditor});
 
-  ResponseAuditor.fromJson(Map<String, dynamic> json) {
+  ResponseAuditorAuditArea.fromJson(Map<String, dynamic> json) {
     if (json['auditor'] != null) {
-      auditor = <Auditor>[];
+      auditor = <ModelListAuditorAuditArea>[];
       json['auditor'].forEach((v) {
-        auditor!.add(Auditor.fromJson(v));
+        auditor!.add(ModelListAuditorAuditArea.fromJson(v));
       });
     }
   }
 }
 
-class Auditor {
+class ModelListAuditorAuditArea {
   int? id;
   String? auditorName;
 
-  Auditor({this.id, this.auditorName});
+  ModelListAuditorAuditArea({this.id, this.auditorName});
 
-  Auditor.fromJson(Map<String, dynamic> json) {
+  ModelListAuditorAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     auditorName = json['auditor_name'];
   }
 }
 
 
-class ResponseArea {
-  List<Area>? area;
+class ResponseAreaAuditArea {
+  List<ModelListAreaAuditArea>? area;
 
-  ResponseArea({this.area});
+  ResponseAreaAuditArea({this.area});
 
-  ResponseArea.fromJson(Map<String, dynamic> json) {
+  ResponseAreaAuditArea.fromJson(Map<String, dynamic> json) {
     if (json['area'] != null) {
-      area = <Area>[];
+      area = <ModelListAreaAuditArea>[];
       json['area'].forEach((v) {
-        area!.add(Area.fromJson(v));
+        area!.add(ModelListAreaAuditArea.fromJson(v));
       });
     }
   }
 }
 
-class Area {
+class ModelListAreaAuditArea {
   int? id;
   String? areaName;
 
-  Area({this.id, this.areaName});
+  ModelListAreaAuditArea({this.id, this.areaName});
 
-  Area.fromJson(Map<String, dynamic> json) {
+  ModelListAreaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     areaName = json['area_name'];
   }
 }
 
-class ResponseBranch {
-  List<Branch>? branch;
+class ResponseBranchAuditArea {
+  List<ModelListBranchAuditArea>? branch;
 
-  ResponseBranch({this.branch});
+  ResponseBranchAuditArea({this.branch});
 
-  ResponseBranch.fromJson(Map<String, dynamic> json) {
+  ResponseBranchAuditArea.fromJson(Map<String, dynamic> json) {
     if (json['branch'] != null) {
-      branch = <Branch>[];
+      branch = <ModelListBranchAuditArea>[];
       json['branch'].forEach((v) {
-        branch!.add(Branch.fromJson(v));
+        branch!.add(ModelListBranchAuditArea.fromJson(v));
       });
     }
   }
 }
 
-class Branch {
+class ModelListBranchAuditArea {
   int? id;
   String? branchName;
 
-  Branch({this.id, this.branchName});
+  ModelListBranchAuditArea({this.id, this.branchName});
 
-  Branch.fromJson(Map<String, dynamic> json) {
+  ModelListBranchAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     branchName = json['branch_name'];
   }
 }
 
-class ResponseStatusSchedule {
-  List<Status>? status;
+class ResponseStatusScheduleAuditArea {
+  List<ModelListStatusAuditArea>? status;
 
-  ResponseStatusSchedule({this.status});
+  ResponseStatusScheduleAuditArea({this.status});
 
-  ResponseStatusSchedule.fromJson(Map<String, dynamic> json) {
+  ResponseStatusScheduleAuditArea.fromJson(Map<String, dynamic> json) {
     if (json['status'] != null) {
-      status = <Status>[];
+      status = <ModelListStatusAuditArea>[];
       json['status'].forEach((v) {
-        status!.add(new Status.fromJson(v));
+        status!.add(new ModelListStatusAuditArea.fromJson(v));
       });
     }
   }
 }
 
-class Status {
+class ModelListStatusAuditArea {
   int? id;
   String? statusName;
 
-  Status({this.id, this.statusName});
+  ModelListStatusAuditArea({this.id, this.statusName});
 
-  Status.fromJson(Map<String, dynamic> json) {
+  ModelListStatusAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     statusName = json['status_name'];
   }

@@ -22,11 +22,11 @@ class Data {
   }
 }
 
-class RequestBody{
+class ModelAuth{
   String email;
   String password;
 
-  RequestBody({required this.email, required this.password});
+  ModelAuth({required this.email, required this.password});
 
   Map<String, dynamic> toJson() => {
     'email': email,

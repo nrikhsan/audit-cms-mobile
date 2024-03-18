@@ -1,14 +1,14 @@
 
 class ResponseLhaAuditArea {
-  List<LhaAuditArea>? lha;
+  List<ModelListLhaAuditArea>? lha;
 
   ResponseLhaAuditArea({this.lha});
 
   ResponseLhaAuditArea.fromJson(Map<String, dynamic> json) {
     if (json['lha'] != null) {
-      lha = <LhaAuditArea>[];
+      lha = <ModelListLhaAuditArea>[];
       json['lha'].forEach((v) {
-        lha!.add(LhaAuditArea.fromJson(v));
+        lha!.add(ModelListLhaAuditArea.fromJson(v));
       });
     }
   }
@@ -22,7 +22,7 @@ class ResponseLhaAuditArea {
   }
 }
 
-class LhaAuditArea {
+class ModelListLhaAuditArea {
   int? id;
   String? inputDate;
   String? auditor;
@@ -36,7 +36,7 @@ class LhaAuditArea {
   String? recommendationOrSuggest;
   bool? research;
 
-  LhaAuditArea(
+  ModelListLhaAuditArea(
       {this.id,
       this.inputDate,
       this.auditor,
@@ -50,7 +50,7 @@ class LhaAuditArea {
       this.recommendationOrSuggest,
       this.research});
 
-  LhaAuditArea.fromJson(Map<String, dynamic> json) {
+  ModelListLhaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     inputDate = json['input_date'];
     auditor = json['auditor'];

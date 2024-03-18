@@ -1,4 +1,28 @@
-class ResponseDetailClarification {
+class ResponseClarificationAuditArea {
+  List<ModelListClarificationAuditArea>? clarification;
+
+  ResponseClarificationAuditArea({this.clarification});
+
+  ResponseClarificationAuditArea.fromJson(Map<String, dynamic> json) {
+    if (json['clarification'] != null) {
+      clarification = <ModelListClarificationAuditArea>[];
+      json['clarification'].forEach((v) {
+        clarification!.add(new ModelListClarificationAuditArea.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.clarification != null) {
+      data['clarification'] =
+          this.clarification!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ModelListClarificationAuditArea {
   int? id;
   String? auditor;
   String? branch;
@@ -13,11 +37,11 @@ class ResponseDetailClarification {
   String? dear;
   String? explanationOfAuditFinding;
   String? findingPriority;
-  ClarificationIdentidication? clarificationIdentidication;
+  ModelClarificationIdentificationAuditArea? clarificationIdentidication;
   String? clarificationDoc;
   String? bapDoc;
 
-  ResponseDetailClarification(
+  ModelListClarificationAuditArea(
       {this.id,
       this.auditor,
       this.branch,
@@ -36,7 +60,7 @@ class ResponseDetailClarification {
       this.clarificationDoc,
       this.bapDoc});
 
-  ResponseDetailClarification.fromJson(Map<String, dynamic> json) {
+  ModelListClarificationAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     auditor = json['auditor'];
     branch = json['branch'];
@@ -52,7 +76,7 @@ class ResponseDetailClarification {
     explanationOfAuditFinding = json['explanation_of_audit_finding'];
     findingPriority = json['finding_priority'];
     clarificationIdentidication = json['clarification_identidication'] != null
-        ? new ClarificationIdentidication.fromJson(
+        ? new ModelClarificationIdentificationAuditArea.fromJson(
             json['clarification_identidication'])
         : null;
     clarificationDoc = json['clarification_doc'];
@@ -85,15 +109,15 @@ class ResponseDetailClarification {
   }
 }
 
-class ClarificationIdentidication {
+class ModelClarificationIdentificationAuditArea {
   String? clarificationEvaluation;
   int? nominalLoss;
   String? reason;
 
-  ClarificationIdentidication(
+  ModelClarificationIdentificationAuditArea(
       {this.clarificationEvaluation, this.nominalLoss, this.reason});
 
-  ClarificationIdentidication.fromJson(Map<String, dynamic> json) {
+  ModelClarificationIdentificationAuditArea.fromJson(Map<String, dynamic> json) {
     clarificationEvaluation = json['clarification_evaluation'];
     nominalLoss = json['nominal_loss'];
     reason = json['reason'];

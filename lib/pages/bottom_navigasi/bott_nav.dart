@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../data/controller/navigation_controller.dart';
+import '../../data/controller/navigator/navigation_controller.dart';
 import '../../helper/styles/custom_styles.dart';
 import '../home/home_page.dart';
 import '../profile/profile_page.dart';

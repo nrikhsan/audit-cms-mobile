@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../data/controller/controllers.dart';
+import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../data/core/response/response_dropdown.dart';
 import '../../helper/styles/custom_styles.dart';
 
@@ -20,12 +20,12 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController scheduleDescController = TextEditingController();
 
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
 
-  Auditor? auditor;
-  Area? area;
-  Branch? branch;
-  Status? status;
+  ModelListAuditorAuditArea? auditor;
+  ModelListAreaAuditArea? area;
+  ModelListBranchAuditArea? branch;
+  ModelListStatusAuditArea? status;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -143,7 +143,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                         borderRadius: BorderRadius.circular(10),
                         value: auditor,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.auditor.map((Auditor auditor){
+                          items: controllerAllData.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
                             return DropdownMenuItem(
                               value: auditor,
                                 child: Text('${auditor.auditorName}', style: CustomStyles.textMedium15Px),
@@ -177,7 +177,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: area,
                           hint: Text('Area', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.area.map((Area area){
+                          items: controllerAllData.areaAuditArea.map((ModelListAreaAuditArea area){
                             return DropdownMenuItem(
                               value: area,
                               child: Text('${area.areaName}', style: CustomStyles.textMedium15Px),
@@ -211,7 +211,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.branch.map((Branch branch){
+                          items: controllerAllData.branchAuditArea.map((ModelListBranchAuditArea branch){
                             return DropdownMenuItem(
                               value: branch,
                               child: Text('${branch.branchName}', style: CustomStyles.textMedium15Px),
@@ -244,7 +244,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: status,
                           hint: Text('Status', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.status.map((Status status){
+                          items: controllerAllData.statusAuditArea.map((ModelListStatusAuditArea status){
                             return DropdownMenuItem(
                               value: status,
                               child: Text('${status.statusName}', style: CustomStyles.textMedium15Px),
@@ -294,8 +294,14 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                             shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            controllerAllData.addLocalDataSchedule(auditor!, area!, branch!, status!,
-                            startDateController.text, endDateController.text, scheduleDescController.text);
+                            if (auditor == null || area == null || branch == null || status == null || startDateController.text.isEmpty || endDateController.text.isEmpty || scheduleDescController.text.isEmpty) {
+                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                            }else{
+                              
+                              controllerAllData.addLocalDataSchedule(auditor!, area!, branch!, status!,
+                              startDateController.text, endDateController.text, scheduleDescController.text);
+                              print('Tambah data lokal jadwal : ${auditor!.auditorName}, ${area!.areaName}, ${branch!.branchName}, ${status!.statusName}, ${startDateController.text}, ${endDateController.text}, ${scheduleDescController.text}');
+                            }
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -314,9 +320,9 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                   const SizedBox(height: 15),
                   Obx(() => ListView.builder(
                       shrinkWrap: true,
-                      itemCount: controllerAllData.dataListLocalSchedules.length,
+                      itemCount: controllerAllData.dataListLocalSchedulesAuditArea.length,
                       itemBuilder: (_, index){
-                        final data = controllerAllData.dataListLocalSchedules[index];
+                        final data = controllerAllData.dataListLocalSchedulesAuditArea[index];
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -328,18 +334,8 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
                               onTap: ()async{
                                 controllerAllData.deleteLocalDataSchedule(data.auditor!);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                      Text('Jadwal berhasil dihapus', style: CustomStyles.textMediumWhite15Px),
-                                      backgroundColor: CustomColors.red,
-                                      action: SnackBarAction(
-                                          label: 'Tutup',
-                                          textColor: CustomColors.white,
-                                          onPressed: (){
-
-                                  }),
-                                ));
+                                Get.snackbar('Alert', 'Data berhasil dihapus', snackPosition: SnackPosition.TOP, 
+                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
                               },
                             )
                           ],
@@ -356,16 +352,19 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           backgroundColor: CustomColors.blue
                         ),
                         onPressed: ()async{
+
+                          if (auditor == null || area == null || branch == null || status == null || startDateController.text.isEmpty || endDateController.text.isEmpty || scheduleDescController.text.isEmpty) {
+                              Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP, 
+                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                          }else{
                           controllerAllData.addSchedules(auditor!.id!, area!.id!, branch!.id!, status!.id!,
                               startDateController.text, endDateController.text, scheduleDescController.text);
 
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Berhasil membuat data jadwal', style: CustomStyles.textMediumWhite15Px),
-                            backgroundColor: CustomColors.green,
-                            action: SnackBarAction(label: 'Tutup', textColor: CustomColors.white, onPressed: (){
-
-                            }),
-                          ));
+                          Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP, 
+                          colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                          print('Buat jadwal : ${auditor!.id}, ${area!.id}, ${branch!.id}, ${status!.id}, ${startDateController.text}, ${endDateController.text}, ${scheduleDescController.text}');
+                          // Navigator.pop(context);
+                          }
                         },
                         child: Text('Buat jadwal', style: CustomStyles.textMediumWhite15Px)
                     ),

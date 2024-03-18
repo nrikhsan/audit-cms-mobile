@@ -1,4 +1,4 @@
-import 'package:audit_cms/data/controller/controllers.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -14,7 +14,7 @@ class DetailLhaPageAuditArea extends StatefulWidget {
 }
 
 class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
 
   @override
   Widget build(BuildContext context) {

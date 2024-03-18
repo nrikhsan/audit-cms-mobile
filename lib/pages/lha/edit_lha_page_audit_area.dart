@@ -1,4 +1,4 @@
-import 'package:audit_cms/data/controller/controllers.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,7 @@ class EditLhaPageAuditArea extends StatefulWidget {
 
 class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
   final TextEditingController lhaDescriptionController = TextEditingController();
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
 
   @override
   void initState() {
@@ -120,6 +120,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                       onPressed: () {
                         controllerAllData.editLha(id, lhaDescriptionController);
                         Navigator.pop(context);
+                        Get.snackbar('Berhasil', 'LHA berhasil di edit', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
                       },
                       child: Text('Ya',
                           style: CustomStyles.textMediumWhite15Px))
@@ -127,6 +128,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               )
             ],
           );
-        });
+        }
+      );
   }
 }

@@ -1,39 +1,33 @@
-class ResponseSchedules {
-  List<Schedules>? schedules;
+class ResponseAddSchedulesAuditArea {
+  int? status;
+  String? message;
 
-  ResponseSchedules({this.schedules});
+  ResponseAddSchedulesAuditArea({this.status, this.message});
 
-  ResponseSchedules.fromJson(Map<String, dynamic> json) {
-    if (json['schedules'] != null) {
-      schedules = <Schedules>[];
-      json['schedules'].forEach((v) {
-        schedules!.add(Schedules.fromJson(v));
-      });
-    }
+  ResponseAddSchedulesAuditArea.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (schedules != null) {
-      data['schedules'] = schedules!.map((v) => v.toJson()).toList();
-    }
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
 
-class Schedules {
-  int? id;
-  String? auditor;
-  String? area;
-  String? branch;
-  String? status;
+class ModelAddScheduleAuditArea {
+  int? auditor;
+  int? area;
+  int? branch;
+  int? status;
   String? startDate;
   String? endDate;
   String? scheduleDescription;
 
-  Schedules(
-      {this.id,
-        this.auditor,
+  ModelAddScheduleAuditArea(
+      {this.auditor,
         this.area,
         this.branch,
         this.status,
@@ -41,8 +35,7 @@ class Schedules {
         this.endDate,
         this.scheduleDescription});
 
-  Schedules.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+  ModelAddScheduleAuditArea.fromJson(Map<String, dynamic> json) {
     auditor = json['auditor'];
     area = json['area'];
     branch = json['branch'];
@@ -54,7 +47,6 @@ class Schedules {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['auditor'] = auditor;
     data['area'] = area;
     data['branch'] = branch;
@@ -65,3 +57,4 @@ class Schedules {
     return data;
   }
 }
+

@@ -1,10 +1,9 @@
+import 'package:audit_cms/data/controller/auth/controller_auth.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-
-import '../../data/controller/controllers.dart';
 import '../../helper/styles/custom_styles.dart';
-import '../bottom_navigasi/bott_nav.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,16 +14,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final ControllerAllData _controllerAllData = Get.find();
+  final ControllerAuth controllerAuth = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.white,
       body: Obx((){
-        if(_controllerAllData.isLoading.isTrue){
+        if(controllerAuth.isLoading.isTrue){
           return const Center(
             child: Visibility(
                 child: SpinKitCircle(color: CustomColors.blue)
@@ -40,14 +37,14 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const SizedBox(height: 150),
                     SizedBox(
-                        height: 200,
+                        height: 130,
                         width: 300,
                         child: Image.asset('assets/images/logo.png')),
 
                     const SizedBox(height: 20),
 
                     TextField(
-                        controller: _emailController,
+                        onChanged: (email) => controllerAuth.setEmail(email),
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
@@ -66,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 15),
                     TextField(
-                        controller: _passwordController,
+                        onChanged: (password) => controllerAuth.setPassword(password),
                         keyboardType: TextInputType.visiblePassword,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
@@ -92,8 +89,14 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: CustomColors.blue,
                             shape: CustomStyles.customRoundedButton),
                         onPressed: (){
-                          _controllerAllData.login(_emailController.text, _passwordController.text);
+                          if (controllerAuth.email.isEmpty || controllerAuth.password.isEmpty) {
+                              Get.snackbar('Alert', 'Email atau kata sandi tidak boleh kosong', 
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                          }else{
+                           controllerAuth.login();
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BotNavePageAuditArea()), (route) => false);
+                          
+                          }
                         },
                         child: Text('Masuk',
                             style: CustomStyles.textMediumWhite15Px),

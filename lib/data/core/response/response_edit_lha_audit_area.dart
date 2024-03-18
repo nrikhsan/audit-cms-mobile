@@ -1,10 +1,10 @@
-class ResponseEditLha {
+class ResponseEditLhaAuditArea {
   int? status;
   String? message;
 
-  ResponseEditLha({this.status, this.message});
+  ResponseEditLhaAuditArea({this.status, this.message});
 
-  ResponseEditLha.fromJson(Map<String, dynamic> json) {
+  ResponseEditLhaAuditArea.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
   }
@@ -17,12 +17,12 @@ class ResponseEditLha {
   }
 }
 
-class RequestBodyEditLha {
+class ModelBodyEditLhaAuditArea {
   String? lhaDescription;
 
-  RequestBodyEditLha({this.lhaDescription});
+  ModelBodyEditLhaAuditArea({this.lhaDescription});
 
-  RequestBodyEditLha.fromJson(Map<String, dynamic> json) {
+  ModelBodyEditLhaAuditArea.fromJson(Map<String, dynamic> json) {
     lhaDescription = json['lha_description'];
   }
 

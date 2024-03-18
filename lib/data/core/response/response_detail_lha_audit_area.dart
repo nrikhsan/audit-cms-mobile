@@ -1,4 +1,4 @@
-class ResponseDetailLha {
+class ResponseDetailLhaAuditArea {
   int? id;
   String? auditor;
   String? inputDate;
@@ -12,7 +12,7 @@ class ResponseDetailLha {
   String? recommendationOrSuggest;
   bool? research;
 
-  ResponseDetailLha(
+  ResponseDetailLhaAuditArea(
       {this.id,
       this.auditor,
       this.inputDate,
@@ -26,7 +26,7 @@ class ResponseDetailLha {
       this.recommendationOrSuggest,
       this.research});
 
-  ResponseDetailLha.fromJson(Map<String, dynamic> json) {
+  ResponseDetailLhaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     auditor = json['auditor'];
     inputDate = json['input_date'];

@@ -71,6 +71,18 @@ class CustomStyles {
       color: CustomColors.white
   );
 
+  static TextStyle textMediumRed15Px = const TextStyle(
+      fontFamily: 'RobotoMedium',
+      fontSize: 15,
+      color: CustomColors.red
+  );
+
+  static TextStyle textMediumWhite13Px = const TextStyle(
+      fontFamily: 'RobotoMedium',
+      fontSize: 13,
+      color: CustomColors.white
+  );
+
   static TextStyle textMedium13Px = const TextStyle(
       fontFamily: 'RobotoMedium',
       fontSize: 13,
@@ -99,6 +111,12 @@ class CustomStyles {
       fontFamily: 'RobotoMedium',
       fontSize: 15,
       color: CustomColors.green
+  );
+
+   static TextStyle textMediumBlue15Px = const TextStyle(
+      fontFamily: 'RobotoMedium',
+      fontSize: 15,
+      color: CustomColors.blue
   );
 
   static TextStyle textMediumBlue13Px = const TextStyle(

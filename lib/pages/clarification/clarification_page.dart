@@ -1,4 +1,4 @@
-import 'package:audit_cms/data/controller/controllers.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/detail_clarfication.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class ClarificationPageAuditArea extends StatefulWidget {
 }
 
 class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea> {
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -252,32 +252,41 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                       },
                     ),
 
-                    const SizedBox(height: 20),
-
-                    SizedBox(
+                  const SizedBox(height: 25),
+                  Obx(() => controllerAllData.filterIsActive.value
+                    ? SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CustomStyles.customRoundedButton,
-                          backgroundColor: CustomColors.blue
-                        ),
-                        onPressed: (){
-                            final startDate = startDateController.text;
-                            final endDate = endDateController.text;
-                            final auditor = auditorController.text.trim();
-                            final branch = branchController.text.trim();
-                            if (startDate.isNotEmpty && endDate.isNotEmpty) {
-                              controllerAllData.filterClarificationAuditArea(startDate, endDate, branch, auditor);
-                            }else if(auditor.isNotEmpty){
-                              controllerAllData.filterClarificationAuditArea(startDate, endDate, branch, auditor);
-                            }else if(branch.isNotEmpty){
-                              controllerAllData.filterClarificationAuditArea(startDate, endDate, branch, auditor);
-                            }
-                            Navigator.pop(context);
-                        },
-                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
-                       ),
-                    )
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.red
+                          ),
+                          onPressed: (){
+                            controllerAllData.loadClarificationAuditArea();
+                            startDateController.clear();
+                            endDateController.clear();
+                            auditorController.clear();
+                            branchController.clear();
+                            Get.back();
+                          },
+                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                  : SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.blue
+                          ),
+                          onPressed: (){
+                            controllerAllData.filterClarificationAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            Get.back();
+                          },
+                          child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                )
 
                   ],
                 ),

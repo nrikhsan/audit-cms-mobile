@@ -1,4 +1,3 @@
-import 'package:audit_cms/data/core/response/response_schedules.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/controller/controllers.dart';
+import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../helper/styles/custom_styles.dart';
 import 'input_schedule.dart';
 
@@ -20,7 +19,7 @@ class SchedulePageAuditArea extends StatefulWidget {
 
 class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController branchController = TextEditingController();
@@ -89,56 +88,58 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       )
                     ],
                   ),
-                  body: Obx(() {
-                    if (controllerAllData.isLoading.isTrue) {
-                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                    } else {
-                      return ListView.builder(
-                        itemCount: controllerAllData.mainSchedules.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final schedule = controllerAllData.mainSchedules[index];
-                          return GestureDetector(
-                            child: Card(
-                            margin: const EdgeInsets.all(10),
-                            elevation: 0,
-                            shape: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: CustomColors.lightGrey
+                  body: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Obx(() {
+                      if (controllerAllData.isLoading.isTrue) {
+                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                      } else {
+                        return ListView.builder(
+                          itemCount: controllerAllData.mainSchedulesAuditArea.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final schedule = controllerAllData.mainSchedulesAuditArea[index];
+                            return GestureDetector(
+                              child: Card(
+                              elevation: 0,
+                              shape: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: CustomColors.grey
+                                ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-
-                            color: CustomColors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                      Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
-                                    ],
-                                  ),
-
-                                  const SizedBox(height: 10),
-                                  Text('${schedule.scheduleDescription}', style: CustomStyles.textRegularBlack5413Px,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2
-                                  ),
-                                ],
+                    
+                              color: CustomColors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Auditor : ${schedule.auditor}', style: CustomStyles.textBold15Px),
+                                        Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium15Px),
+                                      ],
+                                    ),
+                    
+                                    const SizedBox(height: 10),
+                                      Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
+                                      
+                                      Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                            },
+                            );
                           },
-                          );
-                        },
-                      );
-                    }
-                  }),
+                        );
+                      }
+                    }),
+                  ),
                 ),
 
 
@@ -174,57 +175,59 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                     )
                   ],
                 ),
-                  body: Obx((){
-                    if(controllerAllData.isLoading.isTrue){
-                      return const Center(
-                          child: SpinKitCircle(color: CustomColors.blue)
-                      );
-                    }else{
-                      return ListView.builder(
-                          itemCount: controllerAllData.specialSchedules.length,
-                          itemBuilder: (_, index){
-                            final schedule = controllerAllData.specialSchedules[index];
-                            return GestureDetector(
-                              child: Card(
-                              margin: const EdgeInsets.all(10),
-                              elevation: 0,
-                              shape: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: CustomColors.lightGrey
+                  body: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Obx((){
+                      if(controllerAllData.isLoading.isTrue){
+                        return const Center(
+                            child: SpinKitCircle(color: CustomColors.blue)
+                        );
+                      }else{
+                        return ListView.builder(
+                            itemCount: controllerAllData.specialSchedulesAuditArea.length,
+                            itemBuilder: (_, index){
+                              final schedule = controllerAllData.specialSchedulesAuditArea[index];
+                              return GestureDetector(
+                                child: Card(
+                                elevation: 0,
+                                shape: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: CustomColors.grey
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-
-                              color: CustomColors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                        Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
-                                      ],
-                                    ),
-
-                                    const SizedBox(height: 10),
-                                    Text('${schedule.scheduleDescription}', style: CustomStyles.textRegularBlack5413Px,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2
-                                    ),
-                                  ],
+                    
+                                color: CustomColors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Auditor : ${schedule.auditor}', style: CustomStyles.textBold15Px),
+                                          Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium15Px),
+                                        ],
+                                      ),
+                    
+                                      const SizedBox(height: 10),
+                                      Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
+                                      
+                                      Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
-                            },
-                            );
-                          }
-                      );
-                    }
-                  }),
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                              },
+                              );
+                            }
+                        );
+                      }
+                    }),
+                  ),
                 ),
 
 
@@ -260,55 +263,56 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       )
                     ],
                   ),
-                  body: Obx((){
-                    if(controllerAllData.isLoading.isTrue){
-                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                    }else{
-                      return ListView.builder(
-                          itemCount: controllerAllData.resSchedules.length,
-                          itemBuilder: (_, index){
-                            final reschedules = controllerAllData.resSchedules[index];
-                            return GestureDetector(
-                              child: Card(
-                              margin: const EdgeInsets.all(10),
-                              elevation: 0,
-                              shape: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: CustomColors.lightGrey
+                  body: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Obx((){
+                      if(controllerAllData.isLoading.isTrue){
+                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                      }else{
+                        return ListView.builder(
+                            itemCount: controllerAllData.resSchedulesAuditArea.length,
+                            itemBuilder: (_, index){
+                              final reschedules = controllerAllData.resSchedulesAuditArea[index];
+                              return GestureDetector(
+                                child: Card(
+                                elevation: 0,
+                                shape: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: CustomColors.grey
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-
-                              color: CustomColors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('${reschedules.auditor}', style: CustomStyles.textBold15Px),
-                                        Text('${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
-                                      ],
-                                    ),
-
-                                    const SizedBox(height: 10),
-                                    Text('${reschedules.scheduleDescription}', style: CustomStyles.textRegularBlack5413Px,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2
-                                    ),
-                                  ],
+                    
+                                color: CustomColors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Auditor : ${reschedules.auditor}', style: CustomStyles.textBold15Px),
+                                          Text('${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium15Px),
+                                        ],
+                                      ),
+                    
+                                      const SizedBox(height: 10),
+                                      Text('Cabang : ${reschedules.branch}', style: CustomStyles.textMedium13Px),
+                                      Text('Area : ${reschedules.area}', style: CustomStyles.textMedium13Px),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: reschedules.id!)));
-                            },
-                            );
-                          }
-                      );
-                    }
-                  }),
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: reschedules.id!)));
+                              },
+                              );
+                            }
+                        );
+                      }
+                    }),
+                  ),
                 )
               ]
           ),
@@ -463,7 +467,26 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
 
                   const SizedBox(height: 25),
-                  SizedBox(
+                  Obx(() => controllerAllData.filterIsActive.value
+                    ? SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.red
+                          ),
+                          onPressed: (){
+                            controllerAllData.loadMainSchedulesAuditArea();
+                            startDateController.clear();
+                            endDateController.clear();
+                            auditorController.clear();
+                            branchController.clear();
+                            Get.back();
+                          },
+                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                  : SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -471,25 +494,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAllData.filterMainSchedule(startDateController.text, endDateController.text,
-                                branchController.text, auditorController.text);
-                            Navigator.pop(context);
-
-                            final queryBranch = branchController.text.trim();
-                            if(queryBranch.isNotEmpty){
-                              controllerAllData.filterMainSchedule(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
-
-                            final queryAuditor = auditorController.text.trim();
-                            if(queryAuditor.isNotEmpty){
-                              controllerAllData.filterMainSchedule(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
+                            controllerAllData.filterMainSchedule(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            Get.back();
                           },
-                          child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)
+                          child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
-                  ),
+                  )
+                )
                 ],
               ),
             )
@@ -645,7 +656,26 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
 
                   const SizedBox(height: 25),
-                  SizedBox(
+                  Obx(() => controllerAllData.filterIsActive.value
+                    ? SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.red
+                          ),
+                          onPressed: (){
+                            controllerAllData.loadSpecialSchedulesAuditArea();
+                            startDateController.clear();
+                            endDateController.clear();
+                            auditorController.clear();
+                            branchController.clear();
+                            Get.back();
+                          },
+                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                  : SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -653,25 +683,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAllData.filterSpecialSchedules(startDateController.text, endDateController.text,
-                                branchController.text, auditorController.text);
-                            Navigator.pop(context);
-
-                            final queryBranch = branchController.text.trim();
-                            if(queryBranch.isNotEmpty){
-                              controllerAllData.filterSpecialSchedules(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
-
-                            final queryAuditor = auditorController.text.trim();
-                            if(queryAuditor.isNotEmpty){
-                              controllerAllData.filterSpecialSchedules(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
+                            controllerAllData.filterSpecialSchedules(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            Get.back();
                           },
-                          child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)
+                          child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
-                  ),
+                  )
+                )
                 ],
               ),
             )
@@ -826,8 +844,27 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                     },
                   ),
 
-                  const SizedBox(height: 25),
-                  SizedBox(
+                 const SizedBox(height: 25),
+                  Obx(() => controllerAllData.filterIsActive.value
+                    ? SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.red
+                          ),
+                          onPressed: (){
+                            controllerAllData.loadReschedulesAuditArea();
+                            startDateController.clear();
+                            endDateController.clear();
+                            auditorController.clear();
+                            branchController.clear();
+                            Get.back();
+                          },
+                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                  : SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -835,25 +872,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAllData.filterReschedules(startDateController.text, endDateController.text,
-                                branchController.text, auditorController.text);
-                            Navigator.pop(context);
-
-                            final queryBranch = branchController.text.trim();
-                            if(queryBranch.isNotEmpty){
-                              controllerAllData.filterReschedules(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
-
-                            final queryAuditor = auditorController.text.trim();
-                            if(queryAuditor.isNotEmpty){
-                              controllerAllData.filterReschedules(startDateController.text, endDateController.text,
-                                  branchController.text, auditorController.text);
-                            }
+                            controllerAllData.filterReschedules(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            Get.back();
                           },
-                          child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)
+                          child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
-                  ),
+                  )
+                )
                 ],
               ),
             )
@@ -881,4 +906,3 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
     );
   }
 }
-

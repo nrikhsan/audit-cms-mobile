@@ -23,7 +23,7 @@ dependencies:
   path_provider: ^2.1.2
   permission_handler: ^11.3.0
   syncfusion_flutter_pdfviewer: any
-  downloads_path_provider_28: ^0.1.2
+  downloads_path_provider_28: any
 
 dev_dependencies:
   flutter_test:

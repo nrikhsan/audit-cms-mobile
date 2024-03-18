@@ -2,6 +2,7 @@ import 'package:audit_cms/data/core/injection/injection.dart';
 import 'package:audit_cms/pages/auth/login_page.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'helper/prefs/token_manager.dart';
 
 void main()async {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Injection().dependencies();
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'CMS AUDIT',
       theme: ThemeData(

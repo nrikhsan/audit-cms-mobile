@@ -1,33 +1,39 @@
-class ResponseAddSchedules {
-  int? status;
-  String? message;
+class ResponseSchedulesAuditArea {
+  List<ModelListSchedulesAuditArea>? schedules;
 
-  ResponseAddSchedules({this.status, this.message});
+  ResponseSchedulesAuditArea({this.schedules});
 
-  ResponseAddSchedules.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
+  ResponseSchedulesAuditArea.fromJson(Map<String, dynamic> json) {
+    if (json['schedules'] != null) {
+      schedules = <ModelListSchedulesAuditArea>[];
+      json['schedules'].forEach((v) {
+        schedules!.add(ModelListSchedulesAuditArea.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
+    if (schedules != null) {
+      data['schedules'] = schedules!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class RequestBodyAddSchedules {
-  int? auditor;
-  int? area;
-  int? branch;
-  int? status;
+class ModelListSchedulesAuditArea {
+  int? id;
+  String? auditor;
+  String? area;
+  String? branch;
+  String? status;
   String? startDate;
   String? endDate;
   String? scheduleDescription;
 
-  RequestBodyAddSchedules(
-      {this.auditor,
+  ModelListSchedulesAuditArea(
+      {this.id,
+        this.auditor,
         this.area,
         this.branch,
         this.status,
@@ -35,7 +41,8 @@ class RequestBodyAddSchedules {
         this.endDate,
         this.scheduleDescription});
 
-  RequestBodyAddSchedules.fromJson(Map<String, dynamic> json) {
+  ModelListSchedulesAuditArea.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     auditor = json['auditor'];
     area = json['area'];
     branch = json['branch'];
@@ -47,6 +54,7 @@ class RequestBodyAddSchedules {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['auditor'] = auditor;
     data['area'] = area;
     data['branch'] = branch;
@@ -57,4 +65,3 @@ class RequestBodyAddSchedules {
     return data;
   }
 }
-

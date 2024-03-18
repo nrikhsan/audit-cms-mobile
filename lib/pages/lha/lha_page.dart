@@ -1,4 +1,4 @@
-import 'package:audit_cms/data/controller/controllers.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
@@ -16,7 +16,7 @@ class LhaPageAuditArea extends StatefulWidget {
 }
 
 class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
-  final ControllerAllData controllerAllData = Get.find();
+  final ControllerAuditArea controllerAllData = Get.find();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController branchController = TextEditingController();
@@ -53,16 +53,16 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
           return Padding(
             padding: const EdgeInsets.all(10),
             child: ListView.builder(
-                itemCount: controllerAllData.lha.length,
+                itemCount: controllerAllData.lhaAuditArea.length,
                 itemBuilder: (_, index) {
-                  final lha = controllerAllData.lha[index];
+                  final lha = controllerAllData.lhaAuditArea[index];
                   if (lha.research == true) {
                     return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
-                              color: CustomColors.lightGrey,
+                              color: CustomColors.grey,
                             )),
                         child: Padding(
                           padding: const EdgeInsets.all(15),
@@ -80,13 +80,13 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                 ],
                               ),
                               const SizedBox(height: 15),
-                              Text('${lha.auditor}',
+                              Text('Auditor : ${lha.auditor}',
                                   style: CustomStyles.textMedium15Px),
                               const SizedBox(height: 5),
-                              Text('${lha.branch}',
+                              Text('Cabang : ${lha.branch}',
                                   style: CustomStyles.textMedium15Px),
                               const SizedBox(height: 5),
-                              Text('${lha.area}',
+                              Text('Area : ${lha.area}',
                                   style: CustomStyles.textMedium15Px),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -130,7 +130,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                         shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
-                              color: CustomColors.lightGrey,
+                              color: CustomColors.grey,
                             )),
                         child: Padding(
                           padding: const EdgeInsets.all(15),
@@ -145,13 +145,13 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                 ],
                               ),
                               const SizedBox(height: 15),
-                              Text('${lha.auditor}',
+                              Text('Auditor : ${lha.auditor}',
                                   style: CustomStyles.textMedium15Px),
                               const SizedBox(height: 5),
-                              Text('${lha.branch}',
+                              Text('Cabang : ${lha.branch}',
                                   style: CustomStyles.textMedium15Px),
                               const SizedBox(height: 5),
-                              Text('${lha.area}',
+                              Text('Area : ${lha.area}',
                                   style: CustomStyles.textMedium15Px),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -337,7 +337,26 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                   ),
 
                   const SizedBox(height: 25),
-                  SizedBox(
+                  Obx(() => controllerAllData.filterIsActive.value
+                    ? SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CustomStyles.customRoundedButton,
+                              backgroundColor: CustomColors.red
+                          ),
+                          onPressed: (){
+                            controllerAllData.loadLhaAuditArea();
+                            startDateController.clear();
+                            endDateController.clear();
+                            auditorController.clear();
+                            branchController.clear();
+                            Get.back();
+                          },
+                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
+                      )
+                  )
+                  : SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -345,22 +364,13 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            final startDate = startDateController.text;
-                            final endDate = endDateController.text;
-                            final auditor = auditorController.text.trim();
-                            final branch = branchController.text.trim();
-                            if (startDate.isNotEmpty && endDate.isNotEmpty) {
-                              controllerAllData.filterLhaAuditArea(startDateController.text, endDateController.text, branchController.text, auditorController.text);
-                            }else if(auditor.isNotEmpty){
-                              controllerAllData.filterLhaAuditArea(startDateController.text, endDateController.text, branchController.text, auditorController.text);
-                            }else if(branch.isNotEmpty){
-                              controllerAllData.filterLhaAuditArea(startDateController.text, endDateController.text, branchController.text, auditorController.text);
-                            }
-                            Navigator.pop(context);
+                            controllerAllData.filterLhaAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            Get.back();
                           },
-                          child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)
+                          child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
-                  ),
+                  )
+                )
                 ],
               ),
             )

@@ -1,4 +1,4 @@
-class ResponseDetailSchedule {
+class ResponseDetailScheduleAuditArea {
   int? id;
   String? auditor;
   String? area;
@@ -8,10 +8,10 @@ class ResponseDetailSchedule {
   String? endDate;
   String? scheduleDescription;
   String? dateProcess;
-  Kka? kka;
-  List<Lha>? lha;
+  ModelKkaAuditArea? kka;
+  List<ModelListDetailLhaAuditArea>? lha;
 
-  ResponseDetailSchedule(
+  ResponseDetailScheduleAuditArea(
       {this.id,
       this.auditor,
       this.area,
@@ -24,7 +24,7 @@ class ResponseDetailSchedule {
       this.kka,
       this.lha});
 
-  ResponseDetailSchedule.fromJson(Map<String, dynamic> json) {
+  ResponseDetailScheduleAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     auditor = json['auditor'];
     area = json['area'];
@@ -34,11 +34,11 @@ class ResponseDetailSchedule {
     endDate = json['end_date'];
     scheduleDescription = json['schedule_description'];
     dateProcess = json['date_process'];
-    kka = json['kka'] != null ? new Kka.fromJson(json['kka']) : null;
+    kka = json['kka'] != null ? new ModelKkaAuditArea.fromJson(json['kka']) : null;
     if (json['lha'] != null) {
-      lha = <Lha>[];
+      lha = <ModelListDetailLhaAuditArea>[];
       json['lha'].forEach((v) {
-        lha!.add(new Lha.fromJson(v));
+        lha!.add(new ModelListDetailLhaAuditArea.fromJson(v));
       });
     }
   }
@@ -64,13 +64,13 @@ class ResponseDetailSchedule {
   }
 }
 
-class Kka {
+class ModelKkaAuditArea {
   int? id;
   String? kkaDoc;
 
-  Kka({this.id, this.kkaDoc});
+  ModelKkaAuditArea({this.id, this.kkaDoc});
 
-  Kka.fromJson(Map<String, dynamic> json) {
+  ModelKkaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     kkaDoc = json['kka_doc'];
   }
@@ -83,7 +83,7 @@ class Kka {
   }
 }
 
-class Lha {
+class ModelListDetailLhaAuditArea {
   int? id;
   String? inputDate;
   String? auditor;
@@ -97,7 +97,7 @@ class Lha {
   String? recommendationOrSuggest;
   bool? research;
 
-  Lha(
+  ModelListDetailLhaAuditArea(
       {this.id,
       this.inputDate,
       this.auditor,
@@ -111,7 +111,7 @@ class Lha {
       this.recommendationOrSuggest,
       this.research});
 
-  Lha.fromJson(Map<String, dynamic> json) {
+  ModelListDetailLhaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     inputDate = json['input_date'];
     auditor = json['auditor'];
