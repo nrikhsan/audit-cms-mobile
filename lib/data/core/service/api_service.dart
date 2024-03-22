@@ -1004,7 +1004,7 @@ class ApiService {
       }
     );
     try {
-      final response = await dio.post(AppConstant.uploadBapAuditRegion);
+      final response = await dio.post(AppConstant.uploadBapAuditRegion, data: formData);
       print(response.data);
       return ResponseUploadBapAuditRegion.fromJson(response.data);
     } catch (error) {

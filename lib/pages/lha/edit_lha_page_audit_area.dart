@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/lha/lha_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

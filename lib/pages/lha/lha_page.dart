@@ -1,5 +1,4 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
-import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
