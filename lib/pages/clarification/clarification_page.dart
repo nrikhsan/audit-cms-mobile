@@ -1,6 +1,9 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/detail_clarfication.dart';
+import 'package:audit_cms/pages/clarification/input_clarification_page_audit_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,7 @@ class ClarificationPageAuditArea extends StatefulWidget {
 }
 
 class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea> {
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -44,48 +47,69 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(15),
           child: Column(
             children: [
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('No Dokumen', style: CustomStyles.textBold15Px),
-                  Text('Tanggal berlaku', style: CustomStyles.textBold15Px),
-                  Text('Action', style: CustomStyles.textBold15Px),
-                ],
-              ),
               Obx(() {
-                if (controllerAllData.isLoading.value) {
-                  return const Center(
-                      child: SpinKitCircle(color: CustomColors.blue));
+                if (controllerAuditArea.isLoading.value) {
+                  return const Center(child: SpinKitCircle(color: CustomColors.blue));
                 } else {
                   return Column(
                     children: [
-                      const SizedBox(height: 15),
                       ListView.builder(
                       shrinkWrap: true,
-                      itemCount: controllerAllData.clarificationAuitArea.length,
+                      itemCount: controllerAuditArea.clarificationAuitArea.length,
                       itemBuilder: (_, index) {
-                        final clarification = controllerAllData.clarificationAuitArea[index];
-                        return Row(
+                        final clarification = controllerAuditArea.clarificationAuitArea[index];
+                        return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => DetailClarificationPageAuditArea(id: clarification.id!)));
+                  },
+                  child: Card(
+                  shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: CustomColors.grey
+                    )
+                  ),
+                  elevation: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${clarification.noClarification}',style: CustomStyles.textMedium13Px),
-                            Text('${clarification.clarificationDate}',style: CustomStyles.textMedium13Px),
-
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                shape: CustomStyles.customRoundedButton,
-                              ),
-                              onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailClarificationPageAuditArea(id: clarification.id!)));
-                              },
-                             child: Text('Lihat', style: CustomStyles.textMediumBlue13Px)
-                             )
+                            Wrap(
+                              children: [
+                                
+                                Text('${clarification.auditor}', style: CustomStyles.textBold15Px),
+                                const SizedBox(width: 10),
+                                Icon(clarification.statusClarification! ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                              ],
+                            ),
+                            Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
                           ],
-                        );
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Prioritas temuan : ${clarification.findingPriority}', style: CustomStyles.textMedium13Px),
+                            Text('Cabang : ${clarification.branch}', style: CustomStyles.textMedium13Px),
+                            Text('Batas evaluasi : ${clarification.limitEvaluation}', style: CustomStyles.textMedium13Px),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
                       })
                     ],
                   );
@@ -132,6 +156,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
 
                     TextField(
                       controller: auditorController,
+                      onChanged: (auditor) => auditorController.text = auditor,
                       cursorColor: CustomColors.blue,
                       decoration: InputDecoration(
                         hintText: 'Auditor...',
@@ -155,6 +180,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
 
                     TextField(
                       controller: branchController,
+                      onChanged: (branch) => branchController.text = branch,
                       cursorColor: CustomColors.blue,
                       decoration: InputDecoration(
                         hintText: 'Cabang...',
@@ -178,6 +204,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
 
                     TextField(
                       controller: startDateController,
+                      onChanged: (startDate) => startDateController.text = startDate,
                       readOnly: true,
                       cursorColor: CustomColors.blue,
                       decoration: InputDecoration(
@@ -208,7 +235,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                           );
 
                           if (picked != null) {
-                            startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                            setState(() {
+                              startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                            });
                           }
                       },
                     ),
@@ -217,6 +246,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
 
                     TextField(
                       controller: endDateController,
+                      onChanged: (endDate) => endDateController.text = endDate,
                       readOnly: true,
                       cursorColor: CustomColors.blue,
                       decoration: InputDecoration(
@@ -247,32 +277,15 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                           );
 
                           if (picked != null) {
-                            endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                           setState(() {
+                              endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                           });
                           }
                       },
                     ),
 
                   const SizedBox(height: 25),
-                  Obx(() => controllerAllData.filterIsActive.value
-                    ? SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: CustomStyles.customRoundedButton,
-                              backgroundColor: CustomColors.red
-                          ),
-                          onPressed: (){
-                            controllerAllData.loadClarificationAuditArea();
-                            startDateController.clear();
-                            endDateController.clear();
-                            auditorController.clear();
-                            branchController.clear();
-                            Get.back();
-                          },
-                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
-                      )
-                  )
-                  : SizedBox(
+                  SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -280,13 +293,12 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAllData.filterClarificationAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            controllerAuditArea.filterClarificationAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
                   )
-                )
 
                   ],
                 ),
@@ -306,10 +318,288 @@ class ClarificationPageAuditRegion extends StatefulWidget {
       _ClarificationPageAuditRegionState();
 }
 
-class _ClarificationPageAuditRegionState
-    extends State<ClarificationPageAuditRegion> {
+class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditRegion> {
+
+  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: CustomColors.white,
+      appBar: AppBar(
+          backgroundColor: CustomColors.white,
+          title: const Text('Klarifikasi'),
+          titleTextStyle: CustomStyles.textBold18Px,
+          titleSpacing: 5,
+          leading: IconButton(
+              onPressed: () {
+                Get.offAll(() => BotNavAuditRegion());
+              },
+              icon: const Icon(Icons.arrow_back_rounded, size: 25, color: CustomColors.black)),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showBottomSheetFilterClarificationAuditRegion();
+                },
+                icon: const Icon(Icons.tune_rounded,size: 25, color: CustomColors.grey)),
+          ],
+        ),
+
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              Obx(() {
+                if (controllerAuditRegion.isLoading.value) {
+                  return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  return Column(
+                    children: [
+                      ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controllerAuditRegion.clarificationAuditRegion.length,
+                      itemBuilder: (_, index) {
+                        final clarification = controllerAuditRegion.clarificationAuditRegion[index];
+                        return GestureDetector(
+                           onTap: (){
+                              showDialogMoreOption(clarification.id!);
+                          },
+                  child: Card(
+                  shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: CustomColors.grey
+                    )
+                  ),
+                  elevation: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
+                            Icon(clarification.statusClarification == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+                      })
+                    ],
+                  );
+                }
+              })
+            ],
+          ),
+        ));
+  }
+  
+  void showBottomSheetFilterClarificationAuditRegion() {
+    showModalBottomSheet(
+      elevation: 0,
+      isScrollControlled: true,
+      context: context, 
+      builder: (_){
+        return Container(
+          padding: EdgeInsets.only(
+            top: 15,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 50,
+            left: 15,
+            right: 15
+          ),
+
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AppBar(
+                  title: const Text('Filter data jadwal'),
+                  titleTextStyle: CustomStyles.textBold18Px,
+                  leading: IconButton(
+                    onPressed: (){
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+                  TextField(
+                    readOnly: true,
+                    controller: startDateController,
+                    onChanged: (startDate) => startDateController.text = startDate,
+                    cursorColor: CustomColors.blue,
+                    decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.date_range_rounded,
+                            color: CustomColors.grey, size: 20),
+                        hintStyle: CustomStyles.textMediumGrey15Px,
+                        hintText: 'Mulai dari...',
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: CustomColors.grey)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: CustomColors.grey)
+                        )
+                    ),
+                    onTap: ()async{
+                      DateTime? picked = await showDatePicker(
+                          cancelText: 'Tidak',
+                          confirmText: 'ya',
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime(2100)
+                      );
+                      if(picked != null){
+                        setState(() {
+                          startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                        });
+                      }
+                    },
+                  ),
+
+
+                  const SizedBox(height: 10),
+                  TextField(
+                    readOnly: true,
+                    controller: endDateController,
+                    onChanged: (endDate) => endDateController.text = endDate,
+                    cursorColor: CustomColors.blue,
+                    decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.date_range_rounded,
+                            color: CustomColors.grey, size: 20),
+                        hintStyle: CustomStyles.textMediumGrey15Px,
+                        hintText: 'Sampai dengan...',
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: CustomColors.grey)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: CustomColors.grey)
+                        )
+                    ),
+                    onTap: ()async{
+                      DateTime? picked = await showDatePicker(
+                          cancelText: 'Tidak',
+                          confirmText: 'ya',
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime(2100)
+                      );
+                      if(picked != null){
+                        setState(() {
+                          endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                        });
+                      }
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+                  
+                  Wrap(
+                    children: [
+                    startDateController.text.isNotEmpty || endDateController.text.isNotEmpty
+                    ? SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton,
+                        backgroundColor: CustomColors.red
+                      ),
+                      onPressed: (){
+                        startDateController.clear();
+                        endDateController.clear();
+                        controllerAuditRegion.loadClarificationAuditRegion();
+                        Get.back();
+                      },
+                      child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
+                    )
+                  )
+                  : SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton,
+                        backgroundColor: CustomColors.blue
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.filterClarificationAuditArea(startDateController.text, endDateController.text);
+                        Get.back();
+                      },
+                      child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
+                    ),
+                  )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      }
+    );
+  }
+  
+  void showDialogMoreOption(int id) {
+    showDialog(
+      context: context, 
+      builder: (_){
+        return AlertDialog(
+          elevation: 0,
+          title: const Text('Action', textAlign: TextAlign.center),
+          titleTextStyle: CustomStyles.textBold18Px,
+          actions: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: CustomStyles.customRoundedButton,
+                      backgroundColor: CustomColors.green
+                    ),
+                    onPressed: (){
+                      Get.to(() => InputClarificationPageAuditRegion(id: id));
+                    }, 
+                    child: Text('Input klarifikasi', style: CustomStyles.textMediumWhite15Px)
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: CustomStyles.customRoundedButton,
+                      backgroundColor: CustomColors.blue
+                    ),
+                    onPressed: (){
+                      Get.to(() => DetailClarificationAuditRegion(id: id));
+                    }, 
+                    child: Text('Detail klarifikasi', style: CustomStyles.textMediumWhite15Px)
+                  ),
+                )
+              ],
+            )
+          ],
+        );
+      }
+    );
   }
 }

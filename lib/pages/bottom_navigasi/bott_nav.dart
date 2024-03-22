@@ -16,6 +16,7 @@ class BotNavePageAuditArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       body: Obx(() {
         switch (navigationController.tabIndex.value) {
           case 0:
@@ -25,7 +26,7 @@ class BotNavePageAuditArea extends StatelessWidget {
           case 2:
             return const ProfilePageAuditArea();
           default:
-            return const ProfilePageAuditArea();
+            return const HomePageAuditArea();
         }
       }),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
@@ -60,11 +61,51 @@ class BotNavePageAuditArea extends StatelessWidget {
 
 //audit region
 class BotNavAuditRegion extends StatelessWidget {
-  const BotNavAuditRegion({super.key});
+  final NavigationController navigationController = Get.put(NavigationController());
+  BotNavAuditRegion({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: CustomColors.white,
+      body: Obx(() {
+        switch (navigationController.tabIndex.value) {
+          case 0:
+            return const HomePageAuditRegion();
+          case 1:
+            return const ReportPageAuditRegion();
+          case 2:
+            return const ProfilePageAuditRegion();
+          default:
+            return const HomePageAuditRegion();
+        }
+      }),
+      bottomNavigationBar: Obx(() => BottomNavigationBar(
+      currentIndex: navigationController.tabIndex.value,
+      elevation: 3,
+      selectedItemColor: CustomColors.blue,
+      selectedLabelStyle: CustomStyles.textMedium13Px,
+      unselectedLabelStyle: CustomStyles.textMedium13Px,
+      unselectedFontSize: 13,
+      selectedFontSize: 13,
+      backgroundColor: CustomColors.white,
+      onTap: navigationController.changeTabIndex,
+      items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded, size: 25),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.report_rounded, size: 25),
+            label: 'Report',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_rounded, size: 25),
+            label: 'Profile',
+          ),
+        ],
+      )),
+    );
   }
 }
 

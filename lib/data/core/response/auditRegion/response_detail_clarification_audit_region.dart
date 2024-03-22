@@ -1,5 +1,6 @@
-class ResponseDetailClarificationAuditArea {
+class ResponseDetailClarificationAuditRegion {
   int? id;
+  bool? statusClarification;
   String? auditor;
   String? branch;
   String? clarificationDate;
@@ -13,12 +14,13 @@ class ResponseDetailClarificationAuditArea {
   String? dear;
   String? explanationOfAuditFinding;
   String? findingPriority;
-  ResponseClarificationIdentificationAuditArea? clarificationIdentidication;
+  ResponseClarificationIdentificationAuditRegion? clarificationIdentidication;
   String? clarificationDoc;
   String? bapDoc;
 
-  ResponseDetailClarificationAuditArea(
+  ResponseDetailClarificationAuditRegion(
       {this.id,
+      this.statusClarification,
       this.auditor,
       this.branch,
       this.clarificationDate,
@@ -36,8 +38,9 @@ class ResponseDetailClarificationAuditArea {
       this.clarificationDoc,
       this.bapDoc});
 
-  ResponseDetailClarificationAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseDetailClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    statusClarification = json['status_clarification'];
     auditor = json['auditor'];
     branch = json['branch'];
     clarificationDate = json['clarification_date'];
@@ -52,7 +55,7 @@ class ResponseDetailClarificationAuditArea {
     explanationOfAuditFinding = json['explanation_of_audit_finding'];
     findingPriority = json['finding_priority'];
     clarificationIdentidication = json['clarification_identidication'] != null
-        ? new ResponseClarificationIdentificationAuditArea.fromJson(
+        ? new ResponseClarificationIdentificationAuditRegion.fromJson(
             json['clarification_identidication'])
         : null;
     clarificationDoc = json['clarification_doc'];
@@ -62,6 +65,7 @@ class ResponseDetailClarificationAuditArea {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['status_clarification'] = this.statusClarification;
     data['auditor'] = this.auditor;
     data['branch'] = this.branch;
     data['clarification_date'] = this.clarificationDate;
@@ -85,15 +89,15 @@ class ResponseDetailClarificationAuditArea {
   }
 }
 
-class ResponseClarificationIdentificationAuditArea {
+class ResponseClarificationIdentificationAuditRegion {
   String? clarificationEvaluation;
   int? nominalLoss;
   String? reason;
 
-  ResponseClarificationIdentificationAuditArea(
+  ResponseClarificationIdentificationAuditRegion(
       {this.clarificationEvaluation, this.nominalLoss, this.reason});
 
-  ResponseClarificationIdentificationAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseClarificationIdentificationAuditRegion.fromJson(Map<String, dynamic> json) {
     clarificationEvaluation = json['clarification_evaluation'];
     nominalLoss = json['nominal_loss'];
     reason = json['reason'];

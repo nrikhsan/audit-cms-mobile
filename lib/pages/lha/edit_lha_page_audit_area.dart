@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/lha/lha_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class EditLhaPageAuditArea extends StatefulWidget {
 
 class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
   final TextEditingController lhaDescriptionController = TextEditingController();
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
             children: [
               TextField(
                   controller: lhaDescriptionController,
+                  onChanged: (value) => lhaDescriptionController.text = value,
                   maxLines: 10,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
@@ -73,7 +75,9 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      showDialogEditLha(widget.id, lhaDescriptionController.text);
+                      controllerAuditArea.editLha(widget.id, widget.lhaDescription);
+                      Get.snackbar('Berhasil', 'Edit LHA berhasil', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                      Navigator.pop(context);
                     },
                     child:
                         Text('Edit LHA', style: CustomStyles.textMediumWhite15Px)),
@@ -83,52 +87,5 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
         ),
         )
     );
-  }
-
-  void showDialogEditLha(int id, String lhaDescriptionController) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: const Text('Alert'),
-            titleTextStyle: CustomStyles.textBold18Px,
-            content: const Text('Simpan perubahan?'),
-            contentTextStyle: CustomStyles.textMedium15Px,
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: CustomStyles.customRoundedButton,
-                          backgroundColor: CustomColors.red
-                          ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Tidak',
-                          style: CustomStyles.textMediumWhite15Px)),
-                          
-                  const SizedBox(width: 5),
-
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: CustomStyles.customRoundedButton,
-                          backgroundColor: CustomColors.green
-                          ),
-                      onPressed: () {
-                        controllerAllData.editLha(id, lhaDescriptionController);
-                        Navigator.pop(context);
-                        Get.snackbar('Berhasil', 'LHA berhasil di edit', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                      },
-                      child: Text('Ya',
-                          style: CustomStyles.textMediumWhite15Px))
-                ],
-              )
-            ],
-          );
-        }
-      );
   }
 }

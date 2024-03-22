@@ -23,7 +23,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
   final TextEditingController auditorController = TextEditingController();
   final TextEditingController branchController = TextEditingController();
 
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +47,16 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
       ),
       body: Obx((){
         
-        if (controllerAllData.isLoading.value) {
+        if (controllerAuditArea.isLoading.value) {
           return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           
           return Padding(
             padding: const EdgeInsets.all(15),
             child: ListView.builder(
-              itemCount: controllerAllData.followUpArea.length,
+              itemCount: controllerAuditArea.followUpArea.length,
               itemBuilder: (_, index){
-                final followUp = controllerAllData.followUpArea[index];
+                final followUp = controllerAuditArea.followUpArea[index];
                 return Card(
                   elevation: 0,
                   color: CustomColors.white,
@@ -204,10 +204,9 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                   const SizedBox(height: 15),
                   TextField(
                     controller: auditorController,
+                    onChanged: (auditor) => auditorController.text = auditor,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
-                        suffixIcon: const Icon(Icons.person_2_rounded,
-                            color: CustomColors.grey, size: 20),
                         labelStyle: CustomStyles.textMediumGrey15Px,
                         labelText: 'Auditor...',
                         enabledBorder: OutlineInputBorder(
@@ -228,10 +227,9 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                   const SizedBox(height: 15),
                   TextField(
                     controller: branchController,
+                    onChanged: (branch) => branchController.text = branch,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
-                        suffixIcon: const Icon(Icons.person_2_rounded,
-                            color: CustomColors.grey, size: 20),
                         labelStyle: CustomStyles.textMediumGrey15Px,
                         labelText: 'Cabang...',
                         enabledBorder: OutlineInputBorder(
@@ -252,6 +250,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                   TextField(
                     readOnly: true,
                     controller: startDateController,
+                    onChanged: (startDate) => startDateController.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -289,6 +288,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                   TextField(
                     readOnly: true,
                     controller: endDateController,
+                    onChanged: (endDate) => endDateController.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -316,33 +316,16 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       );
                       if(picked != null){
                         setState(() {
-                          endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                          setState(() {
+                            endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                          });
                         });
                       }
                     },
                   ),
 
                   const SizedBox(height: 25),
-                  Obx(() => controllerAllData.filterIsActive.value
-                    ? SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: CustomStyles.customRoundedButton,
-                              backgroundColor: CustomColors.red
-                          ),
-                          onPressed: (){
-                            controllerAllData.loadFollowUpAuditArea();
-                            startDateController.clear();
-                            endDateController.clear();
-                            auditorController.clear();
-                            branchController.clear();
-                            Get.back();
-                          },
-                          child: Text('Reset', style: CustomStyles.textMediumWhite15Px)
-                      )
-                  )
-                  : SizedBox(
+                  SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -350,13 +333,12 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAllData.filterDataFollowUpAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            controllerAuditArea.filterDataFollowUpAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
                       )
                   )
-                )
                 ],
               ),
             ),

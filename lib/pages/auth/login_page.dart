@@ -1,5 +1,4 @@
 import 'package:audit_cms/data/controller/auth/controller_auth.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -15,6 +14,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   final ControllerAuth controllerAuth = Get.find();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,8 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20),
 
                     TextField(
-                        onChanged: (email) => controllerAuth.setEmail(email),
+                        controller: emailController,
+                        onChanged: (email) => emailController.text = email,
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
@@ -63,7 +65,8 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 15),
                     TextField(
-                        onChanged: (password) => controllerAuth.setPassword(password),
+                        controller: passwordController,
+                        onChanged: (password) => passwordController.text = password,
                         keyboardType: TextInputType.visiblePassword,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
@@ -89,13 +92,17 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: CustomColors.blue,
                             shape: CustomStyles.customRoundedButton),
                         onPressed: (){
-                          if (controllerAuth.email.isEmpty || controllerAuth.password.isEmpty) {
+                          if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                               Get.snackbar('Alert', 'Email atau kata sandi tidak boleh kosong', 
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                          }else if(passwordController.text.length < 6){
+                            Get.snackbar('Alert', 'Kata sandi harus lebih dari 6 karakter', 
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                          }else if(emailController.text.isEmail){
+                            controllerAuth.login(emailController.text, passwordController.text);
                           }else{
-                           controllerAuth.login();
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BotNavePageAuditArea()), (route) => false);
-                          
+                            Get.snackbar('Alert', 'Penulisan email tidak sesuai', 
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }
                         },
                         child: Text('Masuk',

@@ -1,8 +1,9 @@
+import 'package:audit_cms/data/core/response/auditArea/response_dropdown_audit_area.dart';
+import 'package:audit_cms/pages/schedule/schedule_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
-import '../../data/core/response/response_dropdown.dart';
 import '../../helper/styles/custom_styles.dart';
 
 
@@ -20,7 +21,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController scheduleDescController = TextEditingController();
 
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   ModelListAuditorAuditArea? auditor;
   ModelListAreaAuditArea? area;
@@ -58,6 +59,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
               TextField(
                 readOnly: true,
                 controller: startDateController,
+                onChanged: (startDate) => startDateController.text = startDate,
                 cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded,
@@ -95,6 +97,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
               TextField(
                 readOnly: true,
                 controller: endDateController,
+                onChanged: (endDate) => endDateController.text = endDate,
                 cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded,
@@ -143,7 +146,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                         borderRadius: BorderRadius.circular(10),
                         value: auditor,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
+                          items: controllerAuditArea.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
                             return DropdownMenuItem(
                               value: auditor,
                                 child: Text('${auditor.auditorName}', style: CustomStyles.textMedium15Px),
@@ -177,7 +180,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: area,
                           hint: Text('Area', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.areaAuditArea.map((ModelListAreaAuditArea area){
+                          items: controllerAuditArea.areaAuditArea.map((ModelListAreaAuditArea area){
                             return DropdownMenuItem(
                               value: area,
                               child: Text('${area.areaName}', style: CustomStyles.textMedium15Px),
@@ -211,7 +214,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.branchAuditArea.map((ModelListBranchAuditArea branch){
+                          items: controllerAuditArea.branchAuditArea.map((ModelListBranchAuditArea branch){
                             return DropdownMenuItem(
                               value: branch,
                               child: Text('${branch.branchName}', style: CustomStyles.textMedium15Px),
@@ -244,7 +247,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           borderRadius: BorderRadius.circular(10),
                           value: status,
                           hint: Text('Status', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAllData.statusAuditArea.map((ModelListStatusAuditArea status){
+                          items: controllerAuditArea.statusAuditArea.map((ModelListStatusAuditArea status){
                             return DropdownMenuItem(
                               value: status,
                               child: Text('${status.statusName}', style: CustomStyles.textMedium15Px),
@@ -265,6 +268,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
               const SizedBox(height: 15),
               TextField(
                 controller: scheduleDescController,
+                onChanged: (desc) => scheduleDescController.text = desc,
                 cursorColor: CustomColors.blue,
                 maxLines: 3,
                 decoration: InputDecoration(
@@ -295,10 +299,11 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                           ),
                           onPressed: ()async{
                             if (auditor == null || area == null || branch == null || status == null || startDateController.text.isEmpty || endDateController.text.isEmpty || scheduleDescController.text.isEmpty) {
-                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
+                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
                             }else{
                               
-                              controllerAllData.addLocalDataSchedule(auditor!, area!, branch!, status!,
+                              controllerAuditArea.addLocalDataSchedule(auditor!, area!, branch!, status!,
                               startDateController.text, endDateController.text, scheduleDescController.text);
                               print('Tambah data lokal jadwal : ${auditor!.auditorName}, ${area!.areaName}, ${branch!.branchName}, ${status!.statusName}, ${startDateController.text}, ${endDateController.text}, ${scheduleDescController.text}');
                             }
@@ -320,9 +325,9 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                   const SizedBox(height: 15),
                   Obx(() => ListView.builder(
                       shrinkWrap: true,
-                      itemCount: controllerAllData.dataListLocalSchedulesAuditArea.length,
+                      itemCount: controllerAuditArea.dataListLocalSchedulesAuditArea.length,
                       itemBuilder: (_, index){
-                        final data = controllerAllData.dataListLocalSchedulesAuditArea[index];
+                        final data = controllerAuditArea.dataListLocalSchedulesAuditArea[index];
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -333,7 +338,7 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
                               onTap: ()async{
-                                controllerAllData.deleteLocalDataSchedule(data.auditor!);
+                                controllerAuditArea.deleteLocalDataSchedule(data.auditor!);
                                 Get.snackbar('Alert', 'Data berhasil dihapus', snackPosition: SnackPosition.TOP, 
                                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
                               },
@@ -357,13 +362,13 @@ class _InputDataSchedulesPageState extends State<InputDataSchedulesPage> {
                               Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP, 
                                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }else{
-                          controllerAllData.addSchedules(auditor!.id!, area!.id!, branch!.id!, status!.id!,
+                          controllerAuditArea.addSchedules(auditor!.id!, area!.id!, branch!.id!, status!.id!,
                               startDateController.text, endDateController.text, scheduleDescController.text);
 
                           Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP, 
                           colorText: CustomColors.white, backgroundColor: CustomColors.green);
                           print('Buat jadwal : ${auditor!.id}, ${area!.id}, ${branch!.id}, ${status!.id}, ${startDateController.text}, ${endDateController.text}, ${scheduleDescController.text}');
-                          // Navigator.pop(context);
+                          Navigator.pop(context);
                           }
                         },
                         child: Text('Buat jadwal', style: CustomStyles.textMediumWhite15Px)

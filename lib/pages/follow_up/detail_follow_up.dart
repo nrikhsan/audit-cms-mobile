@@ -5,6 +5,7 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -18,11 +19,11 @@ class DetailFollowUpPageAuditArea extends StatefulWidget {
 
 class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditArea> {
 
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    controllerAllData.getDetailFollowUp(widget.id);
+    controllerAuditArea.getDetailFollowUpAuditArea(widget.id);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -32,7 +33,7 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
         backgroundColor: CustomColors.white,
       ),
       body: Obx((){
-        final followUp = controllerAllData.detailFollowUpAuditArea.value;
+        final followUp = controllerAuditArea.detailFollowUpAuditArea.value;
         if (followUp == null) {
           return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
@@ -222,7 +223,8 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                 if (statuses[Permission.storage]!.isGranted) {
                   var dir = await DownloadsPathProvider.downloadsDirectory;
                   if (dir != null) {
-                    String saveName = 'Klarifikasi_audit.pdf';
+                     String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                    String saveName = 'Klarifikasi_audit_$timestamp.pdf';
                     String savePath = dir.path + "/$saveName";
                     print(savePath);
 
@@ -293,7 +295,8 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                 if (statuses[Permission.storage]!.isGranted) {
                   var dir = await DownloadsPathProvider.downloadsDirectory;
                   if (dir != null) {
-                    String saveName = 'bap_audit.pdf';
+                     String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                    String saveName = 'bap_audit_$timestamp.pdf';
                     String savePath = dir.path + "/$saveName";
                     print(savePath);
 
@@ -364,7 +367,8 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                 if (statuses[Permission.storage]!.isGranted) {
                   var dir = await DownloadsPathProvider.downloadsDirectory;
                   if (dir != null) {
-                    String saveName = 'tindak_lanjut_audit.pdf';
+                     String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                    String saveName = 'tindak_lanjut_audit_$timestamp.pdf';
                     String savePath = dir.path + "/$saveName";
                     print(savePath);
 

@@ -1,10 +1,12 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -20,15 +22,15 @@ class DocumentFollowUpPage extends StatefulWidget {
 class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
 
 
-  final ControllerAuditArea controllerAllData = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    controllerAllData.loadFollowUpDocument();
+    controllerAuditArea.loadFollowUpDocumentAuditArea();
     return Scaffold(
       backgroundColor: CustomColors.white,
       body: Obx((){
-        final document = controllerAllData.documentFollowUpAuditArea.value;
+        final document = controllerAuditArea.documentFollowUpAuditArea.value;
         if (document == null) {
           return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
@@ -40,7 +42,8 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                 SizedBox(
                   width: double.maxFinite,
                   height: 590,
-                  child: SfPdfViewer.network(document.followUpDoc!),
+                  child: SfPdfViewer.network(
+                    document.followUpDoc!),
                 ),
 
                 const SizedBox(height: 15),
@@ -52,13 +55,14 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                       backgroundColor: CustomColors.blue
                     ),
                     onPressed: () async{
-                      Map<Permission, PermissionStatus> statuses =
+                     Map<Permission, PermissionStatus> statuses =
                     await [Permission.storage].request();
 
                 if (statuses[Permission.storage]!.isGranted) {
                   var dir = await DownloadsPathProvider.downloadsDirectory;
                   if (dir != null) {
-                    String saveName = 'tindak_lanjut.pdf';
+                    String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                    String saveName = 'tindak_lanjut_audit_$timestamp.pdf';
                     String savePath = dir.path + "/$saveName";
                     print(savePath);
 
@@ -79,8 +83,9 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                 } else {
                   Get.snackbar('Alert', 'Permintaan izin ditolak', 
                         snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white
-                       );
-                      }
+                      );
+                }
+                    Get.offAll(() => BotNavePageAuditArea());
                     }, 
                     child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
                   ),

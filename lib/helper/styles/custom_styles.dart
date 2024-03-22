@@ -113,6 +113,12 @@ class CustomStyles {
       color: CustomColors.green
   );
 
+  static TextStyle textMediumOrange15Px = const TextStyle(
+      fontFamily: 'RobotoMedium',
+      fontSize: 15,
+      color: CustomColors.orange
+  );
+
    static TextStyle textMediumBlue15Px = const TextStyle(
       fontFamily: 'RobotoMedium',
       fontSize: 15,
