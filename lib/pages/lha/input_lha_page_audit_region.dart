@@ -1,6 +1,6 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_division_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
@@ -248,68 +248,64 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                 ).toList(),
               ),
 
-              // const SizedBox(height: 25),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Text('List LHA', style: CustomStyles.textBold15Px),
-              //         TextButton(
-              //             style: TextButton.styleFrom(
-              //               shape: CustomStyles.customRoundedButton
-              //             ),
-              //             onPressed: ()async{
-              //               if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
-              //                 Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
-              //                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
-              //               }else{
-              //                 controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!, descriptionFindingsController.text, 
-              //                 _selectSop!, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, suggestController.text);
-              //               }
-              //             },
-              //             child: Text('Tambah LHA', style: CustomStyles.textBoldGreen13Px))
-              //       ],
-              //     ),
+              const SizedBox(height: 25),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('List LHA', style: CustomStyles.textBold15Px),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            shape: CustomStyles.customRoundedButton
+                          ),
+                          onPressed: ()async{
+                            if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
+                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
+                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                            }else{
+                              controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!, descriptionFindingsController.text, 
+                              _selectSop!, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, suggestController.text);
+                            }
+                          },
+                          child: Text('Tambah LHA', style: CustomStyles.textBoldGreen13Px))
+                    ],
+                  ),
 
-              //     const SizedBox(height: 10),
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Text('Divisi', style: CustomStyles.textMedium13Px),
-              //         Text('kategori SOP', style: CustomStyles.textMedium13Px),
-              //         Text('Action', style: CustomStyles.textMedium13Px),
-              //       ],
-              //     ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Uraian temuan', style: CustomStyles.textMedium13Px),
+                    ],
+                  ),
 
-              //     const SizedBox(height: 15),
-              //     Obx(() => ListView.builder(
-              //         shrinkWrap: true,
-              //         itemCount: controllerAuditRegion.dataListLocalLhaAuditRegion.length,
-              //         itemBuilder: (_, index){
-              //           final data = controllerAuditRegion.dataListLocalLhaAuditRegion[index];
-              //           return Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const SizedBox(height: 15),
+                  Obx(() => ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controllerAuditRegion.dataListLocalLhaAuditRegion.length,
+                      itemBuilder: (_, index){
+                        final data = controllerAuditRegion.dataListLocalLhaAuditRegion[index];
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-              //             children: [
-              //               Text('${data.division}', style: CustomStyles.textRegular13Px),
-              //               Text('${data.sopCategory}', style: CustomStyles.textRegular13Px),
+                          children: [
+                            Text('${data.findingDescription}', style: CustomStyles.textRegular13Px, maxLines: 5, overflow: TextOverflow.ellipsis),
 
-              //               GestureDetector(
-              //                 child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
-              //                 onTap: ()async{
-                                
-              //                   Get.snackbar('Alert', 'Data berhasil dihapus', snackPosition: SnackPosition.TOP, 
-              //                   colorText: CustomColors.white, backgroundColor: CustomColors.red);
-              //                 },
-              //               )
-              //             ],
-              //           );
-              //         }
-              //     )),
-              //   ],
-              // ),
+                            GestureDetector(
+                              child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
+                              onTap: ()async{
+                                Get.snackbar('Alert', 'Data berhasil dihapus', snackPosition: SnackPosition.TOP, 
+                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                              },
+                            )
+                          ],  
+                        );
+                      }
+                  )),
+                ],
+              ),
 
               const SizedBox(height: 25),
               SizedBox(

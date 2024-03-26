@@ -47,13 +47,12 @@ class _LoginPageState extends State<LoginPage> {
                     TextField(
                         controller: emailController,
                         onChanged: (email) => emailController.text = email,
-                        keyboardType: TextInputType.emailAddress,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
                             suffixIcon: const Icon(Icons.account_circle,
                                 color: CustomColors.grey, size: 20),
                             labelStyle: CustomStyles.textMediumGrey15Px,
-                            labelText: 'Masukan email...',
+                            labelText: 'Masukan email atau username...',
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
@@ -67,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                     TextField(
                         controller: passwordController,
                         onChanged: (password) => passwordController.text = password,
-                        keyboardType: TextInputType.visiblePassword,
                         cursorColor: CustomColors.blue,
                         decoration: InputDecoration(
                             suffixIcon: const Icon(Icons.password_rounded,
@@ -98,11 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                           }else if(passwordController.text.length < 6){
                             Get.snackbar('Alert', 'Kata sandi harus lebih dari 6 karakter', 
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                          }else if(emailController.text.isEmail){
-                            controllerAuth.login(emailController.text, passwordController.text);
                           }else{
-                            Get.snackbar('Alert', 'Penulisan email tidak sesuai', 
-                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                            controllerAuth.login(emailController.text, passwordController.text);
                           }
                         },
                         child: Text('Masuk',

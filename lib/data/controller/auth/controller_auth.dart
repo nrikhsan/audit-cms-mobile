@@ -9,29 +9,24 @@ class ControllerAuth extends GetxController{
   var isLoading = false.obs;
   var isLoggedIn = false.obs;
   var message = ''.obs;
-  var role = ''.obs;
   var token = ''.obs;
 
   ControllerAuth(this.repository);
 
   void login(String email, String password) async {
+    isLoading(true);
     try {
-      isLoading(true);
       final loginResponse = await repository.login(email, password);
 
       token(loginResponse.data!.token.toString());
-      role(loginResponse.data!.role.toString());
 
       await TokenManager.saveToken(token.string);
-      await TokenManager.saveRole(role.string);
-
-      String? emailUser = loginResponse.data!.email!;
+      await TokenManager.saveRoleOrEmail(email);
       isLoggedIn.value = true;
 
-      navigateBaseOnRole(role.string);
+      navigateBaseOnRole(email);
 
-      
-      Get.snackbar('Selamat datang', emailUser, snackPosition: SnackPosition.TOP,
+      Get.snackbar('Selamat datang', email, snackPosition: SnackPosition.TOP,
           colorText: CustomColors.white, backgroundColor: CustomColors.green);
     } catch (error) {
       throw Exception(error);
@@ -40,10 +35,14 @@ class ControllerAuth extends GetxController{
     }
   }
 
-  void navigateBaseOnRole(String role) {
-  if (role == 'audit_area') {
+  void navigateBaseOnRole(String email) {
+  if (email == 'area@gmail.com') {
       Get.offAll(() => BotNavePageAuditArea());
-    } else if(role == 'audit_wilayah') {
+    }else if(email == 'area51') {
+      Get.offAll(() => BotNavePageAuditArea());
+    }else if(email == 'wilayah@gmail.com'){
+      Get.offAll(() => BotNavAuditRegion());
+    }else if(email == 'wilayah51'){
       Get.offAll(() => BotNavAuditRegion());
     }
   }
@@ -53,8 +52,8 @@ class ControllerAuth extends GetxController{
     final String? token = await TokenManager.getToken();
     isLoggedIn.value = token != null;
     if (isLoggedIn.value) {
-      final String? role = await TokenManager.getRole();
-      navigateBaseOnRole(role!);
+      final String? email = await TokenManager.getRoleOrEmail();
+      navigateBaseOnRole(email!);
     }
     return isLoggedIn.value;
   }

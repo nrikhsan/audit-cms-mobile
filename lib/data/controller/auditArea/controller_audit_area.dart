@@ -1,20 +1,25 @@
-import 'package:audit_cms/data/core/response/auditArea/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_attachment_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_bap_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_clarification_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_bap_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_clarification_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_schedule_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_dropdown_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_input_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_report_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_area_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/model_local_add_schedules.dart';
+import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_schedule_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:get/get.dart';
 import '../../core/repositories/repositories.dart';
 
@@ -23,30 +28,47 @@ class ControllerAuditArea extends GetxController{
   final Repositories repository;
   ControllerAuditArea(this.repository);
 
-  final RxList<ModelListSchedulesAuditArea> mainSchedulesAuditArea = <ModelListSchedulesAuditArea>[].obs;
-  final RxList<ModelListSchedulesAuditArea> specialSchedulesAuditArea = <ModelListSchedulesAuditArea>[].obs;
-  final RxList<ModelListSchedulesAuditArea> resSchedulesAuditArea = <ModelListSchedulesAuditArea>[].obs;
+
+  //schedules
+  final RxList<ModelMainSchedulesAuditArea> mainSchedulesAuditArea = <ModelMainSchedulesAuditArea>[].obs;
+  final RxList<ModelSpecialSchedulesAuditArea> specialSchedulesAuditArea = <ModelSpecialSchedulesAuditArea>[].obs;
+  final RxList<ModelReschedulesAuditArea> resSchedulesAuditArea = <ModelReschedulesAuditArea>[].obs;
+  var dataListLocalSchedulesAuditArea = <ModelLocalSchedulesAuditArea>[].obs;
+  var detailScheduleAuditArea =  Rxn<ModelDetailSchedulesAuditArea>();
+
+  //master
   final RxList<ModelListAuditorAuditArea> auditorAuditArea = <ModelListAuditorAuditArea>[].obs;
   final RxList<ModelListAreaAuditArea> areaAuditArea = <ModelListAreaAuditArea>[].obs;
   final RxList<ModelListBranchAuditArea> branchAuditArea = <ModelListBranchAuditArea>[].obs;
-  final RxList<ModelListStatusAuditArea> statusAuditArea = <ModelListStatusAuditArea>[].obs;
-  final RxList<ModelListLhaAuditArea>lhaAuditArea = <ModelListLhaAuditArea>[].obs;
-  final RxList<ModelListClarificationAuditArea> clarificationAuitArea = <ModelListClarificationAuditArea>[].obs;
-  final RxList<ModelListKkaAuditArea> kkaAuditArea = <ModelListKkaAuditArea>[].obs;
-  final RxList<ModelListBapAuditArea> bapAuditArea = <ModelListBapAuditArea>[].obs;
-  final RxList<ModelListFollowUpAuditArea> followUpArea = <ModelListFollowUpAuditArea>[].obs;
   final RxList<ModelListAttachmentAuditArea> attachmentAuditArea = <ModelListAttachmentAuditArea>[].obs;
-  final RxList<ModelListReportAuditArea> reportAuditArea = <ModelListReportAuditArea>[].obs;
 
-  var detailScheduleAuditArea =  Rxn<ResponseDetailScheduleAuditArea>();
-  var detailLhaAuditArea = Rxn<ResponseDetailLhaAuditArea>();
-  var detailClarificationAuditArea = Rxn<ResponseDetailClarificationAuditArea>();
-  var dataListLocalSchedulesAuditArea = <ModelListSchedulesAuditArea>[].obs;
-  var detailKkaAuditArea = Rxn<ResponseDetailKkaAuditArea>();
-  var detailBapAuditArea = Rxn<ResponseDetailBapAuditArea>();
-  var detailFollowUpAuditArea = Rxn<ResponseDetailFollowUpAuditArea>();
-  var detailUserAuditArea = Rxn<ResponseDetailUserAuditArea>();
-  var documentFollowUpAuditArea = Rxn<ResponseDocumentFollowUpAuditArea>();
+  //lha
+  final RxList<ModelListLhaAuditArea>lhaAuditArea = <ModelListLhaAuditArea>[].obs;
+  var detailLhaAuditArea = Rxn<ModelDetailLhaAuditArea>();
+
+  //kka
+  final RxList<ModelListKkaAuditArea> kkaAuditArea = <ModelListKkaAuditArea>[].obs;
+  var detailKkaAuditArea = Rxn<ModelDetailKkaAuditArea>();
+
+  //clarification
+  final RxList<ModelListClarificationAuditArea> clarificationAuitArea = <ModelListClarificationAuditArea>[].obs;
+  var detailClarificationAuditArea = Rxn<ModelDetailClarificationAuditArea>();
+
+  //follow up
+  final RxList<ModelListFollowUpAuditArea> followUpArea = <ModelListFollowUpAuditArea>[].obs;
+  var detailFollowUpAuditArea = Rxn<ModelDetailFollowUpAuditArea>();
+  var documentFollowUpAuditArea = Rxn<ModelDocFollowUpAuditArea>();
+
+  //bap
+  final RxList<ModelListBapAuditArea> bapAuditArea = <ModelListBapAuditArea>[].obs;
+  var detailBapAuditArea = Rxn<ModelDetailBapAuditArea>();
+
+  //report
+  var reportAuditArea = Rxn<ModelReportAuditArea>();
+
+  //profile
+  var detailUserAuditArea = Rxn<ModelDetailProfileAuditArea>();
+
   var isLoading = true.obs;
   var message = ''.obs;
 
@@ -54,28 +76,25 @@ class ControllerAuditArea extends GetxController{
   void onInit(){
     loadMainSchedulesAuditArea();
     loadSpecialSchedulesAuditArea();
+    loadSpecialSchedulesAuditArea();
     loadReschedulesAuditArea();
     loadAuditorAuditArea();
     loadAreaAuditArea();
     loadBranchAuditArea();
-    loadStatusAuditArea();
     loadLhaAuditArea();
     loadClarificationAuditArea();
     loadKkaAuditArea();
     loadBapAuditArea();
     loadFollowUpAuditArea();
     loadAttachmentAuditArea();
-    loadReportAuditArea();
     super.onInit();
-
   }
 
-  void addLocalDataSchedule(ModelListAuditorAuditArea auditor, ModelListAreaAuditArea area, ModelListBranchAuditArea branch, ModelListStatusAuditArea status, String startDate, String endDate, String desc)async {
-    final newData = ModelListSchedulesAuditArea(
+  void addLocalDataSchedule(ModelListAuditorAuditArea auditor, ModelListAreaAuditArea area, ModelListBranchAuditArea branch, String startDate, String endDate, String desc)async {
+    final newData = ModelLocalSchedulesAuditArea(
       auditor: auditor.auditorName, 
       area: area.areaName,
       branch: branch.branchName, 
-      status: status.statusName, 
       startDate: startDate, 
       endDate: endDate, 
       scheduleDescription: desc
@@ -83,9 +102,9 @@ class ControllerAuditArea extends GetxController{
     dataListLocalSchedulesAuditArea.add(newData);
   }
 
-  void addSchedules(int auditorId, int areaId, int branchId, int statusId, String startDate, String endDat, String desc)async{
+  void addSchedules(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc)async{
     try{     
-      final addSchedules = await repository.addSchedulesAuditArea(auditorId, areaId, branchId, statusId, startDate, endDat, desc);
+      final addSchedules = await repository.addSchedulesAuditArea(auditorId, areaId, branchId, startDate, endDat, desc);
       message(addSchedules.toString());
       dataListLocalSchedulesAuditArea.clear();
     }catch(error){
@@ -104,7 +123,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try {
       final responseSchedules = await repository.getMainSchedulesAuditArea();
-      mainSchedulesAuditArea.assignAll(responseSchedules.schedules ?? []);
+      mainSchedulesAuditArea.assignAll(responseSchedules.mainSchedules ?? []);
     } catch (error) {
       throw Exception(error);
     } finally {
@@ -115,34 +134,59 @@ class ControllerAuditArea extends GetxController{
   void filterMainSchedule(String startDate, String endDate, String branch, String auditor)async{
     try{
       final responseFilter = await repository.filterMainSchedulesAuditArea(startDate, endDate, branch, auditor);
-      mainSchedulesAuditArea.assignAll(responseFilter.schedules ?? []);
+      mainSchedulesAuditArea.assignAll(responseFilter.mainSchedules ?? []);
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void filterSpecialSchedules(String startDate, String endDate, String branch, String auditor)async{
+  void loadSpecialSchedulesAuditArea()async {
+    isLoading(true);
+    try {
+      final responseSchedules = await repository.getSpecialSchedulesAuditArea();
+      specialSchedulesAuditArea.assignAll(responseSchedules.specialSchedules ?? []);
+    } catch (error) {
+      throw Exception(error);
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try{
       final response = await repository.filterSpecialSchedulesAuditArea(startDate, endDate, branch, auditor);
-      specialSchedulesAuditArea.assignAll(response.schedules ?? []);
+      specialSchedulesAuditArea.assignAll(response.specialSchedules ?? []);
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void filterReschedules(String startDate, String endDate, String branch, String auditor)async{
+  void loadReschedulesAuditArea()async {
+    isLoading(true);
+    try {
+      final responseSchedules = await repository.getReschedulesAuditArea();
+      resSchedulesAuditArea.assignAll(responseSchedules.reschedules ?? []);
+    } catch (error) {
+      throw Exception(error);
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void filterReschedulesAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try{
       final response = await repository.filterResScheduleAuditArea(startDate, endDate, branch, auditor);
-      resSchedulesAuditArea.assignAll(response.schedules ?? []);
+      resSchedulesAuditArea.assignAll(response.reschedules ?? []);
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void getDetailSchedule(int id)async{
+
+  void getDetailScheduleAuditArea(int id)async{
     try{
       final responseDetailSchedule = await repository.getDetailScheduleAuditArea(id);
-      detailScheduleAuditArea.value = responseDetailSchedule;
+      detailScheduleAuditArea.value = responseDetailSchedule.dataSchedules;
     }catch(error){
       throw Exception(error);
     }
@@ -151,7 +195,7 @@ class ControllerAuditArea extends GetxController{
   void loadAuditorAuditArea()async{
     try{
       final responseAuditor = await repository.getAuditorAuditArea();
-      auditorAuditArea.assignAll(responseAuditor.auditor ?? []);
+      auditorAuditArea.assignAll(responseAuditor.dataAuditor ?? []);
     }catch(error){
       throw Exception(error);
     }
@@ -160,7 +204,7 @@ class ControllerAuditArea extends GetxController{
   void loadAreaAuditArea()async {
     try{
       final responseArea = await repository.getAreaAuditArea();
-      areaAuditArea.assignAll(responseArea.area ?? []);
+      areaAuditArea.assignAll(responseArea.dataArea ?? []);
     }catch(error){
       throw Exception(error);
     }
@@ -169,42 +213,9 @@ class ControllerAuditArea extends GetxController{
   void loadBranchAuditArea()async {
     try{
       final responseBranch = await repository.getBranchAuditArea();
-      branchAuditArea.assignAll(responseBranch.branch ?? []);
+      branchAuditArea.assignAll(responseBranch.dataBranch ?? []);
     }catch(error){
       throw Exception(error);
-    }
-  }
-
-  void loadStatusAuditArea()async {
-    try{
-      final responseData = await repository.getStatusAuditArea();
-      statusAuditArea.assignAll(responseData.status ?? []);
-    }catch(error){
-      throw Exception(error);
-    }
-  }
-
-  void loadSpecialSchedulesAuditArea()async {
-    isLoading(true);
-    try{
-      final response = await repository.getSpecialSchedulesAuditArea();
-      specialSchedulesAuditArea.assignAll(response.schedules ?? []);
-    }catch(error){
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
-
-  void loadReschedulesAuditArea()async{
-    isLoading(true);
-    try{
-      final response = await repository.getReschedulesAuditArea();
-      resSchedulesAuditArea.assignAll(response.schedules ?? []);
-    }catch(error){
-      throw Exception(error);
-    }finally{
-      isLoading(false);
     }
   }
 
@@ -212,7 +223,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try{
       final response = await repository.getLhaAuditArea();
-      lhaAuditArea.assignAll(response.lha ?? []);
+      lhaAuditArea.assignAll(response.dataLha ?? []);
     }catch(error){
       throw Exception(error);
     }finally{
@@ -223,7 +234,7 @@ class ControllerAuditArea extends GetxController{
   void filterLhaAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try{
       final response = await repository.filterLhaAuditArea(startDate, endDate, branch, auditor);
-      lhaAuditArea.assignAll(response.lha ?? []);
+      lhaAuditArea.assignAll(response.dataLha ?? []);
     }catch(error){
       throw Exception(error);
     }
@@ -232,16 +243,16 @@ class ControllerAuditArea extends GetxController{
   void getDetailLhaAuditArea(int id)async{
     try{
       final response = await repository.getDetailLhaAuditArea(id);
-      detailLhaAuditArea.value = response;
+      detailLhaAuditArea.value = response.dataDetailLha;
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void editLha(int id, String lhaDescription)async{
+  void editLhaAuditArea(int id, String lhaDescription)async{
   try{
     final response = await repository.editLhaAuditArea(id, lhaDescription);
-    message(response.toString());
+    message(response.message);
     }catch(error){
       throw Exception(error);
     }
@@ -251,7 +262,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try {
       final response = await repository.getClarificationAuditArea();
-      clarificationAuitArea.assignAll(response.clarification ?? []);
+      clarificationAuitArea.assignAll(response.dataClarification ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -259,19 +270,20 @@ class ControllerAuditArea extends GetxController{
     }
   }
 
-  void getDetailClarificationAuditArea(int id)async{
+
+  void filterClarificationAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try{
-      final detail = await repository.getDetailClarificationAuditArea(id);
-      detailClarificationAuditArea.value = detail;
+      final response = await repository.filterClarificationAuditArea(startDate, endDate, branch, auditor);
+      clarificationAuitArea.assignAll(response.dataClarification ?? []);
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void filterClarificationAuditArea(String startDate, String endDate, String branch, String auditor)async{
+  void getDetailClarificationAuditArea(int id)async{
     try{
-      final response = await repository.filterClarificationAuditArea(startDate, endDate, branch, auditor);
-      clarificationAuitArea.assignAll(response.clarification ?? []);
+      final detail = await repository.getDetailClarificationAuditArea(id);
+      detailClarificationAuditArea.value = detail.detailClarification;
     }catch(error){
       throw Exception(error);
     }
@@ -281,7 +293,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try {
       final responseKka = await repository.getKkaAuditArea();
-      kkaAuditArea.assignAll(responseKka.kka ?? []);
+      kkaAuditArea.assignAll(responseKka.dataKka ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -292,7 +304,7 @@ class ControllerAuditArea extends GetxController{
   void getFilterKkaAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try {
         final responseKka = await repository.getFilterKkaAuditArea(startDate, endDate, branch, auditor);
-        kkaAuditArea.assignAll(responseKka.kka ??[]);
+        kkaAuditArea.assignAll(responseKka.dataKka ??[]);
     } catch (error) {
       throw Exception(error);
     }
@@ -301,7 +313,7 @@ class ControllerAuditArea extends GetxController{
   void getDetailKkaAuditArea(int id)async{
     try {
       final responseDetail = await repository.getDetailKkaAuditArea(id);
-      detailKkaAuditArea.value = responseDetail;
+      detailKkaAuditArea.value = responseDetail.detailKka;
     } catch (error) {
       throw Exception(error);
     }
@@ -311,7 +323,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try {
       final responseBap = await repository.getBapAuditArea();
-      bapAuditArea.assignAll(responseBap.bap ?? []);
+      bapAuditArea.assignAll(responseBap.dataBap ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -322,7 +334,7 @@ class ControllerAuditArea extends GetxController{
   void filterBapAuditArea(String startDate, String endDate, String branch, String auditor)async{
     try {
       final responseFilterBap = await repository.getFilterBapAuditArea(startDate, endDate, branch, auditor);
-      bapAuditArea.assignAll(responseFilterBap.bap ?? []);
+      bapAuditArea.assignAll(responseFilterBap.dataBap ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -331,7 +343,7 @@ class ControllerAuditArea extends GetxController{
   void getDetailBapAuditArea(int id)async{
     try {
       final responseDetail = await repository.getDetailBapAuditArea(id);
-      detailBapAuditArea.value = responseDetail;
+      detailBapAuditArea.value = responseDetail.detailBap;
     } catch (error) {
       throw Exception(error);
     }
@@ -341,7 +353,7 @@ class ControllerAuditArea extends GetxController{
     isLoading(true);
     try {
       final responseFollowUp = await repository.getFollowUpAuditArea();
-      followUpArea.assignAll(responseFollowUp.followUp ?? []);
+      followUpArea.assignAll(responseFollowUp.dataFollowUp ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -350,7 +362,7 @@ class ControllerAuditArea extends GetxController{
   void filterDataFollowUpAuditArea(String startDate, String endDate, String auditor, String branch)async{
     try{
       final response = await repository.filterDataFollowUpAuditArea(startDate, endDate, auditor, branch);
-      followUpArea.assignAll(response.followUp ?? []);
+      followUpArea.assignAll(response.dataFollowUp ?? []);
     }catch(error){
       throw Exception(error);
     }
@@ -368,7 +380,7 @@ class ControllerAuditArea extends GetxController{
   void loadAttachmentAuditArea()async{
     try {
       final responseAttachment = await repository.getAttachmentAuditArea();
-      attachmentAuditArea.assignAll(responseAttachment.attchment ?? []);
+      attachmentAuditArea.assignAll(responseAttachment.dataAttachment ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -377,7 +389,7 @@ class ControllerAuditArea extends GetxController{
   void loadFollowUpDocumentAuditArea()async{
     try {
       final responseDocument = await repository.getDocumentFollowUpAuditArea();
-      documentFollowUpAuditArea.value = responseDocument;
+      documentFollowUpAuditArea.value = responseDocument.dataDocFollowUp;
     } catch (error) {
       throw Exception(error);
     }
@@ -386,17 +398,17 @@ class ControllerAuditArea extends GetxController{
   void getDetailFollowUpAuditArea(int id)async{
     try {
       final response = await repository.getDetailFollowUpAuditArea(id);
-      detailFollowUpAuditArea.value = response;
+      detailFollowUpAuditArea.value = response.detailFollowUp;
     } catch (error) {
       throw Exception(error);
     }
   }
   
-  void loadReportAuditArea() async{
+  void getReportAuditArea(String branch, String startDate, String endDate) async{
     isLoading(true);
     try {
-      final response = await repository.getLisReportAuditArea();
-      reportAuditArea.assignAll(response.report ?? []);
+      final response = await repository.getReportAuditArea(branch, startDate, endDate);
+      reportAuditArea.value = response.detailReport;
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -404,19 +416,10 @@ class ControllerAuditArea extends GetxController{
     }
   }
 
-  void filterReportAuditArea(String startDate, String endDate, String auditor, String branch)async{
-    try {
-      final response = await repository.filterReportAuditArea(startDate, endDate, auditor, branch);
-      reportAuditArea.assignAll(response.report ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
   void getDetailUserAuditArea()async{
     try {
       final response = await repository.getDetailUserAuditArea();
-      detailUserAuditArea.value = response;
+      detailUserAuditArea.value = response.dataProfile;
     } catch (error) {
       throw Exception(error);
     }
@@ -431,9 +434,9 @@ class ControllerAuditArea extends GetxController{
     }
   }
 
-  void changePasswordAuditArea(int id, String oldPassword, String newPassword)async{
+  void changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword)async{
     try {
-      final response = await repository.changePasswordAuditArea(id, oldPassword, newPassword);
+      final response = await repository.changePasswordAuditArea(id, oldPassword, newPassword, confirmPassword);
       message(response.toString());
     } catch (error) {
       throw Exception(error);

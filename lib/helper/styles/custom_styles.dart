@@ -150,6 +150,12 @@ class CustomStyles {
       color: CustomColors.black
   );
 
+  static TextStyle textRegularRed13Px = const TextStyle(
+      fontFamily: 'RobotoRegular',
+      fontSize: 15,
+      color: CustomColors.red
+  );
+
   static TextStyle textRegularBlack5413Px = const TextStyle(
       fontFamily: 'RobotoRegular',
       fontSize: 15,

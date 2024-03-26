@@ -143,9 +143,17 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                           backgroundColor: CustomColors.green
                           ),
                       onPressed: () {
-                        controllerAuditArea.editProfileUserAuditArea(id, email, username);
-                        Get.back();
-                        Get.snackbar('Berhasil', 'Profil berhasil di edit', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        if(email.isEmpty || username.isEmpty){
+                          Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                        }else if(email.isEmail){
+                          controllerAuditArea.editProfileUserAuditArea(id, email, username);
+                          Get.back();
+                          Get.snackbar('Berhasil', 'Profil berhasil di edit',
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        }else{
+                          Get.snackbar('Gagal', 'Penulisan email tidak sesuai', snackPosition: SnackPosition.TOP,
+                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                        }
                       },
                       child: Text('Ya',
                           style: CustomStyles.textMediumWhite15Px))
@@ -295,9 +303,17 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
                           backgroundColor: CustomColors.green
                           ),
                       onPressed: () {
-                        controllerAuditRegion.editProfileUserAuditRegion(id, email, username);
-                        Get.back();
-                        Get.snackbar('Berhasil', 'Profil berhasil di edit', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        if(email.isEmpty || username.isEmpty){
+                          Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                        }else if(email.isEmail){
+                          controllerAuditRegion.editProfileUserAuditRegion(id, email, username);
+                          Get.back();
+                          Get.snackbar('Berhasil', 'Profil berhasil di edit',
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        }else{
+                          Get.snackbar('Gagal', 'Penulisan email tidak sesuai', snackPosition: SnackPosition.TOP,
+                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                        }
                       },
                       child: Text('Ya',
                           style: CustomStyles.textMediumWhite15Px))

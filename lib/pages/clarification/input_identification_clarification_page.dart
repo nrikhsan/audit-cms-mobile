@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/input_bap_page.audit_region.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -211,10 +212,12 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                             onPressed: () async {
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else{
+                              }else if(_followUp == 1){
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(_evaluation!, lossController.text, descController.text, _followUp!);
                                 Get.to(() => const InputBapPageAuditRegion());
                                 print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
+                              }else if (_followUp == 0){
+                                Get.offAll(() => BotNavAuditRegion());
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)

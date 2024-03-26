@@ -338,8 +338,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
 
-                Map<Permission, PermissionStatus> statuses =
-                    await [Permission.storage].request();
+                Map<Permission, PermissionStatus> statuses = await [Permission.storage].request();
 
                 if (statuses[Permission.storage]!.isGranted) {
                   var dir = await DownloadsPathProvider.downloadsDirectory;

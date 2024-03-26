@@ -1,21 +1,23 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_bap_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_clarification_category_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_bap_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_user_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_division_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_input_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_priority_finding_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_report_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/userProfile/response_detail_user_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_document_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_priority_finding_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
@@ -27,27 +29,40 @@ class ControllerAuditRegion extends GetxController {
   var selectedFileName = ''.obs;
   var uploadStatus = ''.obs;
 
-  final RxList<ModelListSchedulAuditRegion> mainScheduleAuditRegion = <ModelListSchedulAuditRegion>[].obs;
-  final RxList<ModelListSchedulAuditRegion> specialScheduleAuditRegion = <ModelListSchedulAuditRegion>[].obs;
-  final RxList<ModelListSchedulAuditRegion> rescheduleAuditRegion = <ModelListSchedulAuditRegion>[].obs;
-  final RxList<ModelListReportAuditRegion> reportListAuditRegion = <ModelListReportAuditRegion>[].obs;
-  final RxList<ModelListLhaAuditRegion> lhaAuditRegion = <ModelListLhaAuditRegion>[].obs;
+  //schedules
+  final RxList<ModelListMainScheduleAuditRegion> mainScheduleAuditRegion = <ModelListMainScheduleAuditRegion>[].obs;
+  final RxList<ModelListSpecialSchedulesAuditRegion> specialScheduleAuditRegion = <ModelListSpecialSchedulesAuditRegion>[].obs;
+  final RxList<ModelListReschedulesAuditRegion> rescheduleAuditRegion = <ModelListReschedulesAuditRegion>[].obs;
+  var detailScheduleAuditRegion = Rxn<ModelDetailSchedulesAuditRegion>();
+
+  //master
   final RxList<ModelListDivisionAuditRegion> divisionAuditRegion = <ModelListDivisionAuditRegion>[].obs;
   final RxList<ModelListSopAuditRegion>sopAuditRegion = <ModelListSopAuditRegion>[].obs;
-  final RxList<ModelListClarificationAuditRegion> clarificationAuditRegion = <ModelListClarificationAuditRegion>[].obs;
   final RxList<ModelListClarificationCategoryAuditRegion> clarificationCategoryAuditRegion = <ModelListClarificationCategoryAuditRegion>[].obs;
   final RxList<ModelListPriorityFindingsAuditRegion> priorityFindingClarificationAuditRegion = <ModelListPriorityFindingsAuditRegion>[].obs;
-  final RxList<ModelListKkaAuditRegion> kkaAuditRegion = <ModelListKkaAuditRegion>[].obs;
-  final RxList<ModelListBapAuditRegion>bapAuditRegion = <ModelListBapAuditRegion>[].obs;
 
-  var detailUserAuditRegion = Rxn<ResponseDetailUserAuditRegion>();
-  var detailScheduleAuditRegion = Rxn<ResponseDetailScheduleAuditRegion>();
-  var detailLhaAuditRegion = Rxn<ResponseDetailLhaAuditRegion>();
-  var dataListLocalLhaAuditRegion = <ModelInputLhaAuditRegion>[].obs;
-  var documentClarificationAuditRegion = Rxn<ModelDocClarificationAuditRegion>();
-  var detailClarificationAuditRegion = Rxn<ResponseDetailClarificationAuditRegion>();
-  var detailKkaAuditRegion = Rxn<ResponseDetailKkaAuditRegion>();
-  var detailBapAuditRegion = Rxn<ResponseDetailBapAuditRegion>();
+  //lha
+  var detailLhaAuditRegion = Rxn<ModelDetailLhaAuditRegion>();
+  var dataListLocalLhaAuditRegion = <ModelBodyInputLhaAuditRegion>[].obs;
+
+  //kka
+  final RxList<ModelListKkaAuditRegion> kkaAuditRegion = <ModelListKkaAuditRegion>[].obs;
+  var detailKkaAuditRegion = Rxn<ModelDetailKkaAuditRegion>();
+
+  //clarification
+  final RxList<ModelListClarificationAuditRegion> clarificationAuditRegion = <ModelListClarificationAuditRegion>[].obs;
+  var documentClarificationAuditRegion = Rxn<ModelDocumentClarificationAuditRegion>();
+  var detailClarificationAuditRegion = Rxn<ModelDetailClarificationAuditRegion>();
+
+  //bap
+  final RxList<ModelListBapAuditRegion>bapAuditRegion = <ModelListBapAuditRegion>[].obs;
+  var detailBapAuditRegion = Rxn<ModelDetailBapAuditRegion>();
+
+  //report
+  var reportAuditRegion = Rxn<ModelReportAuditRegion>();
+
+  //user
+  var detailUserAuditRegion = Rxn<ModelDetailProfileAuditRegion>();
 
   ControllerAuditRegion(this.repositories);
 
@@ -56,8 +71,6 @@ class ControllerAuditRegion extends GetxController {
     loadMainScheduleAuditRegion();
     loadSpecialScheduleAuditRegion();
     loadRescheduleAuditRegion();
-    loadReportListAuditRegion();
-    loadLhaAuditRegion();
     loadDivisionAuditRegion();
     loadSopAuditRegion();
     loadClarificationAuditRegion();
@@ -72,7 +85,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final response = await repositories.getMainSchedulesAuditRegion();
-      mainScheduleAuditRegion.assignAll(response.schedules ?? []);
+      mainScheduleAuditRegion.assignAll(response.mainSchedules ?? []);
     } catch (error) {
       throw Exception(error);
     } finally {
@@ -84,7 +97,7 @@ class ControllerAuditRegion extends GetxController {
     try {
       final response =
           await repositories.filterMainSchedulesAuditRegion(startDate, endDate);
-      mainScheduleAuditRegion.assignAll(response.schedules ?? []);
+      mainScheduleAuditRegion.assignAll(response.mainSchedules ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -94,7 +107,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final response = await repositories.getSpecialSchedulesAuditRegion();
-      specialScheduleAuditRegion.assignAll(response.schedules ?? []);
+      specialScheduleAuditRegion.assignAll(response.specialSchedules ?? []);
     } catch (error) {
       throw Exception(error);
     } finally {
@@ -106,7 +119,7 @@ class ControllerAuditRegion extends GetxController {
     try {
       final response = await repositories.filterSpecialSchedulesAuditRegion(
           startDate, endDate);
-      specialScheduleAuditRegion.assignAll(response.schedules ?? []);
+      specialScheduleAuditRegion.assignAll(response.specialSchedules ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -116,7 +129,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final response = await repositories.getRescheduleAuditRegion();
-      rescheduleAuditRegion.assignAll(response.schedules ?? []);
+      rescheduleAuditRegion.assignAll(response.reschedules ?? []);
     } catch (error) {
       throw Exception(error);
     } finally {
@@ -124,11 +137,20 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
-  void filteRescheduleAuditRegion(String startDate, endDate) async {
+  void filterRescheduleAuditRegion(String startDate, endDate) async {
     try {
       final response =
           await repositories.filterReschedulesAuditRegion(startDate, endDate);
-      rescheduleAuditRegion.assignAll(response.schedules ?? []);
+      rescheduleAuditRegion.assignAll(response.reschedules ?? []);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  void getDetailScheduleAuditRegion(int id)async{
+    try {
+      final response = await repositories.getDetailScheduleAuditRegion(id);
+      detailScheduleAuditRegion.value = response.dataSchedules;
     } catch (error) {
       throw Exception(error);
     }
@@ -137,7 +159,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailUserAuditRegion() async {
     try {
       final response = await repositories.getDetailUserAuditRegion();
-      detailUserAuditRegion.value = response;
+      detailUserAuditRegion.value = response.dataProfile;
     } catch (error) {
       throw Exception(error);
     }
@@ -154,76 +176,21 @@ class ControllerAuditRegion extends GetxController {
   }
 
   void changePasswordAuditRegions(
-      int id, String oldPassword, String newPassword) async {
+      int id, String oldPassword, String newPassword, String confirmPassword) async {
     try {
       final response = await repositories.changePasswordAuditRegion(
-          id, oldPassword, newPassword);
+          id, oldPassword, newPassword, confirmPassword);
       message(response.message);
     } catch (error) {
       throw Exception(error);
     }
   }
-
-  void uploadReportAuditRegion(String filePath) async {
-    try {
-      final response = await repositories.uploadReportAuditRegion(filePath);
-      Get.snackbar('Berhasil', 'Laporan audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void pickFileReportAuditRegion() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['xlsx', 'xls'],
-    );
-
-    if (result != null) {
-      String filePath = result.files.single.path!;
-      selectedFileName.value = result.files.single.name;
-      selectedFileName.value = filePath;
-      } else {
-      selectedFileName.value = '';
-    }
-  }
   
-  void loadReportListAuditRegion()async {
+  void getReportAuditRegion(String startDate, String endDate)async {
     isLoading(true);
     try {
-      final response = await repositories.getListReportAuditRegion();
-      reportListAuditRegion.assignAll(response.report ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
-
-  void filterReportAuditRegion(String startDate, String endDate)async {
-    try {
-      final response = await repositories.filterReportAuditRegion(startDate, endDate);
-      reportListAuditRegion.assignAll(response.report ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void getDetailScheduleAuditRegion(int id)async{
-    try {
-      final response = await repositories.getDetailScheduleAuditRegion(id);
-      detailScheduleAuditRegion.value = response;
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-  
-  void loadLhaAuditRegion() async{
-    isLoading(true);
-    try {
-      final response = await repositories.getLhaAuditRegion();
-      lhaAuditRegion.assignAll(response.lha ?? []);
+      final response = await repositories.getReportAuditRegion(startDate, endDate);
+      reportAuditRegion.value = response.detailReport;
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -234,7 +201,7 @@ class ControllerAuditRegion extends GetxController {
   void loadDivisionAuditRegion() async{
     try {
       final response = await repositories.getDivisionAuditRegion();
-      divisionAuditRegion.assignAll(response.division ?? []);
+      divisionAuditRegion.assignAll(response.dataDivision ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -243,29 +210,30 @@ class ControllerAuditRegion extends GetxController {
   void loadSopAuditRegion()async {
     try {
       final response = await repositories.getSopAuditRegion();
-      sopAuditRegion.assignAll(response.sop ?? []);
+      sopAuditRegion.assignAll(response.dataSop ?? []);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  // void addToLocalLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
-  //   final newDataLha = ModelInputLhaAuditRegion(
-  //     division: divisionId, 
-  //     findingDescription: findingDesc, 
-  //     sopCategory: sopId, 
-  //     temporaryRecommendation: temporaryRec, 
-  //     permanentRecommendation: permanentRec,
-  //     recommendationOrSuggest: suggest,
-  //     research: researchValue
-  //   );
-  //   dataListLocalLhaAuditRegion.add(newDataLha);
-  // }
+  void addToLocalLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
+    final newDataLha = ModelBodyInputLhaAuditRegion(
+      division: divisionId, 
+      findingDescription: findingDesc, 
+      sopCategory: sopId, 
+      temporaryRecommendation: temporaryRec, 
+      permanentRecommendation: permanentRec,
+      recommendationOrSuggest: suggest,
+      research: researchValue
+    );
+    dataListLocalLhaAuditRegion.add(newDataLha);
+  }
 
   void inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
     try {
       final response = await repositories.inputLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
-      // dataListLocalLhaAuditRegion.clear();
+      dataListLocalLhaAuditRegion.clear();
+      addToLocalLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
       message(response.toString());
     } catch (error) {
       throw Exception(error);
@@ -276,7 +244,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final clarfication = await repositories.getClarificationAuditRegion();
-      clarificationAuditRegion.assignAll(clarfication.clarification ?? []);
+      clarificationAuditRegion.assignAll(clarfication.dataClarification ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -287,7 +255,7 @@ class ControllerAuditRegion extends GetxController {
   void filterClarificationAuditArea(String startDate, String endDate)async{
     try {
       final filterClarification = await repositories.filterClarificationAuditRegion(startDate, endDate);
-      clarificationAuditRegion.assignAll(filterClarification.clarification ?? []);
+      clarificationAuditRegion.assignAll(filterClarification.dataClarification ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -321,7 +289,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailLhaAuditRegion(int id)async{
     try {
       final detailLha = await repositories.getDetailLhaAuditRegion(id);
-      detailLhaAuditRegion.value = detailLha;
+      detailLhaAuditRegion.value = detailLha.dataDetailLha;
     } catch (error) {
       throw Exception(error);
     }
@@ -329,7 +297,7 @@ class ControllerAuditRegion extends GetxController {
   
   void loadClarificationCategoryAuditRegion() async{
     try {
-      final clarificationCategory = await repositories.getClarificaCategoryAuditRegion();
+      final clarificationCategory = await repositories.getClarificationCategoryAuditRegion();
       clarificationCategoryAuditRegion.assignAll(clarificationCategory.clarificationCategory ?? []);
     } catch (error) {
       throw Exception(error);
@@ -359,7 +327,7 @@ class ControllerAuditRegion extends GetxController {
   void getDocumentClarificationAuditRegion(int id)async{
     try {
       final doc = await repositories.getDocumentClarification(id);
-      documentClarificationAuditRegion.value = doc;
+      documentClarificationAuditRegion.value = doc.documentClarification;
     } catch (error) {
       throw Exception(error);
     }
@@ -392,7 +360,7 @@ class ControllerAuditRegion extends GetxController {
 
   void inputIdentificatinClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp)async{
     try {
-      final response = await repositories.inputIdentificatinClarificationAuditRegion(evaluationClarification, loss, description, followUp);
+      final response = await repositories.inputIdentificationClarificationAuditRegion(evaluationClarification, loss, description, followUp);
       Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.message);
     } catch (error) {
@@ -428,7 +396,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailClarificationAuditRegion(int id)async{
     try {
       final response = await repositories.getDetailClarificationAuditRegion(id);
-      detailClarificationAuditRegion.value = response;
+      detailClarificationAuditRegion.value = response.detailClarification;
     } catch (error) {
       throw Exception(error);
     }
@@ -438,7 +406,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final kka = await repositories.getKkaAuditRegion();
-      kkaAuditRegion.assignAll(kka.kka ?? []);
+      kkaAuditRegion.assignAll(kka.dataKka ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -449,7 +417,7 @@ class ControllerAuditRegion extends GetxController {
   void filterKkaAuditRegion(String startDate, String endDate)async{
     try {
       final kka = await repositories.filterKkaAuditRegion(startDate, endDate);
-      kkaAuditRegion.assignAll(kka.kka ?? []);
+      kkaAuditRegion.assignAll(kka.dataKka ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -458,7 +426,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailKkaAuditRegion(int id)async{
     try {
       final response = await repositories.getDetailKkaAuditRegion(id);
-      detailKkaAuditRegion.value = response;
+      detailKkaAuditRegion.value = response.detailKka;
     } catch (error) {
       throw Exception(error);
     }
@@ -468,7 +436,7 @@ class ControllerAuditRegion extends GetxController {
     isLoading(true);
     try {
       final bap = await repositories.getBapAuditRegion();
-      bapAuditRegion.assignAll(bap.bap ?? []);
+      bapAuditRegion.assignAll(bap.dataBap ?? []);
     } catch (error) {
       throw Exception(error);
     }finally{
@@ -479,7 +447,7 @@ class ControllerAuditRegion extends GetxController {
   void filterBapAuditRegion(String startDate, String endDate)async{
     try {
       final bap = await repositories.filterBapAuditRegion(startDate, endDate);
-      bapAuditRegion.assignAll(bap.bap ?? []);
+      bapAuditRegion.assignAll(bap.dataBap ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -488,7 +456,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailBapAuditRegion(int id)async{
     try {
       final response = await repositories.getDetailBapAuditRegion(id);
-      detailBapAuditRegion.value = response;
+      detailBapAuditRegion.value = response.detailBap;
     } catch (error) {
       throw Exception(error);
     }

@@ -131,6 +131,39 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
                   }, 
                   icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                 ),
+
+                actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorController.text.isNotEmpty) {
+                          auditorController.clear();
+                          controllerAuditArea.loadBapAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(branchController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadBapAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadBapAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
               ),
 
               const SizedBox(height: 20),

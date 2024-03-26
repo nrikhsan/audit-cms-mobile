@@ -74,7 +74,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      controllerAuditArea.editLha(widget.id, widget.lhaDescription);
+                      controllerAuditArea.editLhaAuditArea(widget.id, lhaDescriptionController.text);
                       Get.snackbar('Berhasil', 'Edit LHA berhasil', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
                       Navigator.pop(context);
                     },

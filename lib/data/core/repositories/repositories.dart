@@ -1,49 +1,44 @@
-import 'package:audit_cms/data/core/response/auditArea/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_add_schedules_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_attachment_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_bap_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_change_password_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_clarification_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_bap_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_clarification_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_schedule_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_detail_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_dropdown_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_edit_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_edit_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_input_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_report_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_schedules_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_bap_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_change_password_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_clarification_category_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_bap_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_detail_user_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_division_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_edit_user_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_input_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_input_indentifcation_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_input_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_priority_finding_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_report_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_sop_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_upload_bap_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_upload_clarification_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_upload_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/response_upload_report_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_area_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_status_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_schedule_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/userProfile/response_detail_user_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_document_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_priority_finding_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
 import 'package:audit_cms/data/core/service/api_service.dart';
 import '../response/auth/response_auth.dart';
 
@@ -54,77 +49,105 @@ abstract class Repositories {
   Future<ResponseAuth> login(String email, String password);
 
   //audit area
-  Future<ResponseAddSchedulesAuditArea> addSchedulesAuditArea(int auditorId, int areaId, int branchId, int statusId, String startDate, String endDat, String desc);
-  Future<ResponseSchedulesAuditArea> getMainSchedulesAuditArea();
-  Future<ResponseSchedulesAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
-  Future<ResponseSchedulesAuditArea> getSpecialSchedulesAuditArea();
-  Future<ResponseSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
-  Future<ResponseSchedulesAuditArea> getReschedulesAuditArea();
+  //schedules
+  Future<ResponseMessage> addSchedulesAuditArea(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc);
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea();
+  Future<ResponseMainScheduleAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
+  Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea();
+  Future<ResponseSpecialSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
+  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea();
+  Future<ResponseReschedulesAuditArea> filterResScheduleAuditArea(String startDate, String endDate, String branch, String auditor);
+  Future<ResponseDetailSchedulesAuditArea> getDetailScheduleAuditArea(int id);
+
+  //master
   Future<ResponseAuditorAuditArea> getAuditorAuditArea();
   Future<ResponseAreaAuditArea> getAreaAuditArea();
   Future<ResponseBranchAuditArea> getBranchAuditArea();
-  Future<ResponseStatusScheduleAuditArea> getStatusAuditArea();
-  Future<ResponseSchedulesAuditArea> filterResScheduleAuditArea(String startDate, String endDate, String branch, String auditor);
-  Future<ResponseDetailScheduleAuditArea> getDetailScheduleAuditArea(int id);
+  Future<ResponseAttachmentAuditArea> getAttachmentAuditArea();
+
+  //LHA
   Future<ResponseLhaAuditArea> getLhaAuditArea();
   Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id);
-  Future<ResponseEditLhaAuditArea> editLhaAuditArea(int id, String lhaDescription);
+  Future<ResponseMessage> editLhaAuditArea(int id, String lhaDescription);
   Future<ResponseLhaAuditArea> filterLhaAuditArea(String startDate, String endDate, String branch, String auditor);
+
+  //clarification
   Future<ResponseClarificationAuditArea> getClarificationAuditArea();
   Future<ResponseDetailClarificationAuditArea> getDetailClarificationAuditArea(int id);
   Future<ResponseClarificationAuditArea> filterClarificationAuditArea(String startDate, String endDate, String branch, String auditor);
+
+  //KKA
   Future<ResponseKkaAuditArea> getKkaAuditArea();
   Future<ResponseKkaAuditArea> getFilterKkaAuditArea(String startDate, String endDate, String branch, String auditor);
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id);
+
+  //BAP
   Future<ResponseBapAuditArea> getBapAuditArea();
   Future<ResponseBapAuditArea> getFilterBapAuditArea(String startDate, String endDate, String branch, String auditor);
   Future<ResponseDetailBapAuditArea>getDetailBapAuditArea(int id);
+
+  //follow up
   Future<ResponseFollowUpAuditArea> getFollowUpAuditArea();
   Future<ResponseFollowUpAuditArea> filterDataFollowUpAuditArea(String startDate, String endDate, String auditor, String branch);
-  Future<ResponseInputFollowUpAuditArea> inputFollowUpAuditArea(int penalty, String realization, String explanationPenalty, int attachment);
-  Future<ResponseAttachmentAuditArea> getAttachmentAuditArea();
+  Future<ResponseMessage> inputFollowUpAuditArea(int penalty, String realization, String explanationPenalty, int attachment);
   Future<ResponseDocumentFollowUpAuditArea> getDocumentFollowUpAuditArea();
   Future<ResponseDetailFollowUpAuditArea> getDetailFollowUpAuditArea(int id);
-  Future<ResponseReportAuditArea> getLisReportAuditArea();
-  Future<ResponseReportAuditArea> filterReportAuditArea(String startDate, String endDate, String auditor, String branch);
+
+  //report
+  Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate);
+
+  //user profile
   Future<ResponseDetailUserAuditArea> getDetailUserAuditArea();
-  Future<ResponseEditUserAuditArea>editUserAuditArea(int id, String email, String username);
-  Future<ResponseChangePasswordAuditArea>changePasswordAuditArea(int id, String oldPassword, String newPassword);
+  Future<ResponseMessage>editUserAuditArea(int id, String email, String username);
+  Future<ResponseMessage>changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword);
+
 
   //audit region
-  Future<ResponseScheduleAuditRegion>getMainSchedulesAuditRegion();
-  Future<ResponseScheduleAuditRegion>filterMainSchedulesAuditRegion(String startDate, String endDate);
-  Future<ResponseScheduleAuditRegion>getSpecialSchedulesAuditRegion();
-  Future<ResponseScheduleAuditRegion>filterSpecialSchedulesAuditRegion(String startDate, String endDate);
-  Future<ResponseScheduleAuditRegion>getRescheduleAuditRegion();
-  Future<ResponseScheduleAuditRegion>filterReschedulesAuditRegion(String startDate, String endDate);
-  Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion();
-  Future<ResponseEditUserAuditRegion>editUserAuditRegion(int id, String email, String username);
-  Future<ResponseChangePasswordAuditRegion>changePasswordAuditRegion(int id, String oldPassword, String newPassword);
-  Future<ResponseUploadReportAuditRegion>uploadReportAuditRegion(String filePath);
-  Future<ResponseReportAuditRegion>getListReportAuditRegion();
-  Future<ResponseReportAuditRegion>filterReportAuditRegion(String startDate, String endDate);
+  //schedules
+  Future<ResponseMainScheduleAuditRegion>getMainSchedulesAuditRegion();
+  Future<ResponseMainScheduleAuditRegion>filterMainSchedulesAuditRegion(String startDate, String endDate);
+  Future<ResponseSpecialScheduleAuditRegion>getSpecialSchedulesAuditRegion();
+  Future<ResponseSpecialScheduleAuditRegion>filterSpecialSchedulesAuditRegion(String startDate, String endDate);
+  Future<ResponseRescheduleAuditRegion>getRescheduleAuditRegion();
+  Future<ResponseRescheduleAuditRegion>filterReschedulesAuditRegion(String startDate, String endDate);
   Future<ResponseDetailScheduleAuditRegion>getDetailScheduleAuditRegion(int id);
-  Future<ResponseLhaAuditRegion>getLhaAuditRegion();
+
+  //user profile
+  Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion();
+  Future<ResponseMessage>editUserAuditRegion(int id, String email, String username);
+  Future<ResponseMessage>changePasswordAuditRegion(int id, String oldPassword, String newPassword, String confirmPassword);
+
+  //report
+  Future<ResponseReportAuditRegion>getReportAuditRegion(String stratDate, String endDate);
+
+  //master
   Future<ResponseDivisionAuditRegion>getDivisionAuditRegion();
   Future<ResponseSopAuditRegion>getSopAuditRegion();
-  Future<ResponseInputLhaAuditRegion>inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest);
-  Future<ResponseClarificationAuditRegion>getClarificationAuditRegion();
-  Future<ResponseClarificationAuditRegion>filterClarificationAuditRegion(String startDate, String endDate);
-  Future<ResponseUploadKkaAuditRegion>uploadKkaAuditRegion(String filePath);
-  Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
-  Future<ResponseClarificationCategoryAuditRegion>getClarificaCategoryAuditRegion();
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
-  Future<ResponseInputClarificationAuditRegion>inputClarificationAuditRegion(int category, String limitEvaluation, 
-  String location, String division, String supervisor, String dear, String findingDescription, int priorityFinding);
-  Future<ModelDocClarificationAuditRegion>getDocumentClarification(int id);
-  Future<ResponseUploadClarification>uploadClarificationAuditRegion(String filePath);
-  Future<ResponseInputIdentificationClarificationAuditRegion>inputIdentificatinClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp);
-  Future<ResponseUploadBapAuditRegion>uploadBapAuditRegion(String filePath);
+  Future<ResponseClarificationCategoryAuditRegion>getClarificationCategoryAuditRegion();
+
+  //LHA
+  Future<ResponseMessage>inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest);
+  Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
+
+  //clarification
+  Future<ResponseMessage>inputClarificationAuditRegion(int category, String limitEvaluation,
+      String location, String division, String supervisor, String dear, String findingDescription, int priorityFinding);
+  Future<ResponseClarificationAuditRegion>getClarificationAuditRegion();
+  Future<ResponseDocumentClarificationAuditRegion>getDocumentClarification(int id);
+  Future<ResponseMessage>uploadClarificationAuditRegion(String filePath);
+  Future<ResponseMessage>inputIdentificationClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp);
+  Future<ResponseClarificationAuditRegion>filterClarificationAuditRegion(String startDate, String endDate);
   Future<ResponseDetailClarificationAuditRegion>getDetailClarificationAuditRegion(int id);
+
+  //KKA
+  Future<ResponseMessage>uploadKkaAuditRegion(String filePath);
   Future<ResponseKkaAuditRegion>getKkaAuditRegion();
   Future<ResponseKkaAuditRegion>filterKkaAuditRegion(String startDate, String endDate);
   Future<ResponseDetailKkaAuditRegion>getDetailKkaAuditRegion(int id);
+
+  //BAP
+  Future<ResponseMessage>uploadBapAuditRegion(String filePath);
   Future<ResponseBapAuditRegion>getBapAuditRegion();
   Future<ResponseBapAuditRegion>filterBapAuditRegion(String startDate, String endDate);
   Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int id);
@@ -134,32 +157,58 @@ class RepositoryImpl implements Repositories {
   final ApiService apiService;
   RepositoryImpl(this.apiService);
 
-  //audit area
+
+  //login
   @override
   Future<ResponseAuth> login(String email, String password) async{
     return await apiService.login(email, password);
   }
 
+
+  //audit area
+  //schedules
   @override
-  Future<ResponseSchedulesAuditArea> getMainSchedulesAuditArea() async{
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea() async{
     return await apiService.getMainSchedulesAuditArea();
   }
 
   @override
-  Future<ResponseSchedulesAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
+  Future<ResponseMainScheduleAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
     return await apiService.filterMainScheduleAuditArea(startDate, endDate, branch, auditor);
   }
 
   @override
-  Future<ResponseSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
+  Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea() async {
+    return await apiService.getSpecialSchedulesAuditArea();
+  }
+
+  @override
+  Future<ResponseSpecialSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
     return await apiService.filterSpecialSchedulesAuditArea(startDate, endDate, branch, auditor);
   }
 
   @override
-  Future<ResponseSchedulesAuditArea>filterResScheduleAuditArea(String startDate, String endDate, String branch, String auditor)async {
+  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea() async{
+    return await apiService.getReschedulesAuditArea();
+  }
+
+  @override
+  Future<ResponseReschedulesAuditArea>filterResScheduleAuditArea(String startDate, String endDate, String branch, String auditor)async {
     return await apiService.filterReschedulesAuditArea(startDate, endDate, branch, auditor);
   }
 
+  @override
+  Future<ResponseMessage> addSchedulesAuditArea(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc) async{
+    return await apiService.addScheduleAuditArea(auditorId, areaId, branchId, startDate, endDat, desc);
+  }
+
+  @override
+  Future<ResponseDetailSchedulesAuditArea> getDetailScheduleAuditArea(int id)async {
+    return await apiService.getDetailScheduleAuditArea(id);
+  }
+
+
+  //master
   @override
   Future<ResponseAuditorAuditArea> getAuditorAuditArea()async {
     return await apiService.getAuditorAuditArea();
@@ -176,30 +225,12 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseStatusScheduleAuditArea> getStatusAuditArea()async {
-    return await apiService.getStatusAuditArea();
+  Future<ResponseAttachmentAuditArea> getAttachmentAuditArea()async {
+    return await apiService.getAttachmentFollowUpAuditArea();
   }
 
-  @override
-  Future<ResponseAddSchedulesAuditArea> addSchedulesAuditArea(int auditorId, int areaId, int branchId, int statusId, String startDate, String endDat, String desc) async{
-    return await apiService.addScheduleAuditArea(auditorId, areaId, branchId, statusId, startDate, endDat, desc);
-  }
 
-  @override
-  Future<ResponseSchedulesAuditArea> getSpecialSchedulesAuditArea() async {
-    return await apiService.getSpecialSchedulesAuditArea();
-  }
-
-  @override
-  Future<ResponseSchedulesAuditArea> getReschedulesAuditArea() async{
-    return await apiService.getReschedulesAuditArea();
-  }
-  
-  @override
-  Future<ResponseDetailScheduleAuditArea> getDetailScheduleAuditArea(int id)async {
-    return await apiService.getDetailScheduleAuditArea(id);
-  }
-  
+  //LHA
   @override
   Future<ResponseLhaAuditArea> getLhaAuditArea()async {
     return await apiService.getLhaAuditArea();
@@ -211,7 +242,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseEditLhaAuditArea> editLhaAuditArea(int id, String lhaDescription)async {
+  Future<ResponseMessage> editLhaAuditArea(int id, String lhaDescription)async {
     return await apiService.editLhaAuditArea(id, lhaDescription);
   }
   
@@ -219,7 +250,9 @@ class RepositoryImpl implements Repositories {
   Future<ResponseLhaAuditArea> filterLhaAuditArea(String startDate, String endDate, String branch, String auditor) async{
     return await apiService.filterLhaAuditArea(startDate, endDate, branch, auditor);
   }
-  
+
+
+  //clarification
   @override
   Future<ResponseClarificationAuditArea> getClarificationAuditArea() async{
     return await apiService.getClarificationAuditArea();
@@ -234,7 +267,9 @@ class RepositoryImpl implements Repositories {
   Future<ResponseClarificationAuditArea> filterClarificationAuditArea(String startDate, String endDate, String branch, String auditor)async {
     return await apiService.filterClarificationAuditArea(startDate, endDate, branch, auditor);
   }
-  
+
+
+  //KKA
   @override
   Future<ResponseKkaAuditArea> getKkaAuditArea()async {
     return await apiService.getKkaAuditArea();
@@ -249,7 +284,9 @@ class RepositoryImpl implements Repositories {
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id)async {
     return await apiService.getDetailKkaAuditArea(id);
   }
-  
+
+
+  //BAP
   @override
   Future<ResponseBapAuditArea> getBapAuditArea()async {
     return await apiService.getBapAuditArea();
@@ -264,20 +301,17 @@ class RepositoryImpl implements Repositories {
   Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int id)async {
     return await apiService.getDetailBapAuditArea(id);
   }
-  
+
+
+  // follow up
   @override
   Future<ResponseFollowUpAuditArea> getFollowUpAuditArea() async{
     return await apiService.getFollowUpAuditArea();
   }
   
   @override
-  Future<ResponseInputFollowUpAuditArea> inputFollowUpAuditArea(int penalty, String realization, String explanationPenalty, int attachment) async{
+  Future<ResponseMessage> inputFollowUpAuditArea(int penalty, String realization, String explanationPenalty, int attachment) async{
     return await apiService.inputFollowUpAuditArea(penalty, realization, explanationPenalty, attachment);
-  }
-  
-  @override
-  Future<ResponseAttachmentAuditArea> getAttachmentAuditArea()async {
-    return await apiService.getAttachmentFollowUpAuditArea();
   }
   
   @override
@@ -294,104 +328,95 @@ class RepositoryImpl implements Repositories {
   Future<ResponseDetailFollowUpAuditArea> getDetailFollowUpAuditArea(int id)async {
     return await apiService.getDetailFollowUpAuditArea(id);
   }
-  
+
+
+  //report
   @override
-  Future<ResponseReportAuditArea> getLisReportAuditArea()async {
-    return await apiService.getReportAuditArea();
+  Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate)async {
+    return await apiService.getReportAuditArea(branch, startDate, endDate);
   }
-  
-  @override
-  Future<ResponseReportAuditArea> filterReportAuditArea(String startDate, String endDate, String auditor, String branch)async {
-    return await apiService.filterReportAuditArea(startDate, endDate, auditor, branch);
-  }
-  
+
+
+  //user profile
   @override
   Future<ResponseDetailUserAuditArea> getDetailUserAuditArea()async {
     return await apiService.getDetailUserAuditArea();
   }
   
   @override
-  Future<ResponseEditUserAuditArea> editUserAuditArea(int id, String email, String username) async{
+  Future<ResponseMessage> editUserAuditArea(int id, String email, String username) async{
     return await apiService.editProfileUserAuditArea(id, email, username);
   }
   
   @override
-  Future<ResponseChangePasswordAuditArea> changePasswordAuditArea(int id, String oldPassword, String newPassword)async {
-    return await apiService.changePasswordAuditArea(id, oldPassword, newPassword);
+  Future<ResponseMessage> changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword)async {
+    return await apiService.changePasswordAuditArea(id, oldPassword, newPassword, confirmPassword);
   }
   
 
   //audit region
+  //schedules
   @override
-  Future<ResponseScheduleAuditRegion> getMainSchedulesAuditRegion()async {
+  Future<ResponseMainScheduleAuditRegion> getMainSchedulesAuditRegion()async {
     return await apiService.getMainSchedulesAuditRegion();
   }
-  
+
   @override
-  Future<ResponseScheduleAuditRegion> getSpecialSchedulesAuditRegion()async {
-    return await apiService.getSpecialSchedulesAuditRegion();
-  }
-  
-  @override
-  Future<ResponseScheduleAuditRegion> getRescheduleAuditRegion()async {
-    return await apiService.getReschedulesAuditRegion();
-  }
-  
-  @override
-  Future<ResponseScheduleAuditRegion> filterMainSchedulesAuditRegion(String startDate, String endDate)async {
+  Future<ResponseMainScheduleAuditRegion> filterMainSchedulesAuditRegion(String startDate, String endDate)async {
     return await apiService.filterMainSchedulesAuditRegion(startDate, endDate);
   }
   
-   @override
-  Future<ResponseScheduleAuditRegion> filterSpecialSchedulesAuditRegion(String startDate, String endDate)async {
+  @override
+  Future<ResponseSpecialScheduleAuditRegion> getSpecialSchedulesAuditRegion()async {
+    return await apiService.getSpecialSchedulesAuditRegion();
+  }
+
+  @override
+  Future<ResponseSpecialScheduleAuditRegion> filterSpecialSchedulesAuditRegion(String startDate, String endDate)async {
     return await apiService.filterSpecialSchedulesAuditRegion(startDate, endDate);
   }
   
   @override
-  Future<ResponseScheduleAuditRegion> filterReschedulesAuditRegion(String startDate, String endDate)async {
+  Future<ResponseRescheduleAuditRegion> getRescheduleAuditRegion()async {
+    return await apiService.getReschedulesAuditRegion();
+  }
+  
+  @override
+  Future<ResponseRescheduleAuditRegion> filterReschedulesAuditRegion(String startDate, String endDate)async {
     return await apiService.filterRescheduleAuditRegion(startDate, endDate);
   }
 
+  @override
+  Future<ResponseDetailScheduleAuditRegion> getDetailScheduleAuditRegion(int id)async {
+    return await apiService.getDetailScheduleAuditRegion(id);
+  }
+
+
+  //user profile
   @override
   Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion() async{
     return await apiService.getDetailUserAuditRegion();
   }  
 
   @override
-  Future<ResponseEditUserAuditRegion> editUserAuditRegion(int id, String email, String username)async {
+  Future<ResponseMessage> editUserAuditRegion(int id, String email, String username)async {
    return await apiService.editProfileUserAuditRegion(id, email, username);
   }
   
   @override
-  Future<ResponseChangePasswordAuditRegion> changePasswordAuditRegion(int id, String oldPassword, String newPassword)async {
-   return await apiService.changePasswordAuditRegion(id, oldPassword, newPassword);
+  Future<ResponseMessage> changePasswordAuditRegion(int id, String oldPassword, String newPassword, String confirmPassword)async {
+   return await apiService.changePasswordAuditRegion(id, oldPassword, newPassword, confirmPassword);
   }
-  
+
+
+  //report
   @override
-  Future<ResponseUploadReportAuditRegion> uploadReportAuditRegion(String filePath) async{
-    return await apiService.uploadReportAuditRegion(filePath);
+  Future<ResponseReportAuditRegion> getReportAuditRegion(String startDate, String endDate)async {
+    return await apiService.getReportAuditRegion(startDate, endDate);
   }
-  
-  @override
-  Future<ResponseReportAuditRegion> getListReportAuditRegion()async {
-    return await apiService.getReportAuditRegion();
-  }
-  
-  @override
-  Future<ResponseReportAuditRegion> filterReportAuditRegion(String startDate, String endDate)async {
-    return await apiService.filterReportAuditRegion(startDate, endDate);
-  }
-  
-  @override
-  Future<ResponseDetailScheduleAuditRegion> getDetailScheduleAuditRegion(int id)async {
-    return await apiService.getDetailScheduleAuditRegion(id);
-  }
-  
-  @override
-  Future<ResponseLhaAuditRegion> getLhaAuditRegion()async {
-    return await apiService.getLhaAuditRegion();
-  }
-  
+
+
+  //master
   @override
   Future<ResponseDivisionAuditRegion> getDivisionAuditRegion()async {
     return await apiService.getDivisionAuditRegion();
@@ -401,12 +426,31 @@ class RepositoryImpl implements Repositories {
   Future<ResponseSopAuditRegion> getSopAuditRegion() async {
     return await apiService.getSopAuditRegion();
   }
-  
+
   @override
-  Future<ResponseInputLhaAuditRegion> inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest) async{
+  Future<ResponseClarificationCategoryAuditRegion> getClarificationCategoryAuditRegion()async {
+    return await apiService.getClarificationCategoryAuditRegion();
+  }
+
+  @override
+  Future<ResponsePriorityFindingAuditRegion> getPriorityFindingAuditRegion()async {
+    return await apiService.getPriorityFindingAuditRegion();
+  }
+
+
+  //LHA
+  @override
+  Future<ResponseMessage> inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest) async{
     return await apiService.inputLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
   }
-  
+
+  @override
+  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int id)async {
+    return await apiService.getDetailLhaAuditRegion(id);
+  }
+
+
+  //clarification
   @override
   Future<ResponseClarificationAuditRegion> getClarificationAuditRegion()async {
     return await apiService.getClarificationAuditRegion();
@@ -416,78 +460,67 @@ class RepositoryImpl implements Repositories {
   Future<ResponseClarificationAuditRegion> filterClarificationAuditRegion(String startDate, String endDate) async{
     return await apiService.filterClarificationAuditRegion(startDate, endDate);
   }
-  
+
   @override
-  Future<ResponseUploadKkaAuditRegion> uploadKkaAuditRegion(String filePath) async{
-    return await apiService.uploadKkaAuditRegion(filePath);
-  }
-  
-  @override
-  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int id)async {
-    return await apiService.getDetailLhaAuditRegion(id);
-  }
-  
-  @override
-  Future<ResponseClarificationCategoryAuditRegion> getClarificaCategoryAuditRegion()async {
-    return await apiService.getClarificaCategoryAuditRegion();
-  }
-  
-  @override
-  Future<ResponsePriorityFindingAuditRegion> getPriorityFindingAuditRegion()async {
-    return await apiService.getPriorityFindingAuditRegion();
-  }
-  
-  @override
-  Future<ResponseInputClarificationAuditRegion> inputClarificationAuditRegion(int category, String limitEvaluation, 
-  String location, String division, String supervisor, String dear, String findingDescription, int priorityFinding)async {
+  Future<ResponseMessage> inputClarificationAuditRegion(int category, String limitEvaluation,
+      String location, String division, String supervisor, String dear, String findingDescription, int priorityFinding)async {
     return await apiService.inputClarificationAuditRegion(category, limitEvaluation, location, division, supervisor, dear, findingDescription, priorityFinding);
   }
-  
+
   @override
-  Future<ModelDocClarificationAuditRegion> getDocumentClarification(int id)async {
+  Future<ResponseDocumentClarificationAuditRegion> getDocumentClarification(int id)async {
     return await apiService.getDocumentClarification(id);
   }
-  
+
   @override
-  Future<ResponseUploadClarification> uploadClarificationAuditRegion(String filePath)async {
+  Future<ResponseMessage> inputIdentificationClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp)async {
+    return await apiService.inputIdentificationClarificationAuditRegion(evaluationClarification, loss, description, followUp);
+  }
+
+  @override
+  Future<ResponseMessage> uploadClarificationAuditRegion(String filePath)async {
     return await apiService.uploadClarificationAuditRegion(filePath);
   }
-  
-  @override
-  Future<ResponseInputIdentificationClarificationAuditRegion> inputIdentificatinClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp)async {
-    return await apiService.inputIdentificatinClarificationAuditRegion(evaluationClarification, loss, description, followUp);
-  }
-  
-  @override
-  Future<ResponseUploadBapAuditRegion> uploadBapAuditRegion(String filePath) {
-    return apiService.uploadBapAuditRegion(filePath);
-  }
-  
+
   @override
   Future<ResponseDetailClarificationAuditRegion> getDetailClarificationAuditRegion(int id) {
     return apiService.detailClarificationAuditRegion(id);
   }
-  
+
+
+  //KKA
+  @override
+  Future<ResponseMessage> uploadKkaAuditRegion(String filePath) async{
+    return await apiService.uploadKkaAuditRegion(filePath);
+  }
+
   @override
   Future<ResponseKkaAuditRegion> getKkaAuditRegion() {
-   return apiService.getKkaAuditRegion();
+    return apiService.getKkaAuditRegion();
   }
 
   @override
   Future<ResponseKkaAuditRegion> filterKkaAuditRegion(String startDate,String  endDate) {
     return apiService.filterKkaAuditRegion(startDate, endDate);
   }
-  
+
   @override
   Future<ResponseDetailKkaAuditRegion> getDetailKkaAuditRegion(int id) {
     return apiService.getDetailKkaAuditRegion(id);
   }
-  
+
+
+  //BAP
+  @override
+  Future<ResponseMessage> uploadBapAuditRegion(String filePath) {
+    return apiService.uploadBapAuditRegion(filePath);
+  }
+
   @override
   Future<ResponseBapAuditRegion> getBapAuditRegion() {
     return apiService.getBapAuditRegion();
   }
-  
+
   @override
   Future<ResponseBapAuditRegion> filterBapAuditRegion(String startDate, String endDate) {
     return apiService.filterBapAuditRegion(startDate, endDate);

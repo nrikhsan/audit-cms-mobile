@@ -123,8 +123,6 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                     Text('CMS MAJU SEJAHTERA',
                         style: CustomStyles.textBold15Px),
                     const SizedBox(height: 10),
-                    Text('Presensi', style: CustomStyles.textRegular13Px),
-                    const SizedBox(height: 10),
                     Card(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -395,8 +393,6 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
                   children: [
                     Text('CMS MAJU SEJAHTERA',
                         style: CustomStyles.textBold15Px),
-                    const SizedBox(height: 10),
-                    Text('Presensi', style: CustomStyles.textRegular13Px),
                     const SizedBox(height: 10),
                     Card(
                       elevation: 0,

@@ -4,10 +4,13 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/kka/detail_kka.dart';
+import 'package:dio/dio.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 //audit area
@@ -78,6 +81,8 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+                        const SizedBox(height: 10),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -86,13 +91,57 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                           ],
                         ),
 
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 10),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Cabang : ${kka.branch}', style: CustomStyles.textMedium13Px),
                             Text('Area : ${kka.area}', style: CustomStyles.textMedium13Px),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: CustomStyles.customRoundedButton
+                                  ),
+                                  onPressed:()async{
+                                    Map<Permission, PermissionStatus> statuses =
+                                        await [Permission.storage].request();
+
+                                    if (statuses[Permission.storage]!.isGranted) {
+                                      var dir = await DownloadsPathProvider.downloadsDirectory;
+                                      if (dir != null) {
+                                        String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                                        String saveName = 'dokumen_kka_$timestamp.xlsx';
+                                        String savePath = dir.path + "/$saveName";
+                                        print(savePath);
+
+                                        try {
+                                          await Dio().download(kka.kkaDoc!, savePath,
+                                              onReceiveProgress: (received, total) {
+                                            if (total != -1) {
+                                              print((received / total * 100).toStringAsFixed(0) +"%");
+                                            }
+                                          });
+                                            Get.snackbar('Berhasil', 'File $saveName berhasil di unduh', 
+                                            snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.green, colorText: CustomColors.white
+                                          );
+                                        } catch (error) {
+                                          throw Exception(error);
+                                        }
+                                      }
+                                    } else {
+                                      Get.snackbar('Alert', 'Permintaan izin ditolak', 
+                                            snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white
+                                          );
+                                    }
+                                  }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
+                              )
+
+                              ],
+                            )
                           ],
                         ),
                       ],
@@ -139,6 +188,39 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                   }, 
                   icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                 ),
+
+                actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorController.text.isNotEmpty) {
+                          auditorController.clear();
+                          controllerAuditArea.loadKkaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(branchController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadKkaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadKkaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
               ),
 
               const SizedBox(height: 20),
@@ -348,6 +430,8 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+                        const SizedBox(height: 10),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -356,13 +440,57 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                           ],
                         ),
 
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 10),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Cabang : ${kka.branch}', style: CustomStyles.textMedium13Px),
                             Text('Area : ${kka.area}', style: CustomStyles.textMedium13Px),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: CustomStyles.customRoundedButton
+                                  ),
+                                  onPressed:()async{
+                                    Map<Permission, PermissionStatus> statuses =
+                                        await [Permission.storage].request();
+
+                                    if (statuses[Permission.storage]!.isGranted) {
+                                      var dir = await DownloadsPathProvider.downloadsDirectory;
+                                      if (dir != null) {
+                                        String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+                                        String saveName = 'dokumen_kka_$timestamp.xlsx';
+                                        String savePath = dir.path + "/$saveName";
+                                        print(savePath);
+
+                                        try {
+                                          await Dio().download(kka.kkaDoc!, savePath,
+                                              onReceiveProgress: (received, total) {
+                                            if (total != -1) {
+                                              print((received / total * 100).toStringAsFixed(0) +"%");
+                                            }
+                                          });
+                                            Get.snackbar('Berhasil', 'File $saveName berhasil di unduh', 
+                                            snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.green, colorText: CustomColors.white
+                                          );
+                                        } catch (error) {
+                                          throw Exception(error);
+                                        }
+                                      }
+                                    } else {
+                                      Get.snackbar('Alert', 'Permintaan izin ditolak', 
+                                            snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white
+                                          );
+                                    }
+                                  }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
+                              )
+
+                              ],
+                            )
                           ],
                         ),
                       ],

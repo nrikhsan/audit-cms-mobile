@@ -20,12 +20,12 @@ class TokenManager {
     return token != null;
   }
 
-  static Future<void> saveRole(String role) async {
+  static Future<void> saveRoleOrEmail(String role) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyRole, role);
   }
 
-  static Future<String?> getRole() async {
+  static Future<String?> getRoleOrEmail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyRole);
   }

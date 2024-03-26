@@ -72,7 +72,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(lha.research! ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
+                                  Icon(lha.research == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
                                   Text('${lha.inputDate}',
                                       style: CustomStyles.textBold15Px),
                                 ],
@@ -154,6 +154,39 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                       Navigator.pop(context);
                     }, icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                     ),
+
+                    actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorController.text.isNotEmpty) {
+                          auditorController.clear();
+                          controllerAuditArea.loadLhaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(branchController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadLhaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadLhaAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
                   ),
                   const SizedBox(height: 25),
 

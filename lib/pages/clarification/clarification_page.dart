@@ -88,10 +88,10 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                                 
                                 Text('${clarification.auditor}', style: CustomStyles.textBold15Px),
                                 const SizedBox(width: 10),
-                                Icon(clarification.statusClarification! ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                                Icon(clarification.statusClarification == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
                               ],
                             ),
-                            Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
+                            Text('${clarification.noDocument}', style: CustomStyles.textBold13Px),
                           ],
                         ),
 
@@ -136,7 +136,6 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
           ),
           
           width: double.maxFinite,
-          height: 500,
           child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -150,7 +149,40 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                       onPressed: (){
                         Navigator.pop(context);
                       },
-                        icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)),
+                        icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
+                      ),
+                      actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorController.text.isNotEmpty) {
+                          auditorController.clear();
+                          controllerAuditArea.loadClarificationAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(branchController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadClarificationAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadClarificationAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
                   ),
                     const SizedBox(height: 20),
 
@@ -365,7 +397,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         final clarification = controllerAuditRegion.clarificationAuditRegion[index];
                         return GestureDetector(
                            onTap: (){
-                              showDialogMoreOption(clarification.id!);
+                              Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
                           },
                   child: Card(
                   shape: OutlineInputBorder(
@@ -380,12 +412,27 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        
+                        Wrap(
+                          children: [
+                            clarification.statusClarification == 1 
+                            ? const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 15)
+                            : const SizedBox(height: 0)
+                          ]
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text('${clarification.noDocument}', style: CustomStyles.textBold15Px),
+                            IconButton(
+                              onPressed: (){
+                                showDialogMoreOption(clarification.id!);
+                              }, 
+                              icon: const Icon(Icons.more_vert_rounded, color: CustomColors.grey, size: 25)
+                            )
+                        ],),
+                        Row(
+                          children: [
                             Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
-                            Icon(clarification.statusClarification == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
                           ],
                         ),
                       ],
@@ -565,23 +612,6 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
-                SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: CustomStyles.customRoundedButton,
-                      backgroundColor: CustomColors.green
-                    ),
-                    onPressed: (){
-                      Get.to(() => InputClarificationPageAuditRegion(id: id));
-                    }, 
-                    child: Text('Input klarifikasi', style: CustomStyles.textMediumWhite15Px)
-                  ),
-                ),
-
-                const SizedBox(height: 5),
-
                 SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
@@ -593,6 +623,20 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                       Get.to(() => DetailClarificationAuditRegion(id: id));
                     }, 
                     child: Text('Detail klarifikasi', style: CustomStyles.textMediumWhite15Px)
+                  ),
+                ),
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: CustomStyles.customRoundedButton,
+                      backgroundColor: CustomColors.red
+                    ),
+                    onPressed: (){
+                      Get.back();
+                    }, 
+                    child: Text('Kembali', style: CustomStyles.textMediumWhite15Px)
                   ),
                 )
               ],

@@ -21,7 +21,6 @@ class ProfilePageAuditArea extends StatefulWidget {
 class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.find();
-  final String oldPassword = '11102001';
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +98,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                         leading: const Icon(Icons.password_rounded, color: CustomColors.black, size: 25),
                         title: Text('Ubah kata sandi', style: CustomStyles.textBold15Px),
                         onTap: (){
-                          Get.to(() => ChangePasswordPageAuditArea(id: user.id!, oldpassword: oldPassword));
+                          Get.to(() => ChangePasswordPageAuditArea(id: user.id!));
                         },
                       ),
                     ],
@@ -171,7 +170,6 @@ class ProfilePageAuditRegion extends StatefulWidget {
 
 class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
 
-  String oldPassword = '11102001';
   final ControllerAuditRegion controllerAuditRegion = Get.find();
   
   @override
@@ -250,7 +248,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         leading: const Icon(Icons.password_rounded, color: CustomColors.black, size: 25),
                         title: Text('Ubah kata sandi', style: CustomStyles.textBold15Px),
                         onTap: (){
-                          Get.to(() => ChangePasswordPageAuditRegion(id: user.id!, oldpassword: oldPassword));
+                          Get.to(() => ChangePasswordPageAuditRegion(id: user.id!));
                         },
                       ),
                     ],

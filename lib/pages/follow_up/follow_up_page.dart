@@ -57,7 +57,8 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
               itemCount: controllerAuditArea.followUpArea.length,
               itemBuilder: (_, index){
                 final followUp = controllerAuditArea.followUpArea[index];
-                return Card(
+                return GestureDetector(
+                  child: Card(
                   elevation: 0,
                   color: CustomColors.white,
                   shape: OutlineInputBorder(
@@ -92,6 +93,10 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                     ],
                   ),
                   ),
+                ),
+                onTap: (){
+                    Get.to(() => const InputFollowUp());
+                  },
                 );
               }
             ),
@@ -113,23 +118,6 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
             Center(
               child: Column(
                 children: [
-
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton,
-                        backgroundColor: CustomColors.green
-                      ),
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const InputFollowUp()));
-                      },
-                      child: Text('Input tindak lanjut', style: CustomStyles.textMediumWhite15Px)
-                     ),
-                  ),
-
-                  const SizedBox(height: 5),
-
                    SizedBox(
                     width: double.maxFinite,
                      child: TextButton(
@@ -195,6 +183,39 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       Navigator.pop(context);
                     }, icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                     ),
+                    
+                    actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorController.text.isNotEmpty) {
+                          auditorController.clear();
+                          controllerAuditArea.loadFollowUpAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(branchController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadFollowUpAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
+                          auditorController.clear();
+                          controllerAuditArea.loadFollowUpAuditArea();
+                          branchController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
                   ),
 
                   const SizedBox(height: 25),

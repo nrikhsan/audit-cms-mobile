@@ -96,7 +96,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         labelBackgroundColor: CustomColors.green,
                         child: const Icon(Icons.add_rounded, color: CustomColors.white),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const InputDataSchedulesPage()));
+                          Get.to(() => const InputDataSchedulesPageMainSchedule());
                         }
                       )
                     ],
@@ -111,7 +111,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           itemCount: controllerAuditArea.mainSchedulesAuditArea.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            final schedule = controllerAuditArea.mainSchedulesAuditArea[index];
+                            final mainSchedule = controllerAuditArea.mainSchedulesAuditArea[index];
                             return GestureDetector(
                               child: Card(
                               elevation: 0,
@@ -131,21 +131,21 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                        Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                        Text('${mainSchedule.auditor}', style: CustomStyles.textBold15Px),
+                                        Text('${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
                                       ],
                                     ),
                     
                                     const SizedBox(height: 10),
-                                      Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
+                                      Text('Cabang : ${mainSchedule.branch}', style: CustomStyles.textMedium13Px),
                                       
-                                      Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                      Text('Area : ${mainSchedule.area}', style: CustomStyles.textMedium13Px),
                                   ],
                                 ),
                               ),
                             ),
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                              Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
                             },
                             );
                           },
@@ -183,7 +183,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         labelBackgroundColor: CustomColors.green,
                         child: const Icon(Icons.add_rounded, color: CustomColors.white),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const InputDataSchedulesPage()));
+                          Get.to(() => const InputDataSchedulePageSpecialSchedule());
                         }
                     )
                   ],
@@ -199,7 +199,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         return ListView.builder(
                             itemCount: controllerAuditArea.specialSchedulesAuditArea.length,
                             itemBuilder: (_, index){
-                              final schedule = controllerAuditArea.specialSchedulesAuditArea[index];
+                              final specialSchedule = controllerAuditArea.specialSchedulesAuditArea[index];
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -219,21 +219,21 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                          Text('${specialSchedule.auditor}', style: CustomStyles.textBold15Px),
+                                          Text('${specialSchedule.startDate} s/d ${specialSchedule.endDate}', style: CustomStyles.textMedium13Px),
                                         ],
                                       ),
                     
                                       const SizedBox(height: 10),
-                                      Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
+                                      Text('Cabang : ${specialSchedule.branch}', style: CustomStyles.textMedium13Px),
                                       
-                                      Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                      Text('Area : ${specialSchedule.area}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: schedule.id!)));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: specialSchedule.id!));
                               },
                               );
                             }
@@ -266,12 +266,12 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
                       SpeedDialChild(
                           backgroundColor: CustomColors.green,
-                          label: 'Tambah reschedule',
+                          label: 'Request reschedule',
                           labelStyle: CustomStyles.textMediumWhite15Px,
                           labelBackgroundColor: CustomColors.green,
                           child: const Icon(Icons.add_rounded, color: CustomColors.white),
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => const InputDataSchedulesPage()));
+                            Get.to(() => const InputDataReschedulePage());
                           }
                       )
                     ],
@@ -306,19 +306,20 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${reschedules.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
+                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textRegular13Px),
                                         ],
                                       ),
                     
                                       const SizedBox(height: 10),
                                       Text('Cabang : ${reschedules.branch}', style: CustomStyles.textMedium13Px),
                                       Text('Area : ${reschedules.area}', style: CustomStyles.textMedium13Px),
+                                      Text('Tanggal : ${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailSChedulePageAuditAreaState(id: reschedules.id!)));
+                                Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
                               },
                               );
                             }
@@ -359,6 +360,38 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       Navigator.pop(context);
                     }, icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                     ),
+                  actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorControllerMainSchedule.text.isNotEmpty) {
+                          auditorControllerMainSchedule.clear();
+                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          branchControllerMainSChedule.clear();
+                          startDateControllerMainSchedule.clear();
+                          endDateControllerMainSchedule.clear();
+                          Get.back();
+                        }else if(branchControllerMainSChedule.text.isNotEmpty){
+                          auditorControllerMainSchedule.clear();
+                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          branchControllerMainSChedule.clear();
+                          startDateControllerMainSchedule.clear();
+                          endDateControllerMainSchedule.clear();
+                          Get.back();
+                        }else if(startDateControllerMainSchedule.text.isNotEmpty || endDateControllerMainSchedule.text.isNotEmpty){
+                          auditorControllerMainSchedule.clear();
+                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          branchControllerMainSChedule.clear();
+                          startDateControllerMainSchedule.clear();
+                          endDateControllerMainSchedule.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
                   ),
                   const SizedBox(height: 25),
 
@@ -533,6 +566,39 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       Navigator.pop(context);
                     }, icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                     ),
+
+                    actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorControllerSpecialSchedule.text.isNotEmpty) {
+                          auditorControllerSpecialSchedule.clear();
+                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          branchControllerSpecialSchedule.clear();
+                          startDateControllerSpecialSchedule.clear();
+                          endDateControllerSpecialSchedule.clear();
+                          Get.back();
+                        }else if(branchControllerSpecialSchedule.text.isNotEmpty){
+                          auditorControllerSpecialSchedule.clear();
+                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          branchControllerSpecialSchedule.clear();
+                          startDateControllerSpecialSchedule.clear();
+                          endDateControllerSpecialSchedule.clear();
+                          Get.back();
+                        }else if(startDateControllerSpecialSchedule.text.isNotEmpty || endDateControllerSpecialSchedule.text.isNotEmpty){
+                          auditorControllerSpecialSchedule.clear();
+                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          branchControllerSpecialSchedule.clear();
+                          startDateControllerSpecialSchedule.clear();
+                          endDateControllerSpecialSchedule.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
                   ),
                   const SizedBox(height: 25),
 
@@ -666,7 +732,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditArea.filterSpecialSchedules(startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, 
+                        controllerAuditArea.filterSpecialSchedulesAuditArea(startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text,
                         branchControllerSpecialSchedule.text, auditorControllerSpecialSchedule.text);
                         Get.back();
                       },
@@ -707,6 +773,39 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       Navigator.pop(context);
                     }, icon: const Icon(Icons.close_rounded, color: CustomColors.black, size: 25)
                     ),
+                    actions: [
+                    IconButton(
+                      onPressed: (){
+                      if (auditorControllerReschedule.text.isNotEmpty) {
+                          auditorControllerReschedule.clear();
+                          controllerAuditArea.loadReschedulesAuditArea();
+                          branchControllerReschedule.clear();
+                          startDateControllerReschedule.clear();
+                          endDateControllerReschedule.clear();
+                          Get.back();
+                        }else if(branchControllerReschedule.text.isNotEmpty){
+                          auditorControllerReschedule.clear();
+                          controllerAuditArea.loadReschedulesAuditArea();
+                          branchControllerReschedule.clear();
+                          startDateControllerReschedule.clear();
+                          endDateControllerReschedule.clear();
+                          Get.back();
+                        }else if(startDateControllerReschedule.text.isNotEmpty || endDateControllerReschedule.text.isNotEmpty){
+                          auditorControllerReschedule.clear();
+                          controllerAuditArea.loadReschedulesAuditArea();
+                          branchControllerReschedule.clear();
+                          startDateControllerReschedule.clear();
+                          endDateControllerReschedule.clear();
+                          Get.back();
+                        }else{
+                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
+                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
+                        }
+                      },
+                        icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
+                      ),
+                  ],
+                    
                   ),
                   const SizedBox(height: 25),
 
@@ -840,7 +939,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditArea.filterReschedules(startDateControllerReschedule.text, endDateControllerReschedule.text, 
+                        controllerAuditArea.filterReschedulesAuditArea(startDateControllerReschedule.text, endDateControllerReschedule.text,
                         branchControllerReschedule.text, auditorControllerReschedule.text);
                         Get.back();
                       },
@@ -942,7 +1041,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                           shrinkWrap: true,
                           itemCount: controllerAuditRegion.mainScheduleAuditRegion.length,
                           itemBuilder: (_, index){
-                            final schedule = controllerAuditRegion.mainScheduleAuditRegion[index];
+                            final mainSchedule = controllerAuditRegion.mainScheduleAuditRegion[index];
                             return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -962,20 +1061,20 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                          Text('${mainSchedule.auditor}', style: CustomStyles.textBold15Px),
+                                          Text('${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
                                         ],
                                       ),
                       
                                       const SizedBox(height: 10),
-                                        Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
-                                        Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                        Text('Cabang : ${mainSchedule.branch}', style: CustomStyles.textMedium13Px),
+                                        Text('Area : ${mainSchedule.area}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScheduleAuditRegion(id: schedule.id!)));
+                                Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
                               },
                             );
                           }
@@ -1017,7 +1116,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                             shrinkWrap: true,
                             itemCount: controllerAuditRegion.specialScheduleAuditRegion.length,
                             itemBuilder: (_, index){
-                              final schedule = controllerAuditRegion.specialScheduleAuditRegion[index];
+                              final specialSchedule = controllerAuditRegion.specialScheduleAuditRegion[index];
                               return GestureDetector(
                                   child: Card(
                                   elevation: 0,
@@ -1037,20 +1136,20 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                            Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                            Text('${specialSchedule.auditor}', style: CustomStyles.textBold15Px),
+                                            Text('${specialSchedule.startDate} s/d ${specialSchedule.endDate}', style: CustomStyles.textMedium13Px),
                                           ],
                                         ),
                         
                                         const SizedBox(height: 10),
-                                          Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
-                                          Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                          Text('Cabang : ${specialSchedule.branch}', style: CustomStyles.textMedium13Px),
+                                          Text('Area : ${specialSchedule.area}', style: CustomStyles.textMedium13Px),
                                       ],
                                     ),
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScheduleAuditRegion(id: schedule.id!)));
+                                  Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: specialSchedule.id!));
                                 },
                               );
                             }
@@ -1092,7 +1191,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                             shrinkWrap: true,
                             itemCount: controllerAuditRegion.rescheduleAuditRegion.length,
                             itemBuilder: (_, index){
-                              final schedule = controllerAuditRegion.rescheduleAuditRegion[index];
+                              final reschedule = controllerAuditRegion.rescheduleAuditRegion[index];
                               return GestureDetector(
                                   child: Card(
                                   elevation: 0,
@@ -1112,20 +1211,21 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('${schedule.auditor}', style: CustomStyles.textBold15Px),
-                                            Text('${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                            Text('${reschedule.auditor}', style: CustomStyles.textBold15Px),
+                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textRegular13Px),
                                           ],
                                         ),
-                        
+
                                         const SizedBox(height: 10),
-                                          Text('Cabang : ${schedule.branch}', style: CustomStyles.textMedium13Px),
-                                          Text('Area : ${schedule.area}', style: CustomStyles.textMedium13Px),
+                                        Text('Cabang : ${reschedule.branch}', style: CustomStyles.textMedium13Px),
+                                        Text('Area : ${reschedule.area}', style: CustomStyles.textMedium13Px),
+                                        Text('Tanggal : ${reschedule.startDate} s/d ${reschedule.endDate}', style: CustomStyles.textMedium13Px),
                                       ],
                                     ),
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScheduleAuditRegion(id: schedule.id!)));
+                                  Get.to(() => DetailRescheduleAuditRegion(rescheduleId: reschedule.id!));
                                 },
                               );
                             }
@@ -1574,7 +1674,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditRegion.filteRescheduleAuditRegion(startDateControllerReschedule.text, endDateControllerReschedule.text);
+                        controllerAuditRegion.filterRescheduleAuditRegion(startDateControllerReschedule.text, endDateControllerReschedule.text);
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

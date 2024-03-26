@@ -1,5 +1,4 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/response_attachment_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/document_follow_up_page.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +70,6 @@ class _InputFollowUpState extends State<InputFollowUp> {
                 controller: realizationController,
                 onChanged: (realization) => realizationController.text = realization,
                 cursorColor: CustomColors.blue,
-                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     labelStyle: CustomStyles.textMediumGrey15Px,
                     labelText: 'Realisasi...',
@@ -129,10 +127,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih lampiran', style: CustomStyles.textRegular13Px),
                       value: _selectAttachment,
-                      items: controllerAuditArea.attachmentAuditArea.map((ModelListAttachmentAuditArea attchment){
+                      items: controllerAuditArea.attachmentAuditArea.map((attachment){
                         return DropdownMenuItem(
-                          value: attchment.id,
-                          child: Text('${attchment.attchmentName}', style: CustomStyles.textMedium15Px)
+                          value: attachment.id,
+                          child: Text('${attachment.attachmentName}', style: CustomStyles.textMedium15Px)
                         );
                       }).toList(),
                       onChanged: (value)async{

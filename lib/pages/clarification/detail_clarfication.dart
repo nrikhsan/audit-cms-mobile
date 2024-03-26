@@ -40,7 +40,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
         backgroundColor: CustomColors.white,
         leading: IconButton(
           onPressed: () {
-            Get.offAll(() => const ClarificationPageAuditArea());
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back_rounded,
               color: CustomColors.black, size: 25),
@@ -236,7 +236,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                       backgroundColor: CustomColors.blue
                     ),
                     onPressed: currentIndex < status.length - 1 ? showDialogStatusClarificationAuditArea : null,
-                     child: Text('Ubah status', style: CustomStyles.textMediumWhite15Px)
+                     child: Text(currentIndex > status.length +1 ? 'Ubah status' : 'Ubah status ${status[currentIndex]}', style: CustomStyles.textMediumWhite15Px)
                     ),
                   )
                 ],
@@ -423,7 +423,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                     children: [
                       ListTile(
                         leading: const Icon(Icons.update_rounded, color: CustomColors.grey, size: 25),
-                        title: Text('Ubah Status', style: CustomStyles.textBold15Px),
+                        title: Text('Ubah status', style: CustomStyles.textBold15Px),
                           onTap: () {
                             setState(() {
                               if (currentIndex < status.length - 1) {
