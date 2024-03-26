@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
@@ -44,6 +45,7 @@ class ControllerAuditRegion extends GetxController {
   //lha
   var detailLhaAuditRegion = Rxn<ModelDetailLhaAuditRegion>();
   var dataListLocalLhaAuditRegion = <ModelBodyInputLhaAuditRegion>[].obs;
+  final RxList<ModelListLhaAuditRegion> lhaAuditRegion = <ModelListLhaAuditRegion>[].obs;
 
   //kka
   final RxList<ModelListKkaAuditRegion> kkaAuditRegion = <ModelListKkaAuditRegion>[].obs;
@@ -73,6 +75,7 @@ class ControllerAuditRegion extends GetxController {
     loadRescheduleAuditRegion();
     loadDivisionAuditRegion();
     loadSopAuditRegion();
+    loadLhaAuditRegion();
     loadClarificationAuditRegion();
     loadClarificationCategoryAuditRegion();
     loadPriorityFindingAuditRegion();
@@ -239,6 +242,18 @@ class ControllerAuditRegion extends GetxController {
       throw Exception(error);
     }
   }
+
+   void loadLhaAuditRegion()async {
+    isLoading(true);
+    try {
+      final lha = await repositories.getListLhaAuditRegion();
+      lhaAuditRegion.assignAll(lha.dataLha ?? []);
+    } catch (error) {
+      throw Exception(error);
+    }finally{
+      isLoading(false);
+    }
+   }
   
   void loadClarificationAuditRegion() async{
     isLoading(true);

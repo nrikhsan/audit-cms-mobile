@@ -26,6 +26,7 @@ import 'package:audit_cms/data/core/response/auditRegion/clarification/model_bod
 import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
@@ -798,6 +799,18 @@ class ApiService {
     try {
       final response = await dio.get('${AppConstant.detailLhaAuditRegion}$id');
       return ResponseDetailLhaAuditRegion.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseLhaAuditRegion>getListLhaAuditRegion()async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}'
+    };
+    try {
+      final response = await dio.get(AppConstant.lhaAuditRegion);
+      return ResponseLhaAuditRegion.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }

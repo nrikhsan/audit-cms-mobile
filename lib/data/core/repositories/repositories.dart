@@ -11,7 +11,6 @@ import 'package:audit_cms/data/core/response/auditArea/master/response_area_audi
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_status_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -22,6 +21,7 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_resche
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
@@ -129,6 +129,7 @@ abstract class Repositories {
   //LHA
   Future<ResponseMessage>inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest);
   Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
+  Future<ResponseLhaAuditRegion>getListLhaAuditRegion();
 
   //clarification
   Future<ResponseMessage>inputClarificationAuditRegion(int category, String limitEvaluation,
@@ -449,6 +450,10 @@ class RepositoryImpl implements Repositories {
     return await apiService.getDetailLhaAuditRegion(id);
   }
 
+  @override
+  Future<ResponseLhaAuditRegion> getListLhaAuditRegion()async {
+    return await apiService.getListLhaAuditRegion();
+  }
 
   //clarification
   @override

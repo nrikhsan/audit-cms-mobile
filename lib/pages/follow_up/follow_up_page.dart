@@ -368,19 +368,3 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
     );
   }
 }
-
-
-//audit region
-class FollowUpPageAuditRegion extends StatefulWidget {
-  const FollowUpPageAuditRegion({super.key});
-
-  @override
-  State<FollowUpPageAuditRegion> createState() => _FollowUpPageAuditRegionState();
-}
-
-class _FollowUpPageAuditRegionState extends State<FollowUpPageAuditRegion> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}

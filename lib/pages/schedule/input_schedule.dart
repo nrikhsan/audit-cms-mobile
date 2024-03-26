@@ -35,7 +35,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
       backgroundColor: CustomColors.white,
       appBar: AppBar(
           backgroundColor: CustomColors.white,
-          title: const Text('Input jadwal utama audit'),
+          title: const Text('Input jadwal utama'),
           titleSpacing: 5,
           titleTextStyle: CustomStyles.textBold18Px,
           leading: IconButton(
@@ -378,7 +378,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
       backgroundColor: CustomColors.white,
       appBar: AppBar(
           backgroundColor: CustomColors.white,
-          title: const Text('Input jadwal khusus audit'),
+          title: const Text('Input jadwal khusus'),
           titleSpacing: 5,
           titleTextStyle: CustomStyles.textBold18Px,
           leading: IconButton(
@@ -681,7 +681,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                             Navigator.pop(context);
                           }
                         },
-                        child: Text('Buat jadwal utama', style: CustomStyles.textMediumWhite15Px)
+                        child: Text('Buat jadwal khusus', style: CustomStyles.textMediumWhite15Px)
                     ),
                   ),
                   const SizedBox(height: 40)
@@ -721,7 +721,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
       backgroundColor: CustomColors.white,
       appBar: AppBar(
           backgroundColor: CustomColors.white,
-          title: const Text('Input reschedule audit'),
+          title: const Text('Request reschedule'),
           titleSpacing: 5,
           titleTextStyle: CustomStyles.textBold18Px,
           leading: IconButton(
@@ -1024,7 +1024,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             Navigator.pop(context);
                           }
                         },
-                        child: Text('Buat jadwal utama', style: CustomStyles.textMediumWhite15Px)
+                        child: Text('Request reschedule', style: CustomStyles.textMediumWhite15Px)
                     ),
                   ),
                   const SizedBox(height: 40)

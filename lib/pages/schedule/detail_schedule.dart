@@ -1006,7 +1006,7 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
       backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: const Text('Detail jadwal khusus'),
+        title: const Text('Detail reschedule'),
         titleTextStyle: CustomStyles.textBold18Px,
       ),
       floatingActionButton: SpeedDial(

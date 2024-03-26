@@ -366,7 +366,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                   var dir = await DownloadsPathProvider.downloadsDirectory;
                   if (dir != null) {
                      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-                    String saveName = 'bap_audit.pdf_$timestamp';
+                    String saveName = 'bap_audit_$timestamp.pdf';
                     String savePath = dir.path + "/$saveName";
                     print(savePath);
 

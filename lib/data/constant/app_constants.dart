@@ -70,7 +70,7 @@ class AppConstant{
 
   //lha
   static const String inputLhaAuditRegion = 'api/input-lha';
-  static const String lhaAuditRegion = 'api/lha-audit-region';
+  static const String lhaAuditRegion = 'api/lha';
   static const String detailLhaAuditRegion = 'api/detail-lha/';
 
   //master
