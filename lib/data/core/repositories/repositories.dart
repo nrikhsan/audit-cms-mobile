@@ -7,10 +7,10 @@ import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_a
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_area_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -21,6 +21,7 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_resche
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
@@ -50,7 +51,7 @@ abstract class Repositories {
 
   //audit area
   //schedules
-  Future<ResponseMessage> addSchedulesAuditArea(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc);
+  Future<ResponseMessage> addSchedulesAuditArea(List<ModelBodySchedulesAuditArea>schedule);
   Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea();
   Future<ResponseMainScheduleAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
   Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea();
@@ -61,7 +62,6 @@ abstract class Repositories {
 
   //master
   Future<ResponseAuditorAuditArea> getAuditorAuditArea();
-  Future<ResponseAreaAuditArea> getAreaAuditArea();
   Future<ResponseBranchAuditArea> getBranchAuditArea();
   Future<ResponseAttachmentAuditArea> getAttachmentAuditArea();
 
@@ -127,7 +127,7 @@ abstract class Repositories {
   Future<ResponseClarificationCategoryAuditRegion>getClarificationCategoryAuditRegion();
 
   //LHA
-  Future<ResponseMessage>inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest);
+  Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, int branchId, List<LhaDetail>lhaDetail);
   Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
   Future<ResponseLhaAuditRegion>getListLhaAuditRegion();
 
@@ -199,8 +199,8 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> addSchedulesAuditArea(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc) async{
-    return await apiService.addScheduleAuditArea(auditorId, areaId, branchId, startDate, endDat, desc);
+  Future<ResponseMessage> addSchedulesAuditArea(List<ModelBodySchedulesAuditArea>schedule) async{
+    return await apiService.addScheduleAuditArea(schedule);
   }
 
   @override
@@ -213,11 +213,6 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseAuditorAuditArea> getAuditorAuditArea()async {
     return await apiService.getAuditorAuditArea();
-  }
-
-  @override
-  Future<ResponseAreaAuditArea> getAreaAuditArea() async{
-   return await apiService.getAreaAuditArea();
   }
 
   @override
@@ -441,8 +436,8 @@ class RepositoryImpl implements Repositories {
 
   //LHA
   @override
-  Future<ResponseMessage> inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest) async{
-    return await apiService.inputLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
+  Future<ResponseMessage> inputLhaAuditRegion(int scheduleId, int branchId, List<LhaDetail>lhaDetail) async{
+    return await apiService.inputLhaAuditRegion(scheduleId, branchId, lhaDetail);
   }
 
   @override

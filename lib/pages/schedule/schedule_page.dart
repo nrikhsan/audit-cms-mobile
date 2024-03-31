@@ -6,7 +6,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../helper/styles/custom_styles.dart';
 import 'input_schedule.dart';
@@ -132,7 +131,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('${mainSchedule.auditor}', style: CustomStyles.textBold15Px),
-                                        Text('${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
+                                        Text('${mainSchedule.status}', style: CustomStyles.textMedium13Px),
                                       ],
                                     ),
                     
@@ -220,7 +219,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${specialSchedule.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${specialSchedule.startDate} s/d ${specialSchedule.endDate}', style: CustomStyles.textMedium13Px),
+                                          Text('${specialSchedule.status}', style: CustomStyles.textMedium13Px),
                                         ],
                                       ),
                     
@@ -262,17 +261,6 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           onTap: (){
                             showDialogFilterReschedulesAuditArea();
                           }
-                      ),
-
-                      SpeedDialChild(
-                          backgroundColor: CustomColors.green,
-                          label: 'Request reschedule',
-                          labelStyle: CustomStyles.textMediumWhite15Px,
-                          labelBackgroundColor: CustomColors.green,
-                          child: const Icon(Icons.add_rounded, color: CustomColors.white),
-                          onTap: (){
-                            Get.to(() => const InputDataReschedulePage());
-                          }
                       )
                     ],
                   ),
@@ -286,6 +274,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                             itemCount: controllerAuditArea.resSchedulesAuditArea.length,
                             itemBuilder: (_, index){
                               final reschedules = controllerAuditArea.resSchedulesAuditArea[index];
+                              final statusReschedules = reschedules.statusReschedule;
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -306,21 +295,32 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${reschedules.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textRegular13Px),
+                                          if(statusReschedules == 'Pending')
+                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumGrey13Px),
+                                          if(statusReschedules == 'Reject')
+                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumRed13Px),
+                                          if(statusReschedules == 'Approve')
+                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumGreen13Px),
+                                          if(statusReschedules == 'Request')
+                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumBlue13Px),
                                         ],
                                       ),
                     
                                       const SizedBox(height: 10),
                                       Text('Cabang : ${reschedules.branch}', style: CustomStyles.textMedium13Px),
                                       Text('Area : ${reschedules.area}', style: CustomStyles.textMedium13Px),
-                                      Text('Tanggal : ${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
+                                      
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
-                              },
+                                  if (reschedules.statusReschedule == 'Pending') {
+                                    Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!));
+                                  }else{
+                                    Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
+                                  }
+                                },
                               );
                             }
                         );
@@ -1192,6 +1192,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                             itemCount: controllerAuditRegion.rescheduleAuditRegion.length,
                             itemBuilder: (_, index){
                               final reschedule = controllerAuditRegion.rescheduleAuditRegion[index];
+                              final statusReschedules = reschedule.statusReschedule;
                               return GestureDetector(
                                   child: Card(
                                   elevation: 0,
@@ -1212,7 +1213,14 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text('${reschedule.auditor}', style: CustomStyles.textBold15Px),
-                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textRegular13Px),
+                                            if(statusReschedules == 'Pending')
+                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumGrey13Px),
+                                            if(statusReschedules == 'Reject')
+                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumRed13Px),
+                                            if(statusReschedules == 'Approve')
+                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumGreen13Px),
+                                            if(statusReschedules == 'Request')
+                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumBlue13Px),
                                           ],
                                         ),
 

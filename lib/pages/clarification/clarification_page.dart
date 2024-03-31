@@ -447,7 +447,18 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
               })
             ],
           ),
-        ));
+        ),
+      floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: CustomStyles.customRoundedButton,
+          backgroundColor: CustomColors.blue
+        ),
+        onPressed: (){
+          Get.to(() => const InputClarificationPageAuditRegion(id: 0));
+        },
+        child: Text('Input klarifikasi', style: CustomStyles.textMediumWhite15Px)
+      ),
+    );
   }
   
   void showBottomSheetFilterClarificationAuditRegion() {

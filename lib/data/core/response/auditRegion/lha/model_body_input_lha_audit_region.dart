@@ -1,41 +1,77 @@
+import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
+
 class ModelBodyInputLhaAuditRegion {
-  int? division;
-  String? findingDescription;
-  int? sopCategory;
-  String? temporaryRecommendation;
-  String? permanentRecommendation;
-  String? recommendationOrSuggest;
-  int? research;
+  int? scheduleId;
+  int? branchId;
+  List<LhaDetail>? lhaDetail;
 
   ModelBodyInputLhaAuditRegion(
-      {this.division,
-      this.findingDescription,
-      this.sopCategory,
-      this.temporaryRecommendation,
-      this.permanentRecommendation,
-      this.recommendationOrSuggest,
-      this.research});
+      {this.scheduleId, this.branchId, this.lhaDetail});
 
   ModelBodyInputLhaAuditRegion.fromJson(Map<String, dynamic> json) {
-    division = json['division'];
-    findingDescription = json['finding_description'];
-    sopCategory = json['sop_category'];
+    scheduleId = json['schedule_id'];
+    branchId = json['branch_id'];
+    if (json['lha_detail'] != null) {
+      lhaDetail = <LhaDetail>[];
+      json['lha_detail'].forEach((v) {
+        lhaDetail!.add(new LhaDetail.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['schedule_id'] = this.scheduleId;
+    data['branch_id'] = this.branchId;
+    if (this.lhaDetail != null) {
+      data['lha_detail'] = this.lhaDetail!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class LhaDetail {
+  int? caseId;
+  int? caseCategoryId;
+  String? description;
+  String? suggestion;
+  String? temporaryRecommendation;
+  String? permanentRecommendation;
+  int? research;
+  ModelListDivisionAuditRegion? divisionName;
+  ModelListSopAuditRegion? sopName;
+
+  LhaDetail(
+      {this.caseId,
+      this.caseCategoryId,
+      this.description,
+      this.suggestion,
+      this.temporaryRecommendation,
+      this.permanentRecommendation,
+      this.research,
+      this.divisionName,
+      this.sopName});
+
+  LhaDetail.fromJson(Map<String, dynamic> json) {
+    caseId = json['case_id'];
+    caseCategoryId = json['case_category_id'];
+    description = json['description'];
+    suggestion = json['suggestion'];
     temporaryRecommendation = json['temporary_recommendation'];
     permanentRecommendation = json['permanent_recommendation'];
-    recommendationOrSuggest = json['recommendation_or_suggest'];
     research = json['research'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['division'] = this.division;
-    data['finding_description'] = this.findingDescription;
-    data['sop_category'] = this.sopCategory;
+    data['case_id'] = this.caseId;
+    data['case_category_id'] = this.caseCategoryId;
+    data['description'] = this.description;
+    data['suggestion'] = this.suggestion;
     data['temporary_recommendation'] = this.temporaryRecommendation;
     data['permanent_recommendation'] = this.permanentRecommendation;
-    data['recommendation_or_suggest'] = this.recommendationOrSuggest;
     data['research'] = this.research;
     return data;
   }
 }
-

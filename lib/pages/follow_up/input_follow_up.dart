@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 
 
 class InputFollowUp extends StatefulWidget {
-  const InputFollowUp({super.key});
+  final String auditor;
+  final String noClarification;
+  const InputFollowUp({super.key, required this.auditor, required this.noClarification});
 
   @override
   State<InputFollowUp> createState() => _InputFollowUpState();
@@ -42,6 +44,18 @@ class _InputFollowUpState extends State<InputFollowUp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
+              Text('No klarifikasi :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 5),   
+              Text('${widget.noClarification} :', style: CustomStyles.textMedium13Px),
+
+              const SizedBox(height: 15),   
+              Text('Auditor :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 5),   
+              Text('${widget.auditor} :', style: CustomStyles.textMedium13Px),
+
+              const SizedBox(height: 15),
+              Text('Sanksi :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
               Wrap(
               spacing: 5,
               runSpacing: 5,

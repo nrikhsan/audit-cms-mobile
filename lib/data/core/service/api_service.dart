@@ -2,12 +2,10 @@ import 'package:audit_cms/data/core/response/auditArea/clarification/response_de
 import 'package:audit_cms/data/core/response/auditArea/lha/ModelBodyEditLhaAuditArea.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_area_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_status_schedules_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/schedules/response_add_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_audit_area.dart';
@@ -68,15 +66,15 @@ class ApiService {
 
   //audit area
   //schedules
-  Future<ResponseMessage>addScheduleAuditArea(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc) async {
+  Future<ResponseMessage>addScheduleAuditArea(List<ModelBodySchedulesAuditArea> schedule) async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}',
       'Content-Type': 'application/json'
     };
+    
     try {
       final response = await dio.post(AppConstant.addSchedulesAuditArea,
-          data: ModelBodyAddScheduleAuditArea(auditor: auditorId, area: areaId, branch: branchId,
-          startDate: startDate, endDate: endDat, scheduleDescription: desc).toJson());
+          data: {'schedule': schedule.toList()});
       print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
@@ -207,40 +205,13 @@ class ApiService {
     }
   }
 
-  Future<ResponseAreaAuditArea> getAreaAuditArea() async {
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
-    };
-    try {
-      final response = await dio.get(AppConstant.areaAuditArea);
-      
-      return ResponseAreaAuditArea.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
   Future<ResponseBranchAuditArea> getBranchAuditArea() async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}',
     };
     try {
       final response = await dio.get(AppConstant.branchAuditArea);
-      
       return ResponseBranchAuditArea.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  Future<ResponseStatusScheduleAuditArea> getStatusScheduleAuditArea() async {
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
-    };
-    try {
-      final response = await dio.get(AppConstant.statusAuditArea);
-      
-      return ResponseStatusScheduleAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
@@ -776,15 +747,14 @@ class ApiService {
 
 
   //LHA
-  Future<ResponseMessage>inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
+  Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, int branchId, List<LhaDetail>lhaDetail)async{
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.post(AppConstant.inputLhaAuditRegion,
-      data: ModelBodyInputLhaAuditRegion(division: divisionId, findingDescription: findingDesc,
-      sopCategory: sopId, temporaryRecommendation: temporaryRec, permanentRecommendation: permanentRec, research: researchValue, recommendationOrSuggest: suggest).toJson());
+      data: {'schedule_id': scheduleId, 'branch_id': branchId, 'lha_detail': lhaDetail.toList()});
       print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {

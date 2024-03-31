@@ -95,7 +95,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                   ),
                 ),
                 onTap: (){
-                    Get.to(() => const InputFollowUp());
+                    Get.to(() => InputFollowUp(auditor: followUp.auditor!, noClarification: followUp.noKlarifikasi!));
                   },
                 );
               }

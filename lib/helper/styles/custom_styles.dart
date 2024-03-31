@@ -89,6 +89,8 @@ class CustomStyles {
       color: CustomColors.black
   );
 
+  
+
   static TextStyle textMediumGrey13Px = const TextStyle(
       fontFamily: 'RobotoMedium',
       fontSize: 13,

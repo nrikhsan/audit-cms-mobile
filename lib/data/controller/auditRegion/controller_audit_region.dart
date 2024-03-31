@@ -44,7 +44,7 @@ class ControllerAuditRegion extends GetxController {
 
   //lha
   var detailLhaAuditRegion = Rxn<ModelDetailLhaAuditRegion>();
-  var dataListLocalLhaAuditRegion = <ModelBodyInputLhaAuditRegion>[].obs;
+  final RxList<LhaDetail> dataListLocalLhaAuditRegion = RxList<LhaDetail>();
   final RxList<ModelListLhaAuditRegion> lhaAuditRegion = <ModelListLhaAuditRegion>[].obs;
 
   //kka
@@ -219,25 +219,33 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
-  void addToLocalLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
-    final newDataLha = ModelBodyInputLhaAuditRegion(
-      division: divisionId, 
-      findingDescription: findingDesc, 
-      sopCategory: sopId, 
-      temporaryRecommendation: temporaryRec, 
-      permanentRecommendation: permanentRec,
-      recommendationOrSuggest: suggest,
-      research: researchValue
+  void addToLocalLhaAuditRegion(int caseId, int caseCategoryId, String description, String suggestion, String temporaryRecommendation, String permanentRecommendation, int research, String divisionName, String sopName)async{
+    final newDataLha = LhaDetail(
+      caseId: caseId,
+      caseCategoryId: caseCategoryId,
+      description: description,
+      suggestion: suggestion,
+      temporaryRecommendation: temporaryRecommendation,
+      permanentRecommendation: permanentRecommendation,
+      research: research,
+      divisionName: ModelListDivisionAuditRegion(id: caseId, nameDivision: divisionName),
+      sopName: ModelListSopAuditRegion(id: caseCategoryId, sopName: sopName)
     );
     dataListLocalLhaAuditRegion.add(newDataLha);
   }
 
-  void inputLhaAuditRegion(int divisionId, String findingDesc, int sopId, String temporaryRec, String permanentRec, int researchValue, String suggest)async{
+   void deleteLocalLha(int caseId)async{
+    final index = dataListLocalLhaAuditRegion.indexWhere((items) => items.caseId == caseId);
+    if(index != -1){
+      dataListLocalLhaAuditRegion.removeAt(index);
+    }
+  }
+
+  void inputLhaAuditRegion(int scheduleId, int branchId)async{
     try {
-      final response = await repositories.inputLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
-      dataListLocalLhaAuditRegion.clear();
-      addToLocalLhaAuditRegion(divisionId, findingDesc, sopId, temporaryRec, permanentRec, researchValue, suggest);
+      final response = await repositories.inputLhaAuditRegion(scheduleId, branchId, dataListLocalLhaAuditRegion.toList());
       message(response.toString());
+      dataListLocalLhaAuditRegion.clear();
     } catch (error) {
       throw Exception(error);
     }

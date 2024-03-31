@@ -1,60 +1,59 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
-import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
-class ControllerAuth extends GetxController{
+class ControllerAuth extends GetxController {
   final Repositories repository;
   var isLoading = false.obs;
-  var isLoggedIn = false.obs;
+  var isLogin = false.obs;
   var message = ''.obs;
-  var token = ''.obs;
-
+  var userLevel = ''.obs;
   ControllerAuth(this.repository);
 
-  void login(String email, String password) async {
-    isLoading(true);
-    try {
-      final loginResponse = await repository.login(email, password);
-
-      token(loginResponse.data!.token.toString());
-
-      await TokenManager.saveToken(token.string);
-      await TokenManager.saveRoleOrEmail(email);
-      isLoggedIn.value = true;
-
-      navigateBaseOnRole(email);
-
-      Get.snackbar('Selamat datang', email, snackPosition: SnackPosition.TOP,
-          colorText: CustomColors.white, backgroundColor: CustomColors.green);
-    } catch (error) {
-      throw Exception(error);
-    } finally {
-      isLoading(false);
-    }
+  @override
+  void onInit() {
+    checkLoginStatus();
+    super.onInit();
   }
 
-  void navigateBaseOnRole(String email) {
-  if (email == 'area@gmail.com') {
-      Get.offAll(() => BotNavePageAuditArea());
-    }else if(email == 'area51') {
-      Get.offAll(() => BotNavePageAuditArea());
-    }else if(email == 'wilayah@gmail.com'){
-      Get.offAll(() => BotNavAuditRegion());
-    }else if(email == 'wilayah51'){
-      Get.offAll(() => BotNavAuditRegion());
+  void login(String email, String password) async {
+    
+    isLoading.value = true;
+    try {
+      final response = await repository.login(email, password);
+      message.value = response.data.toString();
+      String tokenAuth = '${response.data?.token}';
+
+      decodeJWT(tokenAuth); 
+      await TokenManager.saveToken(tokenAuth);
+    } catch (error) {
+      throw Exception(error);
+    }finally{
+      isLoading.value = false;
     }
   }
   
-
-  Future<bool> checkLoggedIn() async {
-    final String? token = await TokenManager.getToken();
-    isLoggedIn.value = token != null;
-    if (isLoggedIn.value) {
-      final String? email = await TokenManager.getRoleOrEmail();
-      navigateBaseOnRole(email!);
+  void decodeJWT(String tokenAuth) {
+    Map<String, dynamic> payload = Jwt.parseJwt(tokenAuth);
+    userLevel.value = payload['user']['level']['name'];
+    navigateBasedOnRole(userLevel.value);
+    isLogin.value = true;
+  }
+  
+  void checkLoginStatus()async {
+    String? token = await TokenManager.getToken();
+    if (token != null) {
+      decodeJWT(token);
     }
-    return isLoggedIn.value;
+  } 
+  
+  void navigateBasedOnRole(String level) {
+    if (level == "AREA") {
+      Get.offAll(() => BotNavePageAuditArea());
+    } else if (level == "WILAYAH") {
+      Get.offAll(() => BotNavAuditRegion());
+    }
   }
 }

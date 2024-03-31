@@ -27,7 +27,6 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailScheduleAuditArea(widget.mainScheduleId);
-
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -217,6 +216,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
 
   @override
   Widget build(BuildContext context) {
+    controllerAuditArea.getDetailScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -404,6 +404,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
   final ControllerAuditArea controllerAuditArea = Get.find();
   @override
   Widget build(BuildContext context) {
+    controllerAuditArea.getDetailScheduleAuditArea(widget.rescheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -616,7 +617,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                   labelStyle: CustomStyles.textMediumWhite15Px,
                   child: const Icon(Icons.add_rounded, color: CustomColors.white),
                   onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const InputLhaPageAuditRegion()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId)));
                       }
                     ),
               SpeedDialChild(
@@ -799,6 +800,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   final ControllerAuditRegion controllerAuditRegion = Get.find();
   @override
   Widget build(BuildContext context) {
+    controllerAuditRegion.getDetailScheduleAuditRegion(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -819,7 +821,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const InputLhaPageAuditRegion()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId)));
               }
           ),
           SpeedDialChild(
@@ -1002,6 +1004,7 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
   final ControllerAuditRegion controllerAuditRegion = Get.find();
   @override
   Widget build(BuildContext context) {
+    controllerAuditRegion.getDetailScheduleAuditRegion(widget.rescheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -1022,7 +1025,7 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const InputLhaPageAuditRegion()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => InputLhaPageAuditRegion(scheduleId: widget.rescheduleId)));
               }
           ),
           SpeedDialChild(

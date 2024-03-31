@@ -25,7 +25,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: any
   downloads_path_provider_28: any
   file_picker: ^6.2.0
-  jwt_decoder: ^2.0.1
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:

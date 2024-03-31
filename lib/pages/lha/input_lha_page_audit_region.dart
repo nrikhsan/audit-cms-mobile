@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InputLhaPageAuditRegion extends StatefulWidget {
-  const InputLhaPageAuditRegion({super.key});
+  final int scheduleId;
+  const InputLhaPageAuditRegion({super.key, required this.scheduleId});
 
   @override
   State<InputLhaPageAuditRegion> createState() => _InputLhaPageAuditRegionState();
@@ -23,8 +24,8 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
 
-  int? _selecteDivision;
-  int? _selectSop;
+  ModelListDivisionAuditRegion? _selecteDivision;
+  ModelListSopAuditRegion? _selectSop;
   int? _selectedValueResearch;
   int? _selectedSuggest;
 
@@ -72,7 +73,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       value: _selecteDivision,
                       items: controllerAuditRegion.divisionAuditRegion.map((ModelListDivisionAuditRegion division){
                         return DropdownMenuItem(
-                          value: division.id,
+                          value: division,
                           child: Text('${division.nameDivision}', style: CustomStyles.textMedium15Px)
                           );
                       }).toList(), 
@@ -126,7 +127,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       value: _selectSop,
                       items: controllerAuditRegion.sopAuditRegion.map((ModelListSopAuditRegion sop){
                         return DropdownMenuItem(
-                          value: sop.id,
+                          value: sop,
                           child: Text('${sop.sopName}', style: CustomStyles.textMedium15Px)
                           );
                       }).toList(), 
@@ -265,42 +266,50 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                               Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
                               colorText: CustomColors.white, backgroundColor: CustomColors.red);
                             }else{
-                              controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!, descriptionFindingsController.text, 
-                              _selectSop!, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, suggestController.text);
+                              controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!.id!, _selectSop!.id!, descriptionFindingsController.text,
+                              suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _selecteDivision!.nameDivision!, _selectSop!.sopName!);
                             }
                           },
                           child: Text('Tambah LHA', style: CustomStyles.textBoldGreen13Px))
                     ],
                   ),
 
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Uraian temuan', style: CustomStyles.textMedium13Px),
-                    ],
-                  ),
-
                   const SizedBox(height: 15),
                   Obx(() => ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: controllerAuditRegion.dataListLocalLhaAuditRegion.length,
                       itemBuilder: (_, index){
                         final data = controllerAuditRegion.dataListLocalLhaAuditRegion[index];
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                          children: [
-                            Text('${data.findingDescription}', style: CustomStyles.textRegular13Px, maxLines: 5, overflow: TextOverflow.ellipsis),
-
-                            GestureDetector(
-                              child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
-                              onTap: ()async{
-                                Get.snackbar('Alert', 'Data berhasil dihapus', snackPosition: SnackPosition.TOP, 
-                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                              },
-                            )
-                          ],  
+                        return Card(
+                              elevation: 0,
+                              shape: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: CustomColors.grey)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    Text('${data.divisionName!.nameDivision}', style: CustomStyles.textBold13Px),
+                                    const SizedBox(height: 10),
+                                    Text('${data.description}', style: CustomStyles.textRegular13Px, maxLines: 5, overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                                
+                                GestureDetector(
+                                  child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
+                                  onTap: ()async{
+                                    controllerAuditRegion.deleteLocalLha(data.caseId!);
+                                  },
+                                )
+                              ],
+                            ),
+                          )
                         );
                       }
                   )),
@@ -320,14 +329,12 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                           Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
                             colorText: CustomColors.white, backgroundColor: CustomColors.red);
                         }else if(_selectedValueResearch == 1){
-                          controllerAuditRegion.inputLhaAuditRegion(_selecteDivision!, descriptionFindingsController.text, 
-                          _selectSop!, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, suggestController.text);
+                          controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
                           Get.snackbar('Alert', 'Lha berhasil dibuat', snackPosition: SnackPosition.TOP, 
                             colorText: CustomColors.white, backgroundColor: CustomColors.green);
                           Get.to(() => const ClarificationPageAuditRegion());
                       }else{
-                        controllerAuditRegion.inputLhaAuditRegion(_selecteDivision!, descriptionFindingsController.text, 
-                          _selectSop!, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, suggestController.text);
+                        controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
                           Get.snackbar('Alert', 'Lha berhasil dibuat', snackPosition: SnackPosition.TOP, 
                             colorText: CustomColors.white, backgroundColor: CustomColors.green);
                           Get.offAll(() => BotNavAuditRegion());

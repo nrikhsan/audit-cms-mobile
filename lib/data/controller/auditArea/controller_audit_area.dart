@@ -7,11 +7,10 @@ import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_a
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_area_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/schedules/model_local_add_schedules.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -33,12 +32,13 @@ class ControllerAuditArea extends GetxController{
   final RxList<ModelMainSchedulesAuditArea> mainSchedulesAuditArea = <ModelMainSchedulesAuditArea>[].obs;
   final RxList<ModelSpecialSchedulesAuditArea> specialSchedulesAuditArea = <ModelSpecialSchedulesAuditArea>[].obs;
   final RxList<ModelReschedulesAuditArea> resSchedulesAuditArea = <ModelReschedulesAuditArea>[].obs;
-  var dataListLocalSchedulesAuditArea = <ModelLocalSchedulesAuditArea>[].obs;
+  final RxList<ModelBodySchedulesAuditArea> dataListLocalMainSchedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
+  final RxList<ModelBodySchedulesAuditArea> dataListLocalSpecialSchedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
+  final RxList<ModelBodySchedulesAuditArea> dataListLocalReschedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
   var detailScheduleAuditArea =  Rxn<ModelDetailSchedulesAuditArea>();
 
   //master
   final RxList<ModelListAuditorAuditArea> auditorAuditArea = <ModelListAuditorAuditArea>[].obs;
-  final RxList<ModelListAreaAuditArea> areaAuditArea = <ModelListAreaAuditArea>[].obs;
   final RxList<ModelListBranchAuditArea> branchAuditArea = <ModelListBranchAuditArea>[].obs;
   final RxList<ModelListAttachmentAuditArea> attachmentAuditArea = <ModelListAttachmentAuditArea>[].obs;
 
@@ -79,7 +79,6 @@ class ControllerAuditArea extends GetxController{
     loadSpecialSchedulesAuditArea();
     loadReschedulesAuditArea();
     loadAuditorAuditArea();
-    loadAreaAuditArea();
     loadBranchAuditArea();
     loadLhaAuditArea();
     loadClarificationAuditArea();
@@ -90,32 +89,96 @@ class ControllerAuditArea extends GetxController{
     super.onInit();
   }
 
-  void addLocalDataSchedule(ModelListAuditorAuditArea auditor, ModelListAreaAuditArea area, ModelListBranchAuditArea branch, String startDate, String endDate, String desc)async {
-    final newData = ModelLocalSchedulesAuditArea(
-      auditor: auditor.auditorName, 
-      area: area.areaName,
-      branch: branch.branchName, 
+  //main shedule
+  void addLocalDataMainSchedule(int auditor, int branch, String userName, String branchName, String startDate, String endDate, String desc)async {
+    final newData = ModelBodySchedulesAuditArea(
+      userId: auditor,
+      branchId: branch, 
       startDate: startDate, 
-      endDate: endDate, 
-      scheduleDescription: desc
+      endDate: endDate,
+      description: desc,
+      userName: ModelListAuditorAuditArea(id: auditor, auditorName: userName),
+      branchName: ModelListBranchAuditArea(id: branch, branchName: branchName)
       );
-    dataListLocalSchedulesAuditArea.add(newData);
+    dataListLocalMainSchedulesAuditArea.add(newData);
   }
 
-  void addSchedules(int auditorId, int areaId, int branchId, String startDate, String endDat, String desc)async{
+  void addMainSchedules()async{
     try{     
-      final addSchedules = await repository.addSchedulesAuditArea(auditorId, areaId, branchId, startDate, endDat, desc);
+      final addSchedules = await repository.addSchedulesAuditArea(dataListLocalMainSchedulesAuditArea.toList());
       message(addSchedules.toString());
-      dataListLocalSchedulesAuditArea.clear();
+      dataListLocalMainSchedulesAuditArea.clear();
     }catch(error){
       throw Exception(error);
     }
   }
 
-  void deleteLocalDataSchedule(String auditor)async{
-    final index = dataListLocalSchedulesAuditArea.indexWhere((items) => items.auditor == auditor);
+  void deleteLocalDataMainSchedule(int auditor)async{
+    final index = dataListLocalMainSchedulesAuditArea.indexWhere((items) => items.userId == auditor);
     if(index != -1){
-      dataListLocalSchedulesAuditArea.removeAt(index);
+      dataListLocalMainSchedulesAuditArea.removeAt(index);
+    }
+  }
+
+  //special schedule
+  void addLocalDataSpecialSchedule(int auditor, int branch, String userName, String branchName, String startDate, String endDate, String desc)async {
+    final newData = ModelBodySchedulesAuditArea(
+      userId: auditor,
+      branchId: branch, 
+      startDate: startDate, 
+      endDate: endDate,
+      description: desc,
+      userName: ModelListAuditorAuditArea(id: auditor, auditorName: userName),
+      branchName: ModelListBranchAuditArea(id: branch, branchName: branchName)
+      );
+    dataListLocalSpecialSchedulesAuditArea.add(newData);
+  }
+
+  void addSpecialSchedules()async{
+    try{     
+      final addSchedules = await repository.addSchedulesAuditArea(dataListLocalSpecialSchedulesAuditArea.toList());
+      message(addSchedules.toString());
+      dataListLocalSpecialSchedulesAuditArea.clear();
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+
+  void deleteLocalDataSpecialSchedule(int auditor)async{
+    final index = dataListLocalSpecialSchedulesAuditArea.indexWhere((items) => items.userId == auditor);
+    if(index != -1){
+      dataListLocalSpecialSchedulesAuditArea.removeAt(index);
+    }
+  }
+
+   //Reschedule
+  void addLocalDataReschedule(int auditor, int branch, String userName, String branchName, String startDate, String endDate, String desc)async {
+    final newData = ModelBodySchedulesAuditArea(
+      userId: auditor,
+      branchId: branch, 
+      startDate: startDate, 
+      endDate: endDate,
+      description: desc,
+      userName: ModelListAuditorAuditArea(id: auditor, auditorName: userName),
+      branchName: ModelListBranchAuditArea(id: branch, branchName: branchName)
+      );
+    dataListLocalReschedulesAuditArea.add(newData);
+  }
+
+  void addReschedules()async{
+    try{     
+      final addSchedules = await repository.addSchedulesAuditArea(dataListLocalReschedulesAuditArea.toList());
+      message(addSchedules.toString());
+      dataListLocalReschedulesAuditArea.clear();
+    }catch(error){
+      throw Exception(error);
+    }
+  }
+
+  void deleteLocalDataReschedule(int auditor)async{
+    final index = dataListLocalReschedulesAuditArea.indexWhere((items) => items.userId == auditor);
+    if(index != -1){
+      dataListLocalReschedulesAuditArea.removeAt(index);
     }
   }
 
@@ -196,15 +259,6 @@ class ControllerAuditArea extends GetxController{
     try{
       final responseAuditor = await repository.getAuditorAuditArea();
       auditorAuditArea.assignAll(responseAuditor.dataAuditor ?? []);
-    }catch(error){
-      throw Exception(error);
-    }
-  }
-
-  void loadAreaAuditArea()async {
-    try{
-      final responseArea = await repository.getAreaAuditArea();
-      areaAuditArea.assignAll(responseArea.dataArea ?? []);
     }catch(error){
       throw Exception(error);
     }
