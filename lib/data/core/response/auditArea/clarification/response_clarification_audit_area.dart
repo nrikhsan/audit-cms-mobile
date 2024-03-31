@@ -58,7 +58,8 @@ class Metadata {
 class ModelListClarificationAuditArea {
   int? id;
   int? noDocument;
-  int? statusClarification;
+  String? statusClarification;
+  int? isFlag;
   String? auditor;
   String? branch;
   String? clarificationDate;
@@ -78,29 +79,31 @@ class ModelListClarificationAuditArea {
 
   ModelListClarificationAuditArea(
       {this.id,
-        this.noDocument,
-        this.statusClarification,
-        this.auditor,
-        this.branch,
-        this.clarificationDate,
-        this.noClarification,
-        this.noBap,
-        this.clarificationCategory,
-        this.limitEvaluation,
-        this.divisionOrAreaBeingAudited,
-        this.part,
-        this.directSupervisor,
-        this.dear,
-        this.explanationOfAuditFinding,
-        this.findingPriority,
-        this.clarificationIdentidication,
-        this.clarificationDoc,
-        this.bapDoc});
+      this.noDocument,
+      this.statusClarification,
+      this.isFlag,
+      this.auditor,
+      this.branch,
+      this.clarificationDate,
+      this.noClarification,
+      this.noBap,
+      this.clarificationCategory,
+      this.limitEvaluation,
+      this.divisionOrAreaBeingAudited,
+      this.part,
+      this.directSupervisor,
+      this.dear,
+      this.explanationOfAuditFinding,
+      this.findingPriority,
+      this.clarificationIdentidication,
+      this.clarificationDoc,
+      this.bapDoc});
 
   ModelListClarificationAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     noDocument = json['no_document'];
     statusClarification = json['status_clarification'];
+    isFlag = json['is_flag'];
     auditor = json['auditor'];
     branch = json['branch'];
     clarificationDate = json['clarification_date'];
@@ -116,7 +119,7 @@ class ModelListClarificationAuditArea {
     findingPriority = json['finding_priority'];
     clarificationIdentidication = json['clarification_identidication'] != null
         ? new ClarificationIdentidication.fromJson(
-        json['clarification_identidication'])
+            json['clarification_identidication'])
         : null;
     clarificationDoc = json['clarification_doc'];
     bapDoc = json['bap_doc'];
@@ -127,6 +130,7 @@ class ModelListClarificationAuditArea {
     data['id'] = this.id;
     data['no_document'] = this.noDocument;
     data['status_clarification'] = this.statusClarification;
+    data['is_flag'] = this.isFlag;
     data['auditor'] = this.auditor;
     data['branch'] = this.branch;
     data['clarification_date'] = this.clarificationDate;

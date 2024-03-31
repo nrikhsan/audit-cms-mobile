@@ -58,7 +58,8 @@ class Metadata {
 class ModelListClarificationAuditRegion {
   int? id;
   int? noDocument;
-  int? statusClarification;
+  String? statusClarification;
+  int? isFlag;
   String? auditor;
   String? branch;
   String? clarificationDate;
@@ -78,29 +79,31 @@ class ModelListClarificationAuditRegion {
 
   ModelListClarificationAuditRegion(
       {this.id,
-        this.noDocument,
-        this.statusClarification,
-        this.auditor,
-        this.branch,
-        this.clarificationDate,
-        this.noClarification,
-        this.noBap,
-        this.clarificationCategory,
-        this.limitEvaluation,
-        this.divisionOrAreaBeingAudited,
-        this.part,
-        this.directSupervisor,
-        this.dear,
-        this.explanationOfAuditFinding,
-        this.findingPriority,
-        this.clarificationIdentidication,
-        this.clarificationDoc,
-        this.bapDoc});
+      this.noDocument,
+      this.statusClarification,
+      this.isFlag,
+      this.auditor,
+      this.branch,
+      this.clarificationDate,
+      this.noClarification,
+      this.noBap,
+      this.clarificationCategory,
+      this.limitEvaluation,
+      this.divisionOrAreaBeingAudited,
+      this.part,
+      this.directSupervisor,
+      this.dear,
+      this.explanationOfAuditFinding,
+      this.findingPriority,
+      this.clarificationIdentidication,
+      this.clarificationDoc,
+      this.bapDoc});
 
   ModelListClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     noDocument = json['no_document'];
     statusClarification = json['status_clarification'];
+    isFlag = json['is_flag'];
     auditor = json['auditor'];
     branch = json['branch'];
     clarificationDate = json['clarification_date'];
@@ -116,7 +119,7 @@ class ModelListClarificationAuditRegion {
     findingPriority = json['finding_priority'];
     clarificationIdentidication = json['clarification_identidication'] != null
         ? new ClarificationIdentidication.fromJson(
-        json['clarification_identidication'])
+            json['clarification_identidication'])
         : null;
     clarificationDoc = json['clarification_doc'];
     bapDoc = json['bap_doc'];
@@ -127,6 +130,7 @@ class ModelListClarificationAuditRegion {
     data['id'] = this.id;
     data['no_document'] = this.noDocument;
     data['status_clarification'] = this.statusClarification;
+    data['is_flag'] = this.isFlag;
     data['auditor'] = this.auditor;
     data['branch'] = this.branch;
     data['clarification_date'] = this.clarificationDate;
@@ -169,49 +173,6 @@ class ClarificationIdentidication {
     data['clarification_evaluation'] = this.clarificationEvaluation;
     data['nominal_loss'] = this.nominalLoss;
     data['reason'] = this.reason;
-    return data;
-  }
-}
-
-
-class ClarificationIdentidicationAuditRegion {
-  String? clarificationEvaluation;
-  int? nominalLoss;
-  String? reason;
-
-  ClarificationIdentidicationAuditRegion(
-      {this.clarificationEvaluation, this.nominalLoss, this.reason});
-
-  ClarificationIdentidicationAuditRegion.fromJson(Map<String, dynamic> json) {
-    clarificationEvaluation = json['clarification_evaluation'];
-    nominalLoss = json['nominal_loss'];
-    reason = json['reason'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['clarification_evaluation'] = this.clarificationEvaluation;
-    data['nominal_loss'] = this.nominalLoss;
-    data['reason'] = this.reason;
-    return data;
-  }
-}
-
-class ModelDocClarificationAuditRegion {
-  int? id;
-  String? clarificationDoc;
-
-  ModelDocClarificationAuditRegion({this.id, this.clarificationDoc});
-
-  ModelDocClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    clarificationDoc = json['clarification_doc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['clarification_doc'] = this.clarificationDoc;
     return data;
   }
 }

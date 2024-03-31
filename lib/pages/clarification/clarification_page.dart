@@ -3,6 +3,7 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/detail_clarfication.dart';
+import 'package:audit_cms/pages/clarification/document_clarification_page_audit_region.dart';
 import 'package:audit_cms/pages/clarification/input_clarification_page_audit_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -46,78 +47,85 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                 icon: const Icon(Icons.tune_rounded,size: 25, color: CustomColors.grey)),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Obx(() {
+        body: Obx(() {
                 if (controllerAuditArea.isLoading.value) {
                   return const Center(child: SpinKitCircle(color: CustomColors.blue));
                 } else {
-                  return Column(
-                    children: [
-                      ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controllerAuditArea.clarificationAuitArea.length,
-                      itemBuilder: (_, index) {
-                        final clarification = controllerAuditArea.clarificationAuitArea[index];
-                        return GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => DetailClarificationPageAuditArea(id: clarification.id!)));
-                  },
-                  child: Card(
-                  shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(
-                      color: CustomColors.grey
-                    )
-                  ),
-                  elevation: 0,
-                  child: Padding(
+                  return Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Wrap(
-                              children: [
-                                
-                                Text('${clarification.auditor}', style: CustomStyles.textBold15Px),
-                                const SizedBox(width: 10),
-                                Icon(clarification.statusClarification == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
-                              ],
-                            ),
-                            Text('${clarification.noDocument}', style: CustomStyles.textBold13Px),
-                          ],
-                        ),
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controllerAuditArea.clarificationAuitArea.length,
+                        itemBuilder: (_, index) {
+                          final clarification = controllerAuditArea.clarificationAuitArea[index];
+                          final statusClarificaion = clarification.statusClarification;
+                          return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => DetailClarificationPageAuditArea(id: clarification.id!)));
+                    },
+                    child: Card(
+                    shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: CustomColors.grey
+                      )
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Wrap(
+                                children: [
+                                  
+                                  Text('${clarification.auditor}', style: CustomStyles.textBold15Px),
+                                  const SizedBox(width: 10),
+                                  Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                                ],
+                              ),
+                              Text('${clarification.noDocument}', style: CustomStyles.textBold13Px),
+                            ],
+                          ),
+                    
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
 
-                        const SizedBox(height: 10),
+                              const SizedBox(height: 5),
+                              if(statusClarificaion == 'Input')
+                              Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
+                    
+                              if(statusClarificaion == 'Download')
+                              Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Prioritas temuan : ${clarification.findingPriority}', style: CustomStyles.textMedium13Px),
-                            Text('Cabang : ${clarification.branch}', style: CustomStyles.textMedium13Px),
-                            Text('Batas evaluasi : ${clarification.limitEvaluation}', style: CustomStyles.textMedium13Px),
-                          ],
-                        ),
-                      ],
+                              if(statusClarificaion == 'Upload')
+                              Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
+
+                              if(statusClarificaion == 'Done')
+                              Text('Selesai', style: CustomStyles.textMediumGreen13Px),
+                              
+                              const SizedBox(height: 5),
+                              Text('Prioritas temuan : ${clarification.findingPriority}', style: CustomStyles.textMedium13Px),
+                              Text('Cabang : ${clarification.branch}', style: CustomStyles.textMedium13Px),
+                              Text('Batas evaluasi : ${clarification.limitEvaluation}', style: CustomStyles.textMedium13Px),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-                      })
-                    ],
-                  );
-                }
-              })
-            ],
-          ),
-        ));
+                );
+              }
+            ),
+          );
+        }
+      }
+    )
+    );
   }
   
   void showDialogFilterClarificationAuditArea() {
@@ -379,75 +387,86 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
           ],
         ),
 
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Obx(() {
+        body: Obx(() {
                 if (controllerAuditRegion.isLoading.value) {
                   return const Center(child: SpinKitCircle(color: CustomColors.blue));
                 } else {
-                  return Column(
-                    children: [
-                      ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controllerAuditRegion.clarificationAuditRegion.length,
-                      itemBuilder: (_, index) {
-                        final clarification = controllerAuditRegion.clarificationAuditRegion[index];
-                        return GestureDetector(
-                           onTap: (){
-                              Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
-                          },
-                  child: Card(
-                  shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(
-                      color: CustomColors.grey
-                    )
-                  ),
-                  elevation: 0,
-                  child: Padding(
+                  return Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Wrap(
-                          children: [
-                            clarification.statusClarification == 1 
-                            ? const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 15)
-                            : const SizedBox(height: 0)
-                          ]
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('${clarification.noDocument}', style: CustomStyles.textBold15Px),
-                            IconButton(
-                              onPressed: (){
-                                showDialogMoreOption(clarification.id!);
-                              }, 
-                              icon: const Icon(Icons.more_vert_rounded, color: CustomColors.grey, size: 25)
-                            )
-                        ],),
-                        Row(
-                          children: [
-                            Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
-                          ],
-                        ),
-                      ],
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controllerAuditRegion.clarificationAuditRegion.length,
+                        itemBuilder: (_, index) {
+                          final clarification = controllerAuditRegion.clarificationAuditRegion[index];
+                          final statusClarificaion = clarification.statusClarification;
+                          return GestureDetector(
+                             onTap: (){
+                              if(statusClarificaion == 'Input'){
+                                Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
+                              }else if(statusClarificaion == 'Download'){
+                                Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!));
+                              }else if(statusClarificaion == 'Upload'){
+                                Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!));
+                              }else if(statusClarificaion == 'Done'){
+                                Get.to(() => DetailClarificationAuditRegion(id: clarification.id!));
+                              }
+                            },
+                    child: Card(
+                    shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: CustomColors.grey
+                      )
                     ),
-                  ),
-                ),
-              );
-                      })
-                    ],
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          
+                          Wrap(
+                            children: [
+                              clarification.isFlag == 1 
+                              ? const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 15)
+                              : const SizedBox(height: 0)
+                            ]
+                          ),
+                              const SizedBox(height: 10),
+                                if(statusClarificaion == 'Input')
+                                Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
+                      
+                                if(statusClarificaion == 'Download')
+                                Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
+                    
+                                if(statusClarificaion == 'Upload')
+                                Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
+                    
+                                if(statusClarificaion == 'Done')
+                                Text('Selesai', style: CustomStyles.textMediumGreen13Px),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${clarification.noDocument}', style: CustomStyles.textBold15Px),
+                              IconButton(
+                                onPressed: (){
+                                  showDialogMoreOption(clarification.id!);
+                                }, 
+                                icon: const Icon(Icons.more_vert_rounded, color: CustomColors.grey, size: 25)
+                              )
+                          ],),
+                          Row(
+                            children: [
+                              Text('${clarification.noClarification}', style: CustomStyles.textBold13Px),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )));
+                    }),
                   );
                 }
-              })
-            ],
-          ),
-        ),
+              }),
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: CustomStyles.customRoundedButton,
