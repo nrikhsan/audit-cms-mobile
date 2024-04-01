@@ -1,8 +1,8 @@
 import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../helper/styles/custom_styles.dart';
 
@@ -55,78 +55,12 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: startDateControllerMainSchedule,
-                onChanged: (startDate) => startDateControllerMainSchedule.text = startDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Mulai dari...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    startDateControllerMainSchedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleStartDate(context, startDateControllerMainSchedule),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: endDateControllerMainSchedule,
-                onChanged: (endDate) => endDateControllerMainSchedule.text = endDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Sampai dengan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    endDateControllerMainSchedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleEndDate(context, endDateControllerMainSchedule),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
@@ -198,25 +132,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: scheduleDescControllerMainSchedule,
-                onChanged: (desc) => scheduleDescControllerMainSchedule.text = desc,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Uraian jadwal...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputDescriptionSchedule(scheduleDescControllerMainSchedule),
 
               const SizedBox(height: 25),
               Column(
@@ -359,78 +275,12 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: startDateControllerSpecialSchedule,
-                onChanged: (startDate) => startDateControllerSpecialSchedule.text = startDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Mulai dari...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    startDateControllerSpecialSchedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleStartDate(context, startDateControllerSpecialSchedule),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: endDateControllerSpecialSchedule,
-                onChanged: (endDate) => endDateControllerSpecialSchedule.text = endDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Sampai dengan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    endDateControllerSpecialSchedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleEndDate(context, endDateControllerSpecialSchedule),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
@@ -503,25 +353,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: scheduleDescControllerSpecialSchedule,
-                onChanged: (desc) => scheduleDescControllerSpecialSchedule.text = desc,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Uraian jadwal...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputDescriptionSchedule(scheduleDescControllerSpecialSchedule),
 
               const SizedBox(height: 25),
               Column(
@@ -665,78 +497,12 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: startDateControllerReschedule,
-                onChanged: (startDate) => startDateControllerReschedule.text = startDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Mulai dari...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    startDateControllerReschedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleStartDate(context, startDateControllerReschedule),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: endDateControllerReschedule,
-                onChanged: (endDate) => endDateControllerReschedule.text = endDate,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Sampai dengan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    endDateControllerReschedule.text = DateFormat('yyyy-MM-dd').format(picked);
-                  }
-                },
-              ),
+              formInputAddScheduleEndDate(context, endDateControllerReschedule),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
@@ -808,25 +574,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: scheduleDescControllerReschedule,
-                onChanged: (desc) => scheduleDescControllerReschedule.text = desc,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Uraian jadwal...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputDescriptionSchedule(scheduleDescControllerReschedule),
 
               const SizedBox(height: 25),
               Column(

@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -50,20 +51,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              TextField(
-                  controller: lhaDescriptionController,
-                  onChanged: (value) => lhaDescriptionController.text = value,
-                  maxLines: 10,
-                  cursorColor: CustomColors.blue,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.grey)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.grey)))),
+              formEditLha(lhaDescriptionController),
 
               const SizedBox(height: 30),
 

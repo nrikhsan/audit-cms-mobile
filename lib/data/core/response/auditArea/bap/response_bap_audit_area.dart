@@ -9,27 +9,27 @@ class ResponseBapAuditArea {
 
   ResponseBapAuditArea.fromJson(Map<String, dynamic> json) {
     metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
+        ? Metadata.fromJson(json['metadata'])
         : null;
     status = json['status'];
     message = json['message'];
     if (json['data_bap'] != null) {
       dataBap = <ModelListBapAuditArea>[];
       json['data_bap'].forEach((v) {
-        dataBap!.add(new ModelListBapAuditArea.fromJson(v));
+        dataBap!.add(ModelListBapAuditArea.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (metadata != null) {
+      data['metadata'] = metadata!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.dataBap != null) {
-      data['data_bap'] = this.dataBap!.map((v) => v.toJson()).toList();
+    data['status'] = status;
+    data['message'] = message;
+    if (dataBap != null) {
+      data['data_bap'] = dataBap!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -47,9 +47,9 @@ class Metadata {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -92,17 +92,17 @@ class ModelListBapAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['no_bap'] = this.noBap;
-    data['no_clarification'] = this.noClarification;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['area'] = this.area;
-    data['date_bap'] = this.dateBap;
-    data['start_date_examination_period'] = this.startDateExaminationPeriod;
-    data['end_date_examination_period'] = this.endDateExaminationPeriod;
-    data['bap_doc'] = this.bapDoc;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['no_bap'] = noBap;
+    data['no_clarification'] = noClarification;
+    data['auditor'] = auditor;
+    data['branch'] = branch;
+    data['area'] = area;
+    data['date_bap'] = dateBap;
+    data['start_date_examination_period'] = startDateExaminationPeriod;
+    data['end_date_examination_period'] = endDateExaminationPeriod;
+    data['bap_doc'] = bapDoc;
     return data;
   }
 }

@@ -2,6 +2,7 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/input_bap_page.audit_region.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
+import 'package:audit_cms/pages/clarification/widgetClarification/widget_form_input_clarification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -95,48 +96,13 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
 
               const SizedBox(height: 15),
               if(_loss == 1)
-              TextField(
-                controller: lossController,
-                keyboardType: TextInputType.number,
-                onChanged: (loss) => lossController.text = loss,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan kerugian...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputLoss(lossController),
 
 
               const SizedBox(height: 15),
               Text('Deskripsi atau rekomendasi : ', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-
-              TextField(
-                controller: descController,
-                maxLines: 5,
-                onChanged: (desc) => descController.text = desc,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan deskripsi atau rekomendasi...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputDesc(descController),
 
               const SizedBox(height: 15),
               Text('Tindak lanjut : ', style: CustomStyles.textBold15Px),

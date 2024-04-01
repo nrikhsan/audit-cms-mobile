@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/document_follow_up_page.dart';
+import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_form_input_follow_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -80,47 +81,12 @@ class _InputFollowUpState extends State<InputFollowUp> {
             const SizedBox(height: 15),
               Text('Realisasi :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: realizationController,
-                onChanged: (realization) => realizationController.text = realization,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Realisasi...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputRealizationFollowUp(realizationController),
 
               const SizedBox(height: 15),
               Text('Alasan sanksi :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: explanationPenaltyController,
-                onChanged: (explanationPenalty) => explanationPenaltyController.text = explanationPenalty,
-                cursorColor: CustomColors.blue,
-                maxLines: 5,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan alasan sanksi...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputExplanationPenalty(explanationPenaltyController),
 
               const SizedBox(height: 15),
               Text('Lampiran :', style: CustomStyles.textMedium15Px),

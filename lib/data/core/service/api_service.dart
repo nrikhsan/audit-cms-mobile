@@ -114,6 +114,7 @@ class ApiService {
     }
   }
 
+
   Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea() async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}'

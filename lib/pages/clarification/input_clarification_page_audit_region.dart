@@ -2,9 +2,9 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/clarification/document_clarification_page_audit_region.dart';
+import 'package:audit_cms/pages/clarification/widgetClarification/widget_form_input_clarification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 
 class InputClarificationPageAuditRegion extends StatefulWidget {
@@ -89,153 +89,32 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
               const SizedBox(height: 15),
               Text('Batasan evaluasi :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                readOnly: true,
-                controller: limitEvaluationController,
-                onChanged: (limit) => limitEvaluationController.text = limit,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Masukan batasan evaluasi...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-                onTap: ()async{
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100)
-                  );
-                  if(picked != null){
-                    setState(() {
-                      limitEvaluationController.text = DateFormat('yyyy-MM-dd').format(picked);
-                    });
-                  }
-                },
-              ),
+              formInputLimitEvaluation(context, limitEvaluationController),
 
               const SizedBox(height: 15),
               Text('Lokasi pemeriksaan yang diaudit :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: auditLocationController,
-                onChanged: (location) => auditLocationController.text = location,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan lokasi pemeriksaan yang diaudit...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputAllClarification('Masukan lokasi pemeriksaan yang diaudit...', auditLocationController),
 
               const SizedBox(height: 15),
               Text('Divisi yang diperiksa :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: divisionInspectionController,
-                onChanged: (division) => divisionInspectionController.text = division,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan divisi yang diperiksa...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputAllClarification('Masukan divisi yang diperiksa...', divisionInspectionController),
 
               const SizedBox(height: 15),
               Text('Atasan langsung :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: directSupervisorController,
-                onChanged: (superVisor) => directSupervisorController.text = superVisor,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan pesan atasan langsung...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputAllClarification('Masukan pesan atasan langsung...', directSupervisorController),
 
               const SizedBox(height: 15),
               Text('Kepada Yth/jabatan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: dearController,
-                onChanged: (dear) => dearController.text = dear,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan pesan untuk Yth/jabatan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputAllClarification('Masukan pesan untuk Yth/jabatan...', dearController),
 
               const SizedBox(height: 15),
               Text('Penjabaran temuan audit :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                maxLines: 5,
-                controller: findingDescriptionController,
-                onChanged: (finding) => findingDescriptionController.text = finding,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan penjabaran temuan audit...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputAllClarification('Masukan penjabaran temuan audit...', findingDescriptionController),
 
               const SizedBox(height: 15),
                 Text('Prioritas temuan :', style: CustomStyles.textBold15Px),

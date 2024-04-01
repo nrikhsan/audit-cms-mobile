@@ -1,6 +1,6 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
+import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,7 +55,7 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
                   backgroundColor: CustomColors.blue
                 ),
                 onPressed: (){
-                  uploadBapAuditRegion();
+                  uploadBapAuditRegion(context, controllerAuditRegion);
                 }, 
                 child: Text('Upload BAP', style: CustomStyles.textMediumWhite15Px)
               ),
@@ -64,53 +64,5 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
         ),
       ),
     );
-  }
-
-   void uploadBapAuditRegion() {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            elevation: 0,
-            title: const Text("Upload PDF File"),
-            titleTextStyle: CustomStyles.textBold18Px,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-
-                const SizedBox(height: 10),
-
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
-
-                TextButton(
-                  onPressed: () =>
-                      controllerAuditRegion.pickFileBapAuditRegion(),
-                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
-                ),
-
-                const SizedBox(height: 10),
-
-                Obx(() => TextButton(
-                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value);
-                            Get.offAll(() => BotNavAuditRegion());
-                         }
-                      : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
-                    )),
-              ],
-            ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        }
-      );
   }
 }

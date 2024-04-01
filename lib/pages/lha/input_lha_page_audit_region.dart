@@ -4,6 +4,7 @@ import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_aud
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
+import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -90,24 +91,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: descriptionFindingsController,
-                onChanged: (desc) => descriptionFindingsController.text = desc,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan uraian temuan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              formInputDescFinding(descriptionFindingsController),
 
               const SizedBox(height: 15),
               Text('Kategori SOP :', style: CustomStyles.textBold15Px),
@@ -144,47 +128,13 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               const SizedBox(height: 15),
               Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: temporaryRecommendationController,
-                onChanged: (temporary) => temporaryRecommendationController.text = temporary,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan rekomendasi sementara...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan rekomendasi sementara...'),
 
               const SizedBox(height: 15),
               Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: permanentRecommendationController,
-                onChanged: (permanent) => permanentRecommendationController.text = permanent,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan rekomendasi permanent...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
-
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan rekomendasi permanent...'),
+              
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
@@ -208,24 +158,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
 
               const SizedBox(height: 15),
               if(_selectedSuggest == 1)
-              TextField(
-                controller: suggestController,
-                onChanged: (suggest) => suggestController.text = suggest,
-                cursorColor: CustomColors.blue,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Masukan rekomendasi atau saran...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: CustomColors.grey)
-                    )
-                ),
-              ),
+              fomrInputRecommendationOrSuggest(suggestController, 'Masukan rekomendasi atau saran...'),
 
               const SizedBox(height: 15),
               Text('Penelusuran :', style: CustomStyles.textBold15Px),
