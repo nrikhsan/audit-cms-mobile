@@ -39,21 +39,21 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                       onPressed: (){
                       if (auditorControllerMainSchedule.text.isNotEmpty) {
                           auditorControllerMainSchedule.clear();
-                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          
                           branchControllerMainSChedule.clear();
                           startDateControllerMainSchedule.clear();
                           endDateControllerMainSchedule.clear();
                           Get.back();
                         }else if(branchControllerMainSChedule.text.isNotEmpty){
                           auditorControllerMainSchedule.clear();
-                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          
                           branchControllerMainSChedule.clear();
                           startDateControllerMainSchedule.clear();
                           endDateControllerMainSchedule.clear();
                           Get.back();
                         }else if(startDateControllerMainSchedule.text.isNotEmpty || endDateControllerMainSchedule.text.isNotEmpty){
                           auditorControllerMainSchedule.clear();
-                          controllerAuditArea.loadMainSchedulesAuditArea();
+                          
                           branchControllerMainSChedule.clear();
                           startDateControllerMainSchedule.clear();
                           endDateControllerMainSchedule.clear();
@@ -180,7 +180,7 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                           firstDate: DateTime(2001),
                           lastDate: DateTime(2100)
                       );
-                      if(picked != null){
+                      if(picked != null){ 
                         endDateControllerMainSchedule.text = DateFormat('yyyy-MM-dd').format(picked);
                       }
                     },
@@ -195,8 +195,7 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditArea.filterMainSchedule(startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, 
-                        branchControllerMainSChedule.text, auditorControllerMainSchedule.text);
+                       
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
@@ -245,21 +244,21 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                       onPressed: (){
                       if (auditorControllerSpecialSchedule.text.isNotEmpty) {
                           auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          
                           branchControllerSpecialSchedule.clear();
                           startDateControllerSpecialSchedule.clear();
                           endDateControllerSpecialSchedule.clear();
                           Get.back();
                         }else if(branchControllerSpecialSchedule.text.isNotEmpty){
                           auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          
                           branchControllerSpecialSchedule.clear();
                           startDateControllerSpecialSchedule.clear();
                           endDateControllerSpecialSchedule.clear();
                           Get.back();
                         }else if(startDateControllerSpecialSchedule.text.isNotEmpty || endDateControllerSpecialSchedule.text.isNotEmpty){
                           auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.loadSpecialSchedulesAuditArea();
+                          
                           branchControllerSpecialSchedule.clear();
                           startDateControllerSpecialSchedule.clear();
                           endDateControllerSpecialSchedule.clear();
@@ -401,8 +400,7 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditArea.filterSpecialSchedulesAuditArea(startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text,
-                        branchControllerSpecialSchedule.text, auditorControllerSpecialSchedule.text);
+                       
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

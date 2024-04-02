@@ -3,8 +3,8 @@ import 'package:audit_cms/data/core/response/auditArea/lha/ModelBodyEditLhaAudit
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
@@ -12,6 +12,7 @@ import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_a
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/request_body_edit_schedule.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -50,13 +51,14 @@ import '../response/auth/response_auth.dart';
 class ApiService {
   Dio dio = Dio(BaseOptions(baseUrl: AppConstant.baseUrl));
 
-  Future<ResponseAuth> login(String email, String password) async {
+  // auth login
+  Future<ResponseAuth> login(String username, String password) async {
     dio.options.headers = {
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.post(AppConstant.auth,
-      data: ModelAuth(email: email, password: password).toJson());
+      data: ModelAuth(username: username, password: password).toJson());
       print(response.data);
       return ResponseAuth.fromJson(response.data);
     } catch (error) {
@@ -65,15 +67,15 @@ class ApiService {
   }
 
   //audit area
-  //schedules
-  Future<ResponseMessage>addScheduleAuditArea(List<ModelBodySchedulesAuditArea> schedule) async {
+  //main schedules
+  Future<ResponseMessage>addMainSchedules(List<ModelBodySchedulesAuditArea> schedule) async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}',
       'Content-Type': 'application/json'
     };
     
     try {
-      final response = await dio.post(AppConstant.addSchedulesAuditArea,
+      final response = await dio.post(AppConstant.addMainSchedulesAuditArea,
           data: {'schedule': schedule.toList()});
       print(response.data);
       return ResponseMessage.fromJson(response.data);
@@ -82,71 +84,93 @@ class ApiService {
     }
   }
 
-  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea() async {
+  Future<ResponseMessage>editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.put('${AppConstant.editMainSchedule}$id', data: RequestBodyEditSchedul(userId: userId, branchId: branchId, 
+      startDate: startDate, endDate: endDate, description: description).toJson());
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ResponseMessage>deleteMainSchedule(int id)async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.delete('${AppConstant.deleteMainSchedule}$id');
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea(int page) async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}'
     };
     try {
-      final response = await dio.get(AppConstant.mainScheduleAuditArea);
+      final response = await dio.get(AppConstant.mainScheduleAuditArea, queryParameters: {'page': page});
       return ResponseMainScheduleAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<ResponseMainScheduleAuditArea> filterMainScheduleAuditArea(
-      String startDate, String endDate, String branch, String auditor) async {
+  //special schedule
+  Future<ResponseMessage>addSpecialSchedule(List<ModelBodySchedulesAuditArea> schedule) async {
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
     };
+    
     try {
-      final response =
-          await dio.get(AppConstant.mainScheduleAuditArea, queryParameters: {
-        'start_date': startDate,
-        'end_date': endDate,
-        'branch': branch,
-        'auditor': auditor
-      });
-      
-      return ResponseMainScheduleAuditArea.fromJson(response.data);
+      final response = await dio.post(AppConstant.addSpecialSchedulesAuditArea,
+          data: {'schedule': schedule.toList()});
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-
-  Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea() async {
+  Future<ResponseSpecialScheduleAuditArea> getSpecialSchedulesAuditArea(int page) async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}'
     };
     try {
-      final response = await dio.get(AppConstant.specialScheduleAuditArea);
+      final response = await dio.get(AppConstant.specialScheduleAuditArea, queryParameters: {'page': page});
       
-      return ResponseSpecialSchedulesAuditArea.fromJson(response.data);
+      return ResponseSpecialScheduleAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<ResponseSpecialSchedulesAuditArea> filterSpecialSchedulesAuditArea(
-      String startDate, String endDate, String branch, String auditor) async {
+  Future<ResponseMessage>editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
     };
     try {
-      final response =
-          await dio.get(AppConstant.specialScheduleAuditArea, queryParameters: {
-        'start_date': startDate,
-        'end_date': endDate,
-        'branch': branch,
-        'auditor': auditor
-      });
-      
-      return ResponseSpecialSchedulesAuditArea.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+      final response = await dio.put('${AppConstant.editMainSchedule}$id', data: RequestBodyEditSchedul(userId: userId, branchId: branchId, 
+      startDate: startDate, endDate: endDate, description: description).toJson());
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (e) {
+      throw Exception(e);
     }
   }
+
+
 
   Future<ResponseReschedulesAuditArea> getReschedulesAuditArea() async {
     dio.options.headers = {
@@ -191,16 +215,15 @@ class ApiService {
     }
   }
 
-
   //master
-  Future<ResponseAuditorAuditArea> getAuditorAuditArea() async {
+  Future<ResponseUsers> getUsersAuditArea() async {
     dio.options.headers = {
       'Authorization': 'Bearer ${TokenManager.getToken()}'
     };
     try {
-      final response = await dio.get(AppConstant.auditorAuditArea);
+      final response = await dio.get(AppConstant.usersAuditArea);
       
-      return ResponseAuditorAuditArea.fromJson(response.data);
+      return ResponseUsers.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }

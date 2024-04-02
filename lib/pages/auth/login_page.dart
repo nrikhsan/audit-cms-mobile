@@ -1,4 +1,5 @@
 import 'package:audit_cms/data/controller/auth/controller_auth.dart';
+import 'package:audit_cms/pages/auth/widgetAuth/widget_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final ControllerAuth controllerAuth = Get.find();
+  final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -44,47 +45,15 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 20),
 
-                    TextField(
-                        controller: emailController,
-                        onChanged: (email) => emailController.text = email,
-                        cursorColor: CustomColors.blue,
-                        decoration: InputDecoration(
-                            suffixIcon: const Icon(Icons.account_circle,
-                                color: CustomColors.grey, size: 20),
-                            labelStyle: CustomStyles.textMediumGrey15Px,
-                            labelText: 'Masukan email atau username...',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                const BorderSide(color: CustomColors.grey)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: CustomColors.grey)))),
+                    formInputAuth('Masukan email atau username...', emailController, Icons.account_circle),
 
                     const SizedBox(height: 15),
-                    TextField(
-                        controller: passwordController,
-                        onChanged: (password) => passwordController.text = password,
-                        cursorColor: CustomColors.blue,
-                        decoration: InputDecoration(
-                            suffixIcon: const Icon(Icons.password_rounded,
-                                color: CustomColors.grey, size: 20),
-                            labelStyle: CustomStyles.textMediumGrey15Px,
-                            labelText: 'Masukan kata sandi...',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                const BorderSide(color: CustomColors.grey)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: CustomColors.grey)))),
+                    formInputAuth('Masukan kata sandi...', passwordController, Icons.password_rounded),
                     const SizedBox(height: 20),
 
                     SizedBox(
                       width: double.infinity,
-                      height: 45,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: CustomColors.blue,
@@ -93,8 +62,8 @@ class _LoginPageState extends State<LoginPage> {
                           if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                               Get.snackbar('Alert', 'Email atau kata sandi tidak boleh kosong', 
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                          }else if(passwordController.text.length < 6){
-                            Get.snackbar('Alert', 'Kata sandi harus lebih dari 6 karakter', 
+                          }else if(passwordController.text.length < 8){
+                            Get.snackbar('Alert', 'Kata sandi harus lebih dari 8 karakter', 
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }else{
                             controllerAuth.login(emailController.text, passwordController.text);

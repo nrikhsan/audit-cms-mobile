@@ -1,19 +1,19 @@
-class ResponseBranchAuditArea {
+class ResponseUsers {
   Meta? meta;
   String? message;
   int? status;
-  List<DataListBranch>? data;
+  List<DataUsers>? data;
 
-  ResponseBranchAuditArea({this.meta, this.message, this.status, this.data});
+  ResponseUsers({this.meta, this.message, this.status, this.data});
 
-  ResponseBranchAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseUsers.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataListBranch>[];
+      data = <DataUsers>[];
       json['data'].forEach((v) {
-        data!.add(new DataListBranch.fromJson(v));
+        data!.add(new DataUsers.fromJson(v));
       });
     }
   }
@@ -51,21 +51,24 @@ class Meta {
   }
 }
 
-class DataListBranch {
-  String? name;
+class DataUsers {
   int? id;
+  String? fullname;
+  String? initialName;
 
-  DataListBranch({this.name, this.id});
+  DataUsers({this.id, this.fullname, this.initialName});
 
-  DataListBranch.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+  DataUsers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_Name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
     data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['initial_Name'] = this.initialName;
     return data;
   }
 }

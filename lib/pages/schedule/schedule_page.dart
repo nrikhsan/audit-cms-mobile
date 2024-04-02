@@ -1,12 +1,16 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
+import 'package:audit_cms/pages/schedule/edit_schedule_page.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/bottom_sheet_filter_schedule_audit_area.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/bottom_sheet_filter_schedule_audit_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../helper/styles/custom_styles.dart';
 import 'input_schedule.dart';
@@ -21,7 +25,7 @@ class SchedulePageAuditArea extends StatefulWidget {
 
 class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   final TextEditingController startDateControllerMainSchedule = TextEditingController();
   final TextEditingController endDateControllerMainSchedule = TextEditingController();
@@ -104,16 +108,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Obx(() {
-                      if (controllerAuditArea.isLoading.isTrue) {
-                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                      } else {
-                        return ListView.builder(
-                          itemCount: controllerAuditArea.mainSchedulesAuditArea.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final mainSchedule = controllerAuditArea.mainSchedulesAuditArea[index];
-                            return GestureDetector(
+                    child: PagedListView<int, ContentMainScheduleAuditArea>(
+                          pagingController: controllerAuditArea.pagingControllerMainSchedule,
+                          builderDelegate: PagedChildBuilderDelegate(
+                            itemBuilder: (_, mainSchedule, index){
+                              return GestureDetector(
                               child: Card(
                               elevation: 0,
                               shape: OutlineInputBorder(
@@ -132,15 +131,30 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('${mainSchedule.auditor}', style: CustomStyles.textBold15Px),
+                                        Text('${mainSchedule.user!.fullname}', style: CustomStyles.textBold15Px),
                                         Text('${mainSchedule.status}', style: CustomStyles.textMedium13Px),
                                       ],
                                     ),
                     
                                     const SizedBox(height: 10),
-                                      Text('Cabang : ${mainSchedule.branch}', style: CustomStyles.textMedium13Px),
-                                      
-                                      Text('Area : ${mainSchedule.area}', style: CustomStyles.textMedium13Px),
+                                    Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
+                                    const SizedBox(height: 5),
+                                    Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                          ),
+                                          onPressed: (){
+                                            Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!, description: mainSchedule.description!));
+                                          }, 
+                                          child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
+                                        )
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
@@ -148,11 +162,14 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                             onTap: (){
                               Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
                             },
-                            );
-                          },
-                        );
-                      }
-                    }),
+                            onLongPress: (){
+                              Get.snackbar('Berhasil', 'Data jadwal berhasil di dihapus', snackPosition: SnackPosition.TOP, 
+                                  colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                              controllerAuditArea.deleteMainSchedule(mainSchedule.id!);
+                            });
+                          }
+                        ),
+                      )
                   ),
                 ),
 
@@ -198,11 +215,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                             child: SpinKitCircle(color: CustomColors.blue)
                         );
                       }else{
-                        return ListView.builder(
-                            itemCount: controllerAuditArea.specialSchedulesAuditArea.length,
-                            itemBuilder: (_, index){
-                              final specialSchedule = controllerAuditArea.specialSchedulesAuditArea[index];
-                              return GestureDetector(
+                        return PagedListView<int, ContentSpecialScheduleAuditArea>(
+                          pagingController: controllerAuditArea.pagingControllerSpecialSchedule, 
+                          builderDelegate: PagedChildBuilderDelegate(
+                            itemBuilder: (_, schedule, index){
+                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
                                 shape: OutlineInputBorder(
@@ -221,24 +238,40 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('${specialSchedule.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${specialSchedule.status}', style: CustomStyles.textMedium13Px),
+                                          Text('${schedule.user!.fullname}', style: CustomStyles.textBold15Px),
+                                          Text('${schedule.status}', style: CustomStyles.textMedium13Px),
                                         ],
                                       ),
                     
                                       const SizedBox(height: 10),
-                                      Text('Cabang : ${specialSchedule.branch}', style: CustomStyles.textMedium13Px),
-                                      
-                                      Text('Area : ${specialSchedule.area}', style: CustomStyles.textMedium13Px),
+                                      Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                      Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
+
+                                      Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                          ),
+                                          onPressed: (){
+                                           
+                                          }, 
+                                          child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
+                                        )
+                                      ],
+                                    )
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: specialSchedule.id!));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!));
                               },
                               );
                             }
+                          )
                         );
                       }
                     }),

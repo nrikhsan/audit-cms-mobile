@@ -8,8 +8,8 @@ import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_attachment_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/model_body_input_follow_up_audit_area.dart';
@@ -47,21 +47,27 @@ import '../response/auth/response_auth.dart';
 
 abstract class Repositories {
 
-  Future<ResponseAuth> login(String email, String password);
+  Future<ResponseAuth> login(String username, String password);
 
   //audit area
-  //schedules
-  Future<ResponseMessage> addSchedulesAuditArea(List<ModelBodySchedulesAuditArea>schedule);
-  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea();
-  Future<ResponseMainScheduleAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
-  Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea();
-  Future<ResponseSpecialSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor);
+  //main schedule
+  Future<ResponseMessage> addMainSchedules(List<ModelBodySchedulesAuditArea>schedule);
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea(int page);
+  Future<ResponseMessage>editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description);
+  Future<ResponseMessage>deleteMainSchedule(int id);
+
+  //special schedule
+  Future<ResponseSpecialScheduleAuditArea> getSpecialSchedulesAuditArea(int page);
+  Future<ResponseMessage> addSpecialSchedules(List<ModelBodySchedulesAuditArea>schedule);
+  Future<ResponseMessage>editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description);
+
+  //reschedule
   Future<ResponseReschedulesAuditArea> getReschedulesAuditArea();
   Future<ResponseReschedulesAuditArea> filterResScheduleAuditArea(String startDate, String endDate, String branch, String auditor);
   Future<ResponseDetailSchedulesAuditArea> getDetailScheduleAuditArea(int id);
 
   //master
-  Future<ResponseAuditorAuditArea> getAuditorAuditArea();
+  Future<ResponseUsers> getUsersAuditArea();
   Future<ResponseBranchAuditArea> getBranchAuditArea();
   Future<ResponseAttachmentAuditArea> getAttachmentAuditArea();
 
@@ -161,33 +167,51 @@ class RepositoryImpl implements Repositories {
 
   //login
   @override
-  Future<ResponseAuth> login(String email, String password) async{
-    return await apiService.login(email, password);
+  Future<ResponseAuth> login(String username, String password){
+    return apiService.login(username, password);
   }
 
 
   //audit area
-  //schedules
+  //main schedules
   @override
-  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea() async{
-    return await apiService.getMainSchedulesAuditArea();
+  Future<ResponseMessage> addMainSchedules(List<ModelBodySchedulesAuditArea>schedule){
+    return apiService.addMainSchedules(schedule);
   }
 
   @override
-  Future<ResponseMainScheduleAuditArea> filterMainSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
-    return await apiService.filterMainScheduleAuditArea(startDate, endDate, branch, auditor);
+  Future<ResponseMessage> editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description){
+    return apiService.editMainSchedule(id, userId, branchId, startDate, endDate, description);
   }
 
   @override
-  Future<ResponseSpecialSchedulesAuditArea> getSpecialSchedulesAuditArea() async {
-    return await apiService.getSpecialSchedulesAuditArea();
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea(int page){
+    return apiService.getMainSchedulesAuditArea(page);
   }
 
   @override
-  Future<ResponseSpecialSchedulesAuditArea> filterSpecialSchedulesAuditArea(String startDate, String endDate, String branch, String auditor)async {
-    return await apiService.filterSpecialSchedulesAuditArea(startDate, endDate, branch, auditor);
+  Future<ResponseMessage>deleteMainSchedule(int id){
+    return apiService.deleteMainSchedule(id);
   }
 
+
+  //special schedule
+   @override
+  Future<ResponseMessage> addSpecialSchedules(List<ModelBodySchedulesAuditArea>schedule){
+    return apiService.addSpecialSchedule(schedule);
+  }
+
+  @override
+  Future<ResponseSpecialScheduleAuditArea> getSpecialSchedulesAuditArea(int page) {
+    return apiService.getSpecialSchedulesAuditArea(page);
+  }
+
+  @override
+  Future<ResponseMessage> editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description){
+    return apiService.editSpecialSchedule(id, userId, branchId, startDate, endDate, description);
+  }
+
+  //reschedule
   @override
   Future<ResponseReschedulesAuditArea> getReschedulesAuditArea() async{
     return await apiService.getReschedulesAuditArea();
@@ -199,11 +223,6 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> addSchedulesAuditArea(List<ModelBodySchedulesAuditArea>schedule) async{
-    return await apiService.addScheduleAuditArea(schedule);
-  }
-
-  @override
   Future<ResponseDetailSchedulesAuditArea> getDetailScheduleAuditArea(int id)async {
     return await apiService.getDetailScheduleAuditArea(id);
   }
@@ -211,8 +230,8 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
-  Future<ResponseAuditorAuditArea> getAuditorAuditArea()async {
-    return await apiService.getAuditorAuditArea();
+  Future<ResponseUsers> getUsersAuditArea() {
+    return apiService.getUsersAuditArea();
   }
 
   @override

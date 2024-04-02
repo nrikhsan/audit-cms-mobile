@@ -1,5 +1,5 @@
-import 'package:audit_cms/data/core/response/auditArea/master/response_auditor_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,10 +22,10 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
   final TextEditingController endDateControllerMainSchedule = TextEditingController();
   final TextEditingController scheduleDescControllerMainSchedule = TextEditingController();
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
-  ModelListAuditorAuditArea? auditor;
-  ModelListBranchAuditArea? branch;
+  DataUsers? users;
+  DataListBranch? branch;
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +77,18 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                       child: DropdownButton(
                         iconEnabledColor: CustomColors.blue,
                         borderRadius: BorderRadius.circular(10),
-                        value: auditor,
+                        value: users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
+                          items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
-                              value: auditor,
-                                child: Text('${auditor.auditorName}', style: CustomStyles.textMedium15Px),
+                              value: users,
+                                child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
 
                             );
                           }).toList(),
                           onChanged: (value)async{
                           setState(() {
-                            auditor = value;
+                            users = value;
                           });
                           }
                       ),
@@ -113,10 +113,10 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           borderRadius: BorderRadius.circular(10),
                           value: branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((ModelListBranchAuditArea branch){
+                          items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch,
-                              child: Text('${branch.branchName}', style: CustomStyles.textMedium15Px),
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
                             );
                           }).toList(),
                           onChanged: (value)async{
@@ -146,15 +146,8 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                             shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            if (auditor == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
-                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                            }else{
-                              
-                              controllerAuditArea.addLocalDataMainSchedule(auditor!.id!, branch!.id!, auditor!.auditorName!, branch!.branchName!,
-                              startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
-                              print('Tambah data lokal jadwal : ${auditor!.auditorName}, ${branch!.branchName}, ${startDateControllerMainSchedule.text}, ${endDateControllerMainSchedule.text}, ${scheduleDescControllerMainSchedule.text}');
-                            }
+                            controllerAuditArea.addLocalDataMainSchedule(users!.id!, branch!.id!, users!.fullname!, branch!.name!, 
+                            startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -179,8 +172,8 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.userName!.auditorName}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchName!.branchName}', style: CustomStyles.textRegular13Px),
+                            Text('${data.userName!.fullname}', style: CustomStyles.textRegular13Px),
+                            Text('${data.branchName!.name}', style: CustomStyles.textRegular13Px),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
@@ -203,15 +196,13 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         ),
                         onPressed: ()async{
 
-                          if (auditor == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
+                          if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
                               Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP, 
                                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }else{
                           controllerAuditArea.addMainSchedules();
-                          Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP, 
-                          colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                          print('Buat jadwal : ${auditor!.id}, ${branch!.id}, ${startDateControllerMainSchedule.text}, ${endDateControllerMainSchedule.text}, ${scheduleDescControllerMainSchedule.text}');
-                          Navigator.pop(context);
+                          Get.snackbar('Berhasil', 'Data jadwal berhasil dibuat', snackPosition: SnackPosition.TOP, 
+                                colorText: CustomColors.white, backgroundColor: CustomColors.green);
                           }
                         },
                         child: Text('Buat jadwal utama', style: CustomStyles.textMediumWhite15Px)
@@ -244,8 +235,8 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
 
   final ControllerAuditArea controllerAuditArea = Get.find();
 
-  ModelListAuditorAuditArea? auditor;
-  ModelListBranchAuditArea? branch;
+  DataUsers? users;
+  DataListBranch? branch;
 
   @override
   Widget build(BuildContext context) {
@@ -297,18 +288,18 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: auditor,
+                          value: users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
+                          items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
-                              value: auditor,
-                              child: Text('${auditor.auditorName}', style: CustomStyles.textMedium15Px),
+                              value: users,
+                              child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
 
                             );
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              auditor = value;
+                              users = value;
                             });
                           }
                       ),
@@ -334,10 +325,10 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           borderRadius: BorderRadius.circular(10),
                           value: branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((ModelListBranchAuditArea branch){
+                          items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch,
-                              child: Text('${branch.branchName}', style: CustomStyles.textMedium15Px),
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
                             );
                           }).toList(),
                           onChanged: (value)async{
@@ -367,15 +358,8 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                               shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            if (auditor == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP,
-                                  colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                            }else{
-
-                              controllerAuditArea.addLocalDataSpecialSchedule(auditor!.id!, branch!.id!, auditor!.auditorName!, branch!.branchName!,
-                                  startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
-                              print('Tambah data lokal jadwal : ${auditor!.auditorName}, ${branch!.branchName}, ${startDateControllerSpecialSchedule.text}, ${endDateControllerSpecialSchedule.text}, ${scheduleDescControllerSpecialSchedule.text}');
-                            }
+                            controllerAuditArea.addLocalDataSpecialSchedule(users!.id!, branch!.id!, users!.fullname!, branch!.name!, 
+                            startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -400,8 +384,8 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.userName!.auditorName}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchName!.branchName}', style: CustomStyles.textRegular13Px),
+                            Text('${data.userName!.fullname}', style: CustomStyles.textRegular13Px),
+                            Text('${data.branchName!.name}', style: CustomStyles.textRegular13Px),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
@@ -424,15 +408,13 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         ),
                         onPressed: ()async{
 
-                          if (auditor == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
+                          if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
                             Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP,
                                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }else{
                             controllerAuditArea.addSpecialSchedules();
                             Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP,
                                 colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                            print('Buat jadwal : ${auditor!.id}, ${branch!.id}, ${startDateControllerSpecialSchedule.text}, ${endDateControllerSpecialSchedule.text}, ${scheduleDescControllerSpecialSchedule.text}');
-                            Navigator.pop(context);
                           }
                         },
                         child: Text('Buat jadwal khusus', style: CustomStyles.textMediumWhite15Px)
@@ -466,8 +448,8 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
 
   final ControllerAuditArea controllerAuditArea = Get.find();
 
-  ModelListAuditorAuditArea? auditor;
-  ModelListBranchAuditArea? branch;
+  DataUsers? users;
+  DataListBranch? branch;
 
   @override
   Widget build(BuildContext context) {
@@ -519,18 +501,18 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: auditor,
+                          value: users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.auditorAuditArea.map((ModelListAuditorAuditArea auditor){
+                          items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
-                              value: auditor,
-                              child: Text('${auditor.auditorName}', style: CustomStyles.textMedium15Px),
+                              value: users,
+                              child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
 
                             );
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              auditor = value;
+                              users = value;
                             });
                           }
                       ),
@@ -555,10 +537,10 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           borderRadius: BorderRadius.circular(10),
                           value: branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((ModelListBranchAuditArea branch){
+                          items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch,
-                              child: Text('${branch.branchName}', style: CustomStyles.textMedium15Px),
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
                             );
                           }).toList(),
                           onChanged: (value)async{
@@ -588,15 +570,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                               shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            if (auditor == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
-                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP,
-                                  colorText: CustomColors.white, backgroundColor: CustomColors.red);
-                            }else{
-
-                              controllerAuditArea.addLocalDataReschedule(auditor!.id!, branch!.id!, auditor!.auditorName!, branch!.branchName!,
-                                  startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);
-                              print('Tambah data lokal jadwal : ${auditor!.auditorName}, ${branch!.branchName}, ${startDateControllerReschedule.text}, ${endDateControllerReschedule.text}, ${scheduleDescControllerReschedule.text}');
-                            }
+                            
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -621,13 +595,13 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.userName!.auditorName}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchName!.branchName}', style: CustomStyles.textRegular13Px),
+                            Text('${data.userName!.fullname}', style: CustomStyles.textRegular13Px),
+                            Text('${data.branchName!.name}', style: CustomStyles.textRegular13Px),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
                               onTap: ()async{
-                                controllerAuditArea.deleteLocalDataReschedule(data.userId!);
+                                
                               },
                             )
                           ],
@@ -645,15 +619,14 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         ),
                         onPressed: ()async{
 
-                          if (auditor == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
+                          if (users == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
                             Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP,
                                 colorText: CustomColors.white, backgroundColor: CustomColors.red);
                           }else{
-                            controllerAuditArea.addReschedules();
+                           
                             Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP,
                                 colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                            print('Buat jadwal : ${auditor!.id}, ${branch!.id}, ${startDateControllerReschedule.text}, ${endDateControllerReschedule.text}, ${scheduleDescControllerReschedule.text}');
-                            Navigator.pop(context);
+                            
                           }
                         },
                         child: Text('Request reschedule', style: CustomStyles.textMediumWhite15Px)

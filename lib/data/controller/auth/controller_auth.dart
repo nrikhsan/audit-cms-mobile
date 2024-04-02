@@ -8,7 +8,6 @@ class ControllerAuth extends GetxController {
   final Repositories repository;
   var isLoading = false.obs;
   var isLogin = false.obs;
-  var message = ''.obs;
   var userLevel = ''.obs;
   ControllerAuth(this.repository);
 
@@ -18,12 +17,10 @@ class ControllerAuth extends GetxController {
     super.onInit();
   }
 
-  void login(String email, String password) async {
-    
+  void login(String username, String password) async {
     isLoading.value = true;
     try {
-      final response = await repository.login(email, password);
-      message.value = response.data.toString();
+      final response = await repository.login(username, password);
       String tokenAuth = '${response.data?.token}';
 
       decodeJWT(tokenAuth); 

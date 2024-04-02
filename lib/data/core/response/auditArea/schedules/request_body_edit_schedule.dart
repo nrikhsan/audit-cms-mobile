@@ -1,26 +1,18 @@
-
-import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
-
-class ModelBodySchedulesAuditArea {
+class RequestBodyEditSchedul {
   int? userId;
   int? branchId;
   String? startDate;
   String? endDate;
   String? description;
-  DataUsers? userName;
-  DataListBranch? branchName;
 
-  ModelBodySchedulesAuditArea(
+  RequestBodyEditSchedul(
       {this.userId,
-        this.branchId,
-        this.startDate,
-        this.endDate,
-        this.description,
-        this.userName,
-        this.branchName});
+      this.branchId,
+      this.startDate,
+      this.endDate,
+      this.description});
 
-  ModelBodySchedulesAuditArea.fromJson(Map<String, dynamic> json) {
+  RequestBodyEditSchedul.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     branchId = json['branch_id'];
     startDate = json['start_date'];

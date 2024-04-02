@@ -1,6 +1,6 @@
 class ResponseAuth {
   Metadata? metadata;
-  bool? status;
+  int? status;
   String? message;
   Data? data;
 
@@ -30,8 +30,8 @@ class ResponseAuth {
 }
 
 class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+  String? timestamp;
+  String? apiVersion;
 
   Metadata({this.timestamp, this.apiVersion});
 
@@ -50,7 +50,7 @@ class Metadata {
 
 class Data {
   String? token;
-  String? refresh;
+  Null refresh;
 
   Data({this.token, this.refresh});
 
@@ -70,13 +70,13 @@ class Data {
 
 
 class ModelAuth{
-  String email;
+  String username;
   String password;
 
-  ModelAuth({required this.email, required this.password});
+  ModelAuth({required this.username, required this.password});
 
   Map<String, dynamic> toJson() => {
-    'email': email,
+    'username': username,
     'password': password,
   };
 }

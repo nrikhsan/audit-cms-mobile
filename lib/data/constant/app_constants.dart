@@ -1,23 +1,28 @@
 class AppConstant{
 
-  static const String baseUrl = 'https://f1c95327-0620-462b-8f7d-0d0265851751.mock.pstmn.io/';
+  static const String baseUrl = 'https://3b9f24f3-a0ef-40b6-b4c5-b4de60765f95.mock.pstmn.io/';
 
   //auth
   static const String auth = 'api/auth/login';
 
   //audit area
-  //schedules
-  static const String addSchedulesAuditArea = 'api/add-schedule';
+  //main schedule
+  static const String addMainSchedulesAuditArea = 'api/main-schedule';
+  static const String editMainSchedule = 'api/main-schedule/';
+  static const String deleteMainSchedule = 'api/main-schedule/';
   static const String mainScheduleAuditArea = 'api/main-schedule';
+  
+  //special schedule
   static const String specialScheduleAuditArea = 'api/special-schedule';
+  static const String addSpecialSchedulesAuditArea = 'api/special-schedule';
+  static const String editSpecialSchedule = 'api/special-schedule/';
+
   static const String resSchedulesAuditArea = 'api/reschedule';
   static const String detailScheduleAuditArea = 'api/schedule-audit-area/';
 
   //master
-  static const String auditorAuditArea = 'api/auditor';
-  static const String areaAuditArea = 'api/area';
-  static const String branchAuditArea = 'api/branch';
-  static const String statusAuditArea = 'api/status';
+  static const String usersAuditArea = 'api/dropdown/users';
+  static const String branchAuditArea = 'api/dropdown/branch';
   static const String attachmentFollowUpAuditArea = 'api/attachment';
 
   //lha
