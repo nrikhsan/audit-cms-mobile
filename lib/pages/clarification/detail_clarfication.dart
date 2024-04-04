@@ -24,10 +24,7 @@ class DetailClarificationPageAuditArea extends StatefulWidget {
 
 class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
-
-  final List<String> status = ["TODO", "PROGRESS", "REVIEW", "DONE"];
-  int currentIndex = 0;
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +57,8 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Auditor :', style: CustomStyles.textBold15Px),
+
+                  Text('Auditor :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.user!.fullname}',
                               style: CustomStyles.textRegular13Px),
@@ -158,19 +150,6 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                             ],
                           ),
                           const SizedBox(height: 20),
-                        ],
-                      ),
-
-                      // OutlinedButton(
-                      //   style: OutlinedButton.styleFrom(
-                      //     side: const BorderSide(
-                      //       color: CustomColors.orange)
-                      //   ),
-                      //   onPressed: (){},
-                      //   child: Text(status[currentIndex], style: CustomStyles.textMediumOrange15Px)
-                      // )
-                    ],
-                  ),
                   
                   SizedBox(
                     width: 140,
@@ -200,20 +179,6 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 20),
-
-                  // SizedBox(
-                  //   width: double.maxFinite,
-                  //   child: ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     shape: CustomStyles.customRoundedButton,
-                  //     backgroundColor: CustomColors.blue
-                  //   ),
-                  //   onPressed: currentIndex < status.length - 1 ? showDialogStatusClarificationAuditArea : null,
-                  //    child: Text(currentIndex > status.length +1 ? 'Ubah status' : 'Ubah status ${status[currentIndex]}', style: CustomStyles.textMediumWhite15Px)
-                  //   ),
-                  // )
                 ],
               ),
             );
@@ -222,51 +187,6 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
       ),
     );
   }
-
-  // void showDialogStatusClarificationAuditArea() {
-  //   showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       elevation: 0,
-  //       context: context,
-  //       builder: (_) {
-  //         return Container(
-  //             width: double.maxFinite,
-  //             height: 200,
-  //             padding: EdgeInsets.only(
-  //                 top: 15,
-  //                 right: 15,
-  //                 left: 15,
-  //                 bottom: MediaQuery.of(context).viewInsets.bottom + 50),
-  //             child: Column(
-  //               children: [
-  //                 AppBar(
-  //                   title: const Text('Ubah status klarifikasi'),
-  //                   centerTitle: true,
-  //                   titleTextStyle: CustomStyles.textBold18Px,
-  //                   automaticallyImplyLeading: false,
-  //                 ),
-  //                 const SizedBox(height: 20),
-  //                 Wrap(
-  //                   children: [
-  //                     ListTile(
-  //                       leading: const Icon(Icons.update_rounded, color: CustomColors.grey, size: 25),
-  //                       title: Text('Ubah status', style: CustomStyles.textBold15Px),
-  //                         onTap: () {
-  //                           setState(() {
-  //                             if (currentIndex < status.length - 1) {
-  //                               currentIndex++;
-  //                             }
-  //                           });
-  //                         Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //             ],
-  //           ),
-  //               ],
-  //             )
-  //           );
-  //       });
-  // }
 }
 
 //audit region

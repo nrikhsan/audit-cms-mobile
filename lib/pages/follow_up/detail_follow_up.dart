@@ -15,7 +15,7 @@ class DetailFollowUpPageAuditArea extends StatefulWidget {
 
 class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,14 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                Text('No Tindak lanjut :', style: CustomStyles.textBold15Px),
+                Text('Kode Tindak lanjut :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${followUp.code}', style: CustomStyles.textRegular13Px),
+
+                const SizedBox(height: 15),
+                Text('Status :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${followUp.status}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
                 Text('Auditor :', style: CustomStyles.textBold15Px),
@@ -50,19 +55,29 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                 Text('${followUp.user!.fullname}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
+                Text('Klarifikasi :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+
+                const SizedBox(height: 15),
+                Text('Tanggal klarifikasi :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${followUp.clarification!.evaluationLimitation}', style: CustomStyles.textRegular13Px),
 
-                // const SizedBox(height: 15),
-                // Text('Cabang :', style: CustomStyles.textBold15Px),
-                // const SizedBox(height: 5),
-                // Text('${followUp.branch}', style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 15),
+                Text('Kode klarifikasi :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${followUp.clarification!.code}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
                 Text('Sanksi :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${followUp.penalty}', style: CustomStyles.textRegular13Px),
+                Wrap(
+                  children: [
+                    followUp.isPenalty == 1 ?
+                    Text('Memberi sanksi', style: CustomStyles.textRegular13Px)
+                    : Text('Tidak memberi sanksi', style: CustomStyles.textRegular13Px),
+                  ],
+                ),
 
                 const SizedBox(height: 15),
                 Text('Alasan :', style: CustomStyles.textBold15Px),
@@ -93,7 +108,7 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                                 onPressed: () async {
                                    showDialogPdfFileDetailFollowUp(context, 'File tindak lanjut', 'file_tindak_lanjut', followUp.filePath!);
                                 },
-                                child: Text('Unduh', style: CustomStyles.textMediumWhite15Px))
+                                child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
                         ),
                       ),

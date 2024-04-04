@@ -20,7 +20,7 @@ class ProfilePageAuditArea extends StatefulWidget {
 
 class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +51,15 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text('Username :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.username}', style: CustomStyles.textRegular13Px),
+
+                  const SizedBox(height: 15),
+                  Text('Nama :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 15),
                   Text('Email :', style: CustomStyles.textBold15Px),
@@ -64,16 +70,6 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                   Text('NIP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.nip}', style: CustomStyles.textRegular13Px),
-
-                  const SizedBox(height: 15),
-                  Text('Area :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.area}', style: CustomStyles.textRegular13Px),
-
-                  const SizedBox(height: 15),
-                  Text('Kantor cabang :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.branchOffice}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 20),
                   SizedBox(
@@ -98,7 +94,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                         leading: const Icon(Icons.password_rounded, color: CustomColors.black, size: 25),
                         title: Text('Ubah kata sandi', style: CustomStyles.textBold15Px),
                         onTap: (){
-                          Get.to(() => ChangePasswordPageAuditArea(id: user.id!));
+                          Get.to(() => const ChangePasswordPageAuditArea());
                         },
                       ),
                     ],

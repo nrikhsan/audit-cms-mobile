@@ -42,35 +42,46 @@ class AppConstant{
   //clarification
   static const String clarificationAuditArea = 'api/clarification';
   static const String detailClarificationAuditArea = 'api/detail-clarification/';
+  static const String downloadClarification = 'api/clarification/file/';
 
   //follow up
   static const String followUpAuditArea = 'api/followup';
   static const String inputFollowUpAuditArea = 'api/followup';
   static const String followUpDocumentAuditArea = 'api/follow-up-doc';
   static const String detailFollowUpAuditArea = 'api/followup/';
+  static const String downloadFollowUp = 'api/followup/file/';
 
   //kka
   static const String kkaAuditArea = 'api/kka';
   static const String detailKkaAuditArea = 'api/kka/';
+  static const String downloadKKa = 'api/kka/download/';
 
   //bap
   static const String bapAuditArea = 'api/bap';
-  static const String detailBapAuditArea = 'api/detail-bap/';
+  static const String detailBapAuditArea = 'api/bap/';
+  static const String downloadBap = 'api/bap/file/';
 
   //report
   static const String reportAuditArea = 'api/report';
 
   //user profile
   static const String detailUserAuditArea = 'api/profile';
-  static const String editProfileUserAuditArea = 'api/edit-profile/';
-  static const String changePasswordAuditArea = 'api/change-password/';
+  static const String editProfileUserAuditArea = 'api/profile/change-profile';
+  static const String changePasswordAuditArea = 'api/profile/change-password';
 
 
 
   //audit region
   //schedule
+
+  //main schedule
   static const String mainScheduleAuditRegion = 'api/main-schedule';
+  static const String detailMainScheduleAuditRegion = 'api/main-schedule/';
+
+  //special schedule
   static const String specialScheduleAuditRegion = 'api/special-schedule';
+  static const String detailSpecialScheduleAuditRegion = 'api/main-schedule/';
+
   static const String reScheduleAuditRegion = 'api/reschedule';
   static const String detailScheduleAuditRegion = 'api/schedule-audit-region/';
 

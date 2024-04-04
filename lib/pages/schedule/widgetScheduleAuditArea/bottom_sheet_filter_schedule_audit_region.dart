@@ -122,7 +122,7 @@ ControllerAuditRegion controllerAuditRegion){
                       onPressed: (){
                         startDateControllerMainSchedule.clear();
                         endDateControllerMainSchedule.clear();
-                        controllerAuditRegion.loadMainScheduleAuditRegion();
+                        controllerAuditRegion.resetfilterMainSchedule();
                         Get.back();
                       },
                       child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -136,7 +136,7 @@ ControllerAuditRegion controllerAuditRegion){
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditRegion.filterMainScheduleAuditRegion(startDateControllerMainSchedule.text, endDateControllerMainSchedule.text);
+                        controllerAuditRegion.filterMainSchedule(startDateControllerMainSchedule.text, endDateControllerMainSchedule.text);
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/report/widgetReport/widget_report.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class ReportPageAuditArea extends StatefulWidget {
 }
 
 class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController branchController = TextEditingController();
@@ -33,104 +34,21 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
             title: const Text('Laporan'),
             titleTextStyle: CustomStyles.textBold18Px),
         body: SingleChildScrollView(
-          child: Obx((){
-          if (controllerAuditArea.reportAuditArea.value == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          }else{
-          final report = controllerAuditArea.reportAuditArea.value;
-          return Padding(
+          child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               Text('Dengan cabang', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: branchController,
-                onChanged: (branch) => branchController.text = branch,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    labelStyle: CustomStyles.textMediumGrey15Px,
-                    labelText: 'Cabang...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: CustomColors.grey))),
-              ),
+              formInputReportBranchOrUser('Nama cabang...', branchController),
               const SizedBox(height: 15),
               Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              TextField(
-                controller: startDateController,
-                onChanged: (startDate) => startDateController.text = startDate,
-                readOnly: true,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Mulai dari...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: CustomColors.grey))),
-                onTap: () async {
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100));
-                  if (picked != null) {
-                    setState(() {
-                      startDateController.text =
-                          DateFormat('yyyy-MM-dd').format(picked);
-                    });
-                  }
-                },
-              ),
+              formInputStarDateEndDate(context, 'Mulai dari', startDateController),
               const SizedBox(height: 10),
-              TextField(
-                controller: endDateController,
-                onChanged: (endDate) => endDateController.text = endDate,
-                readOnly: true,
-                cursorColor: CustomColors.blue,
-                decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.date_range_rounded,
-                        color: CustomColors.grey, size: 20),
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    hintText: 'Sampai dengan...',
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: CustomColors.grey))),
-                onTap: () async {
-                  DateTime? picked = await showDatePicker(
-                      cancelText: 'Tidak',
-                      confirmText: 'ya',
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2001),
-                      lastDate: DateTime(2100));
-                  if (picked != null) {
-                    setState(() {
-                      endDateController.text =
-                          DateFormat('yyyy-MM-dd').format(picked);
-                    });
-                  }
-                },
-              ),
-
+              formInputStarDateEndDate(context, 'Sampai dengan', endDateController),
               const SizedBox(height: 25),
 
               SizedBox(
@@ -139,44 +57,16 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: ()async {
-                        Map<Permission, PermissionStatus> statuses = await [Permission.storage].request();
-
-                        if (statuses[Permission.storage]!.isGranted) {
-                          var dir = await DownloadsPathProvider.downloadsDirectory;
-                          if (dir != null) {
-                            String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-                            String saveName = 'laporan_audit_$timestamp.xlsx';
-                            String savePath = dir.path + "/$saveName";
-                            print(savePath);
-
-                            try {
-                              await Dio().download(report!.reportDoc!, savePath,onReceiveProgress: (received, total) {
-                                if (total != -1) {
-                                  print((received / total * 100).toStringAsFixed(0) +"%");
-                                }
-                              });
-                                Get.snackbar('Berhasil', 'File $saveName berhasil di unduh', 
-                                snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.green, colorText: CustomColors.white
-                              );
-                            } catch (error) {
-                              throw Exception(error);
-                            }
-                          }
-                        } else {
-                          Get.snackbar('Alert', 'Permintaan izin ditolak', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white
-                          );
-                        }
+                      onPressed: () {
+                        
                       },
                       child: Text('Download laporan',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     )
-            ],
-          ),
-        );
-          }
-        }),
+                  ],
+                ),
+            ),
         )
       );
   }

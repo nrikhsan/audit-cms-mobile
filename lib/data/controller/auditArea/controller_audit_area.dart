@@ -21,7 +21,6 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
@@ -107,14 +106,18 @@ class ControllerAuditArea extends GetxController{
   var endDateFollowUp= ''.obs;
 
   //bap
-  final RxList<ModelListBapAuditArea> bapAuditArea = <ModelListBapAuditArea>[].obs;
-  var detailBapAuditArea = Rxn<ModelDetailBapAuditArea>();
+  final PagingController<int, ContentListBapAuditArea> pagingControllerBapAuditArea = PagingController(firstPageKey: 0);
+  var detailBapAuditArea = Rxn<DataDetailBapAuditArea>();
+  var nameBap = ''.obs;
+  var branchBap = ''.obs;
+  var startDateBap = ''.obs;
+  var endDateBap = ''.obs;
 
   //report
   var reportAuditArea = Rxn<ModelReportAuditArea>();
 
   //profile
-  var detailUserAuditArea = Rxn<ModelDetailProfileAuditArea>();
+  var detailUserAuditArea = Rxn<DataProfile>();
 
   var isLoading = true.obs;
   var message = ''.obs;
@@ -129,12 +132,12 @@ class ControllerAuditArea extends GetxController{
     pagingControllerKkaAuditArea.addPageRequestListener(loadKkaAuditArea);
     pagingControllerClarificationAuditArea.addPageRequestListener(loadClarificationAuditArea);
     pagingControllerFollowUp.addPageRequestListener(loadFollowUpAuditArea);
+    pagingControllerBapAuditArea.addPageRequestListener(loadBapAuditArea);
     loadUsersAuditArea();
     loadBranchAuditArea();
     loadCaseAuditArea();
     loadCaseCategory();
-    loadBapAuditArea();
-    loadAttachmentAuditArea();
+    loadPenalty();
     super.onInit();
   }
 
@@ -585,36 +588,49 @@ void getDetailRescheduleAuditArea(int id)async{
   }
   
   //BAP
-  void loadBapAuditArea() async{
-    isLoading(true);
+  void loadBapAuditArea(int page) async{
     try {
-      final responseBap = await repository.getBapAuditArea();
-      bapAuditArea.assignAll(responseBap.dataBap ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
-
-  void filterBapAuditArea(String startDate, String endDate, String branch, String auditor)async{
-    try {
-      final responseFilterBap = await repository.getFilterBapAuditArea(startDate, endDate, branch, auditor);
-      bapAuditArea.assignAll(responseFilterBap.dataBap ?? []);
-    } catch (error) {
-      throw Exception(error);
+      final bapAuditArea = await repository.getBapAuditArea(page, nameBap.value, branchBap.value, startDateBap.value, endDateBap.value);
+      final bap = bapAuditArea.data!.content;
+      final isLastPage = bap!.length < 10;
+      if (isLastPage) {
+        pagingControllerBapAuditArea.appendLastPage(bap);
+      } else {
+        final nextPage = page + 1;
+        pagingControllerBapAuditArea.appendPage(bap, nextPage);
+      }
+    } catch (e) {
+      pagingControllerBapAuditArea.error = e;
+      throw Exception(e);
     }
   }
 
   void getDetailBapAuditArea(int id)async{
     try {
       final responseDetail = await repository.getDetailBapAuditArea(id);
-      detailBapAuditArea.value = responseDetail.detailBap;
+      detailBapAuditArea.value = responseDetail.data;
     } catch (error) {
       throw Exception(error);
     }
   }
-  
+
+  void filterBapAuditArea(String name, String branch, String startDate, String endDate)async{
+    nameBap.value = name;
+    branchBap.value = branch;
+    startDateBap.value = startDate;
+    endDateBap.value = endDate;
+    pagingControllerBapAuditArea.refresh();
+  }
+
+  void resetFilterBap()async{
+    nameBap.value = '';
+    branchBap.value = '';
+    startDateBap.value = '';
+    endDateBap.value = '';
+    pagingControllerBapAuditArea.refresh();
+  }
+
+  //follow up
   void loadFollowUpAuditArea(int page)async {
     try {
       final followUpAuditArea = await repository.getFollowUpAuditArea(page, nameFollowUp.value, 
@@ -658,7 +674,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
   
-  void loadAttachmentAuditArea()async{
+  void loadPenalty()async{
     try {
       final penalty = await repository.getPenaltyAuditArea();
       penaltyAuditArea.assignAll(penalty.data ?? []);
@@ -690,25 +706,25 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void getDetailUserAuditArea()async{
     try {
-      final response = await repository.getDetailUserAuditArea();
-      detailUserAuditArea.value = response.dataProfile;
+      final profileArea = await repository.getDetailUserAuditArea();
+      detailUserAuditArea.value = profileArea.data;
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void editProfileUserAuditArea(int id, String email, String username)async{
+  void editProfileUserAuditArea(String email, String username)async{
     try {
-      final response = await repository.editUserAuditArea(id, email, username);
+      final response = await repository.editUserAuditArea(email, username);
       message(response.toString());
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword)async{
+  void changePasswordAuditArea(String currentPassword, String newPassword)async{
     try {
-      final response = await repository.changePasswordAuditArea(id, oldPassword, newPassword, confirmPassword);
+      final response = await repository.changePasswordAuditArea(currentPassword, newPassword);
       message(response.toString());
     } catch (error) {
       throw Exception(error);

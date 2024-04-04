@@ -2,6 +2,7 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
 import 'package:audit_cms/pages/schedule/edit_schedule_page.dart';
@@ -232,13 +233,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                 ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Obx((){
-                      if(controllerAuditArea.isLoading.isTrue){
-                        return const Center(
-                            child: SpinKitCircle(color: CustomColors.blue)
-                        );
-                      }else{
-                        return PagedListView<int, ContentSpecialScheduleAuditArea>(
+                    child: PagedListView<int, ContentSpecialScheduleAuditArea>(
                           pagingController: controllerAuditArea.pagingControllerSpecialSchedule, 
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, schedule, index){
@@ -319,9 +314,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               );
                             });
                           })
-                        );
-                      }
-                    }),
+                        )
                   ),
                 ),
 
@@ -350,11 +343,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Obx((){
-                      if(controllerAuditArea.isLoading.isTrue){
-                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                      }else{
-                        return PagedListView<int, ContentListRescheduleAuditArea>(
+                    child: PagedListView<int, ContentListRescheduleAuditArea>(
                           pagingController: controllerAuditArea.pagingControllerReschedule,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, reschedules, index){
@@ -406,9 +395,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               });
                             }
                           )
-                        );
-                      }
-                    }),
+                        )
                   ),
                 )
               ]
@@ -496,16 +483,11 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
 
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Obx((){
-                      if (controllerAuditRegion.isLoading.value) {
-                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                      }else{
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: controllerAuditRegion.mainScheduleAuditRegion.length,
-                          itemBuilder: (_, index){
-                            final mainSchedule = controllerAuditRegion.mainScheduleAuditRegion[index];
-                            return GestureDetector(
+                    child: PagedListView<int, ContentMainScheduleAuditRegion>(
+                          pagingController: controllerAuditRegion.pagingControllerMainSchedule, 
+                          builderDelegate: PagedChildBuilderDelegate(
+                            itemBuilder: (_, mainSchedule, index){
+                              return GestureDetector(
                                 child: Card(
                                 elevation: 0,
                                 shape: OutlineInputBorder(
@@ -524,14 +506,14 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('${mainSchedule.auditor}', style: CustomStyles.textBold15Px),
-                                          Text('${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
+                                          Text('${mainSchedule.user!.fullname}', style: CustomStyles.textBold15Px),
+                                          Text('${mainSchedule.status}', style: CustomStyles.textMedium13Px),
                                         ],
                                       ),
                       
                                       const SizedBox(height: 10),
-                                        Text('Cabang : ${mainSchedule.branch}', style: CustomStyles.textMedium13Px),
-                                        Text('Area : ${mainSchedule.area}', style: CustomStyles.textMedium13Px),
+                                        Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
+                                        Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
@@ -540,10 +522,9 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                 Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
                               },
                             );
-                          }
-                        );
-                      }
-                    }),
+                            }
+                          )
+                        )
                   ),
                 ),
 

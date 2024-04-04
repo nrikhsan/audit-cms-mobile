@@ -36,13 +36,15 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
-          if (controllerAuditArea.detailMainScheduleAuditArea.value == null) {
+        child: SingleChildScrollView(
+          child: Obx(() {
+            final schedule = controllerAuditArea.detailMainScheduleAuditArea.value;
+          if (schedule == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
-            final detail = controllerAuditArea.detailMainScheduleAuditArea.value!.schedule;
-            final kka = controllerAuditArea.detailMainScheduleAuditArea.value!.kka;
-            final lha = controllerAuditArea.detailMainScheduleAuditArea.value!.lha;
+            final detail = schedule.schedule;
+            final kka = schedule.kka;
+            final lha = schedule.lha;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -51,35 +53,42 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                 const SizedBox(height: 5),
                 Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.startDate} s/d ${detail.endDate}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
+
                 Text('Status :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.startDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.endDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+                
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 SizedBox(
@@ -180,7 +189,8 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
               ],
             );
           }
-        })),
+        })
+        ),
       ),
     );
   }
@@ -211,7 +221,8 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
+        child: SingleChildScrollView(
+          child: Obx(() {
           if (controllerAuditArea.detailSpecialScheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
@@ -554,11 +565,11 @@ class DetailMainScheduleAuditRegion extends StatefulWidget {
 
 class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditRegion> {
   
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailScheduleAuditRegion(widget.mainScheduleId);
+    controllerAuditRegion.getDetailMainScheduleAuditRegion(widget.mainScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -597,7 +608,8 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailScheduleAuditRegion.value;
+          final detail = controllerAuditRegion.detailMainSchedule.value?.schedule;
+          final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
@@ -605,9 +617,13 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+                Text('Auditor :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.user!.fullname}', style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -616,7 +632,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
+                Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
@@ -624,21 +640,27 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
+                Text('${detail.startDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.endDateRealization}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
                 
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
                 const SizedBox(height: 15),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
+                    itemCount: lha!.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
                       return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -651,41 +673,46 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Wrap(
+                                
                                 children: [
-                                  Icon(lha.research == 0 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                  Text('${lha.inputDate}',
-                                      style: CustomStyles.textBold15Px),
+                                  lha[index].isFlag == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
                                 ],
                               ),
-                              const SizedBox(height: 15),
-                              Text('Cabang : ${lha.branch}',
-                                  style: CustomStyles.textMedium15Px),
-                              const SizedBox(height: 10),
-                              Text('Kategori SOP : ${lha.sopCategory}',
-                                  style: CustomStyles.textMedium15Px),
 
-                              const SizedBox(height: 10),
-                              Text('Tanggal LHA : ${lha.inputDate}',
-                                  style: CustomStyles.textMedium15Px),
-                              
                               const SizedBox(height: 15),
+
+                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
+                                  TextButton(
+                                      style: TextButton.styleFrom(
                                           shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.blue),
+                                              CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditRegion(id: detail.id!));
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
                                       },
-                                      child: Text('Lihat rincian',
-                                          style:
-                                              CustomStyles.textMediumWhite15Px))
+                                      child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
+
+                                  const SizedBox(width: 5),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
@@ -801,7 +828,8 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailScheduleAuditRegion.value;
+          final detail = controllerAuditRegion.detailMainSchedule.value?.schedule;
+          final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
@@ -809,9 +837,13 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+                Text('Auditor :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.user!.fullname}', style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -820,7 +852,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
+                Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
@@ -828,73 +860,84 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
+                Text('${detail.startDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-
+                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.endDateRealization}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
                 const SizedBox(height: 15),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
+                    itemCount: lha!.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
                       return Card(
-                          elevation: 0,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: CustomColors.grey,
-                              )),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(lha.research == 0 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                    Text('${lha.inputDate}',
-                                        style: CustomStyles.textBold15Px),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                Text('Cabang : ${lha.branch}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 10),
-                                Text('Kategori SOP : ${lha.sopCategory}',
-                                    style: CustomStyles.textMedium15Px),
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: CustomColors.grey,
+                            )),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                
+                                children: [
+                                  lha[index].isFlag == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
+                                ],
+                              ),
 
-                                const SizedBox(height: 10),
-                                Text('Tanggal LHA : ${lha.inputDate}',
-                                    style: CustomStyles.textMedium15Px),
+                              const SizedBox(height: 15),
 
-                                const SizedBox(height: 15),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.blue),
-                                        onPressed: () {
-                                          Get.to(() => DetailLhaPageAuditRegion(id: detail.id!));
-                                        },
-                                        child: Text('Lihat rincian',
-                                            style:
-                                            CustomStyles.textMediumWhite15Px))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
+                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape:
+                                              CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
+                                      },
+                                      child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
+
+                                  const SizedBox(width: 5),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                ],
+                              )
+                            ],
+                          ),
+                        ));
                     })
               ],
             );
@@ -1002,109 +1045,109 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailScheduleAuditRegion.value;
-          if (detail == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(15),
+      //   child: SingleChildScrollView(child: Obx(() {
+      //     final detail = controllerAuditRegion.detailScheduleAuditRegion.value;
+      //     if (detail == null) {
+      //       return const Center(child: SpinKitCircle(color: CustomColors.blue));
+      //     } else {
+      //       return Column(
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         mainAxisSize: MainAxisSize.max,
+      //         children: [
+      //           Text('Nama cabang :', style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 5),
+      //           Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+      //           const SizedBox(height: 20),
+      //           Text('Tanggal :', style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 5),
+      //           Text('${detail.startDate} s/d ${detail.endDate}',
+      //               style: CustomStyles.textRegular13Px),
+      //           const SizedBox(height: 20),
+      //           Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 5),
+      //           Text('${detail.scheduleDescription}',
+      //               style: CustomStyles.textRegular13Px,
+      //               textAlign: TextAlign.justify),
+      //           const SizedBox(height: 20),
+      //           Text('Status :', style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 5),
+      //           Text('${detail.status}', style: CustomStyles.textRegular13Px),
+      //           const SizedBox(height: 20),
+      //           Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 5),
+      //           Text('${detail.dateProcess}',
+      //               style: CustomStyles.textRegular13Px),
+      //           const SizedBox(height: 20),
 
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 15),
-                ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
-                      return Card(
-                          elevation: 0,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: CustomColors.grey,
-                              )),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(lha.research == 0 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                    Text('${lha.inputDate}',
-                                        style: CustomStyles.textBold15Px),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                Text('Cabang : ${lha.branch}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 10),
-                                Text('Kategori SOP : ${lha.sopCategory}',
-                                    style: CustomStyles.textMedium15Px),
+      //           Text('List laporan harian audit :',
+      //               style: CustomStyles.textBold15Px),
+      //           const SizedBox(height: 15),
+      //           ListView.builder(
+      //               physics: const NeverScrollableScrollPhysics(),
+      //               itemCount: detail.lha!.length,
+      //               shrinkWrap: true,
+      //               itemBuilder: (_, index) {
+      //                 final lha = detail.lha![index];
+      //                 return Card(
+      //                     elevation: 0,
+      //                     shape: OutlineInputBorder(
+      //                         borderRadius: BorderRadius.circular(10),
+      //                         borderSide: const BorderSide(
+      //                           color: CustomColors.grey,
+      //                         )),
+      //                     child: Padding(
+      //                       padding: const EdgeInsets.all(15),
+      //                       child: Column(
+      //                         crossAxisAlignment: CrossAxisAlignment.start,
+      //                         children: [
+      //                           Row(
+      //                             mainAxisAlignment:
+      //                             MainAxisAlignment.spaceBetween,
+      //                             children: [
+      //                               Icon(lha.research == 0 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
+      //                               Text('${lha.inputDate}',
+      //                                   style: CustomStyles.textBold15Px),
+      //                             ],
+      //                           ),
+      //                           const SizedBox(height: 15),
+      //                           Text('Cabang : ${lha.branch}',
+      //                               style: CustomStyles.textMedium15Px),
+      //                           const SizedBox(height: 10),
+      //                           Text('Kategori SOP : ${lha.sopCategory}',
+      //                               style: CustomStyles.textMedium15Px),
 
-                                const SizedBox(height: 10),
-                                Text('Tanggal LHA : ${lha.inputDate}',
-                                    style: CustomStyles.textMedium15Px),
+      //                           const SizedBox(height: 10),
+      //                           Text('Tanggal LHA : ${lha.inputDate}',
+      //                               style: CustomStyles.textMedium15Px),
 
-                                const SizedBox(height: 15),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.blue),
-                                        onPressed: () {
-                                          Get.to(() => DetailLhaPageAuditRegion(id: detail.id!));
-                                        },
-                                        child: Text('Lihat rincian',
-                                            style:
-                                            CustomStyles.textMediumWhite15Px))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
-                    })
-              ],
-            );
-          }
-        })),
-      ),
+      //                           const SizedBox(height: 15),
+      //                           Row(
+      //                             mainAxisAlignment: MainAxisAlignment.end,
+      //                             children: [
+      //                               ElevatedButton(
+      //                                   style: ElevatedButton.styleFrom(
+      //                                       shape:
+      //                                       CustomStyles.customRoundedButton,
+      //                                       backgroundColor: CustomColors.blue),
+      //                                   onPressed: () {
+      //                                     Get.to(() => DetailLhaPageAuditRegion(id: detail.id!));
+      //                                   },
+      //                                   child: Text('Lihat rincian',
+      //                                       style:
+      //                                       CustomStyles.textMediumWhite15Px))
+      //                             ],
+      //                           )
+      //                         ],
+      //                       ),
+      //                     ));
+      //               })
+      //         ],
+      //       );
+      //     }
+      //   })),
+      // ),
     );
   }
   void showDialogUploadKkaAuditRegion() {

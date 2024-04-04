@@ -22,6 +22,7 @@ import 'package:audit_cms/data/core/response/auditRegion/schedules/response_spec
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ControllerAuditRegion extends GetxController {
   final Repositories repositories;
@@ -30,11 +31,14 @@ class ControllerAuditRegion extends GetxController {
   var selectedFileName = ''.obs;
   var uploadStatus = ''.obs;
 
-  //schedules
-  final RxList<ModelListMainScheduleAuditRegion> mainScheduleAuditRegion = <ModelListMainScheduleAuditRegion>[].obs;
+  //main schedules
+  final PagingController<int, ContentMainScheduleAuditRegion> pagingControllerMainSchedule = PagingController(firstPageKey: 0);
+  var detailMainSchedule = Rxn<DataDetailScheduleAuditRegion>();
+  var startDateMainSchedule = ''.obs;
+  var endDateMainSchedule = ''.obs;
+
   final RxList<ModelListSpecialSchedulesAuditRegion> specialScheduleAuditRegion = <ModelListSpecialSchedulesAuditRegion>[].obs;
   final RxList<ModelListReschedulesAuditRegion> rescheduleAuditRegion = <ModelListReschedulesAuditRegion>[].obs;
-  var detailScheduleAuditRegion = Rxn<ModelDetailSchedulesAuditRegion>();
 
   //master
   final RxList<ModelListDivisionAuditRegion> divisionAuditRegion = <ModelListDivisionAuditRegion>[].obs;
@@ -70,7 +74,7 @@ class ControllerAuditRegion extends GetxController {
 
   @override
   void onInit() {
-    loadMainScheduleAuditRegion();
+    pagingControllerMainSchedule.addPageRequestListener(loadMainScheduleAuditRegion);
     loadSpecialScheduleAuditRegion();
     loadRescheduleAuditRegion();
     loadDivisionAuditRegion();
@@ -84,28 +88,44 @@ class ControllerAuditRegion extends GetxController {
     super.onInit();
   }
 
-  void loadMainScheduleAuditRegion() async {
-    isLoading(true);
+  void loadMainScheduleAuditRegion(int page) async {
     try {
-      final response = await repositories.getMainSchedulesAuditRegion();
-      mainScheduleAuditRegion.assignAll(response.mainSchedules ?? []);
-    } catch (error) {
-      throw Exception(error);
-    } finally {
-      isLoading(false);
+      final mainSchedule = await repositories.getMainSchedulesAuditRegion(page, startDateMainSchedule.value, endDateMainSchedule.value);
+      final schedule = mainSchedule.data!.content;
+      final isLastPage = schedule!.length < 20;
+      if (isLastPage) {
+        pagingControllerMainSchedule.appendLastPage(schedule);
+      } else {
+        final nextPage = page + 1;
+        pagingControllerMainSchedule.appendPage(schedule, nextPage);
+      }
+    } catch (e) {
+      pagingControllerMainSchedule.error = e;
     }
   }
 
-  void filterMainScheduleAuditRegion(String startDate, endDate) async {
+  void getDetailMainScheduleAuditRegion(int id)async{
     try {
-      final response =
-          await repositories.filterMainSchedulesAuditRegion(startDate, endDate);
-      mainScheduleAuditRegion.assignAll(response.mainSchedules ?? []);
+      final response = await repositories.getDetailMainScheduleAuditRegion(id);
+      detailMainSchedule.value = response.data;
     } catch (error) {
       throw Exception(error);
     }
   }
 
+  void filterMainSchedule(String startDate, String endDate)async{
+    startDateMainSchedule.value = startDate;
+    endDateMainSchedule.value = endDate;
+    pagingControllerMainSchedule.refresh();
+  }
+
+  void resetfilterMainSchedule()async{
+    startDateMainSchedule.value = '';
+    endDateMainSchedule.value = '';
+    pagingControllerMainSchedule.refresh();
+  }
+
+  //special schedule
   void loadSpecialScheduleAuditRegion() async {
     isLoading(true);
     try {
@@ -153,7 +173,7 @@ class ControllerAuditRegion extends GetxController {
   void getDetailScheduleAuditRegion(int id)async{
     try {
       final response = await repositories.getDetailScheduleAuditRegion(id);
-      detailScheduleAuditRegion.value = response.dataSchedules;
+      detailMainSchedule.value = response.data;
     } catch (error) {
       throw Exception(error);
     }

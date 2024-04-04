@@ -7,8 +7,7 @@ import 'package:get/get.dart';
 
 //audit area
 class ChangePasswordPageAuditArea extends StatefulWidget {
-  final int id;
-  const ChangePasswordPageAuditArea({super.key, required this.id});
+  const ChangePasswordPageAuditArea({super.key});
 
   @override
   State<ChangePasswordPageAuditArea> createState() => _ChangePasswordPageAuditAreaState();
@@ -19,7 +18,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,8 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
             icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
 
             TextField(
               controller: confirmPasswordController,
-              onChanged: (configrm) => newPasswordController.text = configrm,
+              onChanged: (configrm) => confirmPasswordController.text = configrm,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi password baru anda...',
@@ -114,7 +114,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                         Get.snackbar('Gagal', 'Kata sandi harus lebih dari 6 karakter', colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else if(confirmPasswordController.text == newPasswordController.text){
                         Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                        controllerAuditArea.changePasswordAuditArea(widget.id, oldPasswordController.text, newPasswordController.text, confirmPasswordController.text);
+                        controllerAuditArea.changePasswordAuditArea(oldPasswordController.text, newPasswordController.text);
                         Navigator.pop(context);
                       }else{
                        Get.snackbar('Gagal', 'Kata sandi Tidak sesuai', colorText: CustomColors.white, backgroundColor: CustomColors.red); 
@@ -127,6 +127,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
           ],
         )
       ),
+      )
     );
   }
 }

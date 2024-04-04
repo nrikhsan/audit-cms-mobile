@@ -17,7 +17,8 @@ class DetailBapPageAuditArea extends StatefulWidget {
 }
 
 class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -45,35 +46,25 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-            
-                  Text('No. BAP :', style: CustomStyles.textBold15Px),
+
+                  Text('Kode BAP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.noBap}', style: CustomStyles.textRegular13Px),
+                  Text('${bap.code}', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
-                  Text('No. Klarifikasi :', style: CustomStyles.textBold15Px),
+                  Text('Kode Klarifikasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.noClarification}', style: CustomStyles.textRegular13Px),
+                  Text('${bap.clarification!.code}', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
                   Text('Auditor :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.auditor}', style: CustomStyles.textRegular13Px),
+                  Text('${bap.user!.fullname}', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
-                  Text('Cabang :', style: CustomStyles.textBold15Px),
+                  Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.branch}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 15),
-
-                  Text('Area :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${bap.area}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 15),
-
-                  Text('Periode pemeriksaan :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${bap.startDateExaminationPeriod} s/d ${bap.endDateExaminationPeriod}', style: CustomStyles.textRegular13Px),
+                  Text('${bap.clarification!.evaluationLimitation}', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
                   Text('File BAP :', style: CustomStyles.textBold15Px),
@@ -97,7 +88,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditArea(context, 'File BAP', 'file_bap', bap.bapDoc!);
+                                  showDialogPdfBapAuditArea(context, 'File BAP', 'file_bap', bap.filePath!);
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],

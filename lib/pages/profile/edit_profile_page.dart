@@ -18,7 +18,7 @@ class EditProfilePageAuditArea extends StatefulWidget {
 
 class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
@@ -146,7 +146,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                         if(email.isEmpty || username.isEmpty){
                           Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                         }else if(email.isEmail){
-                          controllerAuditArea.editProfileUserAuditArea(id, email, username);
+                          controllerAuditArea.editProfileUserAuditArea(email, username);
                           Get.back();
                           Get.snackbar('Berhasil', 'Profil berhasil di edit',
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);

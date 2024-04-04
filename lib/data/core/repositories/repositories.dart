@@ -18,7 +18,6 @@ import 'package:audit_cms/data/core/response/auditArea/master/response_users.dar
 import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_schedule_audit_area.dart';
@@ -99,8 +98,7 @@ abstract class Repositories {
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id);
 
   //BAP
-  Future<ResponseBapAuditArea> getBapAuditArea();
-  Future<ResponseBapAuditArea> getFilterBapAuditArea(String startDate, String endDate, String branch, String auditor);
+  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, String branch, String startDate, String endDate);
   Future<ResponseDetailBapAuditArea>getDetailBapAuditArea(int id);
 
   //follow up
@@ -112,15 +110,16 @@ abstract class Repositories {
   Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate);
 
   //user profile
-  Future<ResponseDetailUserAuditArea> getDetailUserAuditArea();
-  Future<ResponseMessage>editUserAuditArea(int id, String email, String username);
-  Future<ResponseMessage>changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword);
+  Future<ResponseProfileAuditArea> getDetailUserAuditArea();
+  Future<ResponseMessage>editUserAuditArea(String email, String username);
+  Future<ResponseMessage>changePasswordAuditArea(String oldPassword, String newPassword);
 
 
   //audit region
-  //schedules
-  Future<ResponseMainScheduleAuditRegion>getMainSchedulesAuditRegion();
-  Future<ResponseMainScheduleAuditRegion>filterMainSchedulesAuditRegion(String startDate, String endDate);
+  //main schedules
+  Future<ResponseMainScheduleAuditRegion>getMainSchedulesAuditRegion(int page, String startDate, String endDate);
+  Future<ResponseDetailScheduleAuditRegion> getDetailMainScheduleAuditRegion(int id);
+
   Future<ResponseSpecialScheduleAuditRegion>getSpecialSchedulesAuditRegion();
   Future<ResponseSpecialScheduleAuditRegion>filterSpecialSchedulesAuditRegion(String startDate, String endDate);
   Future<ResponseRescheduleAuditRegion>getRescheduleAuditRegion();
@@ -314,8 +313,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseDetailClarificationAuditArea> getDetailClarificationAuditArea(int id) async {
-    return await apiService.getDetailClarificationAuditArea(id);
+  Future<ResponseDetailClarificationAuditArea> getDetailClarificationAuditArea(int id) {
+    return apiService.getDetailClarificationAuditArea(id);
   }
 
   //KKA
@@ -332,18 +331,13 @@ class RepositoryImpl implements Repositories {
 
   //BAP
   @override
-  Future<ResponseBapAuditArea> getBapAuditArea()async {
-    return await apiService.getBapAuditArea();
+  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, String branch, String startDate, String endDate) {
+    return apiService.getBapAuditArea(page, name, branch, startDate, endDate);
   }
   
   @override
-  Future<ResponseBapAuditArea> getFilterBapAuditArea(String startDate, String endDate, String branch, String auditor)async {
-    return await apiService.filterBapAuditArea(startDate, endDate, branch, auditor);
-  }
-  
-  @override
-  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int id)async {
-    return await apiService.getDetailBapAuditArea(id);
+  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int id) {
+    return apiService.getDetailBapAuditArea(id);
   }
 
 
@@ -366,38 +360,38 @@ class RepositoryImpl implements Repositories {
 
   //report
   @override
-  Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate)async {
-    return await apiService.getReportAuditArea(branch, startDate, endDate);
+  Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate) {
+    return apiService.getReportAuditArea(branch, startDate, endDate);
   }
 
 
   //user profile
   @override
-  Future<ResponseDetailUserAuditArea> getDetailUserAuditArea()async {
-    return await apiService.getDetailUserAuditArea();
+  Future<ResponseProfileAuditArea> getDetailUserAuditArea() {
+    return apiService.getDetailUserAuditArea();
   }
   
   @override
-  Future<ResponseMessage> editUserAuditArea(int id, String email, String username) async{
-    return await apiService.editProfileUserAuditArea(id, email, username);
+  Future<ResponseMessage> editUserAuditArea(String email, String username){
+    return apiService.editProfileUserAuditArea(email, username);
   }
   
   @override
-  Future<ResponseMessage> changePasswordAuditArea(int id, String oldPassword, String newPassword, String confirmPassword)async {
-    return await apiService.changePasswordAuditArea(id, oldPassword, newPassword, confirmPassword);
+  Future<ResponseMessage> changePasswordAuditArea(String currentPassword, String newPassword) {
+    return apiService.changePasswordAuditArea(currentPassword, newPassword);
   }
   
 
   //audit region
-  //schedules
+  //main schedules
   @override
-  Future<ResponseMainScheduleAuditRegion> getMainSchedulesAuditRegion()async {
-    return await apiService.getMainSchedulesAuditRegion();
+  Future<ResponseMainScheduleAuditRegion> getMainSchedulesAuditRegion(int page, String startDate, String endDate) {
+    return apiService.getMainSchedulesAuditRegion(page, startDate, endDate);
   }
 
   @override
-  Future<ResponseMainScheduleAuditRegion> filterMainSchedulesAuditRegion(String startDate, String endDate)async {
-    return await apiService.filterMainSchedulesAuditRegion(startDate, endDate);
+  Future<ResponseDetailScheduleAuditRegion> getDetailMainScheduleAuditRegion(int id){
+    return apiService.getDetailMainScheduleAuditRegion(id);
   }
   
   @override
