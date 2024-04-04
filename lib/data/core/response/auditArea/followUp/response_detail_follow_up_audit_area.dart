@@ -1,44 +1,39 @@
-class ResponseDetailFollowUpAuditArea {
-  Metadata? metadata;
-  int? status;
+class ResponseDetailFollowUp {
+  Meta? meta;
   String? message;
-  ModelDetailFollowUpAuditArea? detailFollowUp;
+  int? status;
+  DataDetailFollowUp? data;
 
-  ResponseDetailFollowUpAuditArea(
-      {this.metadata, this.status, this.message, this.detailFollowUp});
+  ResponseDetailFollowUp({this.meta, this.message, this.status, this.data});
 
-  ResponseDetailFollowUpAuditArea.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+  ResponseDetailFollowUp.fromJson(Map<String, dynamic> json) {
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    detailFollowUp = json['detail_follow_up'] != null
-        ? new ModelDetailFollowUpAuditArea.fromJson(json['detail_follow_up'])
-        : null;
+    status = json['status'];
+    data = json['data'] != null ? new DataDetailFollowUp.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
-    if (this.detailFollowUp != null) {
-      data['detail_follow_up'] = this.detailFollowUp!.toJson();
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
@@ -51,59 +46,108 @@ class Metadata {
   }
 }
 
-class ModelDetailFollowUpAuditArea {
+class DataDetailFollowUp {
   int? id;
-  int? noDocument;
-  String? auditor;
-  String? noKlarifikasi;
-  String? dateFollowUp;
-  String? branch;
-  String? penalty;
-  String? reason;
-  String? clarificationDoc;
-  String? bapDoc;
-  String? followUpDoc;
+  User? user;
+  Null? penalty;
+  Clarification? clarification;
+  String? code;
+  String? description;
+  String? status;
+  Null? filename;
+  Null? filePath;
+  int? isPenalty;
 
-  ModelDetailFollowUpAuditArea(
+  DataDetailFollowUp(
       {this.id,
-        this.noDocument,
-        this.auditor,
-        this.noKlarifikasi,
-        this.dateFollowUp,
-        this.branch,
-        this.penalty,
-        this.reason,
-        this.clarificationDoc,
-        this.bapDoc,
-        this.followUpDoc});
+      this.user,
+      this.penalty,
+      this.clarification,
+      this.code,
+      this.description,
+      this.status,
+      this.filename,
+      this.filePath,
+      this.isPenalty});
 
-  ModelDetailFollowUpAuditArea.fromJson(Map<String, dynamic> json) {
+  DataDetailFollowUp.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    noDocument = json['no_document'];
-    auditor = json['auditor'];
-    noKlarifikasi = json['No klarifikasi'];
-    dateFollowUp = json['date_follow_up'];
-    branch = json['branch'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
     penalty = json['penalty'];
-    reason = json['reason'];
-    clarificationDoc = json['clarification_doc'];
-    bapDoc = json['bap_doc'];
-    followUpDoc = json['follow_up_doc'];
+    clarification = json['clarification'] != null
+        ? new Clarification.fromJson(json['clarification'])
+        : null;
+    code = json['code'];
+    description = json['description'];
+    status = json['status'];
+    filename = json['filename'];
+    filePath = json['file_path'];
+    isPenalty = json['is_penalty'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['no_document'] = this.noDocument;
-    data['auditor'] = this.auditor;
-    data['No klarifikasi'] = this.noKlarifikasi;
-    data['date_follow_up'] = this.dateFollowUp;
-    data['branch'] = this.branch;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
     data['penalty'] = this.penalty;
-    data['reason'] = this.reason;
-    data['clarification_doc'] = this.clarificationDoc;
-    data['bap_doc'] = this.bapDoc;
-    data['follow_up_doc'] = this.followUpDoc;
+    if (this.clarification != null) {
+      data['clarification'] = this.clarification!.toJson();
+    }
+    data['code'] = this.code;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['filename'] = this.filename;
+    data['file_path'] = this.filePath;
+    data['is_penalty'] = this.isPenalty;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? email;
+  String? fullname;
+  String? initialName;
+
+  User({this.id, this.email, this.fullname, this.initialName});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    return data;
+  }
+}
+
+class Clarification {
+  int? id;
+  String? code;
+  String? evaluationLimitation;
+
+  Clarification({this.id, this.code, this.evaluationLimitation});
+
+  Clarification.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    evaluationLimitation = json['evaluation_limitation'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['evaluation_limitation'] = this.evaluationLimitation;
     return data;
   }
 }

@@ -1,16 +1,16 @@
-class ResponseFollowUp {
+class ResponseRevisiLhaAuditArea {
   Meta? meta;
   String? message;
   int? status;
-  DataFollowUp? data;
+  DataRevisiLha? data;
 
-  ResponseFollowUp({this.meta, this.message, this.status, this.data});
+  ResponseRevisiLhaAuditArea({this.meta, this.message, this.status, this.data});
 
-  ResponseFollowUp.fromJson(Map<String, dynamic> json) {
+  ResponseRevisiLhaAuditArea.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataFollowUp.fromJson(json['data']) : null;
+    data = json['data'] != null ? new DataRevisiLha.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -46,17 +46,17 @@ class Meta {
   }
 }
 
-class DataFollowUp {
-  List<ContentListFollowUp>? content;
+class DataRevisiLha {
+  List<LhaDetails>? lhaDetails;
   Pageable? pageable;
 
-  DataFollowUp({this.content, this.pageable});
+  DataRevisiLha({this.lhaDetails, this.pageable});
 
-  DataFollowUp.fromJson(Map<String, dynamic> json) {
-    if (json['content'] != null) {
-      content = <ContentListFollowUp>[];
-      json['content'].forEach((v) {
-        content!.add(new ContentListFollowUp.fromJson(v));
+  DataRevisiLha.fromJson(Map<String, dynamic> json) {
+    if (json['lha_details'] != null) {
+      lhaDetails = <LhaDetails>[];
+      json['lha_details'].forEach((v) {
+        lhaDetails!.add(new LhaDetails.fromJson(v));
       });
     }
     pageable = json['pageable'] != null
@@ -66,8 +66,8 @@ class DataFollowUp {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.content != null) {
-      data['content'] = this.content!.map((v) => v.toJson()).toList();
+    if (this.lhaDetails != null) {
+      data['lha_details'] = this.lhaDetails!.map((v) => v.toJson()).toList();
     }
     if (this.pageable != null) {
       data['pageable'] = this.pageable!.toJson();
@@ -76,108 +76,47 @@ class DataFollowUp {
   }
 }
 
-class ContentListFollowUp {
+class LhaDetails {
   int? id;
-  User? user;
-  Null? penalty;
-  Clarification? clarification;
-  String? code;
+  String? cases;
+  String? caseCategory;
   String? description;
-  String? status;
-  Null? filename;
-  Null? filePath;
-  int? isPenalty;
+  String? suggestion;
+  String? temporaryRecommendations;
+  String? permanentRecommendations;
+  int? isResearch;
 
-  ContentListFollowUp(
+  LhaDetails(
       {this.id,
-      this.user,
-      this.penalty,
-      this.clarification,
-      this.code,
+      this.cases,
+      this.caseCategory,
       this.description,
-      this.status,
-      this.filename,
-      this.filePath,
-      this.isPenalty});
+      this.suggestion,
+      this.temporaryRecommendations,
+      this.permanentRecommendations,
+      this.isResearch});
 
-  ContentListFollowUp.fromJson(Map<String, dynamic> json) {
+  LhaDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    penalty = json['penalty'];
-    clarification = json['clarification'] != null
-        ? new Clarification.fromJson(json['clarification'])
-        : null;
-    code = json['code'];
+    cases = json['cases'];
+    caseCategory = json['caseCategory'];
     description = json['description'];
-    status = json['status'];
-    filename = json['filename'];
-    filePath = json['file_path'];
-    isPenalty = json['is_penalty'];
+    suggestion = json['suggestion'];
+    temporaryRecommendations = json['temporary_recommendations'];
+    permanentRecommendations = json['permanent_recommendations'];
+    isResearch = json['is_research'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    data['penalty'] = this.penalty;
-    if (this.clarification != null) {
-      data['clarification'] = this.clarification!.toJson();
-    }
-    data['code'] = this.code;
+    data['cases'] = this.cases;
+    data['caseCategory'] = this.caseCategory;
     data['description'] = this.description;
-    data['status'] = this.status;
-    data['filename'] = this.filename;
-    data['file_path'] = this.filePath;
-    data['is_penalty'] = this.isPenalty;
-    return data;
-  }
-}
-
-class User {
-  int? id;
-  String? email;
-  String? fullname;
-  String? initialName;
-
-  User({this.id, this.email, this.fullname, this.initialName});
-
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    email = json['email'];
-    fullname = json['fullname'];
-    initialName = json['initial_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['fullname'] = this.fullname;
-    data['initial_name'] = this.initialName;
-    return data;
-  }
-}
-
-class Clarification {
-  int? id;
-  String? code;
-  String? evaluationLimitation;
-
-  Clarification({this.id, this.code, this.evaluationLimitation});
-
-  Clarification.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    code = json['code'];
-    evaluationLimitation = json['evaluation_limitation'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['code'] = this.code;
-    data['evaluation_limitation'] = this.evaluationLimitation;
+    data['suggestion'] = this.suggestion;
+    data['temporary_recommendations'] = this.temporaryRecommendations;
+    data['permanent_recommendations'] = this.permanentRecommendations;
+    data['is_research'] = this.isResearch;
     return data;
   }
 }

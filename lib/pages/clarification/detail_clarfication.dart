@@ -26,7 +26,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
   final ControllerAuditArea controllerAuditArea = Get.find();
 
-  final List<String> status = ['Todo', 'Progress', 'Review', 'Close'];
+  final List<String> status = ["TODO", "PROGRESS", "REVIEW", "DONE"];
   int currentIndex = 0;
 
   @override
@@ -53,6 +53,8 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final evaluation = detail.evaluation;
+            final followUp = detail.isFollowUp;
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -66,103 +68,110 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                         children: [
                           Text('Auditor :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.auditor}',
+                          Text('${detail.user!.fullname}',
                               style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Kode :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Cabang :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Kasus :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.cases!.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.caseCategory!.name}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Prioritas temuan :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.priority}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Deskripsi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.description}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Lokasi yang di audit :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.location}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Auditee :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.auditee}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Audit leader :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.auditeeLeader}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Rekomendasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+                          
+                          Text('Evaluasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Wrap(
+                            children: [
+                              evaluation == 0 ? 
+                              Text('Tidak ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+
+                          Text('Status :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.nominalLoss}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Bats evaluasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.evaluationLimitation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Wrap(
+                            children: [
+                              followUp == 0 ? 
+                              Text('Tidak', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Perlu di tindak lanjut', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                            ],
+                          ),
                           const SizedBox(height: 20),
                         ],
                       ),
 
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: CustomColors.orange)
-                        ),
-                        onPressed: (){},
-                        child: Text(status[currentIndex], style: CustomStyles.textMediumOrange15Px)
-                      )
+                      // OutlinedButton(
+                      //   style: OutlinedButton.styleFrom(
+                      //     side: const BorderSide(
+                      //       color: CustomColors.orange)
+                      //   ),
+                      //   onPressed: (){},
+                      //   child: Text(status[currentIndex], style: CustomStyles.textMediumOrange15Px)
+                      // )
                     ],
                   ),
-                  Text('Cabang :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.branch}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Tanggal klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationDate}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('No. klarifikasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.noClarification}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('No. BAP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.noBap}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Kategori klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationCategory}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Batasan evaluasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.limitEvaluation}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Divisi yang diaudi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.divisionOrAreaBeingAudited}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Bagian :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.part}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Atasan langsung :',
-                    style: CustomStyles.textBold15Px,
-                  ),
-                  const SizedBox(height: 5),
-                  Text('${detail.directSupervisor}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
-                  const SizedBox(height: 20),
-                  Text('Kepada yth/jabatan :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.directSupervisor}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
-                  const SizedBox(height: 20),
-                  Text('Prioritas temuan :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.findingPriority}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Evaluasi klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text(
-                      '${detail.clarificationIdentidication!.clarificationEvaluation}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationIdentidication!.nominalLoss}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Alasan :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationIdentidication!.reason}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
-                  const SizedBox(height: 20),
-                  Text('File klarifikasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
+                  
                   SizedBox(
                     width: 140,
                     child: Card(
@@ -182,38 +191,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.green),
                                 onPressed: () async {
-                                  showDialogPdfClarificationPdfAuditArea(context, 'File klarifikais', 'file_klarifikasi', detail.clarificationDoc!);
-                                },
-                                child: Text('Lihat',
-                                    style: CustomStyles.textMediumWhite15Px))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text('File BAP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: 140,
-                    child: Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.lightGrey)),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Text('File', style: CustomStyles.textMedium15Px),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton,
-                                    backgroundColor: CustomColors.blue),
-                                onPressed: () async {
-                                  showDialogPdfClarificationPdfAuditArea(context, 'File BAP', 'file_bap', detail.bapDoc!);
+                                  showDialogPdfClarificationPdfAuditArea(context, 'File klarifikais', 'file_klarifikasi', detail.filePath!);
                                 },
                                 child: Text('Lihat',
                                     style: CustomStyles.textMediumWhite15Px))
@@ -225,17 +203,17 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
                   const SizedBox(height: 20),
 
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: CustomStyles.customRoundedButton,
-                      backgroundColor: CustomColors.blue
-                    ),
-                    onPressed: currentIndex < status.length - 1 ? showDialogStatusClarificationAuditArea : null,
-                     child: Text(currentIndex > status.length +1 ? 'Ubah status' : 'Ubah status ${status[currentIndex]}', style: CustomStyles.textMediumWhite15Px)
-                    ),
-                  )
+                  // SizedBox(
+                  //   width: double.maxFinite,
+                  //   child: ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     shape: CustomStyles.customRoundedButton,
+                  //     backgroundColor: CustomColors.blue
+                  //   ),
+                  //   onPressed: currentIndex < status.length - 1 ? showDialogStatusClarificationAuditArea : null,
+                  //    child: Text(currentIndex > status.length +1 ? 'Ubah status' : 'Ubah status ${status[currentIndex]}', style: CustomStyles.textMediumWhite15Px)
+                  //   ),
+                  // )
                 ],
               ),
             );
@@ -245,50 +223,50 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
     );
   }
 
-  void showDialogStatusClarificationAuditArea() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        elevation: 0,
-        context: context,
-        builder: (_) {
-          return Container(
-              width: double.maxFinite,
-              height: 200,
-              padding: EdgeInsets.only(
-                  top: 15,
-                  right: 15,
-                  left: 15,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 50),
-              child: Column(
-                children: [
-                  AppBar(
-                    title: const Text('Ubah status klarifikasi'),
-                    centerTitle: true,
-                    titleTextStyle: CustomStyles.textBold18Px,
-                    automaticallyImplyLeading: false,
-                  ),
-                  const SizedBox(height: 20),
-                  Wrap(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.update_rounded, color: CustomColors.grey, size: 25),
-                        title: Text('Ubah status', style: CustomStyles.textBold15Px),
-                          onTap: () {
-                            setState(() {
-                              if (currentIndex < status.length - 1) {
-                                currentIndex++;
-                              }
-                            });
-                          Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-                ],
-              )
-            );
-        });
-  }
+  // void showDialogStatusClarificationAuditArea() {
+  //   showModalBottomSheet(
+  //       isScrollControlled: true,
+  //       elevation: 0,
+  //       context: context,
+  //       builder: (_) {
+  //         return Container(
+  //             width: double.maxFinite,
+  //             height: 200,
+  //             padding: EdgeInsets.only(
+  //                 top: 15,
+  //                 right: 15,
+  //                 left: 15,
+  //                 bottom: MediaQuery.of(context).viewInsets.bottom + 50),
+  //             child: Column(
+  //               children: [
+  //                 AppBar(
+  //                   title: const Text('Ubah status klarifikasi'),
+  //                   centerTitle: true,
+  //                   titleTextStyle: CustomStyles.textBold18Px,
+  //                   automaticallyImplyLeading: false,
+  //                 ),
+  //                 const SizedBox(height: 20),
+  //                 Wrap(
+  //                   children: [
+  //                     ListTile(
+  //                       leading: const Icon(Icons.update_rounded, color: CustomColors.grey, size: 25),
+  //                       title: Text('Ubah status', style: CustomStyles.textBold15Px),
+  //                         onTap: () {
+  //                           setState(() {
+  //                             if (currentIndex < status.length - 1) {
+  //                               currentIndex++;
+  //                             }
+  //                           });
+  //                         Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //               ],
+  //             )
+  //           );
+  //       });
+  // }
 }
 
 //audit region

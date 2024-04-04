@@ -1,44 +1,39 @@
 class ResponseDetailLhaAuditArea {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  ModelDetailLhaAuditArea? dataDetailLha;
+  int? status;
+  DataDetailLhaAuditArea? data;
 
-  ResponseDetailLhaAuditArea(
-      {this.metadata, this.status, this.message, this.dataDetailLha});
+  ResponseDetailLhaAuditArea({this.meta, this.message, this.status, this.data});
 
   ResponseDetailLhaAuditArea.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    dataDetailLha = json['data_detail_lha'] != null
-        ? new ModelDetailLhaAuditArea.fromJson(json['data_detail_lha'])
-        : null;
+    status = json['status'];
+    data = json['data'] != null ? new DataDetailLhaAuditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
-    if (this.dataDetailLha != null) {
-      data['data_detail_lha'] = this.dataDetailLha!.toJson();
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
@@ -51,63 +46,166 @@ class Metadata {
   }
 }
 
-class ModelDetailLhaAuditArea {
+class DataDetailLhaAuditArea {
   int? id;
-  String? auditor;
-  String? inputDate;
-  String? branch;
-  String? area;
-  String? lhaCase;
-  String? sopCategory;
-  String? lhaDescription;
-  String? temporaryRecommendation;
-  String? permanentRecommendation;
-  String? recommendationOrSuggest;
-  int? research;
+  User? user;
+  Branch? branch;
+  Schedule? schedule;
+  int? isResearch;
+  List<LhaAuditArea>? lhaDetails;
 
-  ModelDetailLhaAuditArea(
+  DataDetailLhaAuditArea(
       {this.id,
-        this.auditor,
-        this.inputDate,
-        this.branch,
-        this.area,
-        this.lhaCase,
-        this.sopCategory,
-        this.lhaDescription,
-        this.temporaryRecommendation,
-        this.permanentRecommendation,
-        this.recommendationOrSuggest,
-        this.research});
+      this.user,
+      this.branch,
+      this.schedule,
+      this.isResearch,
+      this.lhaDetails});
 
-  ModelDetailLhaAuditArea.fromJson(Map<String, dynamic> json) {
+  DataDetailLhaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    auditor = json['auditor'];
-    inputDate = json['input_date'];
-    branch = json['branch'];
-    area = json['area'];
-    lhaCase = json['lha_case'];
-    sopCategory = json['sop_category'];
-    lhaDescription = json['lha_description'];
-    temporaryRecommendation = json['temporary_recommendation'];
-    permanentRecommendation = json['permanent_recommendation'];
-    recommendationOrSuggest = json['recommendation_or_suggest'];
-    research = json['research'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    branch =
+        json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
+    schedule = json['schedule'] != null
+        ? new Schedule.fromJson(json['schedule'])
+        : null;
+    isResearch = json['is_research'];
+    if (json['lha_details'] != null) {
+      lhaDetails = <LhaAuditArea>[];
+      json['lha_details'].forEach((v) {
+        lhaDetails!.add(new LhaAuditArea.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['auditor'] = this.auditor;
-    data['input_date'] = this.inputDate;
-    data['branch'] = this.branch;
-    data['area'] = this.area;
-    data['lha_case'] = this.lhaCase;
-    data['sop_category'] = this.sopCategory;
-    data['lha_description'] = this.lhaDescription;
-    data['temporary_recommendation'] = this.temporaryRecommendation;
-    data['permanent_recommendation'] = this.permanentRecommendation;
-    data['recommendation_or_suggest'] = this.recommendationOrSuggest;
-    data['research'] = this.research;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.branch != null) {
+      data['branch'] = this.branch!.toJson();
+    }
+    if (this.schedule != null) {
+      data['schedule'] = this.schedule!.toJson();
+    }
+    data['is_research'] = this.isResearch;
+    if (this.lhaDetails != null) {
+      data['lha_details'] = this.lhaDetails!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? fullname;
+  String? email;
+  String? initialName;
+
+  User({this.id, this.fullname, this.email, this.initialName});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    email = json['email'];
+    initialName = json['initial_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['email'] = this.email;
+    data['initial_name'] = this.initialName;
+    return data;
+  }
+}
+
+class Branch {
+  int? id;
+  String? name;
+
+  Branch({this.id, this.name});
+
+  Branch.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class Schedule {
+  int? id;
+  String? startDate;
+  String? endDate;
+
+  Schedule({this.id, this.startDate, this.endDate});
+
+  Schedule.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
+    return data;
+  }
+}
+
+class LhaAuditArea {
+  int? id;
+  String? cases;
+  String? caseCategory;
+  String? description;
+  String? suggestion;
+  String? temporaryRecommendations;
+  String? permanentRecommendations;
+  int? isResearch;
+
+  LhaAuditArea(
+      {this.id,
+      this.cases,
+      this.caseCategory,
+      this.description,
+      this.suggestion,
+      this.temporaryRecommendations,
+      this.permanentRecommendations,
+      this.isResearch});
+
+  LhaAuditArea.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    cases = json['cases'];
+    caseCategory = json['caseCategory'];
+    description = json['description'];
+    suggestion = json['suggestion'];
+    temporaryRecommendations = json['temporary_recommendations'];
+    permanentRecommendations = json['permanent_recommendations'];
+    isResearch = json['is_research'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['cases'] = this.cases;
+    data['caseCategory'] = this.caseCategory;
+    data['description'] = this.description;
+    data['suggestion'] = this.suggestion;
+    data['temporary_recommendations'] = this.temporaryRecommendations;
+    data['permanent_recommendations'] = this.permanentRecommendations;
+    data['is_research'] = this.isResearch;
     return data;
   }
 }

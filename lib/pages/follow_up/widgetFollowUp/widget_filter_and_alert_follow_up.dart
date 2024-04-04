@@ -43,21 +43,21 @@ TextEditingController auditorController, TextEditingController branchController,
                       onPressed: (){
                       if (auditorController.text.isNotEmpty) {
                           auditorController.clear();
-                          controllerAuditArea.loadFollowUpAuditArea();
+                          controllerAuditArea.resetFilterFollowUp();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();
                           Get.back();
                         }else if(branchController.text.isNotEmpty){
                           auditorController.clear();
-                          controllerAuditArea.loadFollowUpAuditArea();
+                          controllerAuditArea.resetFilterFollowUp();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();
                           Get.back();
                         }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
                           auditorController.clear();
-                          controllerAuditArea.loadFollowUpAuditArea();
+                          controllerAuditArea.resetFilterFollowUp();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();

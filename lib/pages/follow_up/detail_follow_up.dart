@@ -40,24 +40,24 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                Text('No klarifikasi :', style: CustomStyles.textBold15Px),
+                Text('No Tindak lanjut :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${followUp.noKlarifikasi}', style: CustomStyles.textRegular13Px),
+                Text('${followUp.code}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${followUp.auditor}', style: CustomStyles.textRegular13Px),
+                Text('${followUp.user!.fullname}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${followUp.dateFollowUp}', style: CustomStyles.textRegular13Px),
+                Text('${followUp.clarification!.evaluationLimitation}', style: CustomStyles.textRegular13Px),
 
-                const SizedBox(height: 15),
-                Text('Cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${followUp.branch}', style: CustomStyles.textRegular13Px),
+                // const SizedBox(height: 15),
+                // Text('Cabang :', style: CustomStyles.textBold15Px),
+                // const SizedBox(height: 5),
+                // Text('${followUp.branch}', style: CustomStyles.textRegular13Px),
 
                 const SizedBox(height: 15),
                 Text('Sanksi :', style: CustomStyles.textBold15Px),
@@ -67,7 +67,7 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                 const SizedBox(height: 15),
                 Text('Alasan :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${followUp.reason}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                Text('${followUp.description}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
 
                 const SizedBox(height: 15),
                   Text('File tindak lanjut :', style: CustomStyles.textBold15Px),
@@ -91,79 +91,78 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.orange),
                                 onPressed: () async {
-                                   showDialogPdfFileDetailFollowUp(context, 'File tindak lanjut', 'file_tindak_lanjut', followUp.followUpDoc!);
+                                   showDialogPdfFileDetailFollowUp(context, 'File tindak lanjut', 'file_tindak_lanjut', followUp.filePath!);
                                 },
-                                child: Text('Lihat',
-                                    style: CustomStyles.textMediumWhite15Px))
+                                child: Text('Unduh', style: CustomStyles.textMediumWhite15Px))
                           ],
                         ),
                       ),
                     ),
                   ),
 
-                const SizedBox(height: 15),
-                  Text('File klarifikasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: 140,
-                    child: Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.lightGrey)),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Text('File', style: CustomStyles.textMedium15Px),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton,
-                                    backgroundColor: CustomColors.green),
-                                onPressed: () async {
-                                  showDialogPdfFileDetailFollowUp(context, 'File klarifikasi', 'file_klarifikasi', followUp.clarificationDoc!);
-                                },
-                                child: Text('Lihat',
-                                    style: CustomStyles.textMediumWhite15Px))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                // const SizedBox(height: 15),
+                //   Text('File klarifikasi :', style: CustomStyles.textBold15Px),
+                //   const SizedBox(height: 5),
+                //   SizedBox(
+                //     width: 140,
+                //     child: Card(
+                //       shape: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(10),
+                //           borderSide:
+                //               const BorderSide(color: CustomColors.lightGrey)),
+                //       elevation: 0,
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(5),
+                //         child: Row(
+                //           children: [
+                //             Text('File', style: CustomStyles.textMedium15Px),
+                //             const SizedBox(width: 10),
+                //             ElevatedButton(
+                //                 style: ElevatedButton.styleFrom(
+                //                     shape: CustomStyles.customRoundedButton,
+                //                     backgroundColor: CustomColors.green),
+                //                 onPressed: () async {
+                //                   showDialogPdfFileDetailFollowUp(context, 'File klarifikasi', 'file_klarifikasi', followUp.filePath!);
+                //                 },
+                //                 child: Text('Lihat',
+                //                     style: CustomStyles.textMediumWhite15Px))
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
 
-                  const SizedBox(height: 20),
-                  Text('File BAP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: 140,
-                    child: Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.lightGrey)),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Text('File', style: CustomStyles.textMedium15Px),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton,
-                                    backgroundColor: CustomColors.blue),
-                                onPressed: () async {
-                                  showDialogPdfFileDetailFollowUp(context, 'File BAP', 'file_bap', followUp.bapDoc!);
-                                },
-                                child: Text('Lihat',
-                                    style: CustomStyles.textMediumWhite15Px))
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                  // const SizedBox(height: 20),
+                  // Text('File BAP :', style: CustomStyles.textBold15Px),
+                  // const SizedBox(height: 5),
+                  // SizedBox(
+                  //   width: 140,
+                  //   child: Card(
+                  //     shape: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide:
+                  //             const BorderSide(color: CustomColors.lightGrey)),
+                  //     elevation: 0,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(5),
+                  //       child: Row(
+                  //         children: [
+                  //           Text('File', style: CustomStyles.textMedium15Px),
+                  //           const SizedBox(width: 10),
+                  //           ElevatedButton(
+                  //               style: ElevatedButton.styleFrom(
+                  //                   shape: CustomStyles.customRoundedButton,
+                  //                   backgroundColor: CustomColors.blue),
+                  //               onPressed: () async {
+                  //                 showDialogPdfFileDetailFollowUp(context, 'File BAP', 'file_bap', followUp.bapDoc!);
+                  //               },
+                  //               child: Text('Lihat',
+                  //                   style: CustomStyles.textMediumWhite15Px))
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
               ],
             ),
           )

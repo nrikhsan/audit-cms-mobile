@@ -10,43 +10,52 @@ class AppConstant{
   static const String addMainSchedulesAuditArea = 'api/main-schedule';
   static const String editMainSchedule = 'api/main-schedule/';
   static const String deleteMainSchedule = 'api/main-schedule/';
+  static const String detailMainSchedule = 'api/main-schedule/';
   static const String mainScheduleAuditArea = 'api/main-schedule';
   
   //special schedule
   static const String specialScheduleAuditArea = 'api/special-schedule';
   static const String addSpecialSchedulesAuditArea = 'api/special-schedule';
   static const String editSpecialSchedule = 'api/special-schedule/';
+  static const String detailSpecilaSchedule = 'api/special-schedule/';
+  static const String deleteSpecialSchedule = 'api/special-schedule/';
 
-  static const String resSchedulesAuditArea = 'api/reschedule';
-  static const String detailScheduleAuditArea = 'api/schedule-audit-area/';
+  //reschedule
+  static const String reschedulesAuditArea = 'api/reschedule';
+  static const String requestReschedule = 'api/reschedule';
+  static const String detailReschedule = 'api/reschedule/';
 
   //master
   static const String usersAuditArea = 'api/dropdown/users';
   static const String branchAuditArea = 'api/dropdown/branch';
-  static const String attachmentFollowUpAuditArea = 'api/attachment';
+  static const String caseAuditArea = 'api/dropdown/case';
+  static const String caseCategoryAuditArea = 'api/dropdown/case-category';
+  static const String penlatyAuditArea = 'api/dropdown/penalty';
 
   //lha
+  static const String listRevisiLha = 'api/lha-detail';
+  static const String lhaRevision = 'api/lha-revision';
+  static const String revisionlhaDetail = 'api/lha-detail';
   static const String lhaAuditArea = 'api/lha';
-  static const String detailLhaAuditArea = 'api/detail-lha/';
-  static const String editLhaAuditArea = 'api/edit-lha/';
-
+  static const String detaillhaAuditArea = 'api/lha/';
+  
   //clarification
   static const String clarificationAuditArea = 'api/clarification';
   static const String detailClarificationAuditArea = 'api/detail-clarification/';
 
+  //follow up
+  static const String followUpAuditArea = 'api/followup';
+  static const String inputFollowUpAuditArea = 'api/followup';
+  static const String followUpDocumentAuditArea = 'api/follow-up-doc';
+  static const String detailFollowUpAuditArea = 'api/followup/';
+
   //kka
   static const String kkaAuditArea = 'api/kka';
-  static const String detailKkaAuditArea = 'api/detail-kka/';
+  static const String detailKkaAuditArea = 'api/kka/';
 
   //bap
   static const String bapAuditArea = 'api/bap';
   static const String detailBapAuditArea = 'api/detail-bap/';
-
-  //follow up
-  static const String followUpAuditArea = 'api/follow-up';
-  static const String inputFollowUpAuditArea = 'api/add-follow-up';
-  static const String followUpDocumentAuditArea = 'api/follow-up-doc';
-  static const String detailFollowUpAuditArea = 'api/detail-follow-up/';
 
   //report
   static const String reportAuditArea = 'api/report';

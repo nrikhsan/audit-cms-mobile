@@ -38,24 +38,24 @@ TextEditingController branchController, TextEditingController auditorController,
                       onPressed: (){
                       if (auditorController.text.isNotEmpty) {
                           auditorController.clear();
-                          controllerAuditArea.loadLhaAuditArea();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();
+                          controllerAuditArea.resetFilterLha();
                           Get.back();
                         }else if(branchController.text.isNotEmpty){
                           auditorController.clear();
-                          controllerAuditArea.loadLhaAuditArea();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();
+                          controllerAuditArea.resetFilterLha();
                           Get.back();
                         }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
                           auditorController.clear();
-                          controllerAuditArea.loadLhaAuditArea();
                           branchController.clear();
                           startDateController.clear();
                           endDateController.clear();
+                          controllerAuditArea.resetFilterLha();
                           Get.back();
                         }else{
                           Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
@@ -193,7 +193,8 @@ TextEditingController branchController, TextEditingController auditorController,
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAuditArea.filterLhaAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            controllerAuditArea.filterLhaAuditArea(auditorController.text, branchController.text,
+                            startDateController.text, endDateController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

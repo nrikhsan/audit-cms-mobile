@@ -1,6 +1,7 @@
 
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/kka/detail_kka.dart';
@@ -8,6 +9,7 @@ import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 
 //audit area
@@ -20,7 +22,7 @@ class KkaPageAuditArea extends StatefulWidget {
 
 class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
@@ -28,6 +30,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
+    controllerAuditArea.scheduleIdKka.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -48,21 +51,15 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
         ],
       ),
 
-      body: Obx((){
-        if (controllerAuditArea.isLoading.value) {
-            return const Center(
-              child: SpinKitCircle(color: CustomColors.blue),
-            );
-        }else{
-          return ListView.builder(
-            itemCount: controllerAuditArea.kkaAuditArea.length,
-            itemBuilder: (_, index){
-              final kka = controllerAuditArea.kkaAuditArea[index];
-              return Padding(
+      body: PagedListView<int, ContentListKkaAuditArea>(
+        pagingController: controllerAuditArea.pagingControllerKkaAuditArea,
+        builderDelegate: PagedChildBuilderDelegate(
+          itemBuilder: (_, kka, index){
+            return Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => KkaDetailAuditArea(id: kka.id!)));
+                    Get.to(() => KkaDetailAuditArea(id: kka.id!));
                   },
                   child: Card(
                   shape: OutlineInputBorder(
@@ -83,8 +80,8 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Auditor : ${kka.auditor}', style: CustomStyles.textBold15Px),
-                            Text('${kka.dateKka}', style: CustomStyles.textBold13Px)
+                            Text('Auditor : ${kka.user!.fullname}', style: CustomStyles.textBold15Px),
+                            Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
                           ],
                         ),
 
@@ -93,8 +90,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Cabang : ${kka.branch}', style: CustomStyles.textMedium13Px),
-                            Text('Area : ${kka.area}', style: CustomStyles.textMedium13Px),
+                            Text('${kka.filename}', style: CustomStyles.textMedium13Px),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -104,7 +100,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKka(kka.kkaDoc!);
+                                    downloadKka(kka.filePath!);
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],
@@ -117,9 +113,9 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                 ),
               )
             );
-          });
-        }
-      }),
+          }
+        ),
+      )
     );
   }
 }

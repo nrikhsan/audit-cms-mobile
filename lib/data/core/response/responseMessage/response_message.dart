@@ -25,8 +25,8 @@ class ResponseMessage {
 }
 
 class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+  String? timestamp;
+  String? apiVersion;
 
   Metadata({this.timestamp, this.apiVersion});
 

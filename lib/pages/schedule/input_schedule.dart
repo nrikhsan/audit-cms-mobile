@@ -1,6 +1,8 @@
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
+import 'package:audit_cms/pages/schedule/schedule_page.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
@@ -188,7 +190,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
 
                   const SizedBox(height: 40),
                   SizedBox(
-                    width: 250,
+                    width: double.maxFinite,
                     child: TextButton(
                         style: TextButton.styleFrom(
                             shape: CustomStyles.customRoundedButton,
@@ -197,12 +199,11 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         onPressed: ()async{
 
                           if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                              Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP, 
-                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                            snakcBarMessageRed('Gagal', 'Data jadwal gagal dibuat');
                           }else{
-                          controllerAuditArea.addMainSchedules();
-                          Get.snackbar('Berhasil', 'Data jadwal berhasil dibuat', snackPosition: SnackPosition.TOP, 
-                                colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                            controllerAuditArea.addMainSchedules();
+                            snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
+                            Get.off(() => const SchedulePageAuditArea());
                           }
                         },
                         child: Text('Buat jadwal utama', style: CustomStyles.textMediumWhite15Px)
@@ -400,7 +401,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
 
                   const SizedBox(height: 40),
                   SizedBox(
-                    width: 250,
+                    width: double.maxFinite,
                     child: TextButton(
                         style: TextButton.styleFrom(
                             shape: CustomStyles.customRoundedButton,
@@ -409,12 +410,11 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         onPressed: ()async{
 
                           if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                            Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP,
-                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal dibuat');
                           }else{
                             controllerAuditArea.addSpecialSchedules();
-                            Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP,
-                                colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                            snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
+                            Get.off(() => const SchedulePageAuditArea());
                           }
                         },
                         child: Text('Buat jadwal khusus', style: CustomStyles.textMediumWhite15Px)
@@ -561,57 +561,10 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 25),
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('List jadwal', style: CustomStyles.textMedium15Px),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              shape: CustomStyles.customRoundedButton
-                          ),
-                          onPressed: ()async{
-                            
-                          },
-                          child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
-                    ],
-                  ),
-
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Auditor', style: CustomStyles.textMedium13Px),
-                      Text('Cabang', style: CustomStyles.textMedium13Px),
-                      Text('Action', style: CustomStyles.textMedium13Px),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Obx(() => ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: controllerAuditArea.dataListLocalReschedulesAuditArea.length,
-                      itemBuilder: (_, index){
-                        final data = controllerAuditArea.dataListLocalReschedulesAuditArea[index];
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('${data.userName!.fullname}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchName!.name}', style: CustomStyles.textRegular13Px),
-
-                            GestureDetector(
-                              child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
-                              onTap: ()async{
-                                
-                              },
-                            )
-                          ],
-                        );
-                      }
-                  )),
-
+                  
                   const SizedBox(height: 40),
                   SizedBox(
-                    width: 250,
+                    width: double.maxFinite,
                     child: TextButton(
                         style: TextButton.styleFrom(
                             shape: CustomStyles.customRoundedButton,
@@ -620,13 +573,12 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         onPressed: ()async{
 
                           if (users == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
-                            Get.snackbar('Gagal', 'Data jadwal gagal dibuat', snackPosition: SnackPosition.TOP,
-                                colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                            snakcBarMessageRed('Gagal', 'Gagal request reschedule');
                           }else{
-                           
-                            Get.snackbar('Berhasil', 'Berhasil menambahkan data jadwal', snackPosition: SnackPosition.TOP,
-                                colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                            
+                            controllerAuditArea.requestReschedule(users!.id!, widget.rescheduleId, branch!.id!, 
+                            startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);
+                            snakcBarMessageGreen('Berhasil', 'Request reschedule berhasil dibuat');
+                            Get.off(() => const SchedulePageAuditArea());
                           }
                         },
                         child: Text('Request reschedule', style: CustomStyles.textMediumWhite15Px)

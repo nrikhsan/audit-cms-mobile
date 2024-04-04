@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/detail_clarfication.dart';
@@ -9,6 +10,7 @@ import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_a
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 //audit area
 class ClarificationPageAuditArea extends StatefulWidget {
@@ -20,7 +22,7 @@ class ClarificationPageAuditArea extends StatefulWidget {
 }
 
 class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -47,84 +49,79 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                 icon: const Icon(Icons.tune_rounded,size: 25, color: CustomColors.grey)),
           ],
         ),
-        body: Obx(() {
-                if (controllerAuditArea.isLoading.value) {
-                  return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controllerAuditArea.clarificationAuitArea.length,
-                        itemBuilder: (_, index) {
-                          final clarification = controllerAuditArea.clarificationAuitArea[index];
-                          final statusClarificaion = clarification.statusClarification;
-                          return GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => DetailClarificationPageAuditArea(id: clarification.id!)));
-                    },
-                    child: Card(
-                    shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: CustomColors.grey
-                      )
-                    ),
-                    elevation: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Wrap(
-                                children: [
-                                  
-                                  Text('${clarification.auditor}', style: CustomStyles.textBold15Px),
-                                  const SizedBox(width: 10),
-                                  Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
-                                ],
-                              ),
-                              Text('${clarification.noDocument}', style: CustomStyles.textBold13Px),
-                            ],
-                          ),
-                    
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              const SizedBox(height: 5),
-                              if(statusClarificaion == 'Input')
-                              Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
-                    
-                              if(statusClarificaion == 'Download')
-                              Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
-
-                              if(statusClarificaion == 'Upload')
-                              Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
-
-                              if(statusClarificaion == 'Done')
-                              Text('Selesai', style: CustomStyles.textMediumGreen13Px),
-                              
-                              const SizedBox(height: 5),
-                              Text('Prioritas temuan : ${clarification.findingPriority}', style: CustomStyles.textMedium13Px),
-                              Text('Cabang : ${clarification.branch}', style: CustomStyles.textMedium13Px),
-                              Text('Batas evaluasi : ${clarification.limitEvaluation}', style: CustomStyles.textMedium13Px),
-                            ],
-                          ),
-                        ],
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: PagedListView<int, ContentListClarificationAuditArea>(
+            pagingController: controllerAuditArea.pagingControllerClarificationAuditArea,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (_, clarification, index){
+                final statusClarificaion = clarification.status;
+                return GestureDetector(
+                      onTap: (){
+                        Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!));
+                      },
+                      child: Card(
+                      shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: CustomColors.grey
+                        )
+                      ),
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Wrap(
+                                  children: [
+                                    
+                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold15Px),
+                                    const SizedBox(width: 10),
+                                    Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                                  ],
+                                ),
+                                Text('${clarification.code}', style: CustomStyles.textBold13Px),
+                              ],
+                            ),
+                      
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+          
+                                const SizedBox(height: 5),
+                                if(statusClarificaion == 'INPUT')
+                                Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
+                      
+                                if(statusClarificaion == 'DOWNLOAD')
+                                Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
+          
+                                if(statusClarificaion == 'UPLOAD')
+                                Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
+          
+                                if(statusClarificaion == 'IDENTIFICATION')
+                                Text('Belum input identifikasi', style: CustomStyles.textMediumGreen13Px),
+          
+                                if(statusClarificaion == 'DONE')
+                                Text('Selesai', style: CustomStyles.textMediumGreen13Px),
+                                
+                                const SizedBox(height: 5),
+                                Text('Prioritas temuan : ${clarification.priority}', style: CustomStyles.textMedium13Px),
+                                Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
               }
             ),
-          );
-        }
-      }
-    )
+          ),
+        )
     );
   }
 }

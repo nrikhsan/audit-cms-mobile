@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
@@ -7,6 +8,7 @@ import 'package:audit_cms/pages/lha/widgetLha/widget_filter_lha_audit_area.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 //audit area
 class LhaPageAuditArea extends StatefulWidget {
@@ -17,7 +19,7 @@ class LhaPageAuditArea extends StatefulWidget {
 }
 
 class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController branchController = TextEditingController();
@@ -25,6 +27,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
+    controllerAuditArea.scheduleIdLha.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -34,7 +37,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
         titleSpacing: 5,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
@@ -47,16 +50,12 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
           )
         ],
       ),
-      body: Obx(() {
-        if (controllerAuditArea.isLoading.isTrue) {
-          return const Center(child: SpinKitCircle(color: CustomColors.blue));
-        } else {
-          return Padding(
+      body: Padding(
             padding: const EdgeInsets.all(15),
-            child: ListView.builder(
-                itemCount: controllerAuditArea.lhaAuditArea.length,
-                itemBuilder: (_, index) {
-                  final lha = controllerAuditArea.lhaAuditArea[index];
+            child: PagedListView<int, ContentListLhaAuditArea>(
+              pagingController: controllerAuditArea.pagingControllerLhaAuditArea,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (_, lha, index){
                   return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -69,63 +68,55 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Wrap(
+                                
                                 children: [
-                                  Icon(lha.research == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                  Text('${lha.inputDate}',
-                                      style: CustomStyles.textBold15Px),
+                                  lha.isResearch == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
                                 ],
                               ),
+
                               const SizedBox(height: 15),
-                              Text('Auditor : ${lha.auditor}',
-                                  style: CustomStyles.textMedium15Px),
-                              const SizedBox(height: 5),
-                              Text('Cabang : ${lha.branch}',
-                                  style: CustomStyles.textMedium15Px),
-                              const SizedBox(height: 5),
-                              Text('Area : ${lha.area}',
-                                  style: CustomStyles.textMedium15Px),
+
+                              Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.green),
+                                              CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (_) => EditLhaPageAuditArea(id: lha.id!, lhaDescription: lha.lhaDescription!)));
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha.id!));
                                       },
-                                      child: Text('Edit',
-                                          style: CustomStyles
-                                              .textMediumWhite15Px)),
+                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
+
                                   const SizedBox(width: 5),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.blue),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    DetailLhaPageAuditArea(id: lha.id!)));
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha.id!));
                                       },
-                                      child: Text('Lihat rincian',
-                                          style:
-                                              CustomStyles.textMediumWhite15Px))
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
                           ),
                         ));
-                }),
-          );
-        }
-      }),
+                }
+              ),
+            )
+          )
     );
   }
 }

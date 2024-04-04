@@ -5,6 +5,7 @@ import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -196,8 +197,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                           ),
                           onPressed: ()async{
                             if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
-                              Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
-                              colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                                snakcBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
                             }else{
                               controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!.id!, _selectSop!.id!, descriptionFindingsController.text,
                               suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _selecteDivision!.nameDivision!, _selectSop!.sopName!);
@@ -259,17 +259,14 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                   ),
                   onPressed: (){
                     if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
-                          Get.snackbar('Alert', 'Field tidak boleh kosong', snackPosition: SnackPosition.TOP, 
-                            colorText: CustomColors.white, backgroundColor: CustomColors.red);
+                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(_selectedValueResearch == 1){
                           controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
-                          Get.snackbar('Alert', 'Lha berhasil dibuat', snackPosition: SnackPosition.TOP, 
-                            colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                         snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
                           Get.to(() => const ClarificationPageAuditRegion());
                       }else{
                         controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
-                          Get.snackbar('Alert', 'Lha berhasil dibuat', snackPosition: SnackPosition.TOP, 
-                            colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                          snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
                           Get.offAll(() => BotNavAuditRegion());
                       }
                   },

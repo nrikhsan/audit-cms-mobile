@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
 import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 //audit area
 //main schedule
@@ -22,11 +22,11 @@ class DetailMainSchedulePageAuditArea extends StatefulWidget {
 }
 
 class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailScheduleAuditArea(widget.mainScheduleId);
+    controllerAuditArea.getDetailMainScheduleAuditArea(widget.mainScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -37,21 +37,23 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditArea.detailScheduleAuditArea.value;
-          if (detail == null) {
+          if (controllerAuditArea.detailMainScheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final detail = controllerAuditArea.detailMainScheduleAuditArea.value!.schedule;
+            final kka = controllerAuditArea.detailMainScheduleAuditArea.value!.kka;
+            final lha = controllerAuditArea.detailMainScheduleAuditArea.value!.lha;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.auditor}', style: CustomStyles.textRegular13Px),
+                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -60,7 +62,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
+                Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
@@ -68,9 +70,14 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
+                Text('${detail.startDateRealization}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.endDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
@@ -94,9 +101,9 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                openKkaDocMainSchedule(detail.kka!.kkaDoc);
+                                downloadKka(kka!.filePath!);
                               },
-                              child: Text('Lihat',
+                              child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
                         ],
                       ),
@@ -106,13 +113,12 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
+                    itemCount: lha!.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
                       return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -125,54 +131,46 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Wrap(
+                                
                                 children: [
-                                  Icon(lha.research == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                  Text('${lha.inputDate}',
-                                      style: CustomStyles.textBold15Px),
+                                  lha[index].isFlag == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
                                 ],
                               ),
+
                               const SizedBox(height: 15),
-                              Text('Auditor : ${lha.auditor}',
-                                  style: CustomStyles.textMedium15Px),
-                              const SizedBox(height: 5),
-                              Text('Cabang : ${lha.branch}',
-                                  style: CustomStyles.textMedium15Px),
-                              const SizedBox(height: 5),
-                              Text('Area : ${lha.area}',
-                                  style: CustomStyles.textMedium15Px),
+
+                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.green),
+                                              CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => EditLhaPageAuditArea(id: lha.id!, lhaDescription: lha.lhaDescription!));
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
                                       },
-                                      child: Text('Edit',
-                                          style: CustomStyles
-                                              .textMediumWhite15Px)),
+                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
+
                                   const SizedBox(width: 5),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.blue),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    DetailLhaPageAuditArea(id: lha.id!)));
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
                                       },
-                                      child: Text('Lihat rincian',
-                                          style:
-                                              CustomStyles.textMediumWhite15Px))
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
@@ -185,19 +183,6 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
         })),
       ),
     );
-  }
-  
-  void openKkaDocMainSchedule(String? kkaDoc)async {
-    if (await canLaunch(kkaDoc!)) {
-    await launch(
-      kkaDoc,
-      forceSafariVC: false,
-      forceWebView: false,
-      enableJavaScript: true,
-    );
-  } else {
-    throw 'Could not launch $kkaDoc';
-  }
   }
 }
 
@@ -212,11 +197,11 @@ class DetailSpecialSchedulePageAuditArea extends StatefulWidget {
 
 class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedulePageAuditArea> {
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailScheduleAuditArea(widget.specialScheduleId);
+    controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -227,21 +212,23 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditArea.detailScheduleAuditArea.value;
-          if (detail == null) {
+          if (controllerAuditArea.detailSpecialScheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final detail = controllerAuditArea.detailSpecialScheduleAuditArea.value!.schedule;
+            final kka = controllerAuditArea.detailSpecialScheduleAuditArea.value!.kka;
+            final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value!.lha;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.auditor}', style: CustomStyles.textRegular13Px),
+                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -250,7 +237,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
+                Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
@@ -258,9 +245,14 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
+                Text('${detail.startDateRealization}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.endDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
@@ -284,9 +276,9 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                openKkaDocSpecialSchedule(detail.kka!.kkaDoc);
+                                downloadKka(kka!.filePath!);
                               },
-                              child: Text('Lihat',
+                              child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
                         ],
                       ),
@@ -296,78 +288,69 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
+                    itemCount: lha!.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
                       return Card(
-                          elevation: 0,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: CustomColors.grey,
-                              )),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(lha.research == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                    Text('${lha.inputDate}',
-                                        style: CustomStyles.textBold15Px),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                Text('Auditor : ${lha.auditor}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 5),
-                                Text('Cabang : ${lha.branch}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 5),
-                                Text('Area : ${lha.area}',
-                                    style: CustomStyles.textMedium15Px),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton(
-                                        style: TextButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.green),
-                                        onPressed: () {
-                                          Get.to(() => EditLhaPageAuditArea(id: lha.id!, lhaDescription: lha.lhaDescription!));
-                                        },
-                                        child: Text('Edit',
-                                            style: CustomStyles
-                                                .textMediumWhite15Px)),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.blue),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      DetailLhaPageAuditArea(id: lha.id!)));
-                                        },
-                                        child: Text('Lihat rincian',
-                                            style:
-                                            CustomStyles.textMediumWhite15Px))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: CustomColors.grey,
+                            )),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                
+                                children: [
+                                  lha[index].isFlag == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
+                                ],
+                              ),
+
+                              const SizedBox(height: 15),
+
+                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape:
+                                              CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
+                                      },
+                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
+
+                                  const SizedBox(width: 5),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                ],
+                              )
+                            ],
+                          ),
+                        ));
                     })
               ],
             );
@@ -375,19 +358,6 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
         })),
       ),
     );
-  }
-
-  void openKkaDocSpecialSchedule(String? kkaDoc)async {
-    if (await canLaunch(kkaDoc!)) {
-      await launch(
-        kkaDoc,
-        forceSafariVC: false,
-        forceWebView: false,
-        enableJavaScript: true,
-      );
-    } else {
-      throw 'Could not launch $kkaDoc';
-    }
   }
 }
 
@@ -401,10 +371,12 @@ class DetailReschedulePageAuditArea extends StatefulWidget {
 }
 
 class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailScheduleAuditArea(widget.rescheduleId);
+    controllerAuditArea.getDetailRescheduleAuditArea(widget.rescheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -415,21 +387,23 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditArea.detailScheduleAuditArea.value;
-          if (detail == null) {
+          if (controllerAuditArea.detailRescheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final detail = controllerAuditArea.detailRescheduleAuditArea.value!.schedule;
+            final kka = controllerAuditArea.detailRescheduleAuditArea.value!.kka;
+            final lha = controllerAuditArea.detailRescheduleAuditArea.value!.lha;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.auditor}', style: CustomStyles.textRegular13Px),
+                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.branch}', style: CustomStyles.textRegular13Px),
+                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -438,17 +412,26 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.scheduleDescription}',
+                Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
+                const SizedBox(height: 20),
+                Text('Kategori :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.category}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Status :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal proses :', style: CustomStyles.textBold15Px),
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.dateProcess}',
+                Text('${detail.startDateRealization}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.endDateRealization}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
@@ -472,9 +455,9 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                openKkaDocReschedule(detail.kka!.kkaDoc);
+                                downloadKka(kka!.filePath!);
                               },
-                              child: Text('Lihat',
+                              child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
                         ],
                       ),
@@ -484,78 +467,69 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: detail.lha!.length,
+                    itemCount: lha!.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      final lha = detail.lha![index];
                       return Card(
-                          elevation: 0,
-                          shape: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: CustomColors.grey,
-                              )),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(lha.research == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                    Text('${lha.inputDate}',
-                                        style: CustomStyles.textBold15Px),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                Text('Auditor : ${lha.auditor}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 5),
-                                Text('Cabang : ${lha.branch}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 5),
-                                Text('Area : ${lha.area}',
-                                    style: CustomStyles.textMedium15Px),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton(
-                                        style: TextButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.green),
-                                        onPressed: () {
-                                          Get.to(() => EditLhaPageAuditArea(id: lha.id!, lhaDescription: lha.lhaDescription!));
-                                        },
-                                        child: Text('Edit',
-                                            style: CustomStyles
-                                                .textMediumWhite15Px)),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape:
-                                            CustomStyles.customRoundedButton,
-                                            backgroundColor: CustomColors.blue),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      DetailLhaPageAuditArea(id: lha.id!)));
-                                        },
-                                        child: Text('Lihat rincian',
-                                            style:
-                                            CustomStyles.textMediumWhite15Px))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: CustomColors.grey,
+                            )),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                
+                                children: [
+                                  lha[index].isFlag == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
+                                ],
+                              ),
+
+                              const SizedBox(height: 15),
+
+                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape:
+                                              CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
+                                      },
+                                      child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
+
+                                  const SizedBox(width: 5),
+
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                ],
+                              )
+                            ],
+                          ),
+                        ));
                     })
               ],
             );
@@ -563,18 +537,6 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
         })),
       ),
     );
-  }
-  void openKkaDocReschedule(String? kkaDoc)async {
-    if (await canLaunch(kkaDoc!)) {
-      await launch(
-        kkaDoc,
-        forceSafariVC: false,
-        forceWebView: false,
-        enableJavaScript: true,
-      );
-    } else {
-      throw 'Could not launch $kkaDoc';
-    }
   }
 }
 

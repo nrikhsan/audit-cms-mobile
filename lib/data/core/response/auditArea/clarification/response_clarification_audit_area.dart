@@ -1,48 +1,40 @@
 class ResponseClarificationAuditArea {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  List<ModelListClarificationAuditArea>? dataClarification;
+  int? status;
+  DataClarificationAuditArea? data;
 
   ResponseClarificationAuditArea(
-      {this.metadata, this.status, this.message, this.dataClarification});
+      {this.meta, this.message, this.status, this.data});
 
   ResponseClarificationAuditArea.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    if (json['data_clarification'] != null) {
-      dataClarification = <ModelListClarificationAuditArea>[];
-      json['data_clarification'].forEach((v) {
-        dataClarification!.add(new ModelListClarificationAuditArea.fromJson(v));
-      });
-    }
+    status = json['status'];
+    data = json['data'] != null ? new DataClarificationAuditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
-    if (this.dataClarification != null) {
-      data['data_clarification'] =
-          this.dataClarification!.map((v) => v.toJson()).toList();
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
@@ -55,124 +47,235 @@ class Metadata {
   }
 }
 
-class ModelListClarificationAuditArea {
-  int? id;
-  int? noDocument;
-  String? statusClarification;
-  int? isFlag;
-  String? auditor;
-  String? branch;
-  String? clarificationDate;
-  String? noClarification;
-  String? noBap;
-  String? clarificationCategory;
-  String? limitEvaluation;
-  String? divisionOrAreaBeingAudited;
-  String? part;
-  String? directSupervisor;
-  String? dear;
-  String? explanationOfAuditFinding;
-  String? findingPriority;
-  ClarificationIdentidication? clarificationIdentidication;
-  String? clarificationDoc;
-  String? bapDoc;
+class DataClarificationAuditArea {
+  List<ContentListClarificationAuditArea>? content;
+  Pageable? pageable;
 
-  ModelListClarificationAuditArea(
-      {this.id,
-      this.noDocument,
-      this.statusClarification,
-      this.isFlag,
-      this.auditor,
-      this.branch,
-      this.clarificationDate,
-      this.noClarification,
-      this.noBap,
-      this.clarificationCategory,
-      this.limitEvaluation,
-      this.divisionOrAreaBeingAudited,
-      this.part,
-      this.directSupervisor,
-      this.dear,
-      this.explanationOfAuditFinding,
-      this.findingPriority,
-      this.clarificationIdentidication,
-      this.clarificationDoc,
-      this.bapDoc});
+  DataClarificationAuditArea({this.content, this.pageable});
 
-  ModelListClarificationAuditArea.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    noDocument = json['no_document'];
-    statusClarification = json['status_clarification'];
-    isFlag = json['is_flag'];
-    auditor = json['auditor'];
-    branch = json['branch'];
-    clarificationDate = json['clarification_date'];
-    noClarification = json['no_clarification'];
-    noBap = json['no_bap'];
-    clarificationCategory = json['clarification_category'];
-    limitEvaluation = json['limit_evaluation'];
-    divisionOrAreaBeingAudited = json['division_or_area_being_audited'];
-    part = json['part'];
-    directSupervisor = json['direct_supervisor'];
-    dear = json['dear'];
-    explanationOfAuditFinding = json['explanation_of_audit_finding'];
-    findingPriority = json['finding_priority'];
-    clarificationIdentidication = json['clarification_identidication'] != null
-        ? new ClarificationIdentidication.fromJson(
-            json['clarification_identidication'])
+  DataClarificationAuditArea.fromJson(Map<String, dynamic> json) {
+    if (json['content'] != null) {
+      content = <ContentListClarificationAuditArea>[];
+      json['content'].forEach((v) {
+        content!.add(new ContentListClarificationAuditArea.fromJson(v));
+      });
+    }
+    pageable = json['pageable'] != null
+        ? new Pageable.fromJson(json['pageable'])
         : null;
-    clarificationDoc = json['clarification_doc'];
-    bapDoc = json['bap_doc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.content != null) {
+      data['content'] = this.content!.map((v) => v.toJson()).toList();
+    }
+    if (this.pageable != null) {
+      data['pageable'] = this.pageable!.toJson();
+    }
+    return data;
+  }
+}
+
+class ContentListClarificationAuditArea {
+  int? id;
+  User? user;
+  Branch? branch;
+  Cases? cases;
+  Branch? caseCategory;
+  String? code;
+  String? priority;
+  String? fileName;
+  String? filePath;
+  String? description;
+  String? status;
+  int? isFollowUp;
+  int? isFlag;
+
+  ContentListClarificationAuditArea(
+      {this.id,
+      this.user,
+      this.branch,
+      this.cases,
+      this.caseCategory,
+      this.code,
+      this.priority,
+      this.fileName,
+      this.filePath,
+      this.description,
+      this.status,
+      this.isFollowUp,
+      this.isFlag});
+
+  ContentListClarificationAuditArea.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    branch =
+        json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
+    cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
+    caseCategory = json['case_category'] != null
+        ? new Branch.fromJson(json['case_category'])
+        : null;
+    code = json['code'];
+    priority = json['priority'];
+    fileName = json['file_name'];
+    filePath = json['file_path'];
+    description = json['description'];
+    status = json['status'];
+    isFollowUp = json['is_follow_up'];
+    isFlag = json['is_flag'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['no_document'] = this.noDocument;
-    data['status_clarification'] = this.statusClarification;
-    data['is_flag'] = this.isFlag;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['clarification_date'] = this.clarificationDate;
-    data['no_clarification'] = this.noClarification;
-    data['no_bap'] = this.noBap;
-    data['clarification_category'] = this.clarificationCategory;
-    data['limit_evaluation'] = this.limitEvaluation;
-    data['division_or_area_being_audited'] = this.divisionOrAreaBeingAudited;
-    data['part'] = this.part;
-    data['direct_supervisor'] = this.directSupervisor;
-    data['dear'] = this.dear;
-    data['explanation_of_audit_finding'] = this.explanationOfAuditFinding;
-    data['finding_priority'] = this.findingPriority;
-    if (this.clarificationIdentidication != null) {
-      data['clarification_identidication'] =
-          this.clarificationIdentidication!.toJson();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
-    data['clarification_doc'] = this.clarificationDoc;
-    data['bap_doc'] = this.bapDoc;
+    if (this.branch != null) {
+      data['branch'] = this.branch!.toJson();
+    }
+    if (this.cases != null) {
+      data['cases'] = this.cases!.toJson();
+    }
+    if (this.caseCategory != null) {
+      data['case_category'] = this.caseCategory!.toJson();
+    }
+    data['code'] = this.code;
+    data['priority'] = this.priority;
+    data['file_name'] = this.fileName;
+    data['file_path'] = this.filePath;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['is_follow_up'] = this.isFollowUp;
+    data['is_flag'] = this.isFlag;
     return data;
   }
 }
 
-class ClarificationIdentidication {
-  String? clarificationEvaluation;
-  String? nominalLoss;
-  String? reason;
+class User {
+  int? id;
+  String? fullname;
+  String? initialName;
+  String? email;
 
-  ClarificationIdentidication(
-      {this.clarificationEvaluation, this.nominalLoss, this.reason});
+  User({this.id, this.fullname, this.initialName, this.email});
 
-  ClarificationIdentidication.fromJson(Map<String, dynamic> json) {
-    clarificationEvaluation = json['clarification_evaluation'];
-    nominalLoss = json['nominal_loss'];
-    reason = json['reason'];
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['clarification_evaluation'] = this.clarificationEvaluation;
-    data['nominal_loss'] = this.nominalLoss;
-    data['reason'] = this.reason;
+    data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    data['email'] = this.email;
+    return data;
+  }
+}
+
+class Branch {
+  int? id;
+  String? name;
+
+  Branch({this.id, this.name});
+
+  Branch.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class Cases {
+  int? id;
+  String? name;
+  String? code;
+
+  Cases({this.id, this.name, this.code});
+
+  Cases.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['code'] = this.code;
+    return data;
+  }
+}
+
+class Pageable {
+  int? pageNumber;
+  int? pageSize;
+  Sort? sort;
+  int? offset;
+  bool? paged;
+  bool? unpaged;
+
+  Pageable(
+      {this.pageNumber,
+      this.pageSize,
+      this.sort,
+      this.offset,
+      this.paged,
+      this.unpaged});
+
+  Pageable.fromJson(Map<String, dynamic> json) {
+    pageNumber = json['pageNumber'];
+    pageSize = json['pageSize'];
+    sort = json['sort'] != null ? new Sort.fromJson(json['sort']) : null;
+    offset = json['offset'];
+    paged = json['paged'];
+    unpaged = json['unpaged'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['pageNumber'] = this.pageNumber;
+    data['pageSize'] = this.pageSize;
+    if (this.sort != null) {
+      data['sort'] = this.sort!.toJson();
+    }
+    data['offset'] = this.offset;
+    data['paged'] = this.paged;
+    data['unpaged'] = this.unpaged;
+    return data;
+  }
+}
+
+class Sort {
+  bool? empty;
+  bool? sorted;
+  bool? unsorted;
+
+  Sort({this.empty, this.sorted, this.unsorted});
+
+  Sort.fromJson(Map<String, dynamic> json) {
+    empty = json['empty'];
+    sorted = json['sorted'];
+    unsorted = json['unsorted'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['empty'] = this.empty;
+    data['sorted'] = this.sorted;
+    data['unsorted'] = this.unsorted;
     return data;
   }
 }

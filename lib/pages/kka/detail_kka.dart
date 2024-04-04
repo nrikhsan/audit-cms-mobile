@@ -46,28 +46,35 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text('Nama auditor :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailKka.auditor}',
+                  Text('${detailKka.user!.fullname}',
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
+                  
                   Text('Nama cabang :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${detailKka.branch}',
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
-                  Text('Area :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detailKka.area}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 15),
+
                   Text('Periode pemeriksaan :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text(
-                      '${detailKka.startDateExaminationPeriod} s/d ${detailKka.endDateExaminationPeriod}',
+                      '${detailKka.startDate} s/d ${detailKka.endDate}',
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
+
+                  Text('Tanggal jadwal :',
+                      style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text(
+                      '${detailKka.schedule!.startDate} s/d ${detailKka.schedule!.endDate}',
+                      style: CustomStyles.textRegular13Px),
+                  const SizedBox(height: 15),
+
                   Text('File kerta kerja audit :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
@@ -90,9 +97,9 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  openKkaDoc(detailKka.kkaDoc!);
+                                  downloadKka(detailKka.filePath!);
                                 },
-                                child: Text('Lihat',
+                                child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),
                           ],
                         ),
@@ -193,7 +200,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  openKkaDoc(detailKka.kkaDoc);
+                                  downloadKka(detailKka.kkaDoc!);
                                 },
                                 child: Text('Lihat',
                                     style: CustomStyles.textMediumWhite15Px)),

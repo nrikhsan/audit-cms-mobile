@@ -1,11 +1,13 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
 import 'package:audit_cms/pages/schedule/edit_schedule_page.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/bottom_sheet_filter_schedule_audit_area.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/bottom_sheet_filter_schedule_audit_region.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -149,7 +151,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                           ),
                                           onPressed: (){
-                                            Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!, description: mainSchedule.description!));
+                                            Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!));
                                           }, 
                                           child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                         )
@@ -163,9 +165,30 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
                             },
                             onLongPress: (){
-                              Get.snackbar('Berhasil', 'Data jadwal berhasil di dihapus', snackPosition: SnackPosition.TOP, 
-                                  colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                              controllerAuditArea.deleteMainSchedule(mainSchedule.id!);
+                              alertDeleteWidget(
+                                context, 
+                                'Hapus jadwal', 
+                                'Apakah anda yakin untuk menghapus jadwal ini?',
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: (){
+                                        controllerAuditArea.deleteMainSchedule(mainSchedule.id!);
+                                        Get.back();
+                                        snakcBarMessageGreen('Berhasil', 'Jadwal berhasil dihapus');
+                                      }, 
+                                      child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        Get.back();
+                                      }, 
+                                      child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
+                                    )
+                                  ],
+                                )
+                              );
                             });
                           }
                         ),
@@ -256,7 +279,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                           ),
                                           onPressed: (){
-                                           
+                                           Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!));
                                           }, 
                                           child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                         )
@@ -269,9 +292,33 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               onTap: (){
                                 Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!));
                               },
+                              onLongPress: (){
+                              alertDeleteWidget(
+                                context, 
+                                'Hapus jadwal', 
+                                'Apakah anda yakin untuk menghapus jadwal ini?',
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: (){
+                                        controllerAuditArea.deleteSpecialSchedule(schedule.id!);
+                                        Get.back();
+                                        snakcBarMessageGreen('Berhasil', 'Jadwal berhasil dihapus');
+                                      }, 
+                                      child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        Get.back();
+                                      }, 
+                                      child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
+                                    )
+                                  ],
+                                )
                               );
-                            }
-                          )
+                            });
+                          })
                         );
                       }
                     }),
@@ -307,11 +354,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                       if(controllerAuditArea.isLoading.isTrue){
                         return const Center(child: SpinKitCircle(color: CustomColors.blue));
                       }else{
-                        return ListView.builder(
-                            itemCount: controllerAuditArea.resSchedulesAuditArea.length,
-                            itemBuilder: (_, index){
-                              final reschedules = controllerAuditArea.resSchedulesAuditArea[index];
-                              final statusReschedules = reschedules.statusReschedule;
+                        return PagedListView<int, ContentListRescheduleAuditArea>(
+                          pagingController: controllerAuditArea.pagingControllerReschedule,
+                          builderDelegate: PagedChildBuilderDelegate(
+                            itemBuilder: (_, reschedules, index){
+                              final statusReschedules = reschedules.status;
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -331,35 +378,34 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('${reschedules.auditor}', style: CustomStyles.textBold15Px),
-                                          if(statusReschedules == 'Pending')
-                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumGrey13Px),
-                                          if(statusReschedules == 'Reject')
-                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumRed13Px),
-                                          if(statusReschedules == 'Approve')
-                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumGreen13Px),
-                                          if(statusReschedules == 'Request')
-                                          Text('${reschedules.statusReschedule}', style: CustomStyles.textMediumBlue13Px),
+                                          Text('${reschedules.user!.fullname}', style: CustomStyles.textBold15Px),
+                                          if(statusReschedules == 'PENDING')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumGrey13Px),
+                                          if(statusReschedules == 'REQUEST')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumRed13Px),
+                                          if(statusReschedules == 'APPROVE')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumGreen13Px),
+                                          if(statusReschedules == 'REJECTED')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumBlue13Px),
                                         ],
                                       ),
-                    
                                       const SizedBox(height: 10),
-                                      Text('Cabang : ${reschedules.branch}', style: CustomStyles.textMedium13Px),
-                                      Text('Area : ${reschedules.area}', style: CustomStyles.textMedium13Px),
-                                      
+                                      Text('Cabang : ${reschedules.branch!.name}', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                      Text('Area : ${reschedules.category}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                  if (reschedules.statusReschedule == 'Pending') {
-                                    Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!));
-                                  }else{
-                                    Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
-                                  }
-                                },
-                              );
+                                if (reschedules.status == 'PENDING') {
+                                  Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!));
+                                }else{
+                                  Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
+                                }
+                              });
                             }
+                          )
                         );
                       }
                     }),
@@ -384,7 +430,7 @@ class SchedulePageAuditRegion extends StatefulWidget {
 
 class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   final TextEditingController startDateControllerMainSchedule = TextEditingController();
   final TextEditingController endDateControllerMainSchedule = TextEditingController();

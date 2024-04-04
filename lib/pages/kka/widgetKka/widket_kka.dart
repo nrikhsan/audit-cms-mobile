@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -50,14 +51,14 @@ void showFilterKkaAuditArea(
                           onPressed: () {
                             if (auditorController.text.isNotEmpty) {
                               auditorController.clear();
-                              controllerAuditArea.loadKkaAuditArea();
+                              controllerAuditArea.resetFilterKka();
                               branchController.clear();
                               startDateController.clear();
                               endDateController.clear();
                               Get.back();
                             } else if (branchController.text.isNotEmpty) {
                               auditorController.clear();
-                              controllerAuditArea.loadKkaAuditArea();
+                              controllerAuditArea.resetFilterKka();
                               branchController.clear();
                               startDateController.clear();
                               endDateController.clear();
@@ -65,7 +66,7 @@ void showFilterKkaAuditArea(
                             } else if (startDateController.text.isNotEmpty ||
                                 endDateController.text.isNotEmpty) {
                               auditorController.clear();
-                              controllerAuditArea.loadKkaAuditArea();
+                              controllerAuditArea.resetFilterKka();
                               branchController.clear();
                               startDateController.clear();
                               endDateController.clear();
@@ -196,7 +197,7 @@ void showFilterKkaAuditArea(
                               shape: CustomStyles.customRoundedButton,
                               backgroundColor: CustomColors.blue),
                           onPressed: () {
-                            controllerAuditArea.getFilterKkaAuditArea(
+                            controllerAuditArea.filterkkaAuditArea(
                                 startDateController.text,
                                 endDateController.text,
                                 auditorController.text,
@@ -354,19 +355,6 @@ void showFilterKkaAuditRegion(BuildContext context, TextEditingController startD
     );
   }
 
-    void openKkaDoc(String? kkaDoc)async {
-      if (await canLaunch(kkaDoc!)) {
-          await launch(
-            kkaDoc,
-            forceSafariVC: false,
-            forceWebView: false,
-            enableJavaScript: true,
-          );
-          } else {
-        throw 'Could not launch $kkaDoc';
-      }
-    }
-
 void downloadKka(String kkaDoc) async {
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
@@ -386,18 +374,12 @@ void downloadKka(String kkaDoc) async {
             print((received / total * 100).toStringAsFixed(0) + "%");
           }
         });
-        Get.snackbar('Berhasil', 'File $saveName berhasil di unduh',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: CustomColors.green,
-            colorText: CustomColors.white);
+        snakcBarMessageGreen('Berhasil', 'File $saveName berhasil di unduh');
       } catch (error) {
         throw Exception(error);
       }
     }
   } else {
-    Get.snackbar('Alert', 'Permintaan izin ditolak',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: CustomColors.red,
-        colorText: CustomColors.white);
+    snakcBarMessageRed('Gagal', 'Permintaan izin ditolak');
   }
 }

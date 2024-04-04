@@ -1,17 +1,17 @@
-class ResponseDetailScheduleAuditArea {
+class ResponseDetailRescheduleAuditArea {
   Meta? meta;
   String? message;
   int? status;
-  DataDetailScheduleAuditArea? data;
+  DataDetailRescheduleAuditArea? data;
 
-  ResponseDetailScheduleAuditArea(
+  ResponseDetailRescheduleAuditArea(
       {this.meta, this.message, this.status, this.data});
 
-  ResponseDetailScheduleAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseDetailRescheduleAuditArea.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataDetailScheduleAuditArea.fromJson(json['data']) : null;
+    data = json['data'] != null ? new DataDetailRescheduleAuditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -47,14 +47,14 @@ class Meta {
   }
 }
 
-class DataDetailScheduleAuditArea {
+class DataDetailRescheduleAuditArea {
   Schedule? schedule;
   List<Lha>? lha;
   Kka? kka;
 
-  DataDetailScheduleAuditArea({this.schedule, this.lha, this.kka});
+  DataDetailRescheduleAuditArea({this.schedule, this.lha, this.kka});
 
-  DataDetailScheduleAuditArea.fromJson(Map<String, dynamic> json) {
+  DataDetailRescheduleAuditArea.fromJson(Map<String, dynamic> json) {
     schedule = json['schedule'] != null
         ? new Schedule.fromJson(json['schedule'])
         : null;
