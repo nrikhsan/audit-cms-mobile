@@ -7,19 +7,19 @@ class ResponseProfileAuditArea {
   ResponseProfileAuditArea({this.meta, this.message, this.status, this.data});
 
   ResponseProfileAuditArea.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataProfile.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataProfile.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['message'] = this.message;
-    data['status'] = this.status;
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -39,9 +39,9 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -78,8 +78,8 @@ class DataProfile {
 
   DataProfile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    role = json['role'] != null ? new Role.fromJson(json['role']) : null;
-    level = json['level'] != null ? new Level.fromJson(json['level']) : null;
+    role = json['role'] != null ? Role.fromJson(json['role']) : null;
+    level = json['level'] != null ? Level.fromJson(json['level']) : null;
     email = json['email'];
     nip = json['nip'];
     username = json['username'];
@@ -93,24 +93,24 @@ class DataProfile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.role != null) {
-      data['role'] = this.role!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (role != null) {
+      data['role'] = role!.toJson();
     }
-    if (this.level != null) {
-      data['level'] = this.level!.toJson();
+    if (level != null) {
+      data['level'] = level!.toJson();
     }
-    data['email'] = this.email;
-    data['nip'] = this.nip;
-    data['username'] = this.username;
-    data['password'] = this.password;
-    data['fullname'] = this.fullname;
-    data['initial_name'] = this.initialName;
-    data['is_active'] = this.isActive;
-    data['is_delete'] = this.isDelete;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['email'] = email;
+    data['nip'] = nip;
+    data['username'] = username;
+    data['password'] = password;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
+    data['is_active'] = isActive;
+    data['is_delete'] = isDelete;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -133,12 +133,12 @@ class Role {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['is_delete'] = this.isDelete;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['is_delete'] = isDelete;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -169,13 +169,13 @@ class Level {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['code'] = this.code;
-    data['is_delete'] = this.isDelete;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
+    data['is_delete'] = isDelete;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -202,18 +202,18 @@ class Main {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDelete = json['is_delete'];
-    area = json['area'] != null ? new Area.fromJson(json['area']) : null;
+    area = json['area'] != null ? Area.fromJson(json['area']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_delete'] = this.isDelete;
-    if (this.area != null) {
-      data['area'] = this.area!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_delete'] = isDelete;
+    if (area != null) {
+      data['area'] = area!.toJson();
     }
     return data;
   }
@@ -242,18 +242,18 @@ class Area {
     updatedAt = json['updated_at'];
     isDelete = json['is_delete'];
     region =
-        json['region'] != null ? new Region.fromJson(json['region']) : null;
+        json['region'] != null ? Region.fromJson(json['region']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_delete'] = this.isDelete;
-    if (this.region != null) {
-      data['region'] = this.region!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_delete'] = isDelete;
+    if (region != null) {
+      data['region'] = region!.toJson();
     }
     return data;
   }
@@ -281,18 +281,18 @@ class Region {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isDelete = json['is_delete'];
-    main = json['main'] != null ? new Role.fromJson(json['main']) : null;
+    main = json['main'] != null ? Role.fromJson(json['main']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_delete'] = this.isDelete;
-    if (this.main != null) {
-      data['main'] = this.main!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_delete'] = isDelete;
+    if (main != null) {
+      data['main'] = main!.toJson();
     }
     return data;
   }

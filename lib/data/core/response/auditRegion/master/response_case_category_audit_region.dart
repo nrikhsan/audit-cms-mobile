@@ -1,13 +1,13 @@
-class ResponseCaseCategoryAuditArea {
+class ResponseCaseCategoryAuditRegion {
   Meta? meta;
   String? message;
   int? status;
   List<DataCaseCategory>? data;
 
-  ResponseCaseCategoryAuditArea(
+  ResponseCaseCategoryAuditRegion(
       {this.meta, this.message, this.status, this.data});
 
-  ResponseCaseCategoryAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseCaseCategoryAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];

@@ -17,10 +17,7 @@ class InputClarificationPageAuditRegion extends StatefulWidget {
 
 class _InputClarificationPageAuditRegionState extends State<InputClarificationPageAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
-
-  int? _selectedClarificationCategory;
-  int? _selectedPriorityFinding;
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   final TextEditingController limitEvaluationController = TextEditingController();
   final TextEditingController auditLocationController = TextEditingController();
@@ -28,7 +25,8 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
   final TextEditingController directSupervisorController = TextEditingController();
   final TextEditingController dearController = TextEditingController();
   final TextEditingController findingDescriptionController = TextEditingController();
-  
+
+  String? _selectedPriorityFinding;
 
   @override
   Widget build(BuildContext context) {
@@ -52,39 +50,6 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                const SizedBox(height: 15),
-                Text('Kategori klarifikasi :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 15),
-                Container(
-                  width: double.maxFinite,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: CustomColors.grey,
-                        width: 1
-                      ),
-                    )
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kategori klarifikasi', style: CustomStyles.textRegular15Px),
-                      value: _selectedClarificationCategory,
-                      items: controllerAuditRegion.clarificationCategoryAuditRegion.map((clarification){
-                        return DropdownMenuItem(
-                          value: clarification.id,
-                          child: Text('${clarification.categoryName}', style: CustomStyles.textMedium15Px)
-                        );
-                      }).toList(), 
-                      onChanged: (value){
-                        setState(() {
-                          _selectedClarificationCategory = value;
-                        });
-                      }
-                    )
-                  ),
-                ),
 
               const SizedBox(height: 15),
               Text('Batasan evaluasi :', style: CustomStyles.textMedium15Px),
@@ -136,8 +101,8 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                       value: _selectedPriorityFinding,
                       items: controllerAuditRegion.priorityFindingClarificationAuditRegion.map((findings){
                         return DropdownMenuItem(
-                          value: findings.id,
-                          child: Text('${findings.priorityFindingsName}', style: CustomStyles.textMedium15Px)
+                          value: findings,
+                          child: Text(findings, style: CustomStyles.textMedium15Px)
                         );
                       }).toList(), 
                       onChanged: (value){
@@ -158,7 +123,6 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                       backgroundColor: CustomColors.blue
                     ),
                     onPressed: (){
-                      final selectCategory = _selectedClarificationCategory;
                       final limitEvaluation = limitEvaluationController.text;
                       final locationInspection = auditLocationController.text;
                       final divisionInspection = divisionInspectionController.text;
@@ -167,12 +131,12 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                       final desc = findingDescriptionController.text;
                       final selectPriority = _selectedPriorityFinding;
 
-                      if (selectCategory == null || limitEvaluation.isEmpty || locationInspection.isEmpty || divisionInspection.isEmpty || supervisor.isEmpty || dear.isEmpty || desc.isEmpty || selectPriority == null) {
+                      if (limitEvaluation.isEmpty || locationInspection.isEmpty || divisionInspection.isEmpty || supervisor.isEmpty || dear.isEmpty || desc.isEmpty || selectPriority == null) {
                         Get.snackbar('Klarifikasi gagal dibuat', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else{
-                        controllerAuditRegion.inputClarificationAuditRegion(selectCategory, limitEvaluation, locationInspection, divisionInspection, supervisor, dear, desc, selectPriority);
+                        controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, dear, desc, selectPriority);
                         Get.snackbar('Berhasil', 'Klarifikasi berhasil dibuat', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                        Get.to(() => DocumentClarificationPageAuditRegion(id: widget.id));
+                        Get.to(() => const DocumentClarificationPageAuditRegion());
                       }
                     }, 
                     child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

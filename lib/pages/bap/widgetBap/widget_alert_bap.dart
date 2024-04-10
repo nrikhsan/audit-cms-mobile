@@ -134,7 +134,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String file
     );
 }
 
-void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion) {
+void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion, int bapId) {
     showDialog(
         context: context,
         builder: (_) {
@@ -163,7 +163,7 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
                 Obx(() => TextButton(
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
-                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value);
+                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, bapId);
                             Get.offAll(() => BotNavAuditRegion());
                          }
                       : null,

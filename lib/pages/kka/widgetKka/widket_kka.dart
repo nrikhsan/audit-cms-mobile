@@ -325,7 +325,7 @@ void showFilterKkaAuditRegion(BuildContext context, TextEditingController startD
                               onPressed: (){
                                 startDateController.clear();
                                 endDateController.clear();
-                                controllerAuditRegion.loadKkaAuditRegion();
+                                controllerAuditRegion.resetFilterKka();
                                 Get.back();
                             },
                               child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -339,7 +339,7 @@ void showFilterKkaAuditRegion(BuildContext context, TextEditingController startD
                               backgroundColor: CustomColors.blue
                             ),
                               onPressed: (){
-                                controllerAuditRegion.filterKkaAuditRegion(startDateController.text, endDateController.text);
+                                controllerAuditRegion.filterKka(startDateController.text, endDateController.text);
                                 Get.back();
                             },
                               child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

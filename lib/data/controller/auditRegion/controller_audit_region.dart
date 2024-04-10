@@ -1,25 +1,27 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_cases.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_clarification_category_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_branch_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_by_id_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/userProfile/response_detail_user_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/clarification/response_document_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_priority_finding_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -37,32 +39,55 @@ class ControllerAuditRegion extends GetxController {
   var startDateMainSchedule = ''.obs;
   var endDateMainSchedule = ''.obs;
 
-  final RxList<ModelListSpecialSchedulesAuditRegion> specialScheduleAuditRegion = <ModelListSpecialSchedulesAuditRegion>[].obs;
-  final RxList<ModelListReschedulesAuditRegion> rescheduleAuditRegion = <ModelListReschedulesAuditRegion>[].obs;
+  //special schedule
+  final PagingController<int, ContentListSpecialScheduleAuditRegion> pagingControllerSpecialSchedule = PagingController(firstPageKey: 0);
+  var detailSpecialSchedule = Rxn<DataDetailScheduleAuditRegion>();
+  var startDateSpecialSchedule = ''.obs;
+  var endDateSpecialSchedule = ''.obs;
+
+  //reschedule
+  final PagingController<int, ContentListRescheduleAuditRegion> pagingControllerReschedule = PagingController(firstPageKey: 0);
+  var detailReschedule = Rxn<DataDetailRescheduleAuditRegion>();
+  var startDateReschedule = ''.obs;
+  var endDateReschedule = ''.obs;
 
   //master
-  final RxList<ModelListDivisionAuditRegion> divisionAuditRegion = <ModelListDivisionAuditRegion>[].obs;
-  final RxList<ModelListSopAuditRegion>sopAuditRegion = <ModelListSopAuditRegion>[].obs;
-  final RxList<ModelListClarificationCategoryAuditRegion> clarificationCategoryAuditRegion = <ModelListClarificationCategoryAuditRegion>[].obs;
-  final RxList<ModelListPriorityFindingsAuditRegion> priorityFindingClarificationAuditRegion = <ModelListPriorityFindingsAuditRegion>[].obs;
+  var branchId = RxnInt();
+  var caseId = RxnInt();
+  var caseCategoryId = RxnInt();
+  final RxList<DataListBranch> branchAuditRegion = <DataListBranch>[].obs;
+  final RxList<DataCaseAuditRegion> caseAuditRegion = <DataCaseAuditRegion>[].obs;
+  final RxList<DataCaseCategory>caseCatgeory = <DataCaseCategory>[].obs;
+  final RxList<DataCaseCategoryByIdAuditRegion>caseCategoryById = <DataCaseCategoryByIdAuditRegion>[].obs;
+  final RxList<String> priorityFindingClarificationAuditRegion = <String>[].obs;
 
   //lha
-  var detailLhaAuditRegion = Rxn<ModelDetailLhaAuditRegion>();
+  var detailLhaAuditRegion = Rxn<DataDetailLhaAuditRegion>();
+  var detailCasesLhaAuditRegion = Rxn<DataDetailCasesLha>();
   final RxList<LhaDetail> dataListLocalLhaAuditRegion = RxList<LhaDetail>();
-  final RxList<ModelListLhaAuditRegion> lhaAuditRegion = <ModelListLhaAuditRegion>[].obs;
+  final PagingController<int, ContentListLhaAuditRegion> pagingControllerLha = PagingController(firstPageKey: 0);
+  var startDatelha = ''.obs;
+  var endDatelha = ''.obs;
+  var scheduleId = RxnInt();
 
   //kka
-  final RxList<ModelListKkaAuditRegion> kkaAuditRegion = <ModelListKkaAuditRegion>[].obs;
-  var detailKkaAuditRegion = Rxn<ModelDetailKkaAuditRegion>();
+  final PagingController<int, ContentListKkaAuditRegion>pagingControllerKka = PagingController(firstPageKey: 0);
+  var detailKkaAuditRegion = Rxn<DataDetailKkaAuditRegion>();
+  var startDatekka = ''.obs;
+  var endDateKka = ''.obs;
+  var scheduleIdKka = RxnInt();
 
   //clarification
-  final RxList<ModelListClarificationAuditRegion> clarificationAuditRegion = <ModelListClarificationAuditRegion>[].obs;
-  var documentClarificationAuditRegion = Rxn<ModelDocumentClarificationAuditRegion>();
-  var detailClarificationAuditRegion = Rxn<ModelDetailClarificationAuditRegion>();
+  final PagingController<int, ContentListClarificationAuditRegion> pagingControllerClarification = PagingController(firstPageKey: 0);
+  var detailClarificationAuditRegion = Rxn<DataDetailClarificationAuditRegion>();
+  var startDateCla = ''.obs;
+  var endDateCla = ''.obs;
 
   //bap
-  final RxList<ModelListBapAuditRegion>bapAuditRegion = <ModelListBapAuditRegion>[].obs;
-  var detailBapAuditRegion = Rxn<ModelDetailBapAuditRegion>();
+  final PagingController<int, ContentListBapAuditRegion> pagingControllerBap = PagingController(firstPageKey: 0);
+  var detailBapAuditRegion = Rxn<DataDetailBapAuditRegion>();
+  var startDateBap = ''.obs;
+  var endDateBap = ''.obs;
 
   //report
   var reportAuditRegion = Rxn<ModelReportAuditRegion>();
@@ -75,16 +100,17 @@ class ControllerAuditRegion extends GetxController {
   @override
   void onInit() {
     pagingControllerMainSchedule.addPageRequestListener(loadMainScheduleAuditRegion);
-    loadSpecialScheduleAuditRegion();
-    loadRescheduleAuditRegion();
-    loadDivisionAuditRegion();
-    loadSopAuditRegion();
-    loadLhaAuditRegion();
-    loadClarificationAuditRegion();
-    loadClarificationCategoryAuditRegion();
+    pagingControllerSpecialSchedule.addPageRequestListener(loadSpecialScheduleAuditRegion);
+    pagingControllerReschedule.addPageRequestListener(loadRescheduleAuditRegion);
+    pagingControllerLha.addPageRequestListener(loadLhaAuditRegion);
+    pagingControllerKka.addPageRequestListener(loadKkaAuditRegion);
+    pagingControllerClarification.addPageRequestListener(loadClarificationAuditRegion);
+    pagingControllerBap.addPageRequestListener(loadBapAuditRegion);
+    loadBranchAuditRegion();
+    loadcaseAuditRegion();
+    loadCaseCategoryAuditRegion();
     loadPriorityFindingAuditRegion();
-    loadKkaAuditRegion();
-    loadBapAuditRegion();
+    
     super.onInit();
   }
 
@@ -106,8 +132,8 @@ class ControllerAuditRegion extends GetxController {
 
   void getDetailMainScheduleAuditRegion(int id)async{
     try {
-      final response = await repositories.getDetailMainScheduleAuditRegion(id);
-      detailMainSchedule.value = response.data;
+      final schedule = await repositories.getDetailMainScheduleAuditRegion(id);
+      detailMainSchedule.value = schedule.data;
     } catch (error) {
       throw Exception(error);
     }
@@ -126,60 +152,282 @@ class ControllerAuditRegion extends GetxController {
   }
 
   //special schedule
-  void loadSpecialScheduleAuditRegion() async {
-    isLoading(true);
+  void loadSpecialScheduleAuditRegion(int page)async{
     try {
-      final response = await repositories.getSpecialSchedulesAuditRegion();
-      specialScheduleAuditRegion.assignAll(response.specialSchedules ?? []);
-    } catch (error) {
-      throw Exception(error);
-    } finally {
-      isLoading(false);
+      final specialSchedule = await repositories.getSpecialSchedulesAuditRegion(page, startDateSpecialSchedule.value, endDateSpecialSchedule.value);
+      final schedule = specialSchedule.data!.content;
+      final isLastPage = schedule!.length < 10;
+      if (isLastPage) {
+        pagingControllerSpecialSchedule.appendLastPage(schedule);
+      }else{
+        final nextPage = page +1;
+        pagingControllerSpecialSchedule.appendPage(schedule, nextPage);
+      }
+    } catch (e) {
+      pagingControllerSpecialSchedule.error = e;
+      throw Exception(e);
     }
   }
 
-  void filterSpecialScheduleAuditRegion(String startDate, endDate) async {
+  void getDetailSpecialScheduleAuditRegion(int id)async{
     try {
-      final response = await repositories.filterSpecialSchedulesAuditRegion(
-          startDate, endDate);
-      specialScheduleAuditRegion.assignAll(response.specialSchedules ?? []);
+      final schedule = await repositories.getDetailSpecialScheduleAuditRegion(id);
+      detailSpecialSchedule.value = schedule.data;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void filterSpecialSchedule(String startDate, String endDate)async{
+    startDateSpecialSchedule.value = startDate;
+    endDateSpecialSchedule.value = endDate;
+    pagingControllerSpecialSchedule.refresh();
+  }
+
+  void resetfilterSpecialSchedule()async{
+    startDateSpecialSchedule.value = '';
+    endDateSpecialSchedule.value = '';
+    pagingControllerSpecialSchedule.refresh();
+  }
+
+
+  //reschedule
+  void loadRescheduleAuditRegion(int page) async {
+    try {
+      final reschedule = await repositories.getRescheduleAuditRegion(page, startDateReschedule.value, endDateReschedule.value);
+      final schedule = reschedule.data!.content;
+      final isLastPage = schedule!.length < 10;
+      if (isLastPage) {
+        pagingControllerReschedule.appendLastPage(schedule);
+      }else{
+        final nextPage = page +1;
+        pagingControllerReschedule.appendPage(schedule, nextPage);
+      }
+    } catch (e) {
+      pagingControllerReschedule.error = e;
+      throw Exception(e);
+    }
+  }
+
+  void getDetailRescheduleAuditRegion(int id)async{
+    try {
+      final reschedule = await repositories.getDetailRescheduleAuditRegion(id);
+      detailReschedule.value = reschedule.data;
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void loadRescheduleAuditRegion() async {
-    isLoading(true);
-    try {
-      final response = await repositories.getRescheduleAuditRegion();
-      rescheduleAuditRegion.assignAll(response.reschedules ?? []);
-    } catch (error) {
-      throw Exception(error);
-    } finally {
-      isLoading(false);
+  void filterReschedule(String startDate, String endDate)async{
+    startDateReschedule.value = startDate;
+    endDateReschedule.value = endDate;
+    pagingControllerReschedule.refresh();
+  }
+
+  void resetFilterReschedule()async{
+    startDateReschedule.value = '';
+    endDateReschedule.value = '';
+    pagingControllerReschedule.refresh();
+  }
+
+  //LHA
+  void addToLocalLhaAuditRegion(int caseId, int caseCategoryId, String description, String suggestion, String temporaryRecommendation, 
+  String permanentRecommendation, int research, String caseName, String caseCategoryName)async{
+
+    final newDataLha = LhaDetail(
+      caseId: caseId,
+      caseCategoryId: caseCategoryId,
+      description: description,
+      suggestion: suggestion,
+      temporaryRecommendation: temporaryRecommendation,
+      permanentRecommendation: permanentRecommendation,
+      research: research,
+      caseName: DataCaseAuditRegion(id: caseId, name: caseName),
+      caseCategoryName: DataCaseCategory(id: caseCategoryId, name: caseCategoryName)
+    );
+    dataListLocalLhaAuditRegion.add(newDataLha);
+  }
+
+   void deleteLocalLha(int caseId)async{
+    final index = dataListLocalLhaAuditRegion.indexWhere((items) => items.caseId == caseId);
+    if(index != -1){
+      dataListLocalLhaAuditRegion.removeAt(index);
     }
   }
 
-  void filterRescheduleAuditRegion(String startDate, endDate) async {
+  void inputLhaAuditRegion(int scheduleId)async{
     try {
-      final response =
-          await repositories.filterReschedulesAuditRegion(startDate, endDate);
-      rescheduleAuditRegion.assignAll(response.reschedules ?? []);
+      final response = await repositories.inputLhaAuditRegion(scheduleId, dataListLocalLhaAuditRegion.toList());
+      message.value = response.message.toString();
+      dataListLocalLhaAuditRegion.clear();
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void getDetailScheduleAuditRegion(int id)async{
+   void loadLhaAuditRegion(int page)async {
     try {
-      final response = await repositories.getDetailScheduleAuditRegion(id);
-      detailMainSchedule.value = response.data;
+      final lhaAuditRegion = await repositories.getListLhaAuditRegion(scheduleId.value!, page, startDatelha.value, endDatelha.value);
+      final lha = lhaAuditRegion.data!.content;
+      final isLastPage = lha!.length < 10;
+      if (isLastPage) {
+        pagingControllerLha.appendLastPage(lha);
+      } else {
+        final nextPage = page +1;
+        pagingControllerLha.appendPage(lha, nextPage);
+      }
+    } catch (e) {
+      pagingControllerLha.error = e;
+      throw Exception(e);
+    }
+   }
+
+   void filterLha(String startDate, String endDate)async{
+    startDatelha.value = startDate;
+    endDatelha.value = endDate;
+    pagingControllerLha.refresh();
+  }
+
+  void resetFilterLha()async{
+    startDatelha.value = '';
+    endDatelha.value = '';
+    pagingControllerLha.refresh();
+  }
+
+   void getDetailLhaAuditRegion(int id)async{
+    try {
+      final detailLha = await repositories.getDetailLhaAuditRegion(id);
+      detailLhaAuditRegion.value = detailLha.data;
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void getDetailUserAuditRegion() async {
+  void getDetailCasesLhaAuditRegion(int id)async{
+    try {
+      final detailCases = await repositories.getDetailCasesLha(id);
+      detailCasesLhaAuditRegion.value = detailCases.data;
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+//KKA
+  void loadKkaAuditRegion(int page)async {
+    try {
+      final kkaAuditRegion = await repositories.getKkaAuditRegion(page, scheduleIdKka.value!, startDatekka.value, endDateKka.value);
+      final kka = kkaAuditRegion.data!.content;
+      final isLastPage = kka!.length < 10;
+      if (isLastPage) {
+        pagingControllerKka.appendLastPage(kka);
+      } else {
+        final nextPage = page +1;
+        pagingControllerKka.appendPage(kka, nextPage);
+      }
+    } catch (e) {
+      pagingControllerKka.error = e;
+      throw Exception(e);
+    }
+  }
+
+  void filterKka(String startDate, String endDate)async{
+    startDatekka.value = startDate;
+    endDateKka.value = endDate;
+    pagingControllerKka.refresh();
+  }
+
+  void resetFilterKka()async{
+    startDatekka.value = '';
+    endDateKka.value = '';
+    pagingControllerKka.refresh();
+  }
+
+  void getDetailKkaAuditRegion(int id)async{
+    try {
+      final response = await repositories.getDetailKkaAuditRegion(id);
+      detailKkaAuditRegion.value = response.data;
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+void uploadKkaAuditRegion(String filePath, id) async {
+    try {
+      final response = await repositories.uploadKkaAuditRegion(filePath, id);
+      Get.snackbar('Berhasil', 'KKA audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      message.value = response.message.toString();
+      selectedFileName.value = '';
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  void pickFileKkaAuditRegion() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx', 'xls'],
+    );
+
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      selectedFileName.value = result.files.single.name;
+      selectedFileName.value = filePath;
+      } else {
+      selectedFileName.value = '';
+    }
+  }
+
+//master
+void loadBranchAuditRegion()async {
+  try {
+    final branch = await repositories.getBranchAuditRegion();
+    branchAuditRegion.assignAll(branch.data ?? []);
+  } catch (e) {
+    throw Exception(e);
+  }
+ }
+
+ void selectBranch(int value)async{
+  branchId.value = value;
+ }
+
+ void loadcaseAuditRegion()async {
+  try {
+    final cases = await repositories.getCasesAuditRegion();
+    caseAuditRegion.assignAll(cases.data ?? []);
+  } catch (e) {
+    throw Exception(e);
+  }
+ }
+
+void selectCase(int value)async{
+  caseId.value = value;
+}
+
+void loadCaseCategoryAuditRegion() async{
+  try {
+      final cases = await repositories.getCaseCategoryAuditRegion();
+      caseCatgeory.assignAll(cases.data ?? []);
+    } catch (e) {
+      throw Exception(e);
+  }
+}
+
+void selectCaseCategory(int value)async{
+  caseCategoryId.value = value;
+}
+
+void getCaseCategoryById(int casesId)async{
+  try {
+      final cases = await repositories.getCaseCategoryByIdAuditRegion(casesId);
+      caseCategoryById.assignAll(cases.data ?? []);
+    } catch (e) {
+      throw Exception(e);
+  }
+}
+
+//profile
+void getDetailUserAuditRegion() async {
     try {
       final response = await repositories.getDetailUserAuditRegion();
       detailUserAuditRegion.value = response.dataProfile;
@@ -209,6 +457,7 @@ class ControllerAuditRegion extends GetxController {
     }
   }
   
+  //report
   void getReportAuditRegion(String startDate, String endDate)async {
     isLoading(true);
     try {
@@ -220,167 +469,74 @@ class ControllerAuditRegion extends GetxController {
       isLoading(false);
     }
   }
-  
-  void loadDivisionAuditRegion() async{
+
+  //clarificaion
+  void loadClarificationAuditRegion(int page) async{
     try {
-      final response = await repositories.getDivisionAuditRegion();
-      divisionAuditRegion.assignAll(response.dataDivision ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-  
-  void loadSopAuditRegion()async {
-    try {
-      final response = await repositories.getSopAuditRegion();
-      sopAuditRegion.assignAll(response.dataSop ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void addToLocalLhaAuditRegion(int caseId, int caseCategoryId, String description, String suggestion, String temporaryRecommendation, String permanentRecommendation, int research, String divisionName, String sopName)async{
-    final newDataLha = LhaDetail(
-      caseId: caseId,
-      caseCategoryId: caseCategoryId,
-      description: description,
-      suggestion: suggestion,
-      temporaryRecommendation: temporaryRecommendation,
-      permanentRecommendation: permanentRecommendation,
-      research: research,
-      divisionName: ModelListDivisionAuditRegion(id: caseId, nameDivision: divisionName),
-      sopName: ModelListSopAuditRegion(id: caseCategoryId, sopName: sopName)
-    );
-    dataListLocalLhaAuditRegion.add(newDataLha);
-  }
-
-   void deleteLocalLha(int caseId)async{
-    final index = dataListLocalLhaAuditRegion.indexWhere((items) => items.caseId == caseId);
-    if(index != -1){
-      dataListLocalLhaAuditRegion.removeAt(index);
-    }
-  }
-
-  void inputLhaAuditRegion(int scheduleId, int branchId)async{
-    try {
-      final response = await repositories.inputLhaAuditRegion(scheduleId, branchId, dataListLocalLhaAuditRegion.toList());
-      message(response.toString());
-      dataListLocalLhaAuditRegion.clear();
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-   void loadLhaAuditRegion()async {
-    isLoading(true);
-    try {
-      final lha = await repositories.getListLhaAuditRegion();
-      lhaAuditRegion.assignAll(lha.dataLha ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-   }
-  
-  void loadClarificationAuditRegion() async{
-    isLoading(true);
-    try {
-      final clarfication = await repositories.getClarificationAuditRegion();
-      clarificationAuditRegion.assignAll(clarfication.dataClarification ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
-
-  void filterClarificationAuditArea(String startDate, String endDate)async{
-    try {
-      final filterClarification = await repositories.filterClarificationAuditRegion(startDate, endDate);
-      clarificationAuditRegion.assignAll(filterClarification.dataClarification ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void uploadKkaAuditRegion(String filePath) async {
-    try {
-      final response = await repositories.uploadKkaAuditRegion(filePath);
-      Get.snackbar('Berhasil', 'KKA audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void pickFileKkaAuditRegion() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['xlsx', 'xls'],
-    );
-
-    if (result != null) {
-      String filePath = result.files.single.path!;
-      selectedFileName.value = result.files.single.name;
-      selectedFileName.value = filePath;
+      final clarificationAuditRegion = await repositories.getClarificationAuditRegion(page, startDateCla.value, endDateCla.value);
+      final cla = clarificationAuditRegion.data!.content;
+      final isLastPage = cla!.length < 10;
+      if (isLastPage) {
+        pagingControllerClarification.appendLastPage(cla);
       } else {
-      selectedFileName.value = '';
+        final nextPage = page +1;
+        pagingControllerClarification.appendPage(cla, nextPage);
+      }
+    } catch (e) {
+      pagingControllerClarification.error = e;
+      throw Exception(e);
     }
   }
 
-  void getDetailLhaAuditRegion(int id)async{
+  void generateClarification()async{
     try {
-      final detailLha = await repositories.getDetailLhaAuditRegion(id);
-      detailLhaAuditRegion.value = detailLha.dataDetailLha;
-    } catch (error) {
-      throw Exception(error);
+      final generate = await repositories.generateClarification(caseId.value!, caseCategoryId.value!, branchId.value!);
+      message.value = generate.message.toString();
+      snakcBarMessageGreen('Berhasil', 'Berhasil generate klarifikasi');
+      print('generate value = ${branchId.value}, ${caseId.value}, ${caseCategoryId.value}');
+    } catch (e) {
+      throw Exception(e);
     }
   }
-  
-  void loadClarificationCategoryAuditRegion() async{
-    try {
-      final clarificationCategory = await repositories.getClarificationCategoryAuditRegion();
-      clarificationCategoryAuditRegion.assignAll(clarificationCategory.clarificationCategory ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
+
+  void filterClarification(String startDate, String endDate)async{
+    startDateCla.value = startDate;
+    endDateCla.value = endDate;
+    pagingControllerClarification.refresh();
+  }
+
+  void resetFilterClarification()async{
+    startDateCla.value = '';
+    endDateCla.value = '';
+    pagingControllerClarification.refresh();
   }
   
   void loadPriorityFindingAuditRegion()async {
     try {
       final priorityFinding = await repositories.getPriorityFindingAuditRegion();
-      priorityFindingClarificationAuditRegion.assignAll(priorityFinding.priorityFindings ?? []);
+      priorityFindingClarificationAuditRegion.assignAll(priorityFinding.data ?? []);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void inputClarificationAuditRegion(int category, String limitEvaluation, 
-  String location, String division, String supervisor, String dear, String findingDescription, int priorityFinding)async {
+  void inputClarificationAuditRegion(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
+  String description, String priority, String selectPriority)async {
     try {
-      final inputClarificationAuditRegion = await repositories.inputClarificationAuditRegion(category, limitEvaluation, location, 
-      division, supervisor, dear, findingDescription, priorityFinding);
-      message(inputClarificationAuditRegion.toString());
+      final inputClarificationAuditRegion = await repositories.inputClarificationAuditRegion(clarificationId, evaluationLimitation, location, auditee, auditeeLeader,
+       description, priority);
+      message.value = inputClarificationAuditRegion.message.toString();
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void getDocumentClarificationAuditRegion(int id)async{
+  void uploadClarificationAuditRegion(String filePath, int id)async{
     try {
-      final doc = await repositories.getDocumentClarification(id);
-      documentClarificationAuditRegion.value = doc.documentClarification;
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void uploadClarificationAuditRegion(String filePath)async{
-    try {
-      final response = await repositories.uploadClarificationAuditRegion(filePath);
+      final response = await repositories.uploadClarificationAuditRegion(filePath, id);
       message(response.toString());
       Get.snackbar('Berhasil', 'Klarifikasi audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      selectedFileName.value = '';
     } catch (error) {
       throw Exception(error);
     }
@@ -401,21 +557,21 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
-  void inputIdentificatinClarificationAuditRegion(int evaluationClarification, String loss, String description, int followUp)async{
+  void inputIdentificatinClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp)async{
     try {
-      final response = await repositories.inputIdentificationClarificationAuditRegion(evaluationClarification, loss, description, followUp);
-      Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       message(response.message);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void uploadBapAuditRegion(String filePath)async{
+  void uploadBapAuditRegion(String filePath, int bapId)async{
     try {
-      final response = await repositories.uploadBapAuditRegion(filePath);
+      final response = await repositories.uploadBapAuditRegion(filePath, bapId);
       message(response.toString());
       Get.snackbar('Berhasil', 'BAP audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      selectedFileName.value = '';
     } catch (error) {
       throw Exception(error);
     }
@@ -438,68 +594,46 @@ class ControllerAuditRegion extends GetxController {
 
   void getDetailClarificationAuditRegion(int id)async{
     try {
-      final response = await repositories.getDetailClarificationAuditRegion(id);
-      detailClarificationAuditRegion.value = response.detailClarification;
+      final cla = await repositories.getDetailClarificationAuditRegion(id);
+      detailClarificationAuditRegion.value = cla.data;
     } catch (error) {
       throw Exception(error);
     }
   }
   
-  void loadKkaAuditRegion()async {
-    isLoading(true);
+  void loadBapAuditRegion(int page)async{
     try {
-      final kka = await repositories.getKkaAuditRegion();
-      kkaAuditRegion.assignAll(kka.dataKka ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
+      final bapAuditRegion = await repositories.getBapAuditRegion(page, startDateBap.value, endDateBap.value);
+      final bap = bapAuditRegion.data!.content;
+      final isLastPage = bap!.length < 10;
+      if (isLastPage) {
+        pagingControllerBap.appendLastPage(bap);
+      } else {
+        final nextaPage = page +1;
+        pagingControllerBap.appendPage(bap, nextaPage);
+      }
+    } catch (e) {
+      pagingControllerBap.error = e;
+      throw Exception(e);
     }
   }
 
-  void filterKkaAuditRegion(String startDate, String endDate)async{
-    try {
-      final kka = await repositories.filterKkaAuditRegion(startDate, endDate);
-      kkaAuditRegion.assignAll(kka.dataKka ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
+  void filterBap(String startDate, String endDate)async{
+    startDateBap.value = startDate;
+    endDateBap.value = endDate;
+    pagingControllerBap.refresh();
   }
 
-  void getDetailKkaAuditRegion(int id)async{
-    try {
-      final response = await repositories.getDetailKkaAuditRegion(id);
-      detailKkaAuditRegion.value = response.detailKka;
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-  
-  void loadBapAuditRegion()async{
-    isLoading(true);
-    try {
-      final bap = await repositories.getBapAuditRegion();
-      bapAuditRegion.assignAll(bap.dataBap ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
-
-  void filterBapAuditRegion(String startDate, String endDate)async{
-    try {
-      final bap = await repositories.filterBapAuditRegion(startDate, endDate);
-      bapAuditRegion.assignAll(bap.dataBap ?? []);
-    } catch (error) {
-      throw Exception(error);
-    }
+  void resetFilterBap()async{
+    startDateBap.value = '';
+    endDateBap.value = '';
+    pagingControllerBap.refresh();
   }
 
   void getDetailBapAuditRegion(int id)async{
     try {
       final response = await repositories.getDetailBapAuditRegion(id);
-      detailBapAuditRegion.value = response.detailBap;
+      detailBapAuditRegion.value = response.data;
     } catch (error) {
       throw Exception(error);
     }

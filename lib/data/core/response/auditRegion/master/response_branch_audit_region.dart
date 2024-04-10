@@ -1,20 +1,19 @@
-class ResponseCaseCategoryAuditArea {
+class ResponseBranchAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  List<DataCaseCategory>? data;
+  List<DataListBranch>? data;
 
-  ResponseCaseCategoryAuditArea(
-      {this.meta, this.message, this.status, this.data});
+  ResponseBranchAuditRegion({this.meta, this.message, this.status, this.data});
 
-  ResponseCaseCategoryAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseBranchAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataCaseCategory>[];
+      data = <DataListBranch>[];
       json['data'].forEach((v) {
-        data!.add(DataCaseCategory.fromJson(v));
+        data!.add(DataListBranch.fromJson(v));
       });
     }
   }
@@ -34,8 +33,8 @@ class ResponseCaseCategoryAuditArea {
 }
 
 class Meta {
-  String? timestamp;
-  String? apiVersion;
+  Null? timestamp;
+  Null? apiVersion;
 
   Meta({this.timestamp, this.apiVersion});
 
@@ -52,13 +51,13 @@ class Meta {
   }
 }
 
-class DataCaseCategory {
+class DataListBranch {
   String? name;
   int? id;
 
-  DataCaseCategory({this.name, this.id});
+  DataListBranch({this.name, this.id});
 
-  DataCaseCategory.fromJson(Map<String, dynamic> json) {
+  DataListBranch.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
   }

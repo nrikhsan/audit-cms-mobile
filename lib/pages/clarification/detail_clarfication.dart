@@ -201,7 +201,7 @@ class DetailClarificationAuditRegion extends StatefulWidget {
 
 class _DetailClarificationAuditRegionState extends State<DetailClarificationAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -225,113 +225,107 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final evaluation = detail.evaluation;
+            final followUp = detail.isFollowUp;
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Auditor :', style: CustomStyles.textBold15Px),
+                  
+                  Text('Auditor :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.auditor}',
+                          Text('${detail.user!.fullname}',
                               style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
-                        ],
-                      ),
 
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: CustomColors.orange)
-                        ),
-                        onPressed: (){},
-                        child: Text('Close', style: CustomStyles.textMediumOrange15Px)
-                      )
-                    ],
-                  ),
-                  Text('Cabang :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.branch}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Tanggal klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationDate}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('No. klarifikasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.noClarification}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('No. BAP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.noBap}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Kategori klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationCategory}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Batasan evaluasi :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.limitEvaluation}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Divisi yang diaudi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.divisionOrAreaBeingAudited}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Bagian :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.part}', style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Atasan langsung :',
-                    style: CustomStyles.textBold15Px,
-                  ),
-                  const SizedBox(height: 5),
-                  Text('${detail.directSupervisor}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
-                  const SizedBox(height: 20),
-                  Text('Kepada yth/jabatan :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.directSupervisor}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
-                  const SizedBox(height: 20),
-                  Text('Prioritas temuan :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.findingPriority}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Evaluasi klarifikasi :',
-                      style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text(
-                      '${detail.clarificationIdentidication!.clarificationEvaluation}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationIdentidication!.nominalLoss}',
-                      style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 20),
-                  Text('Alasan :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${detail.clarificationIdentidication!.reason}',
-                      style: CustomStyles.textRegular13Px,
-                      textAlign: TextAlign.justify),
+                          Text('Kode :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Cabang :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Kasus :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.cases!.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.caseCategory!.name}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Prioritas temuan :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.priority}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Deskripsi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.description}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Lokasi yang di audit :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.location}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Auditee :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.auditee}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Audit leader :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.auditeeLeader}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Rekomendasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+                          
+                          Text('Evaluasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Wrap(
+                            children: [
+                              evaluation == 0 ? 
+                              Text('Tidak ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+
+                          Text('Status :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.nominalLoss}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Bats evaluasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text('${detail.evaluationLimitation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          const SizedBox(height: 20),
+
+                          Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Wrap(
+                            children: [
+                              followUp == 0 ? 
+                              Text('Tidak', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Perlu di tindak lanjut', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          
                   const SizedBox(height: 20),
                   Text('File klarifikasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
@@ -354,40 +348,10 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.green),
                                 onPressed: () async {
-                                  showDialogPdfClarificationPdfAuditRegion(detail.clarificationDoc, context);
+                                  showDialogPdfClarificationPdfAuditRegion(detail.filePath, context);
                                 },
                                 child: Text('Lihat',
                                     style: CustomStyles.textMediumWhite15Px))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text('File BAP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: 140,
-                    child: Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.lightGrey)),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Text('File', style: CustomStyles.textMedium15Px),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton,
-                                    backgroundColor: CustomColors.blue),
-                                onPressed: () async {
-                                  showDialogBapAuditRegion(detail.bapDoc, context);
-                                },
-                                child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
                         ),
                       ),

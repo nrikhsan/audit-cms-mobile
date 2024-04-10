@@ -8,19 +8,19 @@ class ResponseDetailClarificationAuditArea {
       {this.meta, this.message, this.status, this.data});
 
   ResponseDetailClarificationAuditArea.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataDetailClarificationAuditArea.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataDetailClarificationAuditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['message'] = this.message;
-    data['status'] = this.status;
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -40,9 +40,9 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -90,12 +90,12 @@ class DataDetailClarificationAuditArea {
       this.isFlag});
 
   DataDetailClarificationAuditArea.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     branch =
-        json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
-    cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
+        json['branch'] != null ? Branch.fromJson(json['branch']) : null;
+    cases = json['cases'] != null ? Cases.fromJson(json['cases']) : null;
     caseCategory = json['case_category'] != null
-        ? new Branch.fromJson(json['case_category'])
+        ? Branch.fromJson(json['case_category'])
         : null;
     code = json['code'];
     priority = json['priority'];
@@ -115,34 +115,34 @@ class DataDetailClarificationAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.branch != null) {
-      data['branch'] = this.branch!.toJson();
+    if (branch != null) {
+      data['branch'] = branch!.toJson();
     }
-    if (this.cases != null) {
-      data['cases'] = this.cases!.toJson();
+    if (cases != null) {
+      data['cases'] = cases!.toJson();
     }
-    if (this.caseCategory != null) {
-      data['case_category'] = this.caseCategory!.toJson();
+    if (caseCategory != null) {
+      data['case_category'] = caseCategory!.toJson();
     }
-    data['code'] = this.code;
-    data['priority'] = this.priority;
-    data['file_name'] = this.fileName;
-    data['file_path'] = this.filePath;
-    data['description'] = this.description;
-    data['location'] = this.location;
-    data['auditee'] = this.auditee;
-    data['auditee_leader'] = this.auditeeLeader;
-    data['recomendation'] = this.recomendation;
-    data['evaluation'] = this.evaluation;
-    data['status'] = this.status;
-    data['nominal_loss'] = this.nominalLoss;
-    data['evaluation_limitation'] = this.evaluationLimitation;
-    data['is_follow_up'] = this.isFollowUp;
-    data['is_flag'] = this.isFlag;
+    data['code'] = code;
+    data['priority'] = priority;
+    data['file_name'] = fileName;
+    data['file_path'] = filePath;
+    data['description'] = description;
+    data['location'] = location;
+    data['auditee'] = auditee;
+    data['auditee_leader'] = auditeeLeader;
+    data['recomendation'] = recomendation;
+    data['evaluation'] = evaluation;
+    data['status'] = status;
+    data['nominal_loss'] = nominalLoss;
+    data['evaluation_limitation'] = evaluationLimitation;
+    data['is_follow_up'] = isFollowUp;
+    data['is_flag'] = isFlag;
     return data;
   }
 }
@@ -163,11 +163,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['fullname'] = this.fullname;
-    data['initial_name'] = this.initialName;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
+    data['email'] = email;
     return data;
   }
 }
@@ -184,9 +184,9 @@ class Branch {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -205,10 +205,10 @@ class Cases {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['code'] = this.code;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
     return data;
   }
 }

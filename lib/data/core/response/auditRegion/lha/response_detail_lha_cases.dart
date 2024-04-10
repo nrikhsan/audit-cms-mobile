@@ -1,16 +1,16 @@
-class ResponseDetailLhaRevision {
+class ResponseDetailLhaCasesLhaAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  DataDetailRevisionLha? data;
+  DataDetailCasesLha? data;
 
-  ResponseDetailLhaRevision({this.meta, this.message, this.status, this.data});
+  ResponseDetailLhaCasesLhaAuditRegion({this.meta, this.message, this.status, this.data});
 
-  ResponseDetailLhaRevision.fromJson(Map<String, dynamic> json) {
+  ResponseDetailLhaCasesLhaAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? DataDetailRevisionLha.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataDetailCasesLha.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +46,7 @@ class Meta {
   }
 }
 
-class DataDetailRevisionLha {
+class DataDetailCasesLha {
   int? id;
   Cases? cases;
   CaseCategory? caseCategory;
@@ -56,7 +56,7 @@ class DataDetailRevisionLha {
   String? suggestion;
   int? isResearch;
 
-  DataDetailRevisionLha(
+  DataDetailCasesLha(
       {this.id,
       this.cases,
       this.caseCategory,
@@ -66,7 +66,7 @@ class DataDetailRevisionLha {
       this.suggestion,
       this.isResearch});
 
-  DataDetailRevisionLha.fromJson(Map<String, dynamic> json) {
+  DataDetailCasesLha.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cases = json['cases'] != null ? Cases.fromJson(json['cases']) : null;
     caseCategory = json['case_category'] != null

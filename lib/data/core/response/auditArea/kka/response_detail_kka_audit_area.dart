@@ -7,19 +7,19 @@ class ResponseDetailKkaAuditArea {
   ResponseDetailKkaAuditArea({this.meta, this.message, this.status, this.data});
 
   ResponseDetailKkaAuditArea.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataDetailKkaAuditArea.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataDetailKkaAuditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['message'] = this.message;
-    data['status'] = this.status;
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -39,9 +39,9 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -68,11 +68,11 @@ class DataDetailKkaAuditArea {
 
   DataDetailKkaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     branch =
-        json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
+        json['branch'] != null ? Branch.fromJson(json['branch']) : null;
     schedule = json['schedule'] != null
-        ? new Schedule.fromJson(json['schedule'])
+        ? Schedule.fromJson(json['schedule'])
         : null;
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -81,21 +81,21 @@ class DataDetailKkaAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.branch != null) {
-      data['branch'] = this.branch!.toJson();
+    if (branch != null) {
+      data['branch'] = branch!.toJson();
     }
-    if (this.schedule != null) {
-      data['schedule'] = this.schedule!.toJson();
+    if (schedule != null) {
+      data['schedule'] = schedule!.toJson();
     }
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['filename'] = this.filename;
-    data['file_path'] = this.filePath;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['filename'] = filename;
+    data['file_path'] = filePath;
     return data;
   }
 }
@@ -116,11 +116,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['fullname'] = this.fullname;
-    data['initial_name'] = this.initialName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
     return data;
   }
 }
@@ -137,9 +137,9 @@ class Branch {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -158,10 +158,10 @@ class Schedule {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
     return data;
   }
 }

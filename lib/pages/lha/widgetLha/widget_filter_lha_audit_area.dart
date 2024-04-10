@@ -321,7 +321,7 @@ void showFilterLhaAuditRegion(BuildContext context, TextEditingController startD
                               onPressed: (){
                                 startDateController.clear();
                                 endDateController.clear();
-                                
+                                controllerAuditRegion.resetFilterLha();
                                 Get.back();
                             },
                               child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -335,7 +335,7 @@ void showFilterLhaAuditRegion(BuildContext context, TextEditingController startD
                               backgroundColor: CustomColors.blue
                             ),
                               onPressed: (){
-                                
+                                controllerAuditRegion.filterLha(startDateController.text, endDateController.text);
                                 Get.back();
                             },
                               child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

@@ -1,170 +1,214 @@
 class ResponseDetailClarificationAuditRegion {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  ModelDetailClarificationAuditRegion? detailClarification;
+  int? status;
+  DataDetailClarificationAuditRegion? data;
 
   ResponseDetailClarificationAuditRegion(
-      {this.metadata, this.status, this.message, this.detailClarification});
+      {this.meta, this.message, this.status, this.data});
 
   ResponseDetailClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    detailClarification = json['detail_clarification'] != null
-        ? new ModelDetailClarificationAuditRegion.fromJson(json['detail_clarification'])
-        : null;
+    status = json['status'];
+    data = json['data'] != null ? DataDetailClarificationAuditRegion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.detailClarification != null) {
-      data['detail_clarification'] = this.detailClarification!.toJson();
+    data['message'] = message;
+    data['status'] = status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
 
-class ModelDetailClarificationAuditRegion {
-  int? id;
-  int? noDocument;
-  int? statusClarification;
-  String? auditor;
-  String? branch;
-  String? clarificationDate;
-  String? noClarification;
-  String? noBap;
-  String? clarificationCategory;
-  String? limitEvaluation;
-  String? divisionOrAreaBeingAudited;
-  String? part;
-  String? directSupervisor;
-  String? dear;
-  String? explanationOfAuditFinding;
-  String? findingPriority;
-  ClarificationIdentidication? clarificationIdentidication;
-  String? clarificationDoc;
-  String? bapDoc;
-
-  ModelDetailClarificationAuditRegion(
-      {this.id,
-        this.noDocument,
-        this.statusClarification,
-        this.auditor,
-        this.branch,
-        this.clarificationDate,
-        this.noClarification,
-        this.noBap,
-        this.clarificationCategory,
-        this.limitEvaluation,
-        this.divisionOrAreaBeingAudited,
-        this.part,
-        this.directSupervisor,
-        this.dear,
-        this.explanationOfAuditFinding,
-        this.findingPriority,
-        this.clarificationIdentidication,
-        this.clarificationDoc,
-        this.bapDoc});
-
-  ModelDetailClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    noDocument = json['no_document'];
-    statusClarification = json['status_clarification'];
-    auditor = json['auditor'];
-    branch = json['branch'];
-    clarificationDate = json['clarification_date'];
-    noClarification = json['no_clarification'];
-    noBap = json['no_bap'];
-    clarificationCategory = json['clarification_category'];
-    limitEvaluation = json['limit_evaluation'];
-    divisionOrAreaBeingAudited = json['division_or_area_being_audited'];
-    part = json['part'];
-    directSupervisor = json['direct_supervisor'];
-    dear = json['dear'];
-    explanationOfAuditFinding = json['explanation_of_audit_finding'];
-    findingPriority = json['finding_priority'];
-    clarificationIdentidication = json['clarification_identidication'] != null
-        ? new ClarificationIdentidication.fromJson(
-        json['clarification_identidication'])
-        : null;
-    clarificationDoc = json['clarification_doc'];
-    bapDoc = json['bap_doc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['no_document'] = this.noDocument;
-    data['status_clarification'] = this.statusClarification;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['clarification_date'] = this.clarificationDate;
-    data['no_clarification'] = this.noClarification;
-    data['no_bap'] = this.noBap;
-    data['clarification_category'] = this.clarificationCategory;
-    data['limit_evaluation'] = this.limitEvaluation;
-    data['division_or_area_being_audited'] = this.divisionOrAreaBeingAudited;
-    data['part'] = this.part;
-    data['direct_supervisor'] = this.directSupervisor;
-    data['dear'] = this.dear;
-    data['explanation_of_audit_finding'] = this.explanationOfAuditFinding;
-    data['finding_priority'] = this.findingPriority;
-    if (this.clarificationIdentidication != null) {
-      data['clarification_identidication'] =
-          this.clarificationIdentidication!.toJson();
-    }
-    data['clarification_doc'] = this.clarificationDoc;
-    data['bap_doc'] = this.bapDoc;
-    return data;
-  }
-}
-
-class ClarificationIdentidication {
-  String? clarificationEvaluation;
+class DataDetailClarificationAuditRegion {
+  User? user;
+  Branch? branch;
+  Cases? cases;
+  Branch? caseCategory;
+  String? code;
+  String? priority;
+  String? fileName;
+  String? filePath;
+  String? description;
+  String? location;
+  String? auditee;
+  String? auditeeLeader;
+  String? recomendation;
+  int? evaluation;
+  String? status;
   String? nominalLoss;
-  String? reason;
+  String? evaluationLimitation;
+  int? isFollowUp;
+  int? isFlag;
 
-  ClarificationIdentidication(
-      {this.clarificationEvaluation, this.nominalLoss, this.reason});
+  DataDetailClarificationAuditRegion(
+      {this.user,
+      this.branch,
+      this.cases,
+      this.caseCategory,
+      this.code,
+      this.priority,
+      this.fileName,
+      this.filePath,
+      this.description,
+      this.location,
+      this.auditee,
+      this.auditeeLeader,
+      this.recomendation,
+      this.evaluation,
+      this.status,
+      this.nominalLoss,
+      this.evaluationLimitation,
+      this.isFollowUp,
+      this.isFlag});
 
-  ClarificationIdentidication.fromJson(Map<String, dynamic> json) {
-    clarificationEvaluation = json['clarification_evaluation'];
+  DataDetailClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    branch =
+        json['branch'] != null ? Branch.fromJson(json['branch']) : null;
+    cases = json['cases'] != null ? Cases.fromJson(json['cases']) : null;
+    caseCategory = json['case_category'] != null
+        ? Branch.fromJson(json['case_category'])
+        : null;
+    code = json['code'];
+    priority = json['priority'];
+    fileName = json['file_name'];
+    filePath = json['file_path'];
+    description = json['description'];
+    location = json['location'];
+    auditee = json['auditee'];
+    auditeeLeader = json['auditee_leader'];
+    recomendation = json['recomendation'];
+    evaluation = json['evaluation'];
+    status = json['status'];
     nominalLoss = json['nominal_loss'];
-    reason = json['reason'];
+    evaluationLimitation = json['evaluation_limitation'];
+    isFollowUp = json['is_follow_up'];
+    isFlag = json['is_flag'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['clarification_evaluation'] = this.clarificationEvaluation;
-    data['nominal_loss'] = this.nominalLoss;
-    data['reason'] = this.reason;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    if (branch != null) {
+      data['branch'] = branch!.toJson();
+    }
+    if (cases != null) {
+      data['cases'] = cases!.toJson();
+    }
+    if (caseCategory != null) {
+      data['case_category'] = caseCategory!.toJson();
+    }
+    data['code'] = code;
+    data['priority'] = priority;
+    data['file_name'] = fileName;
+    data['file_path'] = filePath;
+    data['description'] = description;
+    data['location'] = location;
+    data['auditee'] = auditee;
+    data['auditee_leader'] = auditeeLeader;
+    data['recomendation'] = recomendation;
+    data['evaluation'] = evaluation;
+    data['status'] = status;
+    data['nominal_loss'] = nominalLoss;
+    data['evaluation_limitation'] = evaluationLimitation;
+    data['is_follow_up'] = isFollowUp;
+    data['is_flag'] = isFlag;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? fullname;
+  String? initialName;
+  String? email;
+
+  User({this.id, this.fullname, this.initialName, this.email});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    email = json['email'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
+    data['email'] = email;
+    return data;
+  }
+}
+
+class Branch {
+  int? id;
+  String? name;
+
+  Branch({this.id, this.name});
+
+  Branch.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    return data;
+  }
+}
+
+class Cases {
+  int? id;
+  String? name;
+  String? code;
+
+  Cases({this.id, this.name, this.code});
+
+  Cases.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
     return data;
   }
 }

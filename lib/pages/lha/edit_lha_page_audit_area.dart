@@ -150,8 +150,8 @@ class EditLhaPageAuditArea extends StatefulWidget {
 }
 
 class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
-  final TextEditingController lhaDescriptionController = TextEditingController();
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  final TextEditingController lhaDescriptionController = TextEditingController();
   final TextEditingController temporaryRecommendationController = TextEditingController();
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();

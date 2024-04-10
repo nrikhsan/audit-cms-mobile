@@ -35,7 +35,7 @@ class AppConstant{
   //lha
   static const String listRevisiLha = 'api/lha-detail';
   static const String lhaRevision = 'api/lha-revision';
-  static const String revisionlhaDetail = 'api/lha-detail';
+  static const String revisionlhaDetail = 'api/lha-detail/';
   static const String lhaAuditArea = 'api/lha';
   static const String detaillhaAuditArea = 'api/lha/';
   
@@ -73,17 +73,28 @@ class AppConstant{
 
   //audit region
   //schedule
-
   //main schedule
   static const String mainScheduleAuditRegion = 'api/main-schedule';
   static const String detailMainScheduleAuditRegion = 'api/main-schedule/';
 
   //special schedule
   static const String specialScheduleAuditRegion = 'api/special-schedule';
-  static const String detailSpecialScheduleAuditRegion = 'api/main-schedule/';
+  static const String detailSpecialScheduleAuditRegion = 'api/special-schedule/';
 
+  //reschedule
   static const String reScheduleAuditRegion = 'api/reschedule';
-  static const String detailScheduleAuditRegion = 'api/schedule-audit-region/';
+  static const String detailRescheduleAuditRegion = 'api/reschedule/';
+
+  //lha
+  static const String inputLhaAuditRegion = 'api/lha';
+  static const String lhaAuditRegion = 'api/lha';
+  static const String detailLhaAuditRegion = 'api/lha/';
+  static const String caselhaDetailAuditRegion = 'api/lha-detail/';
+
+  //kka
+  static const String kkaAuditRegion = 'api/kka';
+  static const String detailKkaAuditRegion = 'api/kka/';
+  static const String uploadKkaAuditRegion = '/api/kka/upload';
 
   //user profile
   static const String detailUserAuditRegion = 'api/profile';
@@ -93,32 +104,24 @@ class AppConstant{
   //report
   static const String reportAuditRegion = 'api/report';
 
-  //lha
-  static const String inputLhaAuditRegion = 'api/input-lha';
-  static const String lhaAuditRegion = 'api/lha';
-  static const String detailLhaAuditRegion = 'api/detail-lha/';
-
   //master
-  static const String divisionAuditRegion = 'api/division';
-  static const String sopAuditRegion = 'api/sop';
-  static const String uploadKkaAuditRegion = 'api/upload-kka';
-  static const String priorityFindingClarificationAuditRegion = 'api/priority-finding';
-  static const String clarificationCategoryAuditRegion = 'api/clarification-category';
+  static const String caseAuditRegion = 'api/dropdown/case';
+  static const String caseCategoryAuditRegion = 'api/dropdown/case-category';
+  static const String branchAuditRegion = 'api/dropdown/branch';
+  static const String priorityFindingClarificationAuditRegion = 'api/dropdown/priority';
 
   //clarification
-  static const String clarificationAuditRegion = 'api/clarification-audit-region';
-  static const String inputClarificationAuditRegion = 'api/input-clarification';
-  static const String documentClarificationAuditRegion = 'api/clarification-doc/';
-  static const String uploadClarificationAuditRegion = 'api/upload-clarification';
-  static const String inputIdentificationClarification = 'api/input-identification-clarification';
+  static const String clarificationAuditRegion = 'api/clarification';
   static const String detailClarificationAuditRegion = 'api/detail-clarification/';
+  static const String generateClarification = 'api/clarification/generate';
+  static const String inputClarificationAuditRegion = 'api/clarification';
+  static const String documentClarificationAuditRegion = 'api/clarification-doc/';
+  static const String uploadClarificationAuditRegion = 'api/clarification/upload';
+  static const String inputIdentificationClarification = 'api/clarification/identification';
 
   //bap
-  static const String detailBapAuditRegion = 'api/detail-bap/';
-  static const String uploadBapAuditRegion = 'api/upload-bap';
+  static const String detailBapAuditRegion = 'api/bap/';
+  static const String uploadBapAuditRegion = 'api/bap/upload';
   static const String bapAuditRegion = 'api/bap';
 
-  //kka
-  static const String kkaAuditRegion = 'api/kka';
-  static const String detailKkaAuditRegion = 'api/detail-kka/';
 }

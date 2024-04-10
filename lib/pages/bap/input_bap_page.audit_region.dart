@@ -12,7 +12,7 @@ class InputBapPageAuditRegion extends StatefulWidget {
 }
 
 class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +35,12 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
+            const SizedBox(height: 10),
 
-            const SizedBox(height: 15),
-            Text('No. BAP :', style: CustomStyles.textBold15Px,),
-            const SizedBox(height: 5),
-            Text('012C/AS/IA/CMS/V/2023', style: CustomStyles.textMedium13Px),
+            Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
 
-            const SizedBox(height: 15),
-            Text('No. Klarifikasi :', style: CustomStyles.textBold15Px,),
-            const SizedBox(height: 5),
-            Text('012C/AS/IA/CMS/V/2023', style: CustomStyles.textMedium13Px),
+            const SizedBox(height: 10),
 
             const SizedBox(height: 25),
             SizedBox(
@@ -55,7 +51,8 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
                   backgroundColor: CustomColors.blue
                 ),
                 onPressed: (){
-                  uploadBapAuditRegion(context, controllerAuditRegion);
+                  uploadBapAuditRegion(context, controllerAuditRegion, 0);
+                  
                 }, 
                 child: Text('Upload BAP', style: CustomStyles.textMediumWhite15Px)
               ),

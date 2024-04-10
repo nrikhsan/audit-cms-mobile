@@ -1,48 +1,38 @@
 class ResponsePriorityFindingAuditRegion {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  List<ModelListPriorityFindingsAuditRegion>? priorityFindings;
+  int? status;
+  List<String>? data;
 
   ResponsePriorityFindingAuditRegion(
-      {this.metadata, this.status, this.message, this.priorityFindings});
+      {this.meta, this.message, this.status, this.data});
 
   ResponsePriorityFindingAuditRegion.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    if (json['priority_findings'] != null) {
-      priorityFindings = <ModelListPriorityFindingsAuditRegion>[];
-      json['priority_findings'].forEach((v) {
-        priorityFindings!.add(new ModelListPriorityFindingsAuditRegion.fromJson(v));
-      });
-    }
+    status = json['status'];
+    data = json['data'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
-    if (this.priorityFindings != null) {
-      data['priority_findings'] =
-          this.priorityFindings!.map((v) => v.toJson()).toList();
-    }
+    data['status'] = this.status;
+    data['data'] = this.data;
     return data;
   }
 }
 
-class Metadata {
+class Meta {
   Null? timestamp;
   Null? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
@@ -51,25 +41,6 @@ class Metadata {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['timestamp'] = this.timestamp;
     data['api_version'] = this.apiVersion;
-    return data;
-  }
-}
-
-class ModelListPriorityFindingsAuditRegion {
-  int? id;
-  String? priorityFindingsName;
-
-  ModelListPriorityFindingsAuditRegion({this.id, this.priorityFindingsName});
-
-  ModelListPriorityFindingsAuditRegion.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    priorityFindingsName = json['priority_findings_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['priority_findings_name'] = this.priorityFindingsName;
     return data;
   }
 }

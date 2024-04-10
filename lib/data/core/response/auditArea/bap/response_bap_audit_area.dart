@@ -7,19 +7,19 @@ class ResponseBapAuditArea {
   ResponseBapAuditArea({this.meta, this.message, this.status, this.data});
 
   ResponseBapAuditArea.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new DataBapAduditArea.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataBapAduditArea.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['message'] = this.message;
-    data['status'] = this.status;
+    data['message'] = message;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -39,9 +39,9 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -56,21 +56,21 @@ class DataBapAduditArea {
     if (json['content'] != null) {
       content = <ContentListBapAuditArea>[];
       json['content'].forEach((v) {
-        content!.add(new ContentListBapAuditArea.fromJson(v));
+        content!.add(ContentListBapAuditArea.fromJson(v));
       });
     }
     pageable = json['pageable'] != null
-        ? new Pageable.fromJson(json['pageable'])
+        ? Pageable.fromJson(json['pageable'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.content != null) {
-      data['content'] = this.content!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (content != null) {
+      data['content'] = content!.map((v) => v.toJson()).toList();
     }
-    if (this.pageable != null) {
-      data['pageable'] = this.pageable!.toJson();
+    if (pageable != null) {
+      data['pageable'] = pageable!.toJson();
     }
     return data;
   }
@@ -94,9 +94,9 @@ class ContentListBapAuditArea {
 
   ContentListBapAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     clarification = json['clarification'] != null
-        ? new Clarification.fromJson(json['clarification'])
+        ? Clarification.fromJson(json['clarification'])
         : null;
     code = json['code'];
     filename = json['filename'];
@@ -104,17 +104,17 @@ class ContentListBapAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.clarification != null) {
-      data['clarification'] = this.clarification!.toJson();
+    if (clarification != null) {
+      data['clarification'] = clarification!.toJson();
     }
-    data['code'] = this.code;
-    data['filename'] = this.filename;
-    data['file_path'] = this.filePath;
+    data['code'] = code;
+    data['filename'] = filename;
+    data['file_path'] = filePath;
     return data;
   }
 }
@@ -135,11 +135,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['fullname'] = this.fullname;
-    data['initial_name'] = this.initialName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
     return data;
   }
 }
@@ -158,10 +158,10 @@ class Clarification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['code'] = this.code;
-    data['evaluation_limitation'] = this.evaluationLimitation;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['code'] = code;
+    data['evaluation_limitation'] = evaluationLimitation;
     return data;
   }
 }
@@ -185,22 +185,22 @@ class Pageable {
   Pageable.fromJson(Map<String, dynamic> json) {
     pageNumber = json['pageNumber'];
     pageSize = json['pageSize'];
-    sort = json['sort'] != null ? new Sort.fromJson(json['sort']) : null;
+    sort = json['sort'] != null ? Sort.fromJson(json['sort']) : null;
     offset = json['offset'];
     paged = json['paged'];
     unpaged = json['unpaged'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pageNumber'] = this.pageNumber;
-    data['pageSize'] = this.pageSize;
-    if (this.sort != null) {
-      data['sort'] = this.sort!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['pageNumber'] = pageNumber;
+    data['pageSize'] = pageSize;
+    if (sort != null) {
+      data['sort'] = sort!.toJson();
     }
-    data['offset'] = this.offset;
-    data['paged'] = this.paged;
-    data['unpaged'] = this.unpaged;
+    data['offset'] = offset;
+    data['paged'] = paged;
+    data['unpaged'] = unpaged;
     return data;
   }
 }
@@ -219,10 +219,10 @@ class Sort {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['empty'] = this.empty;
-    data['unsorted'] = this.unsorted;
-    data['sorted'] = this.sorted;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['empty'] = empty;
+    data['unsorted'] = unsorted;
+    data['sorted'] = sorted;
     return data;
   }
 }

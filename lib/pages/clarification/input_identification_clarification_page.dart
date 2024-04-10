@@ -4,12 +4,12 @@ import 'package:audit_cms/pages/bap/input_bap_page.audit_region.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_form_input_clarification.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class InputIdentificationClarificationAuditRegionPage extends StatefulWidget {
-  const InputIdentificationClarificationAuditRegionPage({super.key});
+ final int clarificationId;
+  const InputIdentificationClarificationAuditRegionPage({super.key, required this.clarificationId});
 
   @override
   State<InputIdentificationClarificationAuditRegionPage> createState() => _InputIdentificationClarificationAuditRegionPageState();
@@ -17,7 +17,7 @@ class InputIdentificationClarificationAuditRegionPage extends StatefulWidget {
 
 class _InputIdentificationClarificationAuditRegionPageState extends State<InputIdentificationClarificationAuditRegionPage> {
   
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   int? _evaluation;
   int? _loss;
@@ -98,7 +98,6 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
               if(_loss == 1)
               formInputLoss(lossController),
 
-
               const SizedBox(height: 15),
               Text('Deskripsi atau rekomendasi : ', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
@@ -127,48 +126,7 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                 ).toList()
               ),
 
-              const SizedBox(height: 15),
-              Obx((){
-                final clarification = controllerAuditRegion.documentClarificationAuditRegion.value;
-                if(clarification == null){
-                  return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                }else{
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                    Text('File klarifikasi', style: CustomStyles.textMedium15Px),
-                    const SizedBox(height: 15),
-                    SizedBox(
-                    width: 140,
-                    child: Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: CustomColors.lightGrey)),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Text('File', style: CustomStyles.textMedium15Px),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton,
-                                    backgroundColor: CustomColors.green),
-                                onPressed: () async {
-                                  await showDialogPdfClarificationPdfAuditRegion(clarification.clarificationDoc, context);
-                                },
-                                child: Text('Lihat', style: CustomStyles.textMediumWhite15Px)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 25),
+              const SizedBox(height: 25),
                   SizedBox(
                     width: double.maxFinite,
                     child: ElevatedButton(
@@ -179,20 +137,64 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(_followUp == 1){
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(_evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
                                 Get.to(() => const InputBapPageAuditRegion());
+                                Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
                                 print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
                               }else if (_followUp == 0){
                                 Get.offAll(() => BotNavAuditRegion());
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                                print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)
                         ),
                       ),
-                    ],
-                  );
-                }
-              })
+
+              const SizedBox(height: 15),
+              // Obx((){
+              //   final clarification = controllerAuditRegion.documentClarificationAuditRegion.value;
+              //   if(clarification == null){
+              //     return const Center(child: SpinKitCircle(color: CustomColors.blue));
+              //   }else{
+              //     return Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+
+              //       Text('File klarifikasi', style: CustomStyles.textMedium15Px),
+              //       const SizedBox(height: 15),
+              //       SizedBox(
+              //       width: 140,
+              //       child: Card(
+              //         shape: OutlineInputBorder(
+              //             borderRadius: BorderRadius.circular(10),
+              //             borderSide:
+              //                 const BorderSide(color: CustomColors.lightGrey)),
+              //         elevation: 0,
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(5),
+              //           child: Row(
+              //             children: [
+              //               Text('File', style: CustomStyles.textMedium15Px),
+              //               const SizedBox(width: 10),
+              //               ElevatedButton(
+              //                   style: ElevatedButton.styleFrom(
+              //                       shape: CustomStyles.customRoundedButton,
+              //                       backgroundColor: CustomColors.green),
+              //                   onPressed: () async {
+              //                     await showDialogPdfClarificationPdfAuditRegion(clarification.clarificationDoc, context);
+              //                   },
+              //                   child: Text('Lihat', style: CustomStyles.textMediumWhite15Px)
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     )],
+              //     );
+              //   }
+              // })
             ],
           ),
         ),

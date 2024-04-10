@@ -1,17 +1,17 @@
-class ResponseDetailRescheduleAuditArea {
+class ResponseDetailRescheduleAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  DataDetailRescheduleAuditArea? data;
+  DataDetailRescheduleAuditRegion? data;
 
-  ResponseDetailRescheduleAuditArea(
+  ResponseDetailRescheduleAuditRegion(
       {this.meta, this.message, this.status, this.data});
 
-  ResponseDetailRescheduleAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseDetailRescheduleAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? DataDetailRescheduleAuditArea.fromJson(json['data']) : null;
+    data = json['data'] != null ? DataDetailRescheduleAuditRegion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -47,14 +47,14 @@ class Meta {
   }
 }
 
-class DataDetailRescheduleAuditArea {
+class DataDetailRescheduleAuditRegion {
   Schedule? schedule;
   List<Lha>? lha;
   Kka? kka;
 
-  DataDetailRescheduleAuditArea({this.schedule, this.lha, this.kka});
+  DataDetailRescheduleAuditRegion({this.schedule, this.lha, this.kka});
 
-  DataDetailRescheduleAuditArea.fromJson(Map<String, dynamic> json) {
+  DataDetailRescheduleAuditRegion.fromJson(Map<String, dynamic> json) {
     schedule = json['schedule'] != null
         ? Schedule.fromJson(json['schedule'])
         : null;

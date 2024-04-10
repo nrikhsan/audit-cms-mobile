@@ -3,6 +3,8 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_s
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
 import 'package:audit_cms/pages/schedule/edit_schedule_page.dart';
@@ -552,54 +554,48 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Obx((){
-                        if (controllerAuditRegion.isLoading.value) {
-                          return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                        }else{
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controllerAuditRegion.specialScheduleAuditRegion.length,
-                            itemBuilder: (_, index){
-                              final specialSchedule = controllerAuditRegion.specialScheduleAuditRegion[index];
-                              return GestureDetector(
-                                  child: Card(
-                                  elevation: 0,
-                                  shape: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: CustomColors.grey
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
+                  child: PagedListView<int, ContentListSpecialScheduleAuditRegion>(
+                            pagingController: controllerAuditRegion.pagingControllerSpecialSchedule, 
+                            builderDelegate: PagedChildBuilderDelegate(
+                              itemBuilder: (_, schedule, index){
+                                return GestureDetector(
+                                child: Card(
+                                elevation: 0,
+                                shape: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: CustomColors.grey
                                   ),
-                        
-                                  color: CustomColors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('${specialSchedule.auditor}', style: CustomStyles.textBold15Px),
-                                            Text('${specialSchedule.startDate} s/d ${specialSchedule.endDate}', style: CustomStyles.textMedium13Px),
-                                          ],
-                                        ),
-                        
-                                        const SizedBox(height: 10),
-                                          Text('Cabang : ${specialSchedule.branch}', style: CustomStyles.textMedium13Px),
-                                          Text('Area : ${specialSchedule.area}', style: CustomStyles.textMedium13Px),
-                                      ],
-                                    ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                      
+                                color: CustomColors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('${schedule.user!.fullname}', style: CustomStyles.textBold15Px),
+                                          Text('${schedule.status}', style: CustomStyles.textMedium13Px),
+                                        ],
+                                      ),
+                      
+                                      const SizedBox(height: 10),
+                                        Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
+                                        Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
+                                    ],
                                   ),
                                 ),
-                                onTap: (){
-                                  Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: specialSchedule.id!));
-                                },
-                              );
-                            }
-                          );
-                        }
-                      }),
+                              ),
+                              onTap: (){
+                                Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!));
+                              },
+                            );
+                              }
+                            )
+                          )
                 ),
               ),
 
@@ -627,64 +623,56 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Obx((){
-                        if (controllerAuditRegion.isLoading.value) {
-                          return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                        }else{
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controllerAuditRegion.rescheduleAuditRegion.length,
-                            itemBuilder: (_, index){
-                              final reschedule = controllerAuditRegion.rescheduleAuditRegion[index];
-                              final statusReschedules = reschedule.statusReschedule;
-                              return GestureDetector(
-                                  child: Card(
-                                  elevation: 0,
-                                  shape: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: CustomColors.grey
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
+                    child: PagedListView<int, ContentListRescheduleAuditRegion>(
+                      pagingController: controllerAuditRegion.pagingControllerReschedule,
+                      builderDelegate: PagedChildBuilderDelegate(
+                        itemBuilder: (_, reschedules, index){
+                          final statusReschedules = reschedules.status;
+                          return GestureDetector(
+                                child: Card(
+                                elevation: 0,
+                                shape: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: CustomColors.grey
                                   ),
-                        
-                                  color: CustomColors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('${reschedule.auditor}', style: CustomStyles.textBold15Px),
-                                            if(statusReschedules == 'Pending')
-                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumGrey13Px),
-                                            if(statusReschedules == 'Reject')
-                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumRed13Px),
-                                            if(statusReschedules == 'Approve')
-                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumGreen13Px),
-                                            if(statusReschedules == 'Request')
-                                            Text('${reschedule.statusReschedule}', style: CustomStyles.textMediumBlue13Px),
-                                          ],
-                                        ),
-
-                                        const SizedBox(height: 10),
-                                        Text('Cabang : ${reschedule.branch}', style: CustomStyles.textMedium13Px),
-                                        Text('Area : ${reschedule.area}', style: CustomStyles.textMedium13Px),
-                                        Text('Tanggal : ${reschedule.startDate} s/d ${reschedule.endDate}', style: CustomStyles.textMedium13Px),
-                                      ],
-                                    ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                    
+                                color: CustomColors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('${reschedules.user!.fullname}', style: CustomStyles.textBold15Px),
+                                          if(statusReschedules == 'PENDING')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumGrey13Px),
+                                          if(statusReschedules == 'REQUEST')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumRed13Px),
+                                          if(statusReschedules == 'APPROVE')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumGreen13Px),
+                                          if(statusReschedules == 'REJECTED')
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumBlue13Px),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text('Cabang : ${reschedules.branch!.name}', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                      Text('Area : ${reschedules.category}', style: CustomStyles.textMedium13Px),
+                                    ],
                                   ),
                                 ),
-                                onTap: (){
-                                  Get.to(() => DetailRescheduleAuditRegion(rescheduleId: reschedule.id!));
-                                },
-                              );
-                            }
-                          );
+                              ),
+                              onTap: (){
+                                Get.to(() => DetailRescheduleAuditRegion(rescheduleId: reschedules.id!));
+                              });
                         }
-                      }),
-                  ),
+                      )
+                    )   
+                  )
                 )
               ]
           ),

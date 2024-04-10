@@ -1,14 +1,12 @@
-
-
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/detail_bap_page.dart';
 import 'package:audit_cms/pages/bap/widgetBap/widget_bottom_sheet_bap.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
@@ -109,7 +107,7 @@ class BapAuditRegionPage extends StatefulWidget {
 
 class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -139,15 +137,11 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
       ),
     body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Obx((){
-          if (controllerAuditRegion.isLoading.value) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          }else{
-            return ListView.builder(
-              itemCount: controllerAuditRegion.bapAuditRegion.length,
-              itemBuilder: (_, index){
-                final bap = controllerAuditRegion.bapAuditRegion[index];
-                return GestureDetector(
+        child: PagedListView<int, ContentListBapAuditRegion>(
+          pagingController: controllerAuditRegion.pagingControllerBap, 
+          builderDelegate: PagedChildBuilderDelegate(
+            itemBuilder: (_, bap, index){
+              return GestureDetector(
                   child: Card(
                     elevation: 0,
                     shape: OutlineInputBorder(
@@ -164,15 +158,14 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Cabang : ${bap.branch}', style: CustomStyles.textBold15Px),
-                              Text('${bap.dateBap}', style: CustomStyles.textMedium15Px),
+                              Text('Auditor : ${bap.user!.fullname}', style: CustomStyles.textBold15Px),
                             ],
                           ),
                           const SizedBox(height: 15),
 
-                          Text('No. Klarifikasi : ${bap.noClarification}', style: CustomStyles.textMedium13Px),
-                          Text('No. BAP : ${bap.noBap}', style: CustomStyles.textMedium13Px),
-                          
+                          Text('Kode BAP : ${bap.code}', style: CustomStyles.textMedium13Px),
+                          Text('Kode klarifikasi : ${bap.clarification!.code}', style: CustomStyles.textMedium13Px),
+                          Text('Batas evaluasi : ${bap.clarification!.evaluationLimitation}', style: CustomStyles.textMedium13Px),
                         ],
                       ),
                     ),
@@ -181,10 +174,9 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                     Get.to(() => DetailBapAuditRegion(id: bap.id!));
                   },
                 );
-              }
-            );
-          }
-        }),
+            }
+          )
+        )
       ),
     );
   }
@@ -306,7 +298,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                               onPressed: (){
                                 startDateController.clear();
                                 endDateController.clear();
-                                controllerAuditRegion.loadBapAuditRegion();
+                                controllerAuditRegion.resetFilterBap();
                                 Get.back();
                             },
                               child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -320,7 +312,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                               backgroundColor: CustomColors.blue
                             ),
                               onPressed: (){
-                              controllerAuditRegion.filterBapAuditRegion(startDateController.text, endDateController.text);
+                              controllerAuditRegion.filterBap(startDateController.text, endDateController.text);
                               Get.back();
                             },
                               child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

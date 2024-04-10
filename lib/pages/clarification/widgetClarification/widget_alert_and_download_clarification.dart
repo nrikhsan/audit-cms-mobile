@@ -328,7 +328,7 @@ void showBottomSheetFilterClarificationAuditRegion(
                                   startDateController.clear();
                                   endDateController.clear();
                                   controllerAuditRegion
-                                      .loadClarificationAuditRegion();
+                                      .resetFilterClarification();
                                   Get.back();
                                 },
                                 child: Text('Reset data filter',
@@ -341,7 +341,7 @@ void showBottomSheetFilterClarificationAuditRegion(
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () {
                                   controllerAuditRegion
-                                      .filterClarificationAuditArea(
+                                      .filterClarification(
                                           startDateController.text,
                                           endDateController.text);
                                   Get.back();
@@ -467,8 +467,9 @@ void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAudi
                 Obx(() => TextButton(
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
-                            controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value);
-                            Get.to(() => const InputIdentificationClarificationAuditRegionPage());
+                            controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
+                            id);
+                            Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
                          }
                       : null,
                       child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

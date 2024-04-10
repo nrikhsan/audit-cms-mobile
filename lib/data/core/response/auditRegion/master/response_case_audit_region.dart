@@ -1,20 +1,19 @@
-class ResponseCaseCategoryAuditArea {
+class ResponseCaseAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  List<DataCaseCategory>? data;
+  List<DataCaseAuditRegion>? data;
 
-  ResponseCaseCategoryAuditArea(
-      {this.meta, this.message, this.status, this.data});
+  ResponseCaseAuditRegion({this.meta, this.message, this.status, this.data});
 
-  ResponseCaseCategoryAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseCaseAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataCaseCategory>[];
+      data = <DataCaseAuditRegion>[];
       json['data'].forEach((v) {
-        data!.add(DataCaseCategory.fromJson(v));
+        data!.add(DataCaseAuditRegion.fromJson(v));
       });
     }
   }
@@ -52,21 +51,24 @@ class Meta {
   }
 }
 
-class DataCaseCategory {
+class DataCaseAuditRegion {
   String? name;
   int? id;
+  String? code;
 
-  DataCaseCategory({this.name, this.id});
+  DataCaseAuditRegion({this.name, this.id, this.code});
 
-  DataCaseCategory.fromJson(Map<String, dynamic> json) {
+  DataCaseAuditRegion.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
+    code = json['code'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['id'] = id;
+    data['code'] = code;
     return data;
   }
 }

@@ -1,20 +1,20 @@
-class ResponseCaseCategoryAuditArea {
+class ResponseCaseCategoryByIdAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  List<DataCaseCategory>? data;
+  List<DataCaseCategoryByIdAuditRegion>? data;
 
-  ResponseCaseCategoryAuditArea(
+  ResponseCaseCategoryByIdAuditRegion(
       {this.meta, this.message, this.status, this.data});
 
-  ResponseCaseCategoryAuditArea.fromJson(Map<String, dynamic> json) {
+  ResponseCaseCategoryByIdAuditRegion.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataCaseCategory>[];
+      data = <DataCaseCategoryByIdAuditRegion>[];
       json['data'].forEach((v) {
-        data!.add(DataCaseCategory.fromJson(v));
+        data!.add(DataCaseCategoryByIdAuditRegion.fromJson(v));
       });
     }
   }
@@ -34,8 +34,8 @@ class ResponseCaseCategoryAuditArea {
 }
 
 class Meta {
-  String? timestamp;
-  String? apiVersion;
+  Null? timestamp;
+  Null? apiVersion;
 
   Meta({this.timestamp, this.apiVersion});
 
@@ -52,13 +52,13 @@ class Meta {
   }
 }
 
-class DataCaseCategory {
+class DataCaseCategoryByIdAuditRegion {
   String? name;
   int? id;
 
-  DataCaseCategory({this.name, this.id});
+  DataCaseCategoryByIdAuditRegion({this.name, this.id});
 
-  DataCaseCategory.fromJson(Map<String, dynamic> json) {
+  DataCaseCategoryByIdAuditRegion.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
   }

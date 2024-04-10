@@ -1,90 +1,167 @@
 class ResponseDetailKkaAuditRegion {
-  Metadata? metadata;
-  ModelDetailKkaAuditRegion? detailKka;
+  Meta? meta;
+  String? message;
+  int? status;
+  DataDetailKkaAuditRegion? data;
 
-  ResponseDetailKkaAuditRegion({this.metadata, this.detailKka});
+  ResponseDetailKkaAuditRegion({this.meta, this.message, this.status, this.data});
 
   ResponseDetailKkaAuditRegion.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    detailKka = json['detail_kka'] != null
-        ? new ModelDetailKkaAuditRegion.fromJson(json['detail_kka'])
-        : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    message = json['message'];
+    status = json['status'];
+    data = json['data'] != null ? DataDetailKkaAuditRegion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    if (this.detailKka != null) {
-      data['detail_kka'] = this.detailKka!.toJson();
+    data['message'] = message;
+    data['status'] = status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
 
-class ModelDetailKkaAuditRegion {
+class DataDetailKkaAuditRegion {
   int? id;
-  String? auditor;
-  String? branch;
-  String? area;
-  String? dateKka;
-  String? startDateExaminationPeriod;
-  String? endDateExaminationPeriod;
-  String? kkaDoc;
+  User? user;
+  Branch? branch;
+  Schedule? schedule;
+  String? startDate;
+  String? endDate;
+  String? filename;
+  String? filePath;
 
-  ModelDetailKkaAuditRegion(
+  DataDetailKkaAuditRegion(
       {this.id,
-        this.auditor,
-        this.branch,
-        this.area,
-        this.dateKka,
-        this.startDateExaminationPeriod,
-        this.endDateExaminationPeriod,
-        this.kkaDoc});
+      this.user,
+      this.branch,
+      this.schedule,
+      this.startDate,
+      this.endDate,
+      this.filename,
+      this.filePath});
 
-  ModelDetailKkaAuditRegion.fromJson(Map<String, dynamic> json) {
+  DataDetailKkaAuditRegion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    auditor = json['auditor'];
-    branch = json['branch'];
-    area = json['area'];
-    dateKka = json['date_kka'];
-    startDateExaminationPeriod = json['start_date_examination_period'];
-    endDateExaminationPeriod = json['end_date_examination_period'];
-    kkaDoc = json['kka_doc'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    branch =
+        json['branch'] != null ? Branch.fromJson(json['branch']) : null;
+    schedule = json['schedule'] != null
+        ? Schedule.fromJson(json['schedule'])
+        : null;
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+    filename = json['filename'];
+    filePath = json['file_path'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['area'] = this.area;
-    data['date_kka'] = this.dateKka;
-    data['start_date_examination_period'] = this.startDateExaminationPeriod;
-    data['end_date_examination_period'] = this.endDateExaminationPeriod;
-    data['kka_doc'] = this.kkaDoc;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    if (branch != null) {
+      data['branch'] = branch!.toJson();
+    }
+    if (schedule != null) {
+      data['schedule'] = schedule!.toJson();
+    }
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['filename'] = filename;
+    data['file_path'] = filePath;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? email;
+  String? fullname;
+  String? initialName;
+
+  User({this.id, this.email, this.fullname, this.initialName});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
+    return data;
+  }
+}
+
+class Branch {
+  int? id;
+  String? name;
+
+  Branch({this.id, this.name});
+
+  Branch.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    return data;
+  }
+}
+
+class Schedule {
+  int? id;
+  String? startDate;
+  String? endDate;
+
+  Schedule({this.id, this.startDate, this.endDate});
+
+  Schedule.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
     return data;
   }
 }

@@ -9,24 +9,24 @@ class ResponseReportAuditArea {
 
   ResponseReportAuditArea.fromJson(Map<String, dynamic> json) {
     metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
+        ? Metadata.fromJson(json['metadata'])
         : null;
     satus = json['satus'];
     message = json['message'];
     detailReport = json['detail_report'] != null
-        ? new ModelReportAuditArea.fromJson(json['detail_report'])
+        ? ModelReportAuditArea.fromJson(json['detail_report'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (metadata != null) {
+      data['metadata'] = metadata!.toJson();
     }
-    data['satus'] = this.satus;
-    data['message'] = this.message;
-    if (this.detailReport != null) {
-      data['detail_report'] = this.detailReport!.toJson();
+    data['satus'] = satus;
+    data['message'] = message;
+    if (detailReport != null) {
+      data['detail_report'] = detailReport!.toJson();
     }
     return data;
   }
@@ -44,9 +44,9 @@ class Metadata {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
@@ -70,12 +70,12 @@ class ModelReportAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['report_date'] = this.reportDate;
-    data['report_doc'] = this.reportDoc;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['auditor'] = auditor;
+    data['branch'] = branch;
+    data['report_date'] = reportDate;
+    data['report_doc'] = reportDoc;
     return data;
   }
 }

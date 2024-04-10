@@ -1,105 +1,137 @@
 class ResponseDetailBapAuditRegion {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  ModelDetailBapAuditRegion? detailBap;
+  int? status;
+  DataDetailBapAuditRegion? data;
 
-  ResponseDetailBapAuditRegion(
-      {this.metadata, this.status, this.message, this.detailBap});
+  ResponseDetailBapAuditRegion({this.meta, this.message, this.status, this.data});
 
   ResponseDetailBapAuditRegion.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    detailBap = json['detail_bap'] != null
-        ? new ModelDetailBapAuditRegion.fromJson(json['detail_bap'])
-        : null;
+    status = json['status'];
+    data = json['data'] != null ? DataDetailBapAuditRegion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.detailBap != null) {
-      data['detail_bap'] = this.detailBap!.toJson();
+    data['message'] = message;
+    data['status'] = status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['timestamp'] = this.timestamp;
-    data['api_version'] = this.apiVersion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['timestamp'] = timestamp;
+    data['api_version'] = apiVersion;
     return data;
   }
 }
 
-class ModelDetailBapAuditRegion {
+class DataDetailBapAuditRegion {
   int? id;
-  String? noBap;
-  String? noClarification;
-  String? auditor;
-  String? branch;
-  String? area;
-  String? dateBap;
-  String? startDateExaminationPeriod;
-  String? endDateExaminationPeriod;
-  String? bapDoc;
+  User? user;
+  Clarification? clarification;
+  String? code;
+  String? filename;
+  String? filePath;
 
-  ModelDetailBapAuditRegion(
+  DataDetailBapAuditRegion(
       {this.id,
-        this.noBap,
-        this.noClarification,
-        this.auditor,
-        this.branch,
-        this.area,
-        this.dateBap,
-        this.startDateExaminationPeriod,
-        this.endDateExaminationPeriod,
-        this.bapDoc});
+      this.user,
+      this.clarification,
+      this.code,
+      this.filename,
+      this.filePath});
 
-  ModelDetailBapAuditRegion.fromJson(Map<String, dynamic> json) {
+  DataDetailBapAuditRegion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    noBap = json['no_bap'];
-    noClarification = json['no_clarification'];
-    auditor = json['auditor'];
-    branch = json['branch'];
-    area = json['area'];
-    dateBap = json['date_bap'];
-    startDateExaminationPeriod = json['start_date_examination_period'];
-    endDateExaminationPeriod = json['end_date_examination_period'];
-    bapDoc = json['bap_doc'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    clarification = json['clarification'] != null
+        ? Clarification.fromJson(json['clarification'])
+        : null;
+    code = json['code'];
+    filename = json['filename'];
+    filePath = json['file_path'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['no_bap'] = this.noBap;
-    data['no_clarification'] = this.noClarification;
-    data['auditor'] = this.auditor;
-    data['branch'] = this.branch;
-    data['area'] = this.area;
-    data['date_bap'] = this.dateBap;
-    data['start_date_examination_period'] = this.startDateExaminationPeriod;
-    data['end_date_examination_period'] = this.endDateExaminationPeriod;
-    data['bap_doc'] = this.bapDoc;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    if (clarification != null) {
+      data['clarification'] = clarification!.toJson();
+    }
+    data['code'] = code;
+    data['filename'] = filename;
+    data['file_path'] = filePath;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? email;
+  String? fullname;
+  String? initialName;
+
+  User({this.id, this.email, this.fullname, this.initialName});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['fullname'] = fullname;
+    data['initial_name'] = initialName;
+    return data;
+  }
+}
+
+class Clarification {
+  int? id;
+  String? code;
+  String? evaluationLimitation;
+
+  Clarification({this.id, this.code, this.evaluationLimitation});
+
+  Clarification.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    evaluationLimitation = json['evaluation_limitation'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['code'] = code;
+    data['evaluation_limitation'] = evaluationLimitation;
     return data;
   }
 }

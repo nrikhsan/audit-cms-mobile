@@ -269,7 +269,7 @@ ControllerAuditRegion controllerAuditRegion){
                       onPressed: (){
                         startDateControllerSpecialSchedule.clear();
                         endDateControllerSpecialSchedule.clear();
-                        controllerAuditRegion.loadSpecialScheduleAuditRegion();
+                        controllerAuditRegion.resetfilterSpecialSchedule();
                         Get.back();
                       },
                       child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -283,7 +283,7 @@ ControllerAuditRegion controllerAuditRegion){
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditRegion.filterSpecialScheduleAuditRegion(startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text);
+                        controllerAuditRegion.filterSpecialSchedule(startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text);
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
@@ -416,7 +416,7 @@ ControllerAuditRegion controllerAuditRegion){
                       onPressed: (){
                         startDateControllerReschedule.clear();
                         endDateControllerReschedule.clear();
-                        controllerAuditRegion.loadRescheduleAuditRegion();
+                        controllerAuditRegion.resetFilterReschedule();
                         Get.back();
                       },
                       child: Text('Reset data filter', style: CustomStyles.textMediumWhite15Px)
@@ -430,7 +430,7 @@ ControllerAuditRegion controllerAuditRegion){
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditRegion.filterRescheduleAuditRegion(startDateControllerReschedule.text, endDateControllerReschedule.text);
+                        controllerAuditRegion.filterReschedule(startDateControllerReschedule.text, endDateControllerReschedule.text);
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

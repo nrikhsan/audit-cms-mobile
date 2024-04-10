@@ -1,5 +1,5 @@
-import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
 
 class ModelBodyInputLhaAuditRegion {
   int? scheduleId;
@@ -39,8 +39,8 @@ class LhaDetail {
   String? temporaryRecommendation;
   String? permanentRecommendation;
   int? research;
-  ModelListDivisionAuditRegion? divisionName;
-  ModelListSopAuditRegion? sopName;
+  DataCaseAuditRegion? caseName;
+  DataCaseCategory? caseCategoryName;
 
   LhaDetail(
       {this.caseId,
@@ -50,8 +50,8 @@ class LhaDetail {
       this.temporaryRecommendation,
       this.permanentRecommendation,
       this.research,
-      this.divisionName,
-      this.sopName});
+      this.caseName,
+      this.caseCategoryName});
 
   LhaDetail.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];

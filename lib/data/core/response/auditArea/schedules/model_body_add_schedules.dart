@@ -29,12 +29,12 @@ class ModelBodySchedulesAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['branch_id'] = this.branchId;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['description'] = this.description;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['branch_id'] = branchId;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['description'] = description;
     return data;
   }
 }
@@ -66,13 +66,13 @@ class ModelBodyReschedulesAuditArea {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['schedule_id'] = this.scheduleId;
-    data['branch_id'] = this.branchId;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['description'] = this.description;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['schedule_id'] = scheduleId;
+    data['branch_id'] = branchId;
+    data['start_date'] = startDate;
+    data['end_date'] = endDate;
+    data['description'] = description;
     return data;
   }
 }

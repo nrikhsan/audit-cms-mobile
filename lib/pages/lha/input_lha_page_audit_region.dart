@@ -1,6 +1,6 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_division_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_sop_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
@@ -19,15 +19,15 @@ class InputLhaPageAuditRegion extends StatefulWidget {
 
 class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   
-  final TextEditingController descriptionFindingsController = TextEditingController();
+  final TextEditingController lhaDescriptionController = TextEditingController();
   final TextEditingController temporaryRecommendationController = TextEditingController();
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
 
-  ModelListDivisionAuditRegion? _selecteDivision;
-  ModelListSopAuditRegion? _selectSop;
+  DataCaseAuditRegion? _cases;
+  DataCaseCategory? _caseCategory;
   int? _selectedValueResearch;
   int? _selectedSuggest;
 
@@ -57,7 +57,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Divisi :', style: CustomStyles.textBold15Px),
+              Text('Kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               SizedBox(
                 width: double.maxFinite,
@@ -71,17 +71,51 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     ),
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih divisi', style: CustomStyles.textRegular13Px),
-                      value: _selecteDivision,
-                      items: controllerAuditRegion.divisionAuditRegion.map((ModelListDivisionAuditRegion division){
+                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
+                      value: _cases,
+                      items: controllerAuditRegion.caseAuditRegion.map((cases){
                         return DropdownMenuItem(
-                          value: division,
-                          child: Text('${division.nameDivision}', style: CustomStyles.textMedium15Px)
+                          value: cases,
+                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
                           );
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          _selecteDivision = value;
+                          _cases = value;
+                        });
+                      }
+                    ),
+                  )
+                ),
+              ),
+
+              const SizedBox(height: 20),
+              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: CustomColors.grey, width: 1),
+                        
+                      )
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
+                      value: _caseCategory,
+                      items: controllerAuditRegion.caseCatgeory.map((caseCategory){
+                        return DropdownMenuItem(
+                          value: caseCategory,
+                          child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
+                          );
+                      }).toList(), 
+                      onChanged: (value)async{
+                        setState(() {
+                          _caseCategory = value;
+                          
                         });
                       }
                     ),
@@ -92,39 +126,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              formInputDescFinding(descriptionFindingsController),
-
-              const SizedBox(height: 15),
-              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
-              const SizedBox(height: 15),
-              SizedBox(
-                width: double.maxFinite,
-                child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1)
-                      )
-                    ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kategori SOP', style: CustomStyles.textRegular13Px),
-                      value: _selectSop,
-                      items: controllerAuditRegion.sopAuditRegion.map((ModelListSopAuditRegion sop){
-                        return DropdownMenuItem(
-                          value: sop,
-                          child: Text('${sop.sopName}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _selectSop = value;
-                        });
-                      }
-                    ),
-                  )
-                ),
-              ),
+              fomrInputRecommendationOrSuggest(lhaDescriptionController, 'Masukan rekomendasi sementara...'),
 
               const SizedBox(height: 15),
               Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
@@ -196,11 +198,11 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                             shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
+                            if (_cases == null || lhaDescriptionController.text.isEmpty || _caseCategory == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
                                 snakcBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
                             }else{
-                              controllerAuditRegion.addToLocalLhaAuditRegion(_selecteDivision!.id!, _selectSop!.id!, descriptionFindingsController.text,
-                              suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _selecteDivision!.nameDivision!, _selectSop!.sopName!);
+                              controllerAuditRegion.addToLocalLhaAuditRegion(_caseCategory!.id!, _caseCategory!.id!, lhaDescriptionController.text,
+                              suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _caseCategory!.name!, _caseCategory!.name!);
                             }
                           },
                           child: Text('Tambah LHA', style: CustomStyles.textBoldGreen13Px))
@@ -228,7 +230,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                                     Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                    Text('${data.divisionName!.nameDivision}', style: CustomStyles.textBold13Px),
+                                    Text('${data.caseName!.name}', style: CustomStyles.textBold13Px),
                                     const SizedBox(height: 10),
                                     Text('${data.description}', style: CustomStyles.textRegular13Px, maxLines: 5, overflow: TextOverflow.ellipsis),
                                   ],
@@ -258,14 +260,14 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     backgroundColor: CustomColors.blue
                   ),
                   onPressed: (){
-                    if (_selecteDivision == null || descriptionFindingsController.text.isEmpty || _selectSop == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
+                    if (_cases == null || lhaDescriptionController.text.isEmpty || _caseCategory == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
                           snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(_selectedValueResearch == 1){
-                          controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
+                          controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
                          snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
                           Get.to(() => const ClarificationPageAuditRegion());
                       }else{
-                        controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId, 1);
+                        controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
                           snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
                           Get.offAll(() => BotNavAuditRegion());
                       }

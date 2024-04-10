@@ -2,6 +2,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/kka/detail_kka.dart';
@@ -131,13 +132,14 @@ class KkaPageAuditRegion extends StatefulWidget {
 
 class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    controllerAuditRegion.scheduleIdKka.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -158,17 +160,11 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
         ],
       ),
 
-      body: Obx((){
-        if (controllerAuditRegion.isLoading.value) {
-            return const Center(
-              child: SpinKitCircle(color: CustomColors.blue),
-            );
-        }else{
-          return ListView.builder(
-            itemCount: controllerAuditRegion.kkaAuditRegion.length,
-            itemBuilder: (_, index){
-              final kka = controllerAuditRegion.kkaAuditRegion[index];
-              return Padding(
+      body: PagedListView<int, ContentListKkaAuditRegion>(
+        pagingController: controllerAuditRegion.pagingControllerKka, 
+        builderDelegate: PagedChildBuilderDelegate(
+          itemBuilder: (_, kka, index){
+          return Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: GestureDetector(
                   onTap: (){
@@ -193,8 +189,8 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Auditor : ${kka.auditor}', style: CustomStyles.textBold15Px),
-                            Text('${kka.dateKka}', style: CustomStyles.textBold13Px)
+                            Text('Auditor : ${kka.user!.fullname}', style: CustomStyles.textBold15Px),
+                            Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
                           ],
                         ),
 
@@ -203,8 +199,7 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Cabang : ${kka.branch}', style: CustomStyles.textMedium13Px),
-                            Text('Area : ${kka.area}', style: CustomStyles.textMedium13Px),
+                            Text('${kka.filename}', style: CustomStyles.textMedium13Px),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -214,7 +209,7 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKka(kka.kkaDoc!);
+                                    downloadKka(kka.filePath!);
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],
@@ -227,9 +222,8 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                 ),
               )
             );
-          });
-        }
-      }),
+        })
+      )
     );
   }
 }

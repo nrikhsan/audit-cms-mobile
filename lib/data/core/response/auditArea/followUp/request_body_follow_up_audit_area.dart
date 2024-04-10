@@ -15,11 +15,11 @@ class RequestBodyFollowUp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['followup_id'] = this.followupId;
-    data['penalty_id'] = this.penaltyId;
-    data['description'] = this.description;
-    data['is_penalty'] = this.isPenalty;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['followup_id'] = followupId;
+    data['penalty_id'] = penaltyId;
+    data['description'] = description;
+    data['is_penalty'] = isPenalty;
     return data;
   }
 }

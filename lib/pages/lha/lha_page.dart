@@ -1,12 +1,12 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_filter_lha_audit_area.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -133,12 +133,13 @@ class LhaPageAuditRegion extends StatefulWidget {
 
 class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
   
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    controllerAuditRegion.scheduleId.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -148,7 +149,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
         titleSpacing: 5,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
@@ -161,17 +162,13 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
           )
         ],
       ),
-      body: Obx(() {
-        if (controllerAuditRegion.isLoading.value) {
-          return const Center(child: SpinKitCircle(color: CustomColors.blue));
-        } else {
-          return Padding(
-            padding: const EdgeInsets.all(15),
-            child: ListView.builder(
-                itemCount: controllerAuditRegion.lhaAuditRegion.length,
-                itemBuilder: (_, index) {
-                  final lha = controllerAuditRegion.lhaAuditRegion[index];
-                  return Card(
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: PagedListView<int, ContentListLhaAuditRegion>(
+          pagingController: controllerAuditRegion.pagingControllerLha,
+          builderDelegate: PagedChildBuilderDelegate(
+            itemBuilder: (_, lha, index){
+              return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -183,53 +180,43 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Wrap(
+                                
                                 children: [
-                                  Icon(lha.research == 0 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 20),
-                                  Text('${lha.inputDate}',
-                                      style: CustomStyles.textBold15Px),
+                                  lha.isResearch == 1 ?
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
+                                      const SizedBox(width: 5),
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                    ],
+                                  ) :
+                                  const SizedBox()
                                 ],
                               ),
-                              const SizedBox(height: 15),
-                                Text('Cabang : ${lha.branch}',
-                                    style: CustomStyles.textMedium15Px),
-                                const SizedBox(height: 10),
-                                Text('Kategori SOP : ${lha.sopCategory}',
-                                    style: CustomStyles.textMedium15Px),
 
-                                const SizedBox(height: 10),
-                                Text('Tanggal LHA : ${lha.inputDate}',
-                                    style: CustomStyles.textMedium15Px),
+                              const SizedBox(height: 15),
+
+                              Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton,
-                                          backgroundColor: CustomColors.blue),
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    DetailLhaPageAuditRegion(id: lha.id!)));
+                                        Get.to(() => DetailLhaPageAuditRegion(id: lha.id!));
                                       },
-                                      child: Text('Lihat rincian',
-                                          style:
-                                              CustomStyles.textMediumWhite15Px))
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
                           ),
                         ));
-                }),
-          );
-        }
-      }),
+            }
+          )),
+      )
     );
   }
 }

@@ -1,48 +1,40 @@
 class ResponseSpecialScheduleAuditRegion {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
-  List<ModelListSpecialSchedulesAuditRegion>? specialSchedules;
+  int? status;
+  DataSpecialScheduleAuditRegion? data;
 
   ResponseSpecialScheduleAuditRegion(
-      {this.metadata, this.status, this.message, this.specialSchedules});
+      {this.meta, this.message, this.status, this.data});
 
   ResponseSpecialScheduleAuditRegion.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
-    if (json['special_schedules'] != null) {
-      specialSchedules = <ModelListSpecialSchedulesAuditRegion>[];
-      json['special_schedules'].forEach((v) {
-        specialSchedules!.add(new ModelListSpecialSchedulesAuditRegion.fromJson(v));
-      });
-    }
+    status = json['status'];
+    data = json['data'] != null ? new DataSpecialScheduleAuditRegion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
-    if (this.specialSchedules != null) {
-      data['special_schedules'] =
-          this.specialSchedules!.map((v) => v.toJson()).toList();
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Metadata {
-  Null? timestamp;
-  Null? apiVersion;
+class Meta {
+  String? timestamp;
+  String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
@@ -55,47 +47,202 @@ class Metadata {
   }
 }
 
-class ModelListSpecialSchedulesAuditRegion {
+class DataSpecialScheduleAuditRegion {
+  List<ContentListSpecialScheduleAuditRegion>? content;
+  Pageable? pageable;
+
+  DataSpecialScheduleAuditRegion({this.content, this.pageable});
+
+  DataSpecialScheduleAuditRegion.fromJson(Map<String, dynamic> json) {
+    if (json['content'] != null) {
+      content = <ContentListSpecialScheduleAuditRegion>[];
+      json['content'].forEach((v) {
+        content!.add(new ContentListSpecialScheduleAuditRegion.fromJson(v));
+      });
+    }
+    pageable = json['pageable'] != null
+        ? new Pageable.fromJson(json['pageable'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.content != null) {
+      data['content'] = this.content!.map((v) => v.toJson()).toList();
+    }
+    if (this.pageable != null) {
+      data['pageable'] = this.pageable!.toJson();
+    }
+    return data;
+  }
+}
+
+class ContentListSpecialScheduleAuditRegion {
+  User? user;
+  Branch? branch;
   int? id;
-  String? auditor;
-  String? area;
-  String? branch;
+  String? description;
   String? status;
+  String? category;
+  Null? scheduleTrx;
   String? startDate;
   String? endDate;
-  String? scheduleDescription;
+  Null? startDateRealization;
+  Null? endDateRealization;
 
-  ModelListSpecialSchedulesAuditRegion(
-      {this.id,
-        this.auditor,
-        this.area,
-        this.branch,
-        this.status,
-        this.startDate,
-        this.endDate,
-        this.scheduleDescription});
+  ContentListSpecialScheduleAuditRegion(
+      {this.user,
+      this.branch,
+      this.id,
+      this.description,
+      this.status,
+      this.category,
+      this.scheduleTrx,
+      this.startDate,
+      this.endDate,
+      this.startDateRealization,
+      this.endDateRealization});
 
-  ModelListSpecialSchedulesAuditRegion.fromJson(Map<String, dynamic> json) {
+  ContentListSpecialScheduleAuditRegion.fromJson(Map<String, dynamic> json) {
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    branch =
+        json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
     id = json['id'];
-    auditor = json['auditor'];
-    area = json['area'];
-    branch = json['branch'];
+    description = json['description'];
     status = json['status'];
+    category = json['category'];
+    scheduleTrx = json['schedule_trx'];
     startDate = json['start_date'];
     endDate = json['end_date'];
-    scheduleDescription = json['schedule_description'];
+    startDateRealization = json['start_date_realization'];
+    endDateRealization = json['end_date_realization'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    if (this.branch != null) {
+      data['branch'] = this.branch!.toJson();
+    }
+    data['id'] = this.id;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['category'] = this.category;
+    data['schedule_trx'] = this.scheduleTrx;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
+    data['start_date_realization'] = this.startDateRealization;
+    data['end_date_realization'] = this.endDateRealization;
+    return data;
+  }
+}
+
+class User {
+  int? id;
+  String? email;
+  String? nip;
+  String? fullname;
+  String? initialName;
+
+  User({this.id, this.email, this.nip, this.fullname, this.initialName});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    nip = json['nip'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['auditor'] = this.auditor;
-    data['area'] = this.area;
-    data['branch'] = this.branch;
-    data['status'] = this.status;
-    data['start_date'] = this.startDate;
-    data['end_date'] = this.endDate;
-    data['schedule_description'] = this.scheduleDescription;
+    data['email'] = this.email;
+    data['nip'] = this.nip;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    return data;
+  }
+}
+
+class Branch {
+  int? id;
+  String? name;
+
+  Branch({this.id, this.name});
+
+  Branch.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class Pageable {
+  int? pageNumber;
+  int? pageSize;
+  Sort? sort;
+  int? offset;
+  bool? paged;
+  bool? unpaged;
+
+  Pageable(
+      {this.pageNumber,
+      this.pageSize,
+      this.sort,
+      this.offset,
+      this.paged,
+      this.unpaged});
+
+  Pageable.fromJson(Map<String, dynamic> json) {
+    pageNumber = json['pageNumber'];
+    pageSize = json['pageSize'];
+    sort = json['sort'] != null ? new Sort.fromJson(json['sort']) : null;
+    offset = json['offset'];
+    paged = json['paged'];
+    unpaged = json['unpaged'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['pageNumber'] = this.pageNumber;
+    data['pageSize'] = this.pageSize;
+    if (this.sort != null) {
+      data['sort'] = this.sort!.toJson();
+    }
+    data['offset'] = this.offset;
+    data['paged'] = this.paged;
+    data['unpaged'] = this.unpaged;
+    return data;
+  }
+}
+
+class Sort {
+  bool? empty;
+  bool? sorted;
+  bool? unsorted;
+
+  Sort({this.empty, this.sorted, this.unsorted});
+
+  Sort.fromJson(Map<String, dynamic> json) {
+    empty = json['empty'];
+    sorted = json['sorted'];
+    unsorted = json['unsorted'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['empty'] = this.empty;
+    data['sorted'] = this.sorted;
+    data['unsorted'] = this.unsorted;
     return data;
   }
 }
