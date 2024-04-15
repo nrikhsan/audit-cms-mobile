@@ -116,7 +116,7 @@ class DetailBapAuditRegion extends StatefulWidget {
 }
 
 class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailBapAuditRegion(widget.id);

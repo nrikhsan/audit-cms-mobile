@@ -166,7 +166,7 @@ class ProfilePageAuditRegion extends StatefulWidget {
 
 class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
 
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   
   @override
   Widget build(BuildContext context) {
@@ -197,9 +197,15 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text('Username :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.username}', style: CustomStyles.textRegular13Px),
+
+                  const SizedBox(height: 15),
+                  Text('Nama :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 15),
                   Text('Email :', style: CustomStyles.textBold15Px),
@@ -211,16 +217,6 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                   const SizedBox(height: 5),
                   Text('${user.nip}', style: CustomStyles.textRegular13Px),
 
-                  const SizedBox(height: 15),
-                  Text('Area :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.area}', style: CustomStyles.textRegular13Px),
-
-                  const SizedBox(height: 15),
-                  Text('Kantor cabang :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.branchOffice}', style: CustomStyles.textRegular13Px),
-
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.maxFinite,
@@ -230,7 +226,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Get.to(() => EditProfilePageAuditRegion(id: user.id!, email: user.email!, username: user.username!));
+                        Get.to(() => EditProfilePageAuditArea(id: user.id!, email: user.email!, username: user.username!));
                       },
                       child: Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
                     ),
@@ -244,7 +240,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         leading: const Icon(Icons.password_rounded, color: CustomColors.black, size: 25),
                         title: Text('Ubah kata sandi', style: CustomStyles.textBold15Px),
                         onTap: (){
-                          Get.to(() => ChangePasswordPageAuditRegion(id: user.id!));
+                          Get.to(() => const ChangePasswordPageAuditArea());
                         },
                       ),
                     ],

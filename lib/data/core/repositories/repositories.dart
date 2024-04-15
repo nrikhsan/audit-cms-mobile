@@ -148,9 +148,9 @@ abstract class Repositories {
   Future<ResponseCaseCategoryByIdAuditRegion>getCaseCategoryByIdAuditRegion(int casesId);
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
   //user profile
-  Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion();
-  Future<ResponseMessage>editUserAuditRegion(int id, String email, String username);
-  Future<ResponseMessage>changePasswordAuditRegion(int id, String oldPassword, String newPassword, String confirmPassword);
+  Future<ResponseProfileAuditRegion> getDetailUserAuditRegion();
+  Future<ResponseMessage>editUserAuditRegion(String email, String username);
+  Future<ResponseMessage>changePasswordAuditRegion(String oldPassword, String newPassword);
 
   //report
   Future<ResponseReportAuditRegion>getReportAuditRegion(String stratDate, String endDate);
@@ -419,18 +419,18 @@ class RepositoryImpl implements Repositories {
 
   //user profile
   @override
-  Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion() async{
+  Future<ResponseProfileAuditRegion> getDetailUserAuditRegion() async{
     return await apiService.getDetailUserAuditRegion();
   }  
 
   @override
-  Future<ResponseMessage> editUserAuditRegion(int id, String email, String username)async {
-   return await apiService.editProfileUserAuditRegion(id, email, username);
+  Future<ResponseMessage> editUserAuditRegion(String email, String username) {
+   return apiService.editProfileUserAuditRegion(email, username);
   }
   
   @override
-  Future<ResponseMessage> changePasswordAuditRegion(int id, String oldPassword, String newPassword, String confirmPassword)async {
-   return await apiService.changePasswordAuditRegion(id, oldPassword, newPassword, confirmPassword);
+  Future<ResponseMessage> changePasswordAuditRegion(String oldPassword, String newPassword)async {
+   return await apiService.changePasswordAuditRegion(oldPassword, newPassword);
   }
 
 

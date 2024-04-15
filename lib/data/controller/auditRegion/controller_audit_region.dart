@@ -93,7 +93,7 @@ class ControllerAuditRegion extends GetxController {
   var reportAuditRegion = Rxn<ModelReportAuditRegion>();
 
   //user
-  var detailUserAuditRegion = Rxn<ModelDetailProfileAuditRegion>();
+  var detailUserAuditRegion = Rxn<DataProfile>();
 
   ControllerAuditRegion(this.repositories);
 
@@ -430,16 +430,16 @@ void getCaseCategoryById(int casesId)async{
 void getDetailUserAuditRegion() async {
     try {
       final response = await repositories.getDetailUserAuditRegion();
-      detailUserAuditRegion.value = response.dataProfile;
+      detailUserAuditRegion.value = response.data;
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void editProfileUserAuditRegion(int id, String email, String username) async {
+  void editProfileUserAuditRegion(String email, String username) async {
     try {
       final response =
-          await repositories.editUserAuditRegion(id, email, username);
+          await repositories.editUserAuditRegion(email, username);
       message(response.message);
     } catch (error) {
       throw Exception(error);
@@ -450,7 +450,7 @@ void getDetailUserAuditRegion() async {
       int id, String oldPassword, String newPassword, String confirmPassword) async {
     try {
       final response = await repositories.changePasswordAuditRegion(
-          id, oldPassword, newPassword, confirmPassword);
+          oldPassword, newPassword);
       message(response.message);
     } catch (error) {
       throw Exception(error);

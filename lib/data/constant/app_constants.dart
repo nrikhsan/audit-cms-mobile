@@ -98,8 +98,8 @@ class AppConstant{
 
   //user profile
   static const String detailUserAuditRegion = 'api/profile';
-  static const String editProfileAuditRegion = 'api/edit-profile/';
-  static const String changePasswordAuditRegion = 'api/change-password/';
+  static const String editProfileUserAuditRegion = 'api/profile/change-profile';
+  static const String changePasswordAuditRegion = 'api/profile/change-password';
 
   //report
   static const String reportAuditRegion = 'api/report';

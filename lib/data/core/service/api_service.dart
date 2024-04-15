@@ -753,50 +753,6 @@ class ApiService {
     }
   }
 
-  //user profile
-  Future<ResponseDetailUserAuditRegion> getDetailUserAuditRegion()async{
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
-    };
-    try {
-      final response = await dio.get(AppConstant.detailUserAuditRegion);
-      return ResponseDetailUserAuditRegion.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  Future<ResponseMessage> editProfileUserAuditRegion(int id, String email, String username)async{
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
-      'Content-Type': 'application/json'
-    };
-    try {
-      final response = await dio.put('${AppConstant.editProfileAuditRegion}$id',
-      data: {'email': email, 'username': username});
-      print(response.data);
-      return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  Future<ResponseMessage>changePasswordAuditRegion(int id, String oldPassword, String newPassword, String confirmPassword)async{
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
-      'Content-Type': 'application/json'
-    };
-    try {
-      final response = await dio.put('${AppConstant.changePasswordAuditRegion}$id',
-      data: {'old_password': oldPassword, 'new_password': newPassword, 'confirm_password': confirmPassword});
-      print(response.data);
-      return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-
   //report
   Future<ResponseReportAuditRegion>getReportAuditRegion(String startDate, String endDate)async{
     dio.options.headers = {
@@ -1013,4 +969,48 @@ class ApiService {
       throw Exception(error);
     }
   }
+
+  //user profile
+  Future<ResponseProfileAuditRegion> getDetailUserAuditRegion()async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}'
+    };
+    try {
+      final response = await dio.get(AppConstant.detailUserAuditRegion);
+      return ResponseProfileAuditRegion.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseMessage> editProfileUserAuditRegion(String email, String username)async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.put(AppConstant.editProfileUserAuditRegion,
+      data: {'email': email, 'username': username});
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseMessage>changePasswordAuditRegion(String currentPassword, String newPassword)async{
+    dio.options.headers = {
+      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.patch(AppConstant.changePasswordAuditArea,
+      data: {'current_password': currentPassword, 'new_password': newPassword});
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
 }

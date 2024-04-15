@@ -306,7 +306,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
                         if(email.isEmpty || username.isEmpty){
                           Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                         }else if(email.isEmail){
-                          controllerAuditRegion.editProfileUserAuditRegion(id, email, username);
+                          controllerAuditRegion.editProfileUserAuditRegion(email, username);
                           Get.back();
                           Get.snackbar('Berhasil', 'Profil berhasil di edit',
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
