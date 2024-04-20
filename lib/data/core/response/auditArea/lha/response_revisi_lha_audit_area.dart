@@ -2,26 +2,32 @@ class ResponseRevisionLhaAuditArea {
   Meta? meta;
   String? message;
   int? status;
-  DataRevisiLha? data;
+  List<DataRevisiLha>? data;
 
-  ResponseRevisionLhaAuditArea({this.meta, this.message, this.status, this.data});
+  ResponseRevisionLhaAuditArea(
+      {this.meta, this.message, this.status, this.data});
 
   ResponseRevisionLhaAuditArea.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? DataRevisiLha.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <DataRevisiLha>[];
+      json['data'].forEach((v) {
+        data!.add(new DataRevisiLha.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['message'] = message;
-    data['status'] = status;
+    data['message'] = this.message;
+    data['status'] = this.status;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -39,145 +45,131 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['timestamp'] = timestamp;
-    data['api_version'] = apiVersion;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['timestamp'] = this.timestamp;
+    data['api_version'] = this.apiVersion;
     return data;
   }
 }
 
 class DataRevisiLha {
-  List<LhaDetails>? lhaDetails;
-  Pageable? pageable;
-
-  DataRevisiLha({this.lhaDetails, this.pageable});
-
-  DataRevisiLha.fromJson(Map<String, dynamic> json) {
-    if (json['lha_details'] != null) {
-      lhaDetails = <LhaDetails>[];
-      json['lha_details'].forEach((v) {
-        lhaDetails!.add(LhaDetails.fromJson(v));
-      });
-    }
-    pageable = json['pageable'] != null
-        ? Pageable.fromJson(json['pageable'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (lhaDetails != null) {
-      data['lha_details'] = lhaDetails!.map((v) => v.toJson()).toList();
-    }
-    if (pageable != null) {
-      data['pageable'] = pageable!.toJson();
-    }
-    return data;
-  }
-}
-
-class LhaDetails {
   int? id;
-  String? cases;
-  String? caseCategory;
+  Cases? cases;
+  CaseCategory? caseCategory;
+  int? revisionNumber;
   String? description;
   String? suggestion;
   String? temporaryRecommendations;
   String? permanentRecommendations;
   int? isResearch;
+  int? createdBy;
+  String? createdAt;
 
-  LhaDetails(
+  DataRevisiLha(
       {this.id,
       this.cases,
       this.caseCategory,
+      this.revisionNumber,
       this.description,
       this.suggestion,
       this.temporaryRecommendations,
       this.permanentRecommendations,
-      this.isResearch});
+      this.isResearch,
+      this.createdBy,
+      this.createdAt});
 
-  LhaDetails.fromJson(Map<String, dynamic> json) {
+  DataRevisiLha.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    cases = json['cases'];
-    caseCategory = json['caseCategory'];
+    cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
+    caseCategory = json['caseCategory'] != null
+        ? new CaseCategory.fromJson(json['caseCategory'])
+        : null;
+    revisionNumber = json['revisionNumber'];
     description = json['description'];
     suggestion = json['suggestion'];
     temporaryRecommendations = json['temporary_recommendations'];
     permanentRecommendations = json['permanent_recommendations'];
     isResearch = json['is_research'];
+    createdBy = json['created_by'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['cases'] = cases;
-    data['caseCategory'] = caseCategory;
-    data['description'] = description;
-    data['suggestion'] = suggestion;
-    data['temporary_recommendations'] = temporaryRecommendations;
-    data['permanent_recommendations'] = permanentRecommendations;
-    data['is_research'] = isResearch;
-    return data;
-  }
-}
-
-class Pageable {
-  int? pageNumber;
-  int? pageSize;
-  Sort? sort;
-  int? offset;
-  bool? unpaged;
-  bool? paged;
-
-  Pageable(
-      {this.pageNumber,
-      this.pageSize,
-      this.sort,
-      this.offset,
-      this.unpaged,
-      this.paged});
-
-  Pageable.fromJson(Map<String, dynamic> json) {
-    pageNumber = json['pageNumber'];
-    pageSize = json['pageSize'];
-    sort = json['sort'] != null ? Sort.fromJson(json['sort']) : null;
-    offset = json['offset'];
-    unpaged = json['unpaged'];
-    paged = json['paged'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['pageNumber'] = pageNumber;
-    data['pageSize'] = pageSize;
-    if (sort != null) {
-      data['sort'] = sort!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.cases != null) {
+      data['cases'] = this.cases!.toJson();
     }
-    data['offset'] = offset;
-    data['unpaged'] = unpaged;
-    data['paged'] = paged;
+    if (this.caseCategory != null) {
+      data['caseCategory'] = this.caseCategory!.toJson();
+    }
+    data['revisionNumber'] = this.revisionNumber;
+    data['description'] = this.description;
+    data['suggestion'] = this.suggestion;
+    data['temporary_recommendations'] = this.temporaryRecommendations;
+    data['permanent_recommendations'] = this.permanentRecommendations;
+    data['is_research'] = this.isResearch;
+    data['created_by'] = this.createdBy;
+    data['created_at'] = this.createdAt;
     return data;
   }
 }
 
-class Sort {
-  bool? empty;
-  bool? sorted;
-  bool? unsorted;
+class Cases {
+  int? id;
+  String? name;
+  String? code;
+  String? createdAt;
+  String? updatedAt;
 
-  Sort({this.empty, this.sorted, this.unsorted});
+  Cases({this.id, this.name, this.code, this.createdAt, this.updatedAt});
 
-  Sort.fromJson(Map<String, dynamic> json) {
-    empty = json['empty'];
-    sorted = json['sorted'];
-    unsorted = json['unsorted'];
+  Cases.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['empty'] = empty;
-    data['sorted'] = sorted;
-    data['unsorted'] = unsorted;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['code'] = this.code;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class CaseCategory {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  Cases? cases;
+
+  CaseCategory(
+      {this.id, this.name, this.createdAt, this.updatedAt, this.cases});
+
+  CaseCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.cases != null) {
+      data['cases'] = this.cases!.toJson();
+    }
     return data;
   }
 }

@@ -23,8 +23,8 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
-  int? users;
-  int? branch;
+  int? _users;
+  int? _branch;
   
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                       child: DropdownButton(
                         iconEnabledColor: CustomColors.blue,
                         borderRadius: BorderRadius.circular(10),
-                        value: users,
+                        value: _users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
@@ -85,7 +85,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           }).toList(),
                           onChanged: (value)async{
                           setState(() {
-                            users = value;
+                            _users = value;
                           });
                           }
                       ),
@@ -108,7 +108,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: branch,
+                          value: _branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
@@ -118,7 +118,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              branch = value;
+                              _branch = value;
                             });
                           }
                       ),
@@ -142,12 +142,12 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           ),
                           onPressed: ()async{
                     
-                            if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
+                            if (_users == null || _branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
                                snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
                             }else{
-                            controllerAuditArea.editMainSchedule(widget.scheduleId, users!, branch!, startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
-                            snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
-                                  Get.off(() => const SchedulePageAuditArea());
+                            controllerAuditArea.editMainSchedule(widget.scheduleId, _users!, _branch!, startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
+                              snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
+                              Navigator.pop(context);
                             }
                           },
                           child: Text('Edit jadwal utama', style: CustomStyles.textMediumWhite15Px)
@@ -303,7 +303,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                             }else{
                             controllerAuditArea.editSpecialSchedule(widget.scheduleId, users!, branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
                             snakcBarMessageGreen('Gagal', 'Data jadwal berhasil di edit');
-                                Get.off(() => const SchedulePageAuditArea());
+                                Navigator.pop(context);
                             }
                           },
                           child: Text('Edit jadwal khusus', style: CustomStyles.textMediumWhite15Px)

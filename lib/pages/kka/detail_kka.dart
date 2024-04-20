@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -55,7 +56,7 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                   
                   Text('Nama cabang :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailKka.branch}',
+                  Text('${detailKka.branch!.name}',
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
@@ -97,7 +98,7 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKka(detailKka.filePath!);
+                                  downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${detailKka.filename}');
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),
@@ -165,7 +166,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                   
                   Text('Nama cabang :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailKka.branch}',
+                  Text('${detailKka.branch!.name}',
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
@@ -207,7 +208,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKka(detailKka.filePath!);
+                                  downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${detailKka.filename}');
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),

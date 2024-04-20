@@ -1,66 +1,50 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class ListLhaCasesPageAuditArea extends StatefulWidget {
-  final int lhaId;
-  const ListLhaCasesPageAuditArea({super.key, required this.lhaId});
+class ListRevisionLhaCasesPageAuditArea extends StatefulWidget {
+  const ListRevisionLhaCasesPageAuditArea({super.key});
 
   @override
-  State<ListLhaCasesPageAuditArea> createState() => _ListLhaCasesPageAuditAreaState();
+  State<ListRevisionLhaCasesPageAuditArea> createState() => _ListRevisionLhaCasesPageAuditAreaState();
 }
 
-class _ListLhaCasesPageAuditAreaState extends State<ListLhaCasesPageAuditArea> {
+class _ListRevisionLhaCasesPageAuditAreaState extends State<ListRevisionLhaCasesPageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.lhaId.value = widget.lhaId;
-    return DefaultTabController(
-      length: 2, 
-      child: Scaffold(
-        backgroundColor: CustomColors.white,
-          appBar: AppBar(
+    // controllerAuditArea.lhaId.value = widget.lhaId;
+    // print(widget.lhaId);
+    return Scaffold(
+            appBar:  AppBar(
             backgroundColor: CustomColors.white,
-            title: const Text('Kasus LHA'),
+            title: const Text('Hasil revisi LHA'),
             titleSpacing: 5,
             titleTextStyle: CustomStyles.textBold18Px,
             leading: IconButton(onPressed: (){
-              Get.back();
+               Get.offAll(() => BotNavePageAuditArea());
             },
             icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
-            bottom: TabBar(
-              isScrollable: false,
-              indicatorColor: CustomColors.blue,
-              splashBorderRadius: BorderRadius.circular(10),
-              unselectedLabelStyle: const TextStyle(color: CustomColors.grey, fontFamily: 'RobotoMedium', fontSize: 13),
-              labelStyle: const TextStyle(color: CustomColors.blue, fontFamily: 'RobotoMedium', fontSize: 13),
-              tabs: const [
-                Tab(text: 'Kasus'),
-                Tab(text: 'Hasil revisi kasus'),
-              ],
-            ),
+            
           ),
-
-          body: TabBarView(
-            children: [
-
-              //revisi
-              Scaffold(
                 body: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: PagedListView<int, LhaDetails>(
-                    pagingController: controllerAuditArea.pagingControllerLhaRevisi,
-                    builderDelegate: PagedChildBuilderDelegate(
-                      itemBuilder: (_, lha, index){
-                        return Card(
+                  child: Obx((){
+                    if (controllerAuditArea.isLoading.value) {
+                      return  const Center(child: SpinKitCircle(color: CustomColors.blue,));
+                    } else {
+                      return ListView.builder(
+                    itemCount: controllerAuditArea.lhaRevision.length,
+                    itemBuilder: (_, index){
+                      final lha = controllerAuditArea.lhaRevision[index];
+                      return Card(
                             elevation: 0,
                               shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -89,61 +73,45 @@ class _ListLhaCasesPageAuditAreaState extends State<ListLhaCasesPageAuditArea> {
                   
                                           const SizedBox(height: 15),
                   
-                                          Text('Kasus : ${lha.cases}', style: CustomStyles.textBold15Px),
-                                          Text('Kategori Kasus : ${lha.caseCategory}', style: CustomStyles.textBold15Px),
+                                          Text('Kasus : ${lha.cases!.name}', style: CustomStyles.textBold15Px),
+                                          Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px),
                   
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              TextButton(
+                                                  TextButton(
                                                   style: TextButton.styleFrom(
                                                       shape:
                                                           CustomStyles.customRoundedButton),
                                                   onPressed: () {
-                                                    Get.to(() => EditLhaPageAuditArea(lhaId: lha.id!));
+                                                    final caseId = lha.id;
+                                                    if(caseId != null){
+                                                      Get.to(() => DetailRevisionLhaAuditArea(caseId: caseId));
+                                                    }
                                                   },
-                                                  child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
-                  
-                                              const SizedBox(width: 5),
-                  
-                                              TextButton(
-                                                  style: TextButton.styleFrom(
-                                                      shape: CustomStyles.customRoundedButton),
-                                                  onPressed: () {
-                                                      Get.to(() => DetaiCasesLhaPageAuditArea(lhaId: lha.id!));
-                                                  },
-                                                  child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                                  child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)),
                                             ],
                                           )
                                         ],
                                       ),
                                     )
                                   );
-                      }
-                    ),
-                  ),
+                    }
+                  );
+                    }
+                  })
                 ),
-              ),
-
-              //hasil revisi
-              Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: SizedBox()
-                ),
-              ),
-
-            ]
-          ),
-      )
-    );
+              );
   }
 }
 
 class EditLhaPageAuditArea extends StatefulWidget {
   final int lhaId;
+  final String cases;
+  final String caseCategory;
+  final int selectedValueResearch;
   const EditLhaPageAuditArea(
-      {super.key, required this.lhaId});
+      {super.key, required this.lhaId, required this.cases, required this.caseCategory, required this.selectedValueResearch});
 
   @override
   State<EditLhaPageAuditArea> createState() => _EditLhaPageAuditAreaState();
@@ -156,10 +124,6 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
   
-  int? _cases;
-  int? _caseCategory;
-  int? _caseCategoryById;
-  int? _selectedValueResearch;
   int? _selectedSuggest;
 
   @override
@@ -187,105 +151,12 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               
               Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              SizedBox(
-                width: double.maxFinite,
-                child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
-                    ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih divisi', style: CustomStyles.textRegular13Px),
-                      value: _cases,
-                      items: controllerAuditArea.caseAuditArea.map((cases){
-                        return DropdownMenuItem(
-                          value: cases.id,
-                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _cases = value;
-                        });
-                      }
-                    ),
-                  )
-                ),
-              ),
+              Text(widget.cases, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              SizedBox(
-                width: double.maxFinite,
-                child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
-                    ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: _caseCategory,
-                      items: controllerAuditArea.caseCategory.map((caseCategory){
-                        return DropdownMenuItem(
-                          value: caseCategory.id,
-                          child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _caseCategory = value;
-                          final caseId = value;
-                          if (caseId != null) {
-                            controllerAuditArea.loadCaseCategoryById(caseId); 
-                          }
-                        });
-                      }
-                    ),
-                  )
-                ),
-              ),
-
-              const SizedBox(height: 20),
-              Text('Kategori kasus by id :', style: CustomStyles.textBold15Px),
-              const SizedBox(height: 15),
-              SizedBox(
-                width: double.maxFinite,
-                child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
-                    ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori by id', style: CustomStyles.textRegular13Px),
-                      value: _caseCategoryById,
-                      items: controllerAuditArea.caseCategoryById.map((caseCategoryById){
-                        return DropdownMenuItem(
-                          value: caseCategoryById.id,
-                          child: Text('${caseCategoryById.name}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _caseCategoryById = value;
-                        });
-                      }
-                    ),
-                  )
-                ),
-              ),
+              Text(widget.caseCategory, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
@@ -337,13 +208,8 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                     2, (index){
                     return ChoiceChip(
                       label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium13Px),
-                      selected: _selectedValueResearch == index,
-                      onSelected: (bool selected){
-                        setState(() {
-                          _selectedValueResearch = selected ? index: null;
-                          
-                        });
-                      },
+                      selected: widget.selectedValueResearch == index,
+                      onSelected: (bool selected){},
                     );
                   }
                 ).toList(),
@@ -358,9 +224,9 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
-                      controllerAuditArea.revisiLha(widget.lhaId, _cases!, _caseCategoryById!, lhaDescriptionController.text, 
-                      suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!);
+                      controllerAuditArea.revisiLha(widget.lhaId, lhaDescriptionController.text, 
+                      suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
+                     Get.to(() => const ListRevisionLhaCasesPageAuditArea());
                     },
                     child:
                         Text('Revisi LHA', style: CustomStyles.textMediumWhite15Px)),

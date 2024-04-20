@@ -136,15 +136,14 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                             onPressed: () async {
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else if(_followUp == 1){
+                              }else if(lossController.text.isNotEmpty){
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
                                 Get.to(() => const InputBapPageAuditRegion());
-                                Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
                                 print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
-                              }else if (_followUp == 0){
+                              }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavAuditRegion());
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
-                                Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                                
                                 print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
                               }
                             },

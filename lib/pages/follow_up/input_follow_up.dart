@@ -132,18 +132,12 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     backgroundColor: CustomColors.blue
                   ),
                   onPressed: (){
-                    final penaltyId = _penaltyId;
-                    final explanationPenalty = explanationPenaltyController.text;
-                    final isPenalty = _isPenalty;
-
-                    if (isPenalty == null || penaltyId == null || explanationPenalty.isEmpty) {
+                  
+                    if (_penaltyId == null || _isPenalty == null || explanationPenaltyController.text.isEmpty) {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, penaltyId, explanationPenalty, isPenalty);
-                        snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, _penaltyId, explanationPenaltyController.text, _isPenalty);
                         Get.off(() => const DocumentFollowUpPage());
-                        
-                        print('Input tindak lanjut : ${widget.followUpId} , $isPenalty, $penaltyId, $explanationPenalty');
                     }
                   }, 
                   child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

@@ -1,4 +1,5 @@
 
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -8,7 +9,6 @@ import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/kka/detail_kka.dart';
 import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -31,7 +31,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.scheduleIdKka.value = 0;
+    // controllerAuditArea.scheduleIdKka.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -45,7 +45,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
         }, icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
         actions: [
           IconButton(onPressed: (){
-                showFilterKkaAuditArea(context, startDateController, endDateController, auditorController, branchController, controllerAuditArea);
+                showFilterKkaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
               }, 
             icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)
           )
@@ -101,7 +101,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKka(kka.filePath!);
+                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],
@@ -139,7 +139,6 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.scheduleIdKka.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -209,7 +208,7 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKka(kka.filePath!);
+                                    downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${kka.filename}');
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],

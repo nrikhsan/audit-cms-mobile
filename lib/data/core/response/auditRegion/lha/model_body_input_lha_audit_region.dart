@@ -58,9 +58,9 @@ class LhaDetail {
     caseCategoryId = json['case_category_id'];
     description = json['description'];
     suggestion = json['suggestion'];
-    temporaryRecommendation = json['temporary_recommendation'];
-    permanentRecommendation = json['permanent_recommendation'];
-    research = json['research'];
+    temporaryRecommendation = json['temporary_recommendations'];
+    permanentRecommendation = json['permanent_recommendations'];
+    research = json['is_research'];
   }
 
   Map<String, dynamic> toJson() {
@@ -69,9 +69,9 @@ class LhaDetail {
     data['case_category_id'] = this.caseCategoryId;
     data['description'] = this.description;
     data['suggestion'] = this.suggestion;
-    data['temporary_recommendation'] = this.temporaryRecommendation;
-    data['permanent_recommendation'] = this.permanentRecommendation;
-    data['research'] = this.research;
+    data['temporary_recommendations'] = this.temporaryRecommendation;
+    data['permanent_recommendations'] = this.permanentRecommendation;
+    data['is_research'] = this.research;
     return data;
   }
 }

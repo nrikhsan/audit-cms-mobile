@@ -23,7 +23,6 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
   final TextEditingController auditLocationController = TextEditingController();
   final TextEditingController divisionInspectionController = TextEditingController();
   final TextEditingController directSupervisorController = TextEditingController();
-  final TextEditingController dearController = TextEditingController();
   final TextEditingController findingDescriptionController = TextEditingController();
 
   String? _selectedPriorityFinding;
@@ -72,11 +71,6 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
               formInputAllClarification('Masukan pesan atasan langsung...', directSupervisorController),
 
               const SizedBox(height: 15),
-              Text('Kepada Yth/jabatan :', style: CustomStyles.textMedium15Px),
-              const SizedBox(height: 15),
-              formInputAllClarification('Masukan pesan untuk Yth/jabatan...', dearController),
-
-              const SizedBox(height: 15),
               Text('Penjabaran temuan audit :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
               formInputAllClarification('Masukan penjabaran temuan audit...', findingDescriptionController),
@@ -115,7 +109,7 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                 ),
 
                 const SizedBox(height: 25),
-                SizedBox(
+               SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -127,16 +121,15 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                       final locationInspection = auditLocationController.text;
                       final divisionInspection = divisionInspectionController.text;
                       final supervisor = directSupervisorController.text;
-                      final dear = dearController.text;
                       final desc = findingDescriptionController.text;
                       final selectPriority = _selectedPriorityFinding;
 
-                      if (limitEvaluation.isEmpty || locationInspection.isEmpty || divisionInspection.isEmpty || supervisor.isEmpty || dear.isEmpty || desc.isEmpty || selectPriority == null) {
+                      if (limitEvaluation.isEmpty || locationInspection.isEmpty || divisionInspection.isEmpty || supervisor.isEmpty || desc.isEmpty || selectPriority == null) {
                         Get.snackbar('Klarifikasi gagal dibuat', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else{
-                        controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, dear, desc, selectPriority);
-                        Get.snackbar('Berhasil', 'Klarifikasi berhasil dibuat', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-                        Get.to(() => const DocumentClarificationPageAuditRegion());
+                        controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, desc, selectPriority);
+                        final fileName = controllerAuditRegion.dataInputClarification.value?.clarification?.fileName;
+                        Get.to(() => DocumentClarificationPageAuditRegion(id: widget.id, fileName: fileName,));
                       }
                     }, 
                     child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

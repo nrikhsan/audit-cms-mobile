@@ -1,6 +1,8 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-void downloadFileDetailBap(String fileName, String fileDoc) async {
+void downloadFileDetailBap(String url) async {
+  final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
 
@@ -17,34 +20,43 @@ void downloadFileDetailBap(String fileName, String fileDoc) async {
     var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = '${fileName}_$timestamp.pdf';
+      String saveName = 'bap_$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
       try {
-        await Dio().download(fileDoc, savePath,
-            onReceiveProgress: (received, total) {
-          if (total != -1) {
-            print((received / total * 100).toStringAsFixed(0) + "%");
-          }
-        });
-        Get.snackbar('Berhasil', 'File $saveName berhasil di unduh',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: CustomColors.green,
-            colorText: CustomColors.white);
+        await dio.download(
+          url,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
-        throw Exception(error);
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
   } else {
-    Get.snackbar('Alert', 'Permintaan izin ditolak',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: CustomColors.red,
-        colorText: CustomColors.white);
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
   }
 }
 
-void showDialogPdfBapAuditArea(BuildContext context, String title, String fileName, String fileDoc) async {
+void showDialogPdfBapAuditArea(BuildContext context, String title, String url) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -70,7 +82,7 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String fileNa
                   automaticallyImplyLeading: false,
                 ),
                 body: SfPdfViewer.network(
-                  fileDoc,
+                  url,
                   pageSpacing: 0,
                 ),
               )),
@@ -81,7 +93,7 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String fileNa
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileDetailBap(fileName, fileDoc);
+                downloadFileDetailBap(url);
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
@@ -89,7 +101,7 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String fileNa
     );
 }
 
-void showDialogPdfBapAuditRegion(BuildContext context, String title, String fileName, String fileDoc) async {
+void showDialogPdfBapAuditRegion(BuildContext context, String title, String url) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -115,7 +127,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String file
                   automaticallyImplyLeading: false,
                 ),
                 body: SfPdfViewer.network(
-                  fileDoc,
+                  url,
                   pageSpacing: 0,
                 ),
               )),
@@ -126,7 +138,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String file
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileDetailBap(fileName, fileDoc);
+                downloadFileDetailBap(url);
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
@@ -134,7 +146,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String file
     );
 }
 
-void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion, int bapId) {
+void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion) {
     showDialog(
         context: context,
         builder: (_) {
@@ -163,7 +175,7 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
                 Obx(() => TextButton(
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
-                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, bapId);
+                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value);
                             Get.offAll(() => BotNavAuditRegion());
                          }
                       : null,

@@ -16,12 +16,11 @@ class DetailLhaPageAuditArea extends StatefulWidget {
 }
 
 class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailLhaAuditArea(widget.id);
-
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -48,7 +47,6 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
                     Text('Auditor :', style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
                     Text('${detailLha.user!.fullname}',
@@ -72,6 +70,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                     Text('Penelusuran :', style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
                     Text(research == 1 ? 'Ada' : 'Tidak ada'),
+                    
 
                     const SizedBox(height: 20),
                     Text('Kasus :', style: CustomStyles.textBold15Px),
@@ -111,7 +110,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               const SizedBox(height: 15),
                               Text('Kasus : ${lha[index].cases}', style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
-                              Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textBold15Px),
+                              Text('Kategori kasus : ${lha[index].description}', style: CustomStyles.textBold15Px),
 
                               const SizedBox(height: 15),
                               Row(
@@ -122,7 +121,13 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                           shape:
                                               CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => EditLhaPageAuditArea(lhaId: lha[index].id!));
+                                        final lhaId = lha[index].id;
+                                        final cases = lha[index].cases;
+                                        final caseCategory = lha[index].caseCategory;
+                                        final research = lha[index].isResearch;
+                                        if (lhaId != null) {
+                                           Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases!, caseCategory: caseCategory!, selectedValueResearch: research!));
+                                        }
                                       },
                                       child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
 
@@ -132,7 +137,10 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetaiCasesLhaPageAuditArea(lhaId: lha[index].id!));
+                                        final caseId = lha[index].id;
+                                        if (caseId != null) {
+                                          Get.to(() => DetaiCasesLhaPageAuditArea(caseId: caseId));
+                                        }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
@@ -154,8 +162,8 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
 
 //audit area
 class DetaiCasesLhaPageAuditArea extends StatefulWidget {
-  final int lhaId;
-  const DetaiCasesLhaPageAuditArea({super.key, required this.lhaId});
+  final int caseId;
+  const DetaiCasesLhaPageAuditArea({super.key, required this.caseId});
 
   @override
   State<DetaiCasesLhaPageAuditArea> createState() => _DetailCasesLhaPageAuditAreaState();
@@ -165,7 +173,8 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.loadDetailRevisionLha(widget.lhaId);
+    controllerAuditArea.getDetailCaseLhaAuditArea(widget.caseId);
+    print(widget.caseId);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.white,
@@ -180,11 +189,14 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
       ),
       body: SingleChildScrollView(
         child: Obx((){
-          final detailLha = controllerAuditArea.detailRevisonLha.value;
+          final detailLha = controllerAuditArea.detailCase.value;
           if (detailLha == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
             final research = detailLha.isResearch;
+            final casesCategory = detailLha.caseCategory?.name;
+            final suggestion = detailLha.suggestion;
+            final cases = detailLha.cases;
              return Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
@@ -200,8 +212,9 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
                             
                             Text('Kategori kasus :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text('${detailLha.caseCategory!.name}',
+                            Text(casesCategory ?? '-',
                             style: CustomStyles.textRegular13Px),
+                            
                           ],
                         ),
                         
@@ -210,7 +223,7 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
                                 shape: CustomStyles.customRoundedButton,
                                 backgroundColor: CustomColors.green),
                             onPressed: () {},
-                            child: Text('${detailLha.cases!.code}',
+                            child: Text(cases?.code ?? '-',
                                 style: CustomStyles.textMediumWhite15Px))
                       ],
                     ),
@@ -218,7 +231,7 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
                     const SizedBox(height: 20),
                     Text('Kategori :', style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
-                    Text('${detailLha.description}',
+                    Text(cases?.name ?? '-',
                         style: CustomStyles.textRegular13Px),
                     const SizedBox(height: 20),
                     
@@ -245,7 +258,121 @@ class _DetailCasesLhaPageAuditAreaState extends State<DetaiCasesLhaPageAuditArea
                     Text('Rekomendasi/saran :',
                         style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
-                    Text('${detailLha.suggestion}',
+                    Text(suggestion ?? '-',
+                        style: CustomStyles.textRegular13Px,
+                        textAlign: TextAlign.justify),
+                    const SizedBox(height: 20),
+                    Text('Penelusuran :', style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text(research == 1 ? 'Ada' : 'Tidak ada'),
+                  ],
+                ),
+              );
+          }
+        }),
+      ),
+    );
+  }
+}
+
+//audit area
+class DetailRevisionLhaAuditArea extends StatefulWidget {
+  final int caseId;
+  const DetailRevisionLhaAuditArea({super.key, required this.caseId});
+
+  @override
+  State<DetailRevisionLhaAuditArea> createState() => _DetailRevisionLhaAuditAreaState();
+}
+
+class _DetailRevisionLhaAuditAreaState extends State<DetailRevisionLhaAuditArea> {
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  @override
+  Widget build(BuildContext context) {
+    controllerAuditArea.getDetailRevision(widget.caseId);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomColors.white,
+        title: const Text('Detail revisi kasus LHA'),
+        titleTextStyle: CustomStyles.textBold18Px,
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_rounded,
+                color: CustomColors.black, size: 25)),
+      ),
+      body: SingleChildScrollView(
+        child: Obx((){
+          final detailLha = controllerAuditArea.detailRevisionLha.value;
+          if (detailLha == null) {
+            return const Center(child: SpinKitCircle(color: CustomColors.blue));
+          } else {
+            final research = detailLha.isResearch;
+            final casesCategory = detailLha.caseCategory?.name;
+            final suggestion = detailLha.suggestion;
+            final cases = detailLha.cases;
+             return Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            
+                            Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(casesCategory ?? '-',
+                            style: CustomStyles.textRegular13Px),
+                            
+                          ],
+                        ),
+                        
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: CustomStyles.customRoundedButton,
+                                backgroundColor: CustomColors.green),
+                            onPressed: () {},
+                            child: Text(cases?.code ?? '-',
+                                style: CustomStyles.textMediumWhite15Px))
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 20),
+                    Text('Kategori :', style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text(cases?.name ?? '-',
+                        style: CustomStyles.textRegular13Px),
+                    const SizedBox(height: 20),
+                    
+                    Text('Uraian temuan :', style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text('${detailLha.description}',
+                        style: CustomStyles.textRegular13Px,
+                        textAlign: TextAlign.justify),
+                    const SizedBox(height: 20),
+                    Text('Rekomendasi sementara :',
+                        style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text('${detailLha.temporaryRecommendations}',
+                        style: CustomStyles.textRegular13Px,
+                        textAlign: TextAlign.justify),
+                    const SizedBox(height: 20),
+                    Text('Rekomendasi permanen :',
+                        style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text('${detailLha.permanentRecommendations}',
+                        style: CustomStyles.textRegular13Px,
+                        textAlign: TextAlign.justify),
+                    const SizedBox(height: 20),
+                    Text('Rekomendasi/saran :',
+                        style: CustomStyles.textBold15Px),
+                    const SizedBox(height: 5),
+                    Text(suggestion ?? '-',
                         style: CustomStyles.textRegular13Px,
                         textAlign: TextAlign.justify),
                     const SizedBox(height: 20),
@@ -273,7 +400,7 @@ class DetailLhaPageAuditRegion extends StatefulWidget {
 }
 
 class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailLhaAuditRegion(widget.id);
@@ -281,7 +408,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
       backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: const Text('Detail laporan harian audit'),
+        title: const Text('Detail revisi laporan harian audit'),
         titleTextStyle: CustomStyles.textBold18Px,
         leading: IconButton(
             onPressed: () {
@@ -303,7 +430,6 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
                     Text('Auditor :', style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
                     Text('${detailLha.user!.fullname}',
@@ -411,6 +537,7 @@ class _DetailCasesLhaPageAuditRegionState extends State<DetaiCasesLhaPageAuditRe
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailCasesLhaAuditRegion(widget.lhaId);
+    print(widget.lhaId);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.white,
@@ -425,11 +552,14 @@ class _DetailCasesLhaPageAuditRegionState extends State<DetaiCasesLhaPageAuditRe
       ),
       body: SingleChildScrollView(
         child: Obx((){
-          final detailLha = controllerAuditRegion.detailCasesLhaAuditRegion.value;
+            final detailLha = controllerAuditRegion.detailCasesLhaAuditRegion.value;
           if (detailLha == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
             final research = detailLha.isResearch;
+            final casesCategory = detailLha.caseCategory?.name;
+            final suggestion = detailLha.suggestion;
+            final cases = detailLha.cases;
              return Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
@@ -443,10 +573,11 @@ class _DetailCasesLhaPageAuditRegionState extends State<DetaiCasesLhaPageAuditRe
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             
-                            Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                            Text('Kasus :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text('${detailLha.caseCategory!.name}',
+                            Text(cases?.name ?? '-',
                             style: CustomStyles.textRegular13Px),
+                            
                           ],
                         ),
                         
@@ -455,15 +586,15 @@ class _DetailCasesLhaPageAuditRegionState extends State<DetaiCasesLhaPageAuditRe
                                 shape: CustomStyles.customRoundedButton,
                                 backgroundColor: CustomColors.green),
                             onPressed: () {},
-                            child: Text('${detailLha.cases!.code}',
+                            child: Text(cases?.code ?? '-',
                                 style: CustomStyles.textMediumWhite15Px))
                       ],
                     ),
                     
                     const SizedBox(height: 20),
-                    Text('Kategori :', style: CustomStyles.textBold15Px),
+                    Text('Kategori kasus :', style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
-                    Text('${detailLha.description}',
+                    Text(casesCategory ?? '-',
                         style: CustomStyles.textRegular13Px),
                     const SizedBox(height: 20),
                     
@@ -490,7 +621,7 @@ class _DetailCasesLhaPageAuditRegionState extends State<DetaiCasesLhaPageAuditRe
                     Text('Rekomendasi/saran :',
                         style: CustomStyles.textBold15Px),
                     const SizedBox(height: 5),
-                    Text('${detailLha.suggestion}',
+                    Text(suggestion ?? '-',
                         style: CustomStyles.textRegular13Px,
                         textAlign: TextAlign.justify),
                     const SizedBox(height: 20),

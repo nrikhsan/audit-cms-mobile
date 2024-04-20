@@ -45,7 +45,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
           actions: [
             IconButton(
                 onPressed: () {
-                  filterClarificationAuditArea(context, startDateController, endDateController, branchController, auditorController, controllerAuditArea);
+                  filterClarificationAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
                 },
                 icon: const Icon(Icons.tune_rounded,size: 25, color: CustomColors.grey)),
           ],
@@ -57,6 +57,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
                 final statusClarificaion = clarification.status;
+                final priority = clarification.priority;
                 return GestureDetector(
                       onTap: (){
                         Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!));
@@ -107,7 +108,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [                                
                                 const SizedBox(height: 5),
-                                Text('Prioritas temuan : ${clarification.priority}', style: CustomStyles.textMedium13Px),
+                                Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
                                 Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
                               ],
                             ),
@@ -169,19 +170,21 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
                 final statusClarificaion = clarification.status;
+                final priority = clarification.priority;
                 return GestureDetector(
                       onTap: (){
+                        
                         if (statusClarificaion == 'INPUT'){
                           Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
-                        } else if(statusClarificaion == 'DOWNLOAD'){
-                          Get.to(() => const DocumentClarificationPageAuditRegion());
-                        }else if(statusClarificaion == 'UPLOAD'){
-                          Get.to(() => const DocumentClarificationPageAuditRegion());
-                        }else if(statusClarificaion == 'IDENTIFICATION'){
-                          Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: clarification.id!));
-                        }else if(statusClarificaion == 'DONE'){
-                          Get.to(() => DetailClarificationAuditRegion(id: clarification.id!));
-                        }
+                          } else if(statusClarificaion == 'DOWNLOAD'){
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName!));
+                          }else if(statusClarificaion == 'UPLOAD'){
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName!));
+                          }else if(statusClarificaion == 'IDENTIFICATION'){
+                            Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: clarification.id!));
+                          }else if(statusClarificaion == 'DONE'){
+                            Get.to(() => DetailClarificationAuditRegion(id: clarification.id!));
+                          }
                       },
                       child: Card(
                       shape: OutlineInputBorder(
@@ -229,7 +232,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [                                
                                 const SizedBox(height: 5),
-                                Text('Prioritas temuan : ${clarification.priority}', style: CustomStyles.textMedium13Px),
+                                Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
                                 Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
                               ],
                             ),
@@ -288,7 +291,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         }).toList(),
                         onChanged: (value){
                           setState(() {
-                             controllerAuditRegion.selectBranch(value!);
+                             controllerAuditRegion.selectBranch(value);
                              print(value);
                           });
                         }
@@ -322,7 +325,9 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         }).toList(),
                         onChanged: (value){
                           setState(() {
-                             controllerAuditRegion.selectCase(value!);
+                            controllerAuditRegion.selectCase(value);
+                            controllerAuditRegion.loadCaseCategoryAuditRegion(value);
+                            controllerAuditRegion.caseCategoryId.value = null;
                             print(value);
                           });
                         }

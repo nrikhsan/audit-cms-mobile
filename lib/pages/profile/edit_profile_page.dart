@@ -148,8 +148,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                         }else if(email.isEmail){
                           controllerAuditArea.editProfileUserAuditArea(email, username);
                           Get.back();
-                          Get.snackbar('Berhasil', 'Profil berhasil di edit',
-                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                          
                         }else{
                           Get.snackbar('Gagal', 'Penulisan email tidak sesuai', snackPosition: SnackPosition.TOP,
                               colorText: CustomColors.white, backgroundColor: CustomColors.red);
@@ -308,8 +307,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
                         }else if(email.isEmail){
                           controllerAuditRegion.editProfileUserAuditRegion(email, username);
                           Get.back();
-                          Get.snackbar('Berhasil', 'Profil berhasil di edit',
-                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                         
                         }else{
                           Get.snackbar('Gagal', 'Penulisan email tidak sesuai', snackPosition: SnackPosition.TOP,
                               colorText: CustomColors.white, backgroundColor: CustomColors.red);

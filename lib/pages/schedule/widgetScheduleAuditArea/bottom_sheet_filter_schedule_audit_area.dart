@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 void bottomSheetFilterMainSchedule(BuildContext context, 
-TextEditingController auditorControllerMainSchedule, TextEditingController branchControllerMainSChedule, 
+TextEditingController auditorControllerMainSchedule, 
 TextEditingController startDateControllerMainSchedule, TextEditingController endDateControllerMainSchedule, ControllerAuditArea controllerAuditArea){
   showModalBottomSheet(
     elevation: 0,
@@ -37,31 +37,10 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorControllerMainSchedule.text.isNotEmpty) {
-                          auditorControllerMainSchedule.clear();
-                          controllerAuditArea.resetFilterMainSchedule();
-                          branchControllerMainSChedule.clear();
-                          startDateControllerMainSchedule.clear();
-                          endDateControllerMainSchedule.clear();
-                          Get.back();
-                        }else if(branchControllerMainSChedule.text.isNotEmpty){
-                          auditorControllerMainSchedule.clear();
-                          controllerAuditArea.resetFilterMainSchedule();
-                          branchControllerMainSChedule.clear();
-                          startDateControllerMainSchedule.clear();
-                          endDateControllerMainSchedule.clear();
-                          Get.back();
-                        }else if(startDateControllerMainSchedule.text.isNotEmpty || endDateControllerMainSchedule.text.isNotEmpty){
-                          auditorControllerMainSchedule.clear();
-                          controllerAuditArea.resetFilterMainSchedule();
-                          branchControllerMainSChedule.clear();
-                          startDateControllerMainSchedule.clear();
-                          endDateControllerMainSchedule.clear();
-                          Get.back();
-                        }else{
-                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
-                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
-                        }
+                        controllerAuditArea.resetFilterMainSchedule();
+                        auditorControllerMainSchedule.clear();
+                        startDateControllerMainSchedule.clear();
+                        endDateControllerMainSchedule.clear();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -94,24 +73,34 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   const SizedBox(height: 15),
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  TextField(
-                    controller: branchControllerMainSChedule,
-                    onChanged: (branch) => branchControllerMainSChedule.text = branch,
-                    cursorColor: CustomColors.blue,
-                    decoration: InputDecoration(
-                        labelStyle: CustomStyles.textMediumGrey15Px,
-                        labelText: 'Cabang...',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                            const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: CustomColors.grey)
-                        )
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchIdMainSchedule.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchIdMainSchedule.value = value;
+                            print(controllerAuditArea.branchIdMainSchedule.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -196,11 +185,9 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                       ),
                       onPressed: (){
                         controllerAuditArea.filterMainSchedule(
-                          auditorControllerMainSchedule.text, 
-                          branchControllerMainSChedule.text,
-                          startDateControllerMainSchedule.text,
-                          endDateControllerMainSchedule.text
-                        );
+                          auditorControllerMainSchedule.text, controllerAuditArea.branchIdMainSchedule.value, 
+                          startDateControllerMainSchedule.text, endDateControllerMainSchedule.text);
+                        
                         Get.back();
                       },
                       child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
@@ -216,7 +203,7 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
 
 
 void bottomSheetFilterSpecialSchedule(BuildContext context, 
-TextEditingController auditorControllerSpecialSchedule, TextEditingController branchControllerSpecialSchedule, 
+TextEditingController auditorControllerSpecialSchedule, 
 TextEditingController startDateControllerSpecialSchedule, TextEditingController endDateControllerSpecialSchedule, ControllerAuditArea controllerAuditArea){
   showModalBottomSheet(
         isScrollControlled: true,
@@ -247,31 +234,10 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                     actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorControllerSpecialSchedule.text.isNotEmpty) {
-                          auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.resetFilterSpecialSchedule();
-                          branchControllerSpecialSchedule.clear();
-                          startDateControllerSpecialSchedule.clear();
-                          endDateControllerSpecialSchedule.clear();
-                          Get.back();
-                        }else if(branchControllerSpecialSchedule.text.isNotEmpty){
-                          auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.resetFilterSpecialSchedule();
-                          branchControllerSpecialSchedule.clear();
-                          startDateControllerSpecialSchedule.clear();
-                          endDateControllerSpecialSchedule.clear();
-                          Get.back();
-                        }else if(startDateControllerSpecialSchedule.text.isNotEmpty || endDateControllerSpecialSchedule.text.isNotEmpty){
-                          auditorControllerSpecialSchedule.clear();
-                          controllerAuditArea.resetFilterSpecialSchedule();
-                          branchControllerSpecialSchedule.clear();
-                          startDateControllerSpecialSchedule.clear();
-                          endDateControllerSpecialSchedule.clear();
-                          Get.back();
-                        }else{
-                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
-                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
-                        }
+                        controllerAuditArea.resetFilterSpecialSchedule();
+                        auditorControllerSpecialSchedule.clear();
+                        startDateControllerSpecialSchedule.clear();
+                        endDateControllerSpecialSchedule.clear();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -304,24 +270,34 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                   const SizedBox(height: 15),
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  TextField(
-                    controller: branchControllerSpecialSchedule,
-                    onChanged: (branch) => branchControllerSpecialSchedule.text = branch,
-                    cursorColor: CustomColors.blue,
-                    decoration: InputDecoration(
-                        labelStyle: CustomStyles.textMediumGrey15Px,
-                        labelText: 'Cabang...',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                            const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: CustomColors.grey)
-                        )
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchSpecialSchedule.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchSpecialSchedule.value = value;
+                            print(controllerAuditArea.branchSpecialSchedule.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -407,7 +383,7 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                       onPressed: (){
                        controllerAuditArea.filterSpecialSchedule(
                         auditorControllerSpecialSchedule.text, 
-                        branchControllerSpecialSchedule.text,
+                        controllerAuditArea.branchSpecialSchedule.value,
                         startDateControllerSpecialSchedule.text,
                         endDateControllerSpecialSchedule.text
                         );
@@ -425,7 +401,7 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
 }
 
 void bottomSheetFilterReschedule(BuildContext context, 
-TextEditingController auditorControllerReschedule, TextEditingController branchControllerReschedule, 
+TextEditingController auditorControllerReschedule, 
 TextEditingController startDateControllerReschedule, TextEditingController endDateControllerReschedule, ControllerAuditArea controllerAuditArea){
 
   showModalBottomSheet(
@@ -456,31 +432,10 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                     actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorControllerReschedule.text.isNotEmpty) {
-                          auditorControllerReschedule.clear();
-                          controllerAuditArea.resetFilterReschedule();
-                          branchControllerReschedule.clear();
-                          startDateControllerReschedule.clear();
-                          endDateControllerReschedule.clear();
-                          Get.back();
-                        }else if(branchControllerReschedule.text.isNotEmpty){
-                          auditorControllerReschedule.clear();
-                          controllerAuditArea.resetFilterReschedule();
-                          branchControllerReschedule.clear();
-                          startDateControllerReschedule.clear();
-                          endDateControllerReschedule.clear();
-                          Get.back();
-                        }else if(startDateControllerReschedule.text.isNotEmpty || endDateControllerReschedule.text.isNotEmpty){
-                          auditorControllerReschedule.clear();
-                          controllerAuditArea.resetFilterReschedule();
-                          branchControllerReschedule.clear();
-                          startDateControllerReschedule.clear();
-                          endDateControllerReschedule.clear();
-                          Get.back();
-                        }else{
-                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
-                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
-                        }
+                      controllerAuditArea.resetFilterReschedule();
+                        auditorControllerReschedule.clear();
+                        startDateControllerReschedule.clear();
+                        endDateControllerReschedule.clear();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -514,24 +469,34 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                   const SizedBox(height: 15),
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  TextField(
-                    controller: branchControllerReschedule,
-                    onChanged: (branch) => branchControllerReschedule.text = branch,
-                    cursorColor: CustomColors.blue,
-                    decoration: InputDecoration(
-                        labelStyle: CustomStyles.textMediumGrey15Px,
-                        labelText: 'Cabang...',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                            const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: CustomColors.grey)
-                        )
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchReschedule.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchReschedule.value = value;
+                            print(controllerAuditArea.branchReschedule.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -615,7 +580,7 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        controllerAuditArea.filterReschedule(auditorControllerReschedule.text, branchControllerReschedule.text, 
+                        controllerAuditArea.filterReschedule(auditorControllerReschedule.text, controllerAuditArea.branchReschedule.value, 
                         startDateControllerReschedule.text, endDateControllerReschedule.text);
                         Get.back();
                       },

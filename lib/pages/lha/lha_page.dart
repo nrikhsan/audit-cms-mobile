@@ -4,7 +4,6 @@ import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_ar
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
-import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_filter_lha_audit_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,12 +21,10 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.scheduleIdLha.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -44,7 +41,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
           actions: [
             IconButton(
             onPressed: (){
-                dialogFilterLhaAuditArea(context, startDateController, endDateController, branchController, auditorController, controllerAuditArea);
+                dialogFilterLhaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
             },
             icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)
           )
@@ -84,23 +81,14 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                               ),
 
                               const SizedBox(height: 15),
-
+                               Text('Auditor : ${lha.user!.fullname}', style: CustomStyles.textBold15Px),
+                               const SizedBox(height: 5),
                               Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha.id!));
-                                      },
-                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
-
-                                  const SizedBox(width: 5),
-
+                                
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
@@ -139,7 +127,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.scheduleId.value = 0;
+    
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(

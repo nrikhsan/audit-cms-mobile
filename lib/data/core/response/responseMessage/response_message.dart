@@ -6,8 +6,8 @@ class ResponseMessage {
   ResponseMessage({this.metadata, this.status, this.message});
 
   ResponseMessage.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? Metadata.fromJson(json['metadata'])
+    metadata = json['meta'] != null
+        ? Metadata.fromJson(json['meta'])
         : null;
     status = json['status'];
     message = json['message'];

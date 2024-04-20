@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_revision.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
@@ -21,11 +22,11 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_schedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_clarification.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
@@ -65,8 +66,21 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.auth,
       data: ModelAuth(username: username, password: password).toJson());
-      print(response.data);
       return ResponseAuth.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseMessage> logOut() async {
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      final response = await dio.post(AppConstant.logOut);
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
@@ -75,15 +89,14 @@ class ApiService {
   //audit area
   //main schedules
   Future<ResponseMessage>addMainSchedules(List<ModelBodySchedulesAuditArea> schedule) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-    
     try {
       final response = await dio.post(AppConstant.addMainSchedulesAuditArea,
-          data: {'schedule': schedule.toList()});
-      print(response.data);
+          data: {'schedules': schedule.toList()});
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -91,14 +104,14 @@ class ApiService {
   }
 
   Future<ResponseMessage>editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.put('${AppConstant.editMainSchedule}$id', data: RequestBodyEditSchedule(userId: userId, branchId: branchId,
       startDate: startDate, endDate: endDate, description: description).toJson());
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
@@ -106,25 +119,26 @@ class ApiService {
   }
 
   Future<ResponseMessage>deleteMainSchedule(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.delete('${AppConstant.deleteMainSchedule}$id');
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea(int page, String name, String branch, String startDate, String endDate) async {
+  Future<ResponseMainScheduleAuditArea> getMainSchedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.mainScheduleAuditArea, 
-      queryParameters: {'page': page, 'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+      queryParameters: {'page': page, 'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseMainScheduleAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -132,8 +146,9 @@ class ApiService {
   }
 
   Future<ResponseDetailScheduleAuditArea> getDetailMainScheduleAuditArea(int id) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Auhtorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailMainSchedule}$id');
@@ -145,28 +160,28 @@ class ApiService {
 
   //special schedule
   Future<ResponseMessage>addSpecialSchedule(List<ModelBodySchedulesAuditArea> schedule) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-    
     try {
       final response = await dio.post(AppConstant.addSpecialSchedulesAuditArea,
-          data: {'schedule': schedule.toList()});
-      print(response.data);
+          data: {'schedules': schedule.toList()});
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<ResponseSpecialScheduleAuditArea> getSpecialSchedulesAuditArea(int page, String name, String branch, String startDate, String endDate) async {
+  Future<ResponseSpecialScheduleAuditArea> getSpecialSchedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.specialScheduleAuditArea, 
-      queryParameters: {'page': page, 'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+      queryParameters: {'page': page, 'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseSpecialScheduleAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -174,14 +189,14 @@ class ApiService {
   }
 
   Future<ResponseMessage>editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.put('${AppConstant.editSpecialSchedule}$id', data: RequestBodyEditSchedule(userId: userId, branchId: branchId,
       startDate: startDate, endDate: endDate, description: description).toJson());
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
@@ -189,12 +204,12 @@ class ApiService {
   }
 
   Future<ResponseMessage>deleteSpecialSchedule(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.delete('${AppConstant.deleteSpecialSchedule}$id');
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
@@ -202,8 +217,9 @@ class ApiService {
   }
 
   Future<ResponseDetailScheduleAuditArea> getDetailSpecialScheduleAuditArea(int id) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Auhtorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailSpecilaSchedule}$id');
@@ -215,28 +231,29 @@ class ApiService {
 
   //reschedule
   Future<ResponseMessage>requestReschedule(int userId, int scheduleId, int branchId, String startDate, String endDate, String desc)async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.post(AppConstant.requestReschedule,
           data: ModelBodyReschedulesAuditArea(userId: userId, scheduleId: scheduleId, 
           branchId: branchId, startDate: startDate, endDate: endDate, description: desc).toJson());
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea(int page, String name, String branch, String startDate, String endDate) async {
+  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.reschedulesAuditArea,
-       queryParameters: {'page': page, 'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+       queryParameters: {'page': page, 'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseReschedulesAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -244,8 +261,9 @@ class ApiService {
   }
 
   Future<ResponseDetailRescheduleAuditArea> getDetailRescheduleAuditArea(int id) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Auhtorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailReschedule}$id');
@@ -257,8 +275,9 @@ class ApiService {
 
   //master
   Future<ResponseUsers> getUsersAuditArea() async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.usersAuditArea);
@@ -269,8 +288,9 @@ class ApiService {
   }
 
   Future<ResponseBranchAuditArea> getBranchAuditArea() async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.branchAuditArea);
@@ -281,8 +301,9 @@ class ApiService {
   }
 
   Future<ResponseCaseAuditArea> getCaseAuditArea() async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.caseAuditArea);
@@ -293,8 +314,9 @@ class ApiService {
   }
 
   Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea() async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.caseCategoryAuditArea);
@@ -304,12 +326,13 @@ class ApiService {
     }
   }
 
-  Future<ResponseCaseCategoryByIdAuditArea> getCaseCategoryByIdAuditArea(int caseId) async {
+  Future<ResponseCaseCategoryByIdAuditArea> getCaseCategoryByIdAuditArea(int? caseId) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.caseCategoryAuditArea, queryParameters: {'casesId': caseId});
+      final response = await dio.get(AppConstant.caseCategoryAuditArea, queryParameters: {'case_id': caseId});
       return ResponseCaseCategoryByIdAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -317,8 +340,9 @@ class ApiService {
   }
 
   Future<ResponsePenaltyAuditArea>getPenaltyAuditArea()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.penlatyAuditArea);
@@ -329,54 +353,84 @@ class ApiService {
   }
 
   //LHA
-  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int lhaId, int page)async{
+  // Future<ResponseListCaseLha>getCaseLhaAuditArea(int page, int lhaId)async{
+  //   final token = await TokenManager.getToken();
+  //   dio.options.headers = {
+  //     'Authorization': 'Bearer $token'
+  //   };
+  //   try {
+  //     final response = await dio.get(AppConstant.listCaseLha, queryParameters: {
+  //       'page': page, 'lha_id': lhaId
+  //     });
+  //     return ResponseListCaseLha.fromJson(response.data);
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
+
+  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.listRevisiLha, 
-      queryParameters: {'lha_id': lhaId, 'page': page});
+      final response = await dio.get(AppConstant.listRevisiLha);
       return ResponseRevisionLhaAuditArea.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<ResponseMessage>revisiLhaAuditArea(int lhaId, int caseId, int caseCategoryId, String desc, String suggest, String tempRec, String perRec, int isResearch)async{
+  Future<ResponseMessage>revisiLhaAuditArea(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.post(AppConstant.lhaRevision, 
-      queryParameters: {'audit_daily_report_detail_id': lhaId, 'case_id': caseId, 'case_category_id': caseCategoryId,
-      'description': desc, 'suggestion': suggest, 'temporary_recommendations': tempRec, 'permanent_recommendations': perRec, 'is_research': isResearch});
-      print(response.data);
+      data: {'audit_daily_report_detail_id': lhaId, 'description': desc, 'suggestion': suggest, 
+      'temporary_recommendations': tempRec, 'permanent_recommendations': perRec});
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<ResponseDetailLhaRevision>getDetailRevisionLha(int lhaId)async{
+  Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get('${AppConstant.revisionlhaDetail}$lhaId');
-      return ResponseDetailLhaRevision.fromJson(response.data);
+      final response = await dio.get('${AppConstant.detailLhaRevision}$caseId');
+      return ResponseDetailRevision.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, int scheduleId, String name, String branch, String startDate, String endDate) async {
+  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await dio.get('${AppConstant.detailCasesLhaAuditArea}$caseId');
+      return ResponseDetailLhaCasesLhaAuditArea.fromJson(response.data);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate) async {
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.lhaAuditArea, queryParameters: {'page': page, 'schedule_id': scheduleId, 
-      'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+      'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseLhaAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -384,8 +438,9 @@ class ApiService {
   }
 
   Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id) async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detaillhaAuditArea}$id');
@@ -396,13 +451,14 @@ class ApiService {
   }
 
   //clarification
-  Future<ResponseClarificationAuditArea>getClarificationAuditArea(int page, String name, String branch, String startDate, String endDate)async{
+  Future<ResponseClarificationAuditArea>getClarificationAuditArea(int page, String name, int? branchId, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try{
       final response = await dio.get(AppConstant.clarificationAuditArea, queryParameters: {'page': page, 
-      'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+      'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseClarificationAuditArea.fromJson(response.data);
     }catch(error){
       throw Exception(error);
@@ -410,8 +466,9 @@ class ApiService {
   }
 
   Future<ResponseDetailClarificationAuditArea> getDetailClarificationAuditArea(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
     final response = await dio.get('${AppConstant.detailClarificationAuditArea}$id');
@@ -422,13 +479,14 @@ class ApiService {
   }
 
   //KKA
-  Future<ResponseKkaAuditArea> getKkaAuditArea(int page, int scheduleId, String name, String branch, String startDate, String endDate)async{
+  Future<ResponseKkaAuditArea> getKkaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.kkaAuditArea, queryParameters: {'page': page, 'schedule_id': scheduleId, 
-      'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
+      'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseKkaAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -436,8 +494,9 @@ class ApiService {
   }
 
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
         final responseDetail = await dio.get('${AppConstant.detailKkaAuditArea}$id');
@@ -475,27 +534,29 @@ class ApiService {
 
 
   //follow up
-  Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, String branch, String startDate, String endDate)async{
-     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+  Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
     };
     try {
-        final responseFollowUp = await dio.get(AppConstant.followUpAuditArea, queryParameters: {'page': page, 
-      'name': name, 'branch': branch, 'start_date': startDate, 'end_date': endDate});
-        return ResponseFollowUp.fromJson(responseFollowUp.data);
+      final responseFollowUp = await dio.get(AppConstant.followUpAuditArea, queryParameters: {'page': page, 
+      'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
+      return ResponseFollowUp.fromJson(responseFollowUp.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int penaltyId, String desc, int isPenalty)async{
+  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc, int? isPenalty)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUpAuditArea,
-      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, description: desc, isPenalty: isPenalty));
+      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, description: desc, isPenalty: isPenalty).toJson());
       print(responseInputFollowUp.data);
       return ResponseMessage.fromJson(responseInputFollowUp.data);
     } catch (error) {
@@ -504,8 +565,9 @@ class ApiService {
   }
 
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailFollowUpAuditArea}$id');
@@ -515,26 +577,11 @@ class ApiService {
     }
   }
 
-
-  //report
-  Future<ResponseReportAuditArea> getReportAuditArea(String branch, String startDate, String endDate)async{
-    dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
-    };
-    try {
-      final response = await dio.get(AppConstant.reportAuditArea, queryParameters: {
-        'branch': branch, 'start_date': startDate, 'end_date': endDate
-      });
-      return ResponseReportAuditArea.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
   //user profile
   Future<ResponseProfileAuditArea> getDetailUserAuditArea()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.detailUserAuditArea);
@@ -545,14 +592,14 @@ class ApiService {
   }
 
   Future<ResponseMessage> editProfileUserAuditArea(String email, String username)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.patch(AppConstant.editProfileUserAuditArea,
       data: {'email': email, 'username': username});
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -560,14 +607,14 @@ class ApiService {
   }
 
   Future<ResponseMessage>changePasswordAuditArea(String currentPassword, String newPassword)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
       final response = await dio.patch(AppConstant.changePasswordAuditArea,
       data: {'current_password': currentPassword, 'new_password': newPassword});
-      print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -579,8 +626,9 @@ class ApiService {
   //audit region
   //main schedules
   Future<ResponseMainScheduleAuditRegion>getMainSchedulesAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.mainScheduleAuditRegion,
@@ -592,8 +640,9 @@ class ApiService {
   }
 
   Future<ResponseDetailScheduleAuditRegion> getDetailMainScheduleAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailMainScheduleAuditRegion}$id');
@@ -605,8 +654,9 @@ class ApiService {
 
   //special schedule
   Future<ResponseSpecialScheduleAuditRegion>getSpecialSchedulesAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.specialScheduleAuditRegion, 
@@ -618,8 +668,9 @@ class ApiService {
   }
 
   Future<ResponseDetailScheduleAuditRegion> getDetailSpecialScheduleAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailSpecialScheduleAuditRegion}$id');
@@ -631,8 +682,9 @@ class ApiService {
 
   //reschedule
   Future<ResponseReschedulesAuditRegion>getReschedulesAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.reScheduleAuditRegion, 
@@ -644,8 +696,9 @@ class ApiService {
   }
 
   Future<ResponseDetailRescheduleAuditRegion> getDetailRescheduleAuditRegion(int id)async{
+   final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailRescheduleAuditRegion}$id');
@@ -657,8 +710,9 @@ class ApiService {
 
   //LHA
   Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
@@ -672,8 +726,9 @@ class ApiService {
   }
 
   Future<ResponseDetailLhaCasesLhaAuditRegion>getDetailCasesLha(int lhaId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.caselhaDetailAuditRegion}$lhaId');
@@ -684,8 +739,9 @@ class ApiService {
   }
 
   Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailLhaAuditRegion}$id');
@@ -695,9 +751,10 @@ class ApiService {
     }
   }
 
-  Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int scheduleId, int page, String startDate, String endDate)async{
+  Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int? scheduleId, int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.lhaAuditRegion,
@@ -710,12 +767,13 @@ class ApiService {
 
   //KKA
   Future<ResponseMessage>uploadKkaAuditRegion(String filePath, int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'multipart/form-data'
     };
     FormData formData = FormData.fromMap({
-      'file' : await MultipartFile.fromFile(filePath),
+      'file': await MultipartFile.fromFile(filePath),
       'schedule_id': id
     });
     try {
@@ -727,9 +785,10 @@ class ApiService {
     }
   }
 
-  Future<ResponseKkaAuditRegion>getKkaAuditRegion(int page, int scheduleId, String startDate, String endDate)async{
+  Future<ResponseKkaAuditRegion>getKkaAuditRegion(int page, int? scheduleId, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.kkaAuditRegion, queryParameters: {
@@ -742,8 +801,9 @@ class ApiService {
   }
 
   Future<ResponseDetailKkaAuditRegion>getDetailKkaAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailKkaAuditRegion}$id');
@@ -755,11 +815,14 @@ class ApiService {
 
   //report
   Future<ResponseReportAuditRegion>getReportAuditRegion(String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.reportAuditRegion);
+      final response = await dio.get(AppConstant.downloadReportClarificationAuditRegion, queryParameters: {
+        'start_date': startDate, 'end_date': endDate
+      });
       return ResponseReportAuditRegion.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -768,8 +831,9 @@ class ApiService {
 
   //master
   Future<ResponseBranchAuditRegion> getBranchAuditRegion() async {
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.branchAuditRegion);
@@ -780,8 +844,9 @@ class ApiService {
   }
 
   Future<ResponseCaseAuditRegion>getCasesAuditRegion()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.caseAuditRegion);
@@ -791,12 +856,14 @@ class ApiService {
     }
   }
 
-  Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion()async{
+  Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion(int? caseId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.caseCategoryAuditRegion);
+      final response = await dio.get(AppConstant.caseCategoryAuditRegion, 
+      queryParameters: {'case_id': caseId});
       return ResponseCaseCategoryAuditRegion.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -804,8 +871,9 @@ class ApiService {
   }
 
   Future<ResponseCaseCategoryByIdAuditRegion>getCaseCategoryByIdAuditRegion(int casesId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.caseCategoryAuditRegion, queryParameters: {'casesId': casesId});
@@ -816,8 +884,9 @@ class ApiService {
   }
 
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.priorityFindingClarificationAuditRegion);
@@ -830,8 +899,9 @@ class ApiService {
 
   //clarification
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.clarificationAuditRegion,
@@ -842,13 +912,16 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>generateClarification(int caseId, int caseCategoryId, int branchId)async{
+  Future<ResponseMessage>generateClarification(int? caseId, int? caseCategoryId, int? branchId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
-      final response = await dio.post(AppConstant.generateClarification);
+      final response = await dio.post(AppConstant.generateClarification, data: {
+        'case_id': caseId, 'case_category_id': caseCategoryId, 'branch_id': branchId
+      });
       print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
@@ -856,10 +929,11 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>inputClarificationAuditRegion(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
+  Future<ResponseInputClarification>inputClarificationAuditRegion(int? clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
   String description, String priority)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
@@ -867,15 +941,16 @@ class ApiService {
           data: {'clarification_id': clarificationId, 'evaluation_limitation': evaluationLimitation, 'location': location, 
           'auditee': auditee, 'auditee_leader': auditeeLeader, 'description': description, 'priority': priority});
       print(response.data);
-      return ResponseMessage.fromJson(response.data);
+      return ResponseInputClarification.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
     }
   }
 
   Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'multipart/form-data'
     };
 
@@ -894,8 +969,9 @@ class ApiService {
 
   Future<ResponseMessage>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification,
       String loss, String description, int followUp)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
@@ -914,8 +990,9 @@ class ApiService {
   }
 
   Future<ResponseDetailClarificationAuditRegion>detailClarificationAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailClarificationAuditRegion}$id');
@@ -926,9 +1003,10 @@ class ApiService {
   }
 
   //BAP
-  Future<ResponseMessage>uploadBapAuditRegion(String filePath, int bapId)async{
+  Future<ResponseMessage>uploadBapAuditRegion(String filePath, int? bapId)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'multipart/form-data'
     };
     FormData formData = FormData.fromMap({
@@ -946,8 +1024,9 @@ class ApiService {
   }
 
   Future<ResponseBapAuditRegion>getBapAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.bapAuditRegion,
@@ -959,8 +1038,9 @@ class ApiService {
   }
   
   Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int id)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get('${AppConstant.detailBapAuditRegion}$id');
@@ -972,8 +1052,9 @@ class ApiService {
 
   //user profile
   Future<ResponseProfileAuditRegion> getDetailUserAuditRegion()async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}'
+      'Authorization': 'Bearer $token'
     };
     try {
       final response = await dio.get(AppConstant.detailUserAuditRegion);
@@ -984,8 +1065,9 @@ class ApiService {
   }
 
   Future<ResponseMessage> editProfileUserAuditRegion(String email, String username)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
@@ -999,8 +1081,9 @@ class ApiService {
   }
 
   Future<ResponseMessage>changePasswordAuditRegion(String currentPassword, String newPassword)async{
+    final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer ${TokenManager.getToken()}',
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {

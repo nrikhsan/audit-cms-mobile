@@ -21,7 +21,6 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
@@ -40,7 +39,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
           actions: [
             IconButton(onPressed: (){
-            showFilterFollowUp(context, startDateController, endDateController, auditorController, branchController, controllerAuditArea);
+            showFilterFollowUp(context, startDateController, endDateController, auditorController, controllerAuditArea);
           },
           icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)),
           ],
@@ -89,6 +88,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                 ),
                 onTap: (){
                     Get.to(() => InputFollowUp(followUpId: followUp.id!, auditor: followUp.user!.fullname!, noFollowUp: followUp.code!));
+                    print(followUp.id);
                   },
                 );
             }

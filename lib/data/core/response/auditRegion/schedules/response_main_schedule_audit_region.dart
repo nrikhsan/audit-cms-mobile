@@ -84,7 +84,7 @@ class ContentMainScheduleAuditRegion {
   String? description;
   String? status;
   String? category;
-  Null? scheduleTrx;
+  String? scheduleTrx;
   String? startDate;
   String? endDate;
   String? startDateRealization;

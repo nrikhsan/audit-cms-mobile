@@ -59,7 +59,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
 
               Text('Kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                   child: Container(
@@ -72,27 +72,29 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: _cases,
+                      value: controllerAuditRegion.caseId.value,
                       items: controllerAuditRegion.caseAuditRegion.map((cases){
                         return DropdownMenuItem(
-                          value: cases,
+                          value: cases.id,
                           child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
                           );
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          _cases = value;
+                          controllerAuditRegion.selectCase(value);
+                          controllerAuditRegion.loadCaseCategoryAuditRegion(value);
+                          controllerAuditRegion.caseCategoryId.value = null;
                         });
                       }
                     ),
                   )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                   child: Container(
@@ -105,23 +107,23 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: _caseCategory,
+                      value: controllerAuditRegion.caseCategoryId.value,
                       items: controllerAuditRegion.caseCatgeory.map((caseCategory){
                         return DropdownMenuItem(
-                          value: caseCategory,
+                          value: caseCategory.id,
                           child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
                           );
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          _caseCategory = value;
+                          controllerAuditRegion.selectCaseCategory(value);
                           
                         });
                       }
                     ),
                   )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
@@ -198,11 +200,11 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                             shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            if (_cases == null || lhaDescriptionController.text.isEmpty || _caseCategory == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
+                            if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
                                 snakcBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
                             }else{
-                              controllerAuditRegion.addToLocalLhaAuditRegion(_caseCategory!.id!, _caseCategory!.id!, lhaDescriptionController.text,
-                              suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _caseCategory!.name!, _caseCategory!.name!);
+                              controllerAuditRegion.addToLocalLhaAuditRegion(controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text,
+                              suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!);
                             }
                           },
                           child: Text('Tambah LHA', style: CustomStyles.textBoldGreen13Px))
@@ -230,7 +232,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                                     Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                    Text('${data.caseName!.name}', style: CustomStyles.textBold13Px),
+                                    Text('${data.caseCategoryId}', style: CustomStyles.textBold13Px),
                                     const SizedBox(height: 10),
                                     Text('${data.description}', style: CustomStyles.textRegular13Px, maxLines: 5, overflow: TextOverflow.ellipsis),
                                   ],
@@ -260,15 +262,16 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     backgroundColor: CustomColors.blue
                   ),
                   onPressed: (){
-                    if (_cases == null || lhaDescriptionController.text.isEmpty || _caseCategory == null || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
+                    if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
                           snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(_selectedValueResearch == 1){
                           controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
-                         snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
+                          controllerAuditRegion.pagingControllerClarification.refresh();
+                          controllerAuditRegion.pagingControllerLha.refresh();
                           Get.to(() => const ClarificationPageAuditRegion());
                       }else{
                         controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
-                          snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
+                          controllerAuditRegion.pagingControllerLha.refresh();
                           Get.offAll(() => BotNavAuditRegion());
                       }
                   },

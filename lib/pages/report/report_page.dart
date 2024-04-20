@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -21,7 +22,6 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getReportAuditArea(branchController.text, startDateController.text, endDateController.text);
     return Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
@@ -37,7 +37,34 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
 
               Text('Dengan cabang', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputReportBranchOrUser('Nama cabang...', branchController),
+              Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchIdReport.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchIdReport.value = value;
+                            print(controllerAuditArea.branchIdReport.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
               const SizedBox(height: 15),
               Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
@@ -53,7 +80,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                        downloadReportAuditArea('url', controllerAuditArea, branchController, startDateController, endDateController);
+                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarificationAuditArea, controllerAuditArea, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
                       },
                       child: Text('Download laporan',
                           style: CustomStyles.textMediumWhite15Px)
@@ -82,7 +109,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getReportAuditRegion(startDateController.text, endDateController.text);
+    
     return Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
@@ -110,7 +137,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                        downloadReportAuditRegion('url', controllerAuditRegion, startDateController, endDateController);
+                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarificationAuditRegion, controllerAuditRegion, startDateController, endDateController);
                       },
                       child: Text('Download laporan',
                           style: CustomStyles.textMediumWhite15Px)

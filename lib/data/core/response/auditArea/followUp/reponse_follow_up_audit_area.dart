@@ -7,19 +7,19 @@ class ResponseFollowUp {
   ResponseFollowUp({this.meta, this.message, this.status, this.data});
 
   ResponseFollowUp.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? DataFollowUp.fromJson(json['data']) : null;
+    data = json['data'] != null ? new DataFollowUp.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['message'] = message;
-    data['status'] = status;
+    data['message'] = this.message;
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -39,39 +39,140 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['timestamp'] = timestamp;
-    data['api_version'] = apiVersion;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['timestamp'] = this.timestamp;
+    data['api_version'] = this.apiVersion;
     return data;
   }
 }
 
 class DataFollowUp {
-  List<ContentListFollowUp>? content;
   Pageable? pageable;
+  int? totalPage;
+  int? totalElement;
+  int? size;
+  int? number;
+  bool? last;
+  bool? first;
+  int? numberOfElement;
+  bool? empty;
+  Sort? sort;
+  List<ContentListFollowUp>? content;
 
-  DataFollowUp({this.content, this.pageable});
+  DataFollowUp(
+      {this.pageable,
+      this.totalPage,
+      this.totalElement,
+      this.size,
+      this.number,
+      this.last,
+      this.first,
+      this.numberOfElement,
+      this.empty,
+      this.sort,
+      this.content});
 
   DataFollowUp.fromJson(Map<String, dynamic> json) {
+    pageable = json['pageable'] != null
+        ? new Pageable.fromJson(json['pageable'])
+        : null;
+    totalPage = json['totalPage'];
+    totalElement = json['totalElement'];
+    size = json['size'];
+    number = json['number'];
+    last = json['last'];
+    first = json['first'];
+    numberOfElement = json['numberOfElement'];
+    empty = json['empty'];
+    sort = json['sort'] != null ? new Sort.fromJson(json['sort']) : null;
     if (json['content'] != null) {
       content = <ContentListFollowUp>[];
       json['content'].forEach((v) {
-        content!.add(ContentListFollowUp.fromJson(v));
+        content!.add(new ContentListFollowUp.fromJson(v));
       });
     }
-    pageable = json['pageable'] != null
-        ? Pageable.fromJson(json['pageable'])
-        : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (content != null) {
-      data['content'] = content!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.pageable != null) {
+      data['pageable'] = this.pageable!.toJson();
     }
-    if (pageable != null) {
-      data['pageable'] = pageable!.toJson();
+    data['totalPage'] = this.totalPage;
+    data['totalElement'] = this.totalElement;
+    data['size'] = this.size;
+    data['number'] = this.number;
+    data['last'] = this.last;
+    data['first'] = this.first;
+    data['numberOfElement'] = this.numberOfElement;
+    data['empty'] = this.empty;
+    if (this.sort != null) {
+      data['sort'] = this.sort!.toJson();
     }
+    if (this.content != null) {
+      data['content'] = this.content!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Pageable {
+  int? pageNumber;
+  int? pageSize;
+  Sort? sort;
+  int? offset;
+  bool? paged;
+  bool? unpaged;
+
+  Pageable(
+      {this.pageNumber,
+      this.pageSize,
+      this.sort,
+      this.offset,
+      this.paged,
+      this.unpaged});
+
+  Pageable.fromJson(Map<String, dynamic> json) {
+    pageNumber = json['pageNumber'];
+    pageSize = json['pageSize'];
+    sort = json['sort'] != null ? new Sort.fromJson(json['sort']) : null;
+    offset = json['offset'];
+    paged = json['paged'];
+    unpaged = json['unpaged'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['pageNumber'] = this.pageNumber;
+    data['pageSize'] = this.pageSize;
+    if (this.sort != null) {
+      data['sort'] = this.sort!.toJson();
+    }
+    data['offset'] = this.offset;
+    data['paged'] = this.paged;
+    data['unpaged'] = this.unpaged;
+    return data;
+  }
+}
+
+class Sort {
+  bool? sorted;
+  bool? empty;
+  bool? unsorted;
+
+  Sort({this.sorted, this.empty, this.unsorted});
+
+  Sort.fromJson(Map<String, dynamic> json) {
+    sorted = json['sorted'];
+    empty = json['empty'];
+    unsorted = json['unsorted'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sorted'] = this.sorted;
+    data['empty'] = this.empty;
+    data['unsorted'] = this.unsorted;
     return data;
   }
 }
@@ -79,13 +180,13 @@ class DataFollowUp {
 class ContentListFollowUp {
   int? id;
   User? user;
-  Null? penalty;
+  Penalty? penalty;
   Clarification? clarification;
   String? code;
   String? description;
   String? status;
-  Null? filename;
-  Null? filePath;
+  String? filename;
+  String? filePath;
   int? isPenalty;
 
   ContentListFollowUp(
@@ -102,10 +203,11 @@ class ContentListFollowUp {
 
   ContentListFollowUp.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-    penalty = json['penalty'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    penalty =
+        json['penalty'] != null ? new Penalty.fromJson(json['penalty']) : null;
     clarification = json['clarification'] != null
-        ? Clarification.fromJson(json['clarification'])
+        ? new Clarification.fromJson(json['clarification'])
         : null;
     code = json['code'];
     description = json['description'];
@@ -116,21 +218,23 @@ class ContentListFollowUp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    if (user != null) {
-      data['user'] = user!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
-    data['penalty'] = penalty;
-    if (clarification != null) {
-      data['clarification'] = clarification!.toJson();
+    if (this.penalty != null) {
+      data['penalty'] = this.penalty!.toJson();
     }
-    data['code'] = code;
-    data['description'] = description;
-    data['status'] = status;
-    data['filename'] = filename;
-    data['file_path'] = filePath;
-    data['is_penalty'] = isPenalty;
+    if (this.clarification != null) {
+      data['clarification'] = this.clarification!.toJson();
+    }
+    data['code'] = this.code;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['filename'] = this.filename;
+    data['file_path'] = this.filePath;
+    data['is_penalty'] = this.isPenalty;
     return data;
   }
 }
@@ -151,11 +255,30 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['email'] = email;
-    data['fullname'] = fullname;
-    data['initial_name'] = initialName;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    return data;
+  }
+}
+
+class Penalty {
+  int? id;
+  String? code;
+
+  Penalty({this.id, this.code});
+
+  Penalty.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
     return data;
   }
 }
@@ -174,71 +297,10 @@ class Clarification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['code'] = code;
-    data['evaluation_limitation'] = evaluationLimitation;
-    return data;
-  }
-}
-
-class Pageable {
-  int? pageNumber;
-  int? pageSize;
-  Sort? sort;
-  int? offset;
-  bool? unpaged;
-  bool? paged;
-
-  Pageable(
-      {this.pageNumber,
-      this.pageSize,
-      this.sort,
-      this.offset,
-      this.unpaged,
-      this.paged});
-
-  Pageable.fromJson(Map<String, dynamic> json) {
-    pageNumber = json['pageNumber'];
-    pageSize = json['pageSize'];
-    sort = json['sort'] != null ? Sort.fromJson(json['sort']) : null;
-    offset = json['offset'];
-    unpaged = json['unpaged'];
-    paged = json['paged'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['pageNumber'] = pageNumber;
-    data['pageSize'] = pageSize;
-    if (sort != null) {
-      data['sort'] = sort!.toJson();
-    }
-    data['offset'] = offset;
-    data['unpaged'] = unpaged;
-    data['paged'] = paged;
-    return data;
-  }
-}
-
-class Sort {
-  bool? empty;
-  bool? sorted;
-  bool? unsorted;
-
-  Sort({this.empty, this.sorted, this.unsorted});
-
-  Sort.fromJson(Map<String, dynamic> json) {
-    empty = json['empty'];
-    sorted = json['sorted'];
-    unsorted = json['unsorted'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['empty'] = empty;
-    data['sorted'] = sorted;
-    data['unsorted'] = unsorted;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['evaluation_limitation'] = this.evaluationLimitation;
     return data;
   }
 }

@@ -1,11 +1,10 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
-import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
 import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -46,6 +45,8 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
             final detail = schedule.schedule;
             final kka = schedule.kka;
             final lha = schedule.lha;
+            final startDate = detail?.startDateRealization;
+            final endDate = detail?.endDateRealization;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -80,53 +81,61 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
 
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
+                Text(startDate != null ? '${detail.startDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
+                Text(endDate != null ? '${detail.endDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () async {
-                                downloadKka(kka!.filePath!);
-                              },
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
-                        ],
+                Wrap(
+                  children: [
+                    kka != null ? 
+                    SizedBox(
+                      width: 150,
+                      child: Card(
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: CustomColors.lightGrey)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('File', style: CustomStyles.textMedium15Px),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: CustomColors.green,
+                                      shape: CustomStyles.customRoundedButton),
+                                  onPressed: () async {
+                                   downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                  },
+                                  child: Text('Unduh',
+                                      style: CustomStyles.textMediumWhite15Px)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
                 const SizedBox(height: 10),
-                ListView.builder(
+                Wrap(
+                  children: [
+                    lha != null ?
+                    ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
+                    itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return Card(
@@ -163,22 +172,15 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
-                                      },
-                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
-
-                                  const SizedBox(width: 5),
-
+                                  
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                        final lhaId = lha[index].id;
+                                        if (lhaId != null) {
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                        }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
@@ -186,7 +188,9 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                             ],
                           ),
                         ));
-                    })
+                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                  ],
+                )
               ],
             );
           }
@@ -227,9 +231,11 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
           if (controllerAuditArea.detailSpecialScheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
-            final detail = controllerAuditArea.detailSpecialScheduleAuditArea.value!.schedule;
-            final kka = controllerAuditArea.detailSpecialScheduleAuditArea.value!.kka;
-            final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value!.lha;
+            final detail = controllerAuditArea.detailSpecialScheduleAuditArea.value?.schedule;
+            final kka = controllerAuditArea.detailSpecialScheduleAuditArea.value?.kka;
+            final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
+            final startDate = detail?.startDateRealization;
+            final endDate = detail?.endDateRealization;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -259,51 +265,60 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 20),
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
+                Text(startDate != null ? '${detail.startDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
+                Text(endDate != null ? '${detail.endDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () async {
-                                downloadKka(kka!.filePath!);
-                              },
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
-                        ],
+                Wrap(
+                  children: [
+                    kka != null ? 
+                    SizedBox(
+                      width: 150,
+                      child: Card(
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: CustomColors.lightGrey)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('File', style: CustomStyles.textMedium15Px),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: CustomColors.green,
+                                      shape: CustomStyles.customRoundedButton),
+                                  onPressed: () async {
+                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                  },
+                                  child: Text('Unduh',
+                                      style: CustomStyles.textMediumWhite15Px)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
                 const SizedBox(height: 10),
-                ListView.builder(
+                Wrap(
+                  children: [
+                    lha != null ?
+                    ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
+                    itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return Card(
@@ -340,22 +355,15 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
-                                      },
-                                      child: Text('Kasus',style: CustomStyles.textMediumBlue15Px)),
-
-                                  const SizedBox(width: 5),
-
+                                  
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                        final lhaId = lha[index].id;
+                                        if (lhaId != null) {
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                        }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
@@ -363,7 +371,9 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                             ],
                           ),
                         ));
-                    })
+                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                  ],
+                )
               ],
             );
           }
@@ -389,6 +399,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailRescheduleAuditArea(widget.rescheduleId);
+    print(widget.rescheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -405,6 +416,8 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
             final detail = controllerAuditArea.detailRescheduleAuditArea.value!.schedule;
             final kka = controllerAuditArea.detailRescheduleAuditArea.value!.kka;
             final lha = controllerAuditArea.detailRescheduleAuditArea.value!.lha;
+            final startDate = detail?.startDateRealization;
+            final endDate = detail?.endDateRealization;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -436,19 +449,23 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
+               Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
+                Text(startDate != null ? '${detail.startDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
+                Text(endDate != null ? '${detail.endDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                SizedBox(
+                Wrap(
+                  children: [
+                    kka != null ?
+                    SizedBox(
                   width: 150,
                   child: Card(
                     elevation: 0,
@@ -467,7 +484,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                downloadKka(kka!.filePath!);
+                                downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
                               },
                               child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
@@ -475,14 +492,19 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                       ),
                     ),
                   ),
+                ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Text('List laporan harian audit :',
                     style: CustomStyles.textBold15Px),
                 const SizedBox(height: 10),
-                ListView.builder(
+                Wrap(
+                  children: [
+                    lha != null ?
+                    ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
+                    itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return Card(
@@ -519,22 +541,15 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape:
-                                              CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => ListLhaCasesPageAuditArea(lhaId: lha[index].id!));
-                                      },
-                                      child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
-
-                                  const SizedBox(width: 5),
-
+                                  
                                   TextButton(
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditArea(id: lha[index].id!));
+                                        final lhaId = lha[index].id;
+                                        if (lhaId != null) {
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                        }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
@@ -542,7 +557,9 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                             ],
                           ),
                         ));
-                    })
+                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                  ],
+                )
               ],
             );
           }
@@ -608,90 +625,106 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                 ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailMainSchedule.value?.schedule;
-          final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
-          final kka = controllerAuditRegion.detailMainSchedule.value?.kka;
-          if (detail == null) {
+        child: SingleChildScrollView(
+          child: Obx(() {
+            final schedule = controllerAuditRegion.detailMainSchedule.value;
+          if (schedule == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final detail = schedule.schedule;
+            final kka = schedule.kka;
+            final lha = schedule.lha;
+            final startDate = detail?.startDateRealization;
+            final endDate = detail?.endDateRealization;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.user!.fullname}', style: CustomStyles.textRegular13Px),
+                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.startDate} s/d ${detail.endDate}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.description}',
                     style: CustomStyles.textRegular13Px,
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 20),
+
                 Text('Status :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
+                Text(startDate != null ? '${detail.startDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
+                Text(endDate != null ? '${detail.endDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
-
                 const SizedBox(height: 20),
+                
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () {
-                                downloadKka(kka!.filePath!);
-                              },
-
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
-                        ],
+                Wrap(
+                  children: [
+                    kka != null ? 
+                    SizedBox(
+                      width: 150,
+                      child: Card(
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: CustomColors.lightGrey)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('File', style: CustomStyles.textMedium15Px),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: CustomColors.green,
+                                      shape: CustomStyles.customRoundedButton),
+                                  onPressed: () async {
+                                   downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${kka.filename}');
+                                  },
+                                  child: Text('Unduh',
+                                      style: CustomStyles.textMediumWhite15Px)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                  ],
                 ),
-                
+                const SizedBox(height: 20),
                 Text('List laporan harian audit :',
-                        style: CustomStyles.textBold15Px),
-
-                const SizedBox(height: 15),
-                ListView.builder(
+                    style: CustomStyles.textBold15Px),
+                const SizedBox(height: 10),
+                Wrap(
+                  children: [
+                    lha != null ?
+                    ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
+                    itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return Card(
@@ -714,7 +747,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                                     children: [
                                       const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
                                       const SizedBox(width: 5),
-                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
                                     ],
                                   ) :
                                   const SizedBox()
@@ -728,31 +761,25 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
+                                  
                                   TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton),
-                                        onPressed: () {
-                                          
-                                        },
-                                          child: Text('Hapus', style: CustomStyles.textMediumRed15Px)
-                                    ),
-
-                                    const SizedBox(width: 5),
-
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton),
-                                        onPressed: () {
-                                          Get.to(() => DetailLhaPageAuditRegion(id: lha[index].id!));
-                                        },
-                                          child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px)
-                                    ),
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        final lhaId = lha[index].id;
+                                        if (lhaId != null) {
+                                          Get.to(() => DetailLhaPageAuditRegion(id:lhaId));
+                                        }
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
                           ),
                         ));
-                    })
+                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                  ],
+                )
               ],
             );
           }
@@ -862,19 +889,21 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailSpecialSchedule.value?.schedule;
-          final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
-          final kka = controllerAuditRegion.detailSpecialSchedule.value?.kka;
-          if (detail == null) {
+          if (controllerAuditRegion.detailSpecialSchedule.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            final detail = controllerAuditRegion.detailSpecialSchedule.value?.schedule;
+            final kka = controllerAuditRegion.detailSpecialSchedule.value?.kka;
+            final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
+            final startDate = detail?.startDateRealization;
+            final endDate = detail?.endDateRealization;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text('Auditor :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.user!.fullname}', style: CustomStyles.textRegular13Px),
+                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Nama cabang :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
@@ -897,54 +926,60 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                 const SizedBox(height: 20),
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
+                Text(startDate != null ? '${detail.startDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
+                Text(endDate != null ? '${detail.endDateRealization}' : '-',
                     style: CustomStyles.textRegular13Px),
-
                 const SizedBox(height: 20),
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () {
-                                downloadKka(kka!.filePath!);
-                              },
-
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
-                        ],
+                Wrap(
+                  children: [
+                    kka != null ? 
+                    SizedBox(
+                      width: 150,
+                      child: Card(
+                        elevation: 0,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: CustomColors.lightGrey)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('File', style: CustomStyles.textMedium15Px),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: CustomColors.green,
+                                      shape: CustomStyles.customRoundedButton),
+                                  onPressed: () async {
+                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                  },
+                                  child: Text('Unduh',
+                                      style: CustomStyles.textMediumWhite15Px)),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                  ],
                 ),
-                
+                const SizedBox(height: 20),
                 Text('List laporan harian audit :',
-                        style: CustomStyles.textBold15Px),
-
-                const SizedBox(height: 15),
-                ListView.builder(
+                    style: CustomStyles.textBold15Px),
+                const SizedBox(height: 10),
+                Wrap(
+                  children: [
+                    lha != null ?
+                    ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
+                    itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return Card(
@@ -967,7 +1002,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                                     children: [
                                       const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
                                       const SizedBox(width: 5),
-                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
                                     ],
                                   ) :
                                   const SizedBox()
@@ -983,30 +1018,23 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                                 children: [
                                   
                                   TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton),
-                                        onPressed: () {
-                                          
-                                        },
-                                          child: Text('Hapus', style: CustomStyles.textMediumRed15Px)
-                                    ),
-
-                                    const SizedBox(width: 5),
-
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton),
-                                        onPressed: () {
-                                          Get.to(() => DetailLhaPageAuditRegion(id: lha[index].id!));
-                                        },
-                                          child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px)
-                                    ),
+                                      style: TextButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton),
+                                      onPressed: () {
+                                        final lhaId = lha[index].id;
+                                        if (lhaId != null) {
+                                         Get.to(() => DetailLhaPageAuditRegion(id:lhaId));
+                                        }
+                                      },
+                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],
                               )
                             ],
                           ),
                         ));
-                    })
+                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                  ],
+                )
               ],
             );
           }
@@ -1121,7 +1149,7 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
           final kka = controllerAuditRegion.detailReschedule.value?.kka;
           if (detail == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
+          } else{
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -1184,7 +1212,7 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                downloadKka(kka!.filePath!);
+                                //masukan function download KKA
                               },
                               child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
@@ -1236,17 +1264,6 @@ class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegio
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton),
-                                        onPressed: () {
-                                          
-                                        },
-                                          child: Text('Hapus', style: CustomStyles.textMediumRed15Px)
-                                    ),
-
-                                    const SizedBox(width: 5),
 
                                   TextButton(
                                       style: TextButton.styleFrom(

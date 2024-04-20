@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 void showFilterFollowUp(BuildContext context, TextEditingController startDateController, TextEditingController endDateController, 
-TextEditingController auditorController, TextEditingController branchController, ControllerAuditArea controllerAuditArea){
+TextEditingController auditorController, ControllerAuditArea controllerAuditArea){
   showModalBottomSheet(
       isScrollControlled: true,
       elevation: 0,
@@ -41,31 +41,10 @@ TextEditingController auditorController, TextEditingController branchController,
                     actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorController.text.isNotEmpty) {
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterFollowUp();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else if(branchController.text.isNotEmpty){
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterFollowUp();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterFollowUp();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else{
-                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
-                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
-                        }
+                      auditorController.clear();
+                      startDateController.clear();
+                      endDateController.clear();
+                      controllerAuditArea.resetFilterFollowUp();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -100,24 +79,34 @@ TextEditingController auditorController, TextEditingController branchController,
 
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  TextField(
-                    controller: branchController,
-                    onChanged: (branch) => branchController.text = branch,
-                    cursorColor: CustomColors.blue,
-                    decoration: InputDecoration(
-                        labelStyle: CustomStyles.textMediumGrey15Px,
-                        labelText: 'Cabang...',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                            const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: CustomColors.grey)
-                        )
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchFollowUp.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchFollowUp.value = value;
+                            print(controllerAuditArea.branchFollowUp.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
 
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
@@ -202,7 +191,7 @@ TextEditingController auditorController, TextEditingController branchController,
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAuditArea.filterDataFollowUpAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            controllerAuditArea.filterDataFollowUpAuditArea(startDateController.text, controllerAuditArea.branchFollowUp.value, auditorController.text, endDateController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

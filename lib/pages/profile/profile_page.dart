@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/controller/auth/controller_auth.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/auth/login_page.dart';
@@ -21,6 +22,7 @@ class ProfilePageAuditArea extends StatefulWidget {
 class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -141,8 +143,8 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                           ),
                       onPressed: () {
                         Get.offAll(() => const LoginPage());
-                        TokenManager.clearToken();
-                        Get.snackbar('Berhasil', 'Logout berhasil', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        controllerAuth.logout();
+                       
                       },
                       child: Text('Ya',
                           style: CustomStyles.textMediumWhite15Px))
@@ -167,6 +169,7 @@ class ProfilePageAuditRegion extends StatefulWidget {
 class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
 
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
   
   @override
   Widget build(BuildContext context) {
@@ -287,8 +290,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                           ),
                       onPressed: () {
                         Get.offAll(() => const LoginPage());
-                        TokenManager.clearToken();
-                        Get.snackbar('Berhasil', 'Logout berhasil', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        controllerAuth.logout();
                       },
                       child: Text('Ya',
                           style: CustomStyles.textMediumWhite15Px))

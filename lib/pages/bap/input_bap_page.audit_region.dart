@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,7 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
           titleSpacing: 5,
           leading: IconButton(
             onPressed: (){
-              Get.back();
+              Get.offAll(BotNavAuditRegion());
             }, 
             icon: const Icon(Icons.arrow_back, color: CustomColors.black, size: 25)
           ),
@@ -51,7 +52,7 @@ class _InputBapPageAuditRegionState extends State<InputBapPageAuditRegion> {
                   backgroundColor: CustomColors.blue
                 ),
                 onPressed: (){
-                  uploadBapAuditRegion(context, controllerAuditRegion, 0);
+                  uploadBapAuditRegion(context, controllerAuditRegion);
                   
                 }, 
                 child: Text('Upload BAP', style: CustomStyles.textMediumWhite15Px)

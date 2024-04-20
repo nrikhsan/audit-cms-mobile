@@ -49,13 +49,13 @@ class Meta {
 class DataDetailFollowUp {
   int? id;
   User? user;
-  Null? penalty;
+  String? penalty;
   Clarification? clarification;
   String? code;
   String? description;
   String? status;
-  Null? filename;
-  Null? filePath;
+  String? filename;
+  String? filePath;
   int? isPenalty;
 
   DataDetailFollowUp(

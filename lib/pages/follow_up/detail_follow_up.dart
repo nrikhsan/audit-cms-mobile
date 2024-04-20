@@ -56,7 +56,6 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
 
                 const SizedBox(height: 15),
                 Text('Klarifikasi :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
 
                 const SizedBox(height: 15),
                 Text('Tanggal klarifikasi :', style: CustomStyles.textBold15Px),
@@ -114,70 +113,6 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                       ),
                     ),
                   ),
-
-                // const SizedBox(height: 15),
-                //   Text('File klarifikasi :', style: CustomStyles.textBold15Px),
-                //   const SizedBox(height: 5),
-                //   SizedBox(
-                //     width: 140,
-                //     child: Card(
-                //       shape: OutlineInputBorder(
-                //           borderRadius: BorderRadius.circular(10),
-                //           borderSide:
-                //               const BorderSide(color: CustomColors.lightGrey)),
-                //       elevation: 0,
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(5),
-                //         child: Row(
-                //           children: [
-                //             Text('File', style: CustomStyles.textMedium15Px),
-                //             const SizedBox(width: 10),
-                //             ElevatedButton(
-                //                 style: ElevatedButton.styleFrom(
-                //                     shape: CustomStyles.customRoundedButton,
-                //                     backgroundColor: CustomColors.green),
-                //                 onPressed: () async {
-                //                   showDialogPdfFileDetailFollowUp(context, 'File klarifikasi', 'file_klarifikasi', followUp.filePath!);
-                //                 },
-                //                 child: Text('Lihat',
-                //                     style: CustomStyles.textMediumWhite15Px))
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-
-                  // const SizedBox(height: 20),
-                  // Text('File BAP :', style: CustomStyles.textBold15Px),
-                  // const SizedBox(height: 5),
-                  // SizedBox(
-                  //   width: 140,
-                  //   child: Card(
-                  //     shape: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //         borderSide:
-                  //             const BorderSide(color: CustomColors.lightGrey)),
-                  //     elevation: 0,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(5),
-                  //       child: Row(
-                  //         children: [
-                  //           Text('File', style: CustomStyles.textMedium15Px),
-                  //           const SizedBox(width: 10),
-                  //           ElevatedButton(
-                  //               style: ElevatedButton.styleFrom(
-                  //                   shape: CustomStyles.customRoundedButton,
-                  //                   backgroundColor: CustomColors.blue),
-                  //               onPressed: () async {
-                  //                 showDialogPdfFileDetailFollowUp(context, 'File BAP', 'file_bap', followUp.bapDoc!);
-                  //               },
-                  //               child: Text('Lihat',
-                  //                   style: CustomStyles.textMediumWhite15Px))
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
               ],
             ),
           )

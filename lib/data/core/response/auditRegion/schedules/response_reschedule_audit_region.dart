@@ -84,11 +84,11 @@ class ContentListRescheduleAuditRegion {
   String? description;
   String? status;
   String? category;
-  Null? scheduleTrx;
+  String? scheduleTrx;
   String? startDate;
   String? endDate;
-  Null? startDateRealization;
-  Null? endDateRealization;
+  String? startDateRealization;
+  String? endDateRealization;
 
   ContentListRescheduleAuditRegion(
       {this.user,

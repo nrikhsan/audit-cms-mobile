@@ -13,7 +13,6 @@ import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/bottom_sheet_fi
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
@@ -34,17 +33,14 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
   final TextEditingController startDateControllerMainSchedule = TextEditingController();
   final TextEditingController endDateControllerMainSchedule = TextEditingController();
-  final TextEditingController branchControllerMainSChedule = TextEditingController();
   final TextEditingController auditorControllerMainSchedule = TextEditingController();
 
   final TextEditingController startDateControllerSpecialSchedule = TextEditingController();
   final TextEditingController endDateControllerSpecialSchedule = TextEditingController();
-  final TextEditingController branchControllerSpecialSchedule = TextEditingController();
   final TextEditingController auditorControllerSpecialSchedule = TextEditingController();
 
   final TextEditingController startDateControllerReschedule = TextEditingController();
   final TextEditingController endDateControllerReschedule = TextEditingController();
-  final TextEditingController branchControllerReschedule = TextEditingController();
   final TextEditingController auditorControllerReschedule = TextEditingController();
 
   @override
@@ -94,7 +90,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           labelStyle: CustomStyles.textMediumWhite15Px,
                           child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                           onTap: (){
-                           bottomSheetFilterMainSchedule(context, auditorControllerMainSchedule, branchControllerMainSChedule, 
+                           bottomSheetFilterMainSchedule(context, auditorControllerMainSchedule,
                            startDateControllerMainSchedule, endDateControllerMainSchedule, controllerAuditArea);
                           }
                       ),
@@ -216,8 +212,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         labelStyle: CustomStyles.textMediumWhite15Px,
                         child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                         onTap: (){
-                          bottomSheetFilterSpecialSchedule(context, auditorControllerSpecialSchedule, 
-                          branchControllerSpecialSchedule, startDateControllerSpecialSchedule, endDateControllerSpecialSchedule, controllerAuditArea);
+                          bottomSheetFilterSpecialSchedule(context, auditorControllerSpecialSchedule, startDateControllerSpecialSchedule, endDateControllerSpecialSchedule, controllerAuditArea);
                         }
                     ),
 
@@ -337,7 +332,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           labelStyle: CustomStyles.textMediumWhite15Px,
                           child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                           onTap: (){
-                            bottomSheetFilterReschedule(context, auditorControllerReschedule, branchControllerReschedule, 
+                            bottomSheetFilterReschedule(context, auditorControllerReschedule, 
                             startDateControllerReschedule, endDateControllerReschedule, controllerAuditArea);
                           }
                       )

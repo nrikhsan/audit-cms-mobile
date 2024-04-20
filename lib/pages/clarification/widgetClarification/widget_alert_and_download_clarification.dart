@@ -1,10 +1,14 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/input_identification_clarification_page.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,7 +18,6 @@ void filterClarificationAuditArea(
     BuildContext context,
     TextEditingController startDateController,
     TextEditingController endDateController,
-    TextEditingController branchController,
     TextEditingController auditorController,
     ControllerAuditArea controllerAuditArea) {
   showModalBottomSheet(
@@ -48,34 +51,10 @@ void filterClarificationAuditArea(
                   actions: [
                     IconButton(
                         onPressed: () {
-                          if (auditorController.text.isNotEmpty) {
-                            auditorController.clear();
-                            controllerAuditArea.resetFilterClarification();
-                            branchController.clear();
-                            startDateController.clear();
-                            endDateController.clear();
-                            Get.back();
-                          } else if (branchController.text.isNotEmpty) {
-                            auditorController.clear();
-                            controllerAuditArea.resetFilterClarification();
-                            branchController.clear();
-                            startDateController.clear();
-                            endDateController.clear();
-                            Get.back();
-                          } else if (startDateController.text.isNotEmpty ||
-                              endDateController.text.isNotEmpty) {
-                            auditorController.clear();
-                            controllerAuditArea.resetFilterClarification();
-                            branchController.clear();
-                            startDateController.clear();
-                            endDateController.clear();
-                            Get.back();
-                          } else {
-                            Get.snackbar('Alert', 'Reset data filter gagal',
-                                backgroundColor: CustomColors.red,
-                                colorText: CustomColors.white,
-                                snackPosition: SnackPosition.TOP);
-                          }
+                          auditorController.clear();
+                          startDateController.clear();
+                          endDateController.clear();
+                          controllerAuditArea.resetFilterClarification();
                         },
                         icon: const Icon(Icons.refresh_rounded,
                             color: CustomColors.grey, size: 25)),
@@ -100,25 +79,36 @@ void filterClarificationAuditArea(
                             const BorderSide(color: CustomColors.lightGrey)),
                   ),
                 ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: branchController,
-                  onChanged: (branch) => branchController.text = branch,
-                  cursorColor: CustomColors.blue,
-                  decoration: InputDecoration(
-                    hintText: 'Cabang...',
-                    hintStyle: CustomStyles.textMediumGrey15Px,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: CustomColors.lightGrey,
-                        )),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: CustomColors.lightGrey)),
-                  ),
+                
+                  const SizedBox(height: 15),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchCla.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchCla.value = value;
+                            print(controllerAuditArea.branchCla.value);
+                          }
+                      ),
+                    )
                 ),
+              )),
                 const SizedBox(height: 20),
                 TextField(
                   controller: startDateController,
@@ -202,9 +192,9 @@ void filterClarificationAuditArea(
                         onPressed: () {
                           controllerAuditArea.filterClarificationAuditArea(
                               startDateController.text,
-                              endDateController.text,
+                              controllerAuditArea.branchCla.value,
                               auditorController.text,
-                              branchController.text);
+                              endDateController.text);
                           Get.back();
                         },
                         child: Text('Simpan data filter',
@@ -358,7 +348,8 @@ void showBottomSheetFilterClarificationAuditRegion(
       });
 }
 
-void downloadFileDetailClarification(String fileName, String fileDoc) async {
+void downloadFileClarification(String url) async {
+  final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
 
@@ -366,34 +357,44 @@ void downloadFileDetailClarification(String fileName, String fileDoc) async {
     var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = '${fileName}_$timestamp.pdf';
+      String saveName = 'klarifikasi_$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
       try {
-        await Dio().download(fileDoc, savePath,
-            onReceiveProgress: (received, total) {
-          if (total != -1) {
-            print((received / total * 100).toStringAsFixed(0) + "%");
-          }
-        });
-        Get.snackbar('Berhasil', 'File $saveName berhasil di unduh',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: CustomColors.green,
-            colorText: CustomColors.white);
+        await dio.download(
+          url,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
-        throw Exception(error);
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
   } else {
-    Get.snackbar('Alert', 'Permintaan izin ditolak',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: CustomColors.red,
-        colorText: CustomColors.white);
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
   }
 }
 
-void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, String fileName, String fileDoc) async {
+
+void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, String fileName) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -418,10 +419,22 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
                   titleTextStyle: CustomStyles.textBold18Px,
                   automaticallyImplyLeading: false,
                 ),
-                body: SfPdfViewer.network(
-                  fileDoc,
-                  pageSpacing: 0,
-                ),
+                body: FutureBuilder(
+                  future: getToken(),
+                  builder: (_, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                    } else {
+                      print(fileName);
+                      final data = snapshot.data;
+                    return SfPdfViewer.network(
+                      headers: {'Authorization': 'Bearer $data'},
+                      '${AppConstant.documentClarificationAuditRegion}$fileName',
+                      pageSpacing: 0,
+                      );
+                    }
+                  }
+                )
               )),
         ),
         actions: [
@@ -430,13 +443,16 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileDetailClarification(fileName, fileDoc);
+                downloadFileClarification('${AppConstant.downloadClarificationAuditArea}$fileName');
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
       ),
     );
 }
+ Future<String?>getToken()async{
+    return await TokenManager.getToken();
+  }
 
 void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
     showDialog(

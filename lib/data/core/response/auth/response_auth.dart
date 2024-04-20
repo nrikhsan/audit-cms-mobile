@@ -2,7 +2,7 @@ class ResponseAuth {
   Metadata? metadata;
   int? status;
   String? message;
-  Data? data;
+  DataLogin? data;
 
   ResponseAuth({this.metadata, this.status, this.message, this.data});
 
@@ -12,7 +12,7 @@ class ResponseAuth {
         : null;
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new DataLogin.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -48,13 +48,13 @@ class Metadata {
   }
 }
 
-class Data {
+class DataLogin {
   String? token;
   Null refresh;
 
-  Data({this.token, this.refresh});
+  DataLogin({this.token, this.refresh});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataLogin.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     refresh = json['refresh'];
   }

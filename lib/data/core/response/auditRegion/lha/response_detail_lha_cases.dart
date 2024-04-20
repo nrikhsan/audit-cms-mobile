@@ -68,7 +68,7 @@ class DataDetailCasesLha {
 
   DataDetailCasesLha.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    cases = json['cases'] != null ? Cases.fromJson(json['cases']) : null;
+    cases = json['case'] != null ? Cases.fromJson(json['case']) : null;
     caseCategory = json['case_category'] != null
         ? CaseCategory.fromJson(json['case_category'])
         : null;
@@ -83,7 +83,7 @@ class DataDetailCasesLha {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     if (cases != null) {
-      data['cases'] = cases!.toJson();
+      data['case'] = cases!.toJson();
     }
     if (caseCategory != null) {
       data['case_category'] = caseCategory!.toJson();

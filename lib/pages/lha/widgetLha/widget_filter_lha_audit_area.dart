@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startDateController, TextEditingController endDateController,
-TextEditingController branchController, TextEditingController auditorController, ControllerAuditArea controllerAuditArea){
+void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startDateController, TextEditingController endDateController, TextEditingController auditorController, ControllerAuditArea controllerAuditArea){
   showModalBottomSheet(
         isScrollControlled: true,
         elevation: 0,
@@ -36,31 +35,10 @@ TextEditingController branchController, TextEditingController auditorController,
                     actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorController.text.isNotEmpty) {
-                          auditorController.clear();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          controllerAuditArea.resetFilterLha();
-                          Get.back();
-                        }else if(branchController.text.isNotEmpty){
-                          auditorController.clear();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          controllerAuditArea.resetFilterLha();
-                          Get.back();
-                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
-                          auditorController.clear();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          controllerAuditArea.resetFilterLha();
-                          Get.back();
-                        }else{
-                          Get.snackbar('Alert', 'Reset data filter gagal', backgroundColor: CustomColors.red, 
-                          colorText: CustomColors.white, snackPosition: SnackPosition.TOP);
-                        }
+                      controllerAuditArea.resetFilterLha();
+                        auditorController.clear();
+                        startDateController.clear();
+                        endDateController.clear();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -92,24 +70,36 @@ TextEditingController branchController, TextEditingController auditorController,
                   const SizedBox(height: 15),
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  TextField(
-                    controller: branchController,
-                    onChanged: (branch) => branchController.text = branch,
-                    cursorColor: CustomColors.blue,
-                    decoration: InputDecoration(
-                        labelStyle: CustomStyles.textMediumGrey15Px,
-                        labelText: 'Cabang...',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                            const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: CustomColors.grey)
-                        )
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.branchLha.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchLha.value = value;
+                            print(controllerAuditArea.branchLha.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
+
+               
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -193,7 +183,7 @@ TextEditingController branchController, TextEditingController auditorController,
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAuditArea.filterLhaAuditArea(auditorController.text, branchController.text,
+                            controllerAuditArea.filterLhaAuditArea(auditorController.text, controllerAuditArea.branchLha.value,
                             startDateController.text, endDateController.text);
                             Get.back();
                           },

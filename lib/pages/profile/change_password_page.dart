@@ -113,7 +113,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                       }else if(newPasswordController.text.length < 6 || confirmPasswordController.text.length < 6){
                         Get.snackbar('Gagal', 'Kata sandi harus lebih dari 6 karakter', colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else if(confirmPasswordController.text == newPasswordController.text){
-                        Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        
                         controllerAuditArea.changePasswordAuditArea(oldPasswordController.text, newPasswordController.text);
                         Navigator.pop(context);
                       }else{
@@ -241,7 +241,7 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
                       }else if(newPasswordController.text.length < 6 || confirmPasswordController.text.length < 6){
                         Get.snackbar('Gagal', 'Kata sandi harus lebih dari 6 karakter', colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else if(confirmPasswordController.text == newPasswordController.text){
-                        Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+                        
                         controllerAuditRegion.changePasswordAuditRegions(widget.id, oldPasswordController.text, newPasswordController.text, confirmPasswordController.text);
                         Navigator.pop(context);
                       }else{

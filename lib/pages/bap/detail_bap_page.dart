@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -88,7 +89,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditArea(context, 'File BAP', 'file_bap', bap.filePath!);
+                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}${bap.filename}');
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
@@ -185,7 +186,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditArea(context, 'File BAP', 'file_bap', bap.filePath!);
+                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}${bap.filename}');
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],

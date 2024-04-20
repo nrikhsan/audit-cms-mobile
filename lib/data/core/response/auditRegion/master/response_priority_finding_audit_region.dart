@@ -27,8 +27,8 @@ class ResponsePriorityFindingAuditRegion {
 }
 
 class Meta {
-  Null? timestamp;
-  Null? apiVersion;
+  String? timestamp;
+  String? apiVersion;
 
   Meta({this.timestamp, this.apiVersion});
 

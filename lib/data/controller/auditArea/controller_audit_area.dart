@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_revision.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/bap/response_bap_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
@@ -8,6 +9,7 @@ import 'package:audit_cms/data/core/response/auditArea/bap/response_detail_bap_a
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/response_list_case_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
@@ -22,8 +24,9 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_s
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/report/response_report_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
+import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../core/repositories/repositories.dart';
@@ -38,7 +41,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<ModelBodySchedulesAuditArea> dataListLocalMainSchedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
   var detailMainScheduleAuditArea =  Rxn<DataDetailScheduleAuditArea>();
   var nameMainSchedule = ''.obs;
-  var branchMainSchedule = ''.obs;
+  var branchIdMainSchedule = RxnInt();
   var startDateMainSchedule = ''.obs;
   var endDateMainSchedule = ''.obs;
 
@@ -47,7 +50,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<ModelBodySchedulesAuditArea> dataListLocalSpecialSchedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
   var detailSpecialScheduleAuditArea =  Rxn<DataDetailScheduleAuditArea>();
   var nameSpecialSchedule = ''.obs;
-  var branchSpecialSchedule = ''.obs;
+  var branchSpecialSchedule = RxnInt();
   var startDateSpecialSchedule = ''.obs;
   var endDateSpecialSchedule = ''.obs;
 
@@ -56,19 +59,21 @@ class ControllerAuditArea extends GetxController{
   final RxList<ModelBodySchedulesAuditArea> dataListLocalReschedulesAuditArea = RxList<ModelBodySchedulesAuditArea>();
   var detailRescheduleAuditArea = Rxn<DataDetailRescheduleAuditArea>();
   var nameReschedule = ''.obs;
-  var branchReschedule = ''.obs;
+  var branchReschedule = RxnInt();
   var startDateReschedule = ''.obs;
   var endDateReschedule = ''.obs;
 
   //lha
+  var lhaId = Rxn<int>();
   var scheduleIdLha = Rxn<int>();
   final PagingController<int, ContentListLhaAuditArea> pagingControllerLhaAuditArea = PagingController(firstPageKey: 0);
-  var lhaId = Rxn<int>();
-  final PagingController<int, LhaDetails> pagingControllerLhaRevisi = PagingController(firstPageKey: 0);
-  var detailRevisonLha = Rxn<DataDetailRevisionLha>();
+  final PagingController<int, LhaDetails>pagingControllerListCase = PagingController(firstPageKey: 0);
+  final RxList<DataRevisiLha> lhaRevision = <DataRevisiLha>[].obs;
+  var detailCase = Rxn<DataDetailCasesLha>();
+  var detailRevisionLha = Rxn<DataDetailRevision>();
   var detailLhaAuditArea = Rxn<DataDetailLhaAuditArea>();
   var nameLha = ''.obs;
-  var branchLha = ''.obs;
+  var branchLha = RxnInt();
   var startDateLha = ''.obs;
   var endDateLha = ''.obs;
 
@@ -78,6 +83,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<DataCaseAuditArea> caseAuditArea = <DataCaseAuditArea>[].obs;
   final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
   final RxList<DataCaseCategoryByIdAuditArea>caseCategoryById = <DataCaseCategoryByIdAuditArea>[].obs;
+  var caseId = RxnInt();
   final RxList<DataListPenaltyAuditArea> penaltyAuditArea = <DataListPenaltyAuditArea>[].obs;
 
   //kka
@@ -85,7 +91,7 @@ class ControllerAuditArea extends GetxController{
   final PagingController<int, ContentListKkaAuditArea> pagingControllerKkaAuditArea = PagingController(firstPageKey: 0);
   var detailKkaAuditArea = Rxn<DataDetailKkaAuditArea>();
   var nameKka = ''.obs;
-  var branchKka = ''.obs;
+  var branchKka = RxnInt();
   var startDateKka = ''.obs;
   var endDateKka = ''.obs;
 
@@ -93,7 +99,7 @@ class ControllerAuditArea extends GetxController{
   final PagingController<int, ContentListClarificationAuditArea> pagingControllerClarificationAuditArea = PagingController(firstPageKey: 0);
   var detailClarificationAuditArea = Rxn<DataDetailClarificationAuditArea>();
   var nameCla = ''.obs;
-  var branchCla = ''.obs;
+  var branchCla = RxnInt();
   var startDateCla = ''.obs;
   var endDateCla = ''.obs;
 
@@ -101,7 +107,7 @@ class ControllerAuditArea extends GetxController{
   final PagingController<int, ContentListFollowUp> pagingControllerFollowUp = PagingController(firstPageKey: 0);
   var detailFollowUpAuditArea = Rxn<DataDetailFollowUp>();
   var nameFollowUp = ''.obs;
-  var branchFollowUp = ''.obs;
+  var branchFollowUp = RxnInt();
   var startDateFollowUp = ''.obs;
   var endDateFollowUp= ''.obs;
 
@@ -114,7 +120,7 @@ class ControllerAuditArea extends GetxController{
   var endDateBap = ''.obs;
 
   //report
-  var reportAuditArea = Rxn<ModelReportAuditArea>();
+  var branchIdReport = RxnInt();
 
   //profile
   var detailUserAuditArea = Rxn<DataProfile>();
@@ -127,30 +133,42 @@ class ControllerAuditArea extends GetxController{
     pagingControllerMainSchedule.addPageRequestListener(loadMainSchedule);
     pagingControllerSpecialSchedule.addPageRequestListener(loadSpecialSchedule);
     pagingControllerReschedule.addPageRequestListener(loadReschedulesAuditArea);
-    pagingControllerLhaRevisi.addPageRequestListener(loadRevisiLha);
     pagingControllerLhaAuditArea.addPageRequestListener(loadLhaAuditArea);
     pagingControllerKkaAuditArea.addPageRequestListener(loadKkaAuditArea);
     pagingControllerClarificationAuditArea.addPageRequestListener(loadClarificationAuditArea);
     pagingControllerFollowUp.addPageRequestListener(loadFollowUpAuditArea);
     pagingControllerBapAuditArea.addPageRequestListener(loadBapAuditArea);
+    // pagingControllerListCase.addPageRequestListener(loadListCaseLha);
     loadUsersAuditArea();
     loadBranchAuditArea();
     loadCaseAuditArea();
     loadCaseCategory();
     loadPenalty();
+    loadRevisiLha();
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    pagingControllerMainSchedule.dispose();
+    pagingControllerSpecialSchedule.dispose();
+    pagingControllerReschedule.dispose();
+    pagingControllerLhaAuditArea.dispose();
+    pagingControllerKkaAuditArea.dispose();
+    pagingControllerClarificationAuditArea.dispose();
+    pagingControllerFollowUp.dispose();
+    pagingControllerBapAuditArea.dispose();
+    super.dispose();
+  }
+
   //main shedule
-  void addLocalDataMainSchedule(int auditor, int branch, String userName, String branchName, String startDate, String endDate, String desc)async {
+  void addLocalDataMainSchedule(int auditor, int branch, String startDate, String endDate, String desc)async {
     final newData = ModelBodySchedulesAuditArea(
       userId: auditor,
       branchId: branch, 
       startDate: startDate, 
       endDate: endDate,
       description: desc,
-      userName: DataUsers(id: auditor, fullname: userName),
-      branchName: DataListBranch(id: branch, name: branchName)
       );
     dataListLocalMainSchedulesAuditArea.add(newData);
   }
@@ -158,9 +176,13 @@ class ControllerAuditArea extends GetxController{
   void addMainSchedules()async{
     try{     
       final addSchedules = await repository.addMainSchedules(dataListLocalMainSchedulesAuditArea.toList());
+      pagingControllerMainSchedule.refresh();
       message(addSchedules.toString());
+      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
       dataListLocalMainSchedulesAuditArea.clear();
     }catch(error){
+      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
+      dataListLocalMainSchedulesAuditArea.clear();
       throw Exception(error);
     }
   }
@@ -168,6 +190,7 @@ class ControllerAuditArea extends GetxController{
   void editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
     try {
       final editMainSchedule = await repository.editMainSchedule(id, userId, branchId, startDate, endDate, description);
+      pagingControllerMainSchedule.refresh();
       message.value = editMainSchedule.message.toString();
     } catch (e) {
       throw Exception(e);
@@ -193,7 +216,7 @@ class ControllerAuditArea extends GetxController{
 
   void loadMainSchedule(int page)async{
     try {
-      final mainSchedule = await repository.getMainSchedulesAuditArea(page, nameMainSchedule.value, branchMainSchedule.value, startDateMainSchedule.value, endDateMainSchedule.value);
+      final mainSchedule = await repository.getMainSchedulesAuditArea(page, nameMainSchedule.value, branchIdMainSchedule.value, startDateMainSchedule.value, endDateMainSchedule.value);
       final schedule = mainSchedule.data!.content;
       final isLastPage = schedule!.length < 10;
       if (isLastPage) {
@@ -208,9 +231,9 @@ class ControllerAuditArea extends GetxController{
     }
   }
 
-  void filterMainSchedule(String name, String branch, String startDate, String endDate)async{
+  void filterMainSchedule(String name, int? branchId, String startDate, String endDate)async{
     nameMainSchedule.value = name;
-    branchMainSchedule.value = branch;
+    branchIdMainSchedule.value = branchId;
     startDateMainSchedule.value = startDate;
     endDateMainSchedule.value = endDate;
     pagingControllerMainSchedule.refresh();
@@ -218,7 +241,7 @@ class ControllerAuditArea extends GetxController{
 
   void resetFilterMainSchedule()async{
     nameMainSchedule.value = '';
-    branchMainSchedule.value = '';
+    branchIdMainSchedule.value = null;
     startDateMainSchedule.value = '';
     endDateMainSchedule.value = '';
     pagingControllerMainSchedule.refresh();
@@ -234,15 +257,13 @@ class ControllerAuditArea extends GetxController{
   }
 
   //special schedule
-  void addLocalDataSpecialSchedule(int auditor, int branch, String userName, String branchName, String startDate, String endDate, String desc)async {
+  void addLocalDataSpecialSchedule(int auditor, int branch, String startDate, String endDate, String desc)async {
     final newData = ModelBodySchedulesAuditArea(
       userId: auditor,
       branchId: branch, 
       startDate: startDate, 
       endDate: endDate,
-      description: desc,
-      userName: DataUsers(id: auditor, fullname: userName),
-      branchName: DataListBranch(id: branch, name: branchName)
+      description: desc
       );
     dataListLocalSpecialSchedulesAuditArea.add(newData);
   }
@@ -250,9 +271,13 @@ class ControllerAuditArea extends GetxController{
   void addSpecialSchedules()async{
     try{     
       final addSchedules = await repository.addSpecialSchedules(dataListLocalSpecialSchedulesAuditArea.toList());
+      pagingControllerSpecialSchedule.refresh();
       message(addSchedules.toString());
+      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
       dataListLocalSpecialSchedulesAuditArea.clear();
     }catch(error){
+      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
+      dataListLocalSpecialSchedulesAuditArea.clear();
       throw Exception(error);
     }
   }
@@ -294,6 +319,7 @@ class ControllerAuditArea extends GetxController{
   void editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
     try {
       final editSpecialSchedule = await repository.editSpecialSchedule(id, userId, branchId, startDate, endDate, description);
+      pagingControllerSpecialSchedule.refresh();
       message.value = editSpecialSchedule.message.toString();
     } catch (e) {
       throw Exception(e);
@@ -309,7 +335,7 @@ class ControllerAuditArea extends GetxController{
     }
   }
 
-  void filterSpecialSchedule(String name, String branch, String startDate, String endDate)async{
+  void filterSpecialSchedule(String name, int? branch, String startDate, String endDate)async{
     nameSpecialSchedule.value = name;
     branchSpecialSchedule.value = branch;
     startDateSpecialSchedule.value = startDate;
@@ -319,7 +345,7 @@ class ControllerAuditArea extends GetxController{
 
   void resetFilterSpecialSchedule()async{
     nameSpecialSchedule.value = '';
-    branchSpecialSchedule.value = '';
+    branchSpecialSchedule.value = null;
     startDateSpecialSchedule.value = '';
     endDateSpecialSchedule.value = '';
     pagingControllerSpecialSchedule.refresh();
@@ -329,6 +355,8 @@ class ControllerAuditArea extends GetxController{
   void requestReschedule(int userId, int scheduleId, int branchId, String startDate, String endDate, String desc)async{
     try{     
       final reschedule = await repository.requestReschedule(userId, scheduleId, branchId, startDate, endDate, desc);
+      pagingControllerReschedule.refresh();
+      snakcBarMessageGreen('Berhasil', 'Request reschedule berhasil dibuat');
       message.value = reschedule.message.toString();
     }catch(error){
       throw Exception(error);
@@ -361,7 +389,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterReschedule(String name, String branch, String startDate, String endDate)async{
+  void filterReschedule(String name, int? branch, String startDate, String endDate)async{
     nameReschedule.value = name;
     branchReschedule.value = branch;
     startDateReschedule.value = startDate;
@@ -371,7 +399,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterReschedule()async{
     nameReschedule.value = '';
-    branchReschedule.value = '';
+    branchReschedule.value = null;
     startDateReschedule.value = '';
     endDateReschedule.value = '';
     pagingControllerReschedule.refresh();
@@ -416,7 +444,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void loadCaseCategoryById(int casesId)async{
     try {
-      final cases = await repository.getCaseCategoryByIdAuditArea(casesId);
+      final cases = await repository.getCaseCategoryByIdAuditArea(caseId.value = casesId);
       caseCategoryById.assignAll(cases.data ?? []);
     } catch (e) {
       throw Exception(e);
@@ -424,36 +452,59 @@ void getDetailRescheduleAuditArea(int id)async{
   }
 
   //LHA
-  void loadRevisiLha(int page)async{
+  //  void loadListCaseLha(int page) async{
+  //   try {
+  //    final cases = await repository.getCaseLhaAuditArea(page, lhaId.value!);
+  //    final lhaCase = cases.data!.lhaDetails;
+  //    final isLastPage = lhaCase!.length < 10;
+  //    if (isLastPage) {
+  //      pagingControllerListCase.appendLastPage(lhaCase);
+  //    } else {
+  //      final nextPage = page + 1;
+  //      pagingControllerListCase.appendPage(lhaCase, nextPage);
+  //    }
+  //  } catch (e) {
+  //    pagingControllerListCase.error = e;
+  //    throw Exception(e);
+  //  } 
+  // }
+
+  void loadRevisiLha()async{
+    isLoading.value = true;
     try {
-      final revisiLha = await repository.getRevisiLhaAuditArea(lhaId.value!, page);
-      final lha = revisiLha.data!.lhaDetails;
-      final isLastPage = lha!.length < 10;
-      if (isLastPage) {
-        pagingControllerLhaRevisi.appendLastPage(lha);
-      } else {
-        final nextPage = page + 1;
-        pagingControllerLhaRevisi.appendPage(lha, nextPage);
-      }
+      final revisiLha = await repository.getRevisiLhaAuditArea();
+      lhaRevision.assignAll(revisiLha.data ?? []);
     } catch (e) {
-      pagingControllerLhaRevisi.error = e;
       throw Exception(e);
+    }finally{
+      isLoading.value = false;
     }
   }
 
-  void revisiLha(int lhaId, int caseId, int caseCategoryId, String desc, String suggest, String tempRec, String perRec, int isResearch)async{
+  void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
-      final revisiLha = await repository.revisiLha(lhaId, caseId, caseCategoryId, desc, suggest, tempRec, perRec, isResearch);
+      final revisiLha = await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
       message.value = revisiLha.message.toString();
+      loadRevisiLha();
+      snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  void loadDetailRevisionLha(int lhaId)async{
+  void getDetailRevision(int caseId)async{
     try {
-      final detailRevision = await repository.getDetailRevisionLha(lhaId);
-      detailRevisonLha.value = detailRevision.data;
+      final detailRevision = await repository.getDetailRevisionLhaAuditArea(caseId);
+      detailRevisionLha.value = detailRevision.data;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void getDetailCaseLhaAuditArea(int caseId)async{
+    try {
+      final detailCases = await repository.getDetailCaseLhaAuditArea(caseId);
+      detailCase.value = detailCases.data;
     } catch (e) {
       throw Exception(e);
     }
@@ -461,9 +512,9 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void loadLhaAuditArea(int page)async{
     try {
-      final lhaAuditArea = await repository.getLhaAuditArea(page, scheduleIdLha.value!, nameLha.value, branchLha.value, startDateLha.value, endDateLha.value);
+      final lhaAuditArea = await repository.getLhaAuditArea(page, scheduleIdLha.value, nameLha.value, branchLha.value, startDateLha.value, endDateLha.value);
       final lha = lhaAuditArea.data!.content;
-      final isLastPage = lha!.length < 20;
+      final isLastPage = lha!.length < 10;
       if (isLastPage) {
         pagingControllerLhaAuditArea.appendLastPage(lha);
       }else{
@@ -485,7 +536,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterLhaAuditArea(String name, String branch, String startDate, String endDate)async{
+  void filterLhaAuditArea(String name, int? branch, String startDate, String endDate)async{
     nameLha.value = name;
     branchLha.value = branch;
     startDateLha.value = startDate;
@@ -495,7 +546,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterLha()async{
     nameLha.value = '';
-    branchLha.value = '';
+    branchLha.value = null;
     startDateLha.value = '';
     endDateLha.value = '';
     pagingControllerLhaAuditArea.refresh();
@@ -528,7 +579,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterClarificationAuditArea(String name, String branch, String startDate, String endDate)async{
+  void filterClarificationAuditArea(String name, int? branch, String startDate, String endDate)async{
     nameCla.value = name;
     branchCla.value = branch;
     startDateCla.value = startDate;
@@ -538,7 +589,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterClarification()async{
     nameCla.value = '';
-    branchCla.value = '';
+    branchCla.value = null;
     startDateCla.value = '';
     endDateCla.value = '';
     pagingControllerClarificationAuditArea.refresh();
@@ -547,7 +598,7 @@ void getDetailRescheduleAuditArea(int id)async{
   //KKA
   void loadKkaAuditArea(int page)async{
     try {
-      final kkaAuditArea = await repository.getKkaAuditArea(page, scheduleIdKka.value!, nameKka.value, branchKka.value, startDateKka.value, endDateKka.value);
+      final kkaAuditArea = await repository.getKkaAuditArea(page, scheduleIdKka.value, nameKka.value, branchKka.value, startDateKka.value, endDateKka.value);
       final kka = kkaAuditArea.data!.content;
       final isLastPage = kka!.length < 10;
       if (isLastPage) {
@@ -571,9 +622,9 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterkkaAuditArea(String name, String branch, String startDate, String endDate)async{
+  void filterkkaAuditArea(String name, int? branchId, String startDate, String endDate)async{
     nameKka.value = name;
-    branchKka.value = branch;
+    branchKka.value = branchId;
     startDateKka.value = startDate;
     endDateKka.value = endDate;
     pagingControllerKkaAuditArea.refresh();
@@ -581,7 +632,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterKka()async{
     nameKka.value = '';
-    branchKka.value = '';
+    branchKka.value = null;
     startDateKka.value = '';
     endDateKka.value = '';
     pagingControllerKkaAuditArea.refresh();
@@ -636,7 +687,7 @@ void getDetailRescheduleAuditArea(int id)async{
       final followUpAuditArea = await repository.getFollowUpAuditArea(page, nameFollowUp.value, 
       branchFollowUp.value, startDateFollowUp.value, endDateFollowUp.value);
       final followUp = followUpAuditArea.data!.content;
-      final isLastPage = followUp!.length < 10;
+      final isLastPage = followUp!.length < 10; 
       if (isLastPage) {
         pagingControllerFollowUp.appendLastPage(followUp);
       } else {
@@ -649,7 +700,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterDataFollowUpAuditArea(String name, String branch, String startDate, String endDate)async{
+  void filterDataFollowUpAuditArea(String name, int? branch, String startDate, String endDate)async{
     nameFollowUp.value = name;
     branchFollowUp.value = branch;
     startDateFollowUp.value = startDate;
@@ -659,15 +710,17 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterFollowUp()async{
     nameFollowUp.value = '';
-    branchFollowUp.value = '';
+    branchFollowUp.value = null;
     startDateFollowUp.value = '';
     endDateFollowUp.value = '';
     pagingControllerFollowUp.refresh();
   }
 
-  void inputFollowUpAuditArea(int followUpId, int penaltyId, String desc, int isPenalty)async{
+  void inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc, int? isPenalty)async{
     try{
       final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyId, desc, isPenalty);
+      pagingControllerFollowUp.refresh();
+      snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
       message.value = inputFollowUp.metadata.toString();
     }catch(error){
       throw Exception(error);
@@ -691,18 +744,6 @@ void getDetailRescheduleAuditArea(int id)async{
       throw Exception(error);
     }
   }
-  
-  void getReportAuditArea(String branch, String startDate, String endDate) async{
-    isLoading(true);
-    try {
-      final response = await repository.getReportAuditArea(branch, startDate, endDate);
-      reportAuditArea.value = response.detailReport;
-    } catch (error) {
-      throw Exception(error);
-    }finally{
-      isLoading(false);
-    }
-  }
 
   void getDetailUserAuditArea()async{
     try {
@@ -716,6 +757,8 @@ void getDetailRescheduleAuditArea(int id)async{
   void editProfileUserAuditArea(String email, String username)async{
     try {
       final response = await repository.editUserAuditArea(email, username);
+      Get.snackbar('Berhasil', 'Profil berhasil di edit',
+                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.toString());
     } catch (error) {
       throw Exception(error);
@@ -725,6 +768,7 @@ void getDetailRescheduleAuditArea(int id)async{
   void changePasswordAuditArea(String currentPassword, String newPassword)async{
     try {
       final response = await repository.changePasswordAuditArea(currentPassword, newPassword);
+      Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.toString());
     } catch (error) {
       throw Exception(error);

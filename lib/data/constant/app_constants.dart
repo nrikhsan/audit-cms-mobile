@@ -1,9 +1,10 @@
 class AppConstant{
 
-  static const String baseUrl = 'https://3b9f24f3-a0ef-40b6-b4c5-b4de60765f95.mock.pstmn.io/';
+  static const String baseUrl = 'https://api-kka.cmsmaju.co.id/';
 
   //auth
   static const String auth = 'api/auth/login';
+  static const String logOut = 'api/auth/logout';
 
   //audit area
   //main schedule
@@ -22,7 +23,7 @@ class AppConstant{
 
   //reschedule
   static const String reschedulesAuditArea = 'api/reschedule';
-  static const String requestReschedule = 'api/reschedule';
+  static const String requestReschedule = 'api/reschedule/request';
   static const String detailReschedule = 'api/reschedule/';
 
   //master
@@ -33,28 +34,31 @@ class AppConstant{
   static const String penlatyAuditArea = 'api/dropdown/penalty';
 
   //lha
-  static const String listRevisiLha = 'api/lha-detail';
+  // static const String listCaseLha = 'api/lha-detail';
+  static const String detailCasesLhaAuditArea = 'api/lha-detail/';
+  static const String listRevisiLha = 'api/lha-revision';
   static const String lhaRevision = 'api/lha-revision';
-  static const String revisionlhaDetail = 'api/lha-detail/';
+  static const String detailLhaRevision = 'api/lha-revision/';
   static const String lhaAuditArea = 'api/lha';
   static const String detaillhaAuditArea = 'api/lha/';
   
   //clarification
   static const String clarificationAuditArea = 'api/clarification';
-  static const String detailClarificationAuditArea = 'api/detail-clarification/';
-  static const String downloadClarification = 'api/clarification/file/';
+  static const String detailClarificationAuditArea = 'api/clarification/';
+  static const String downloadClarificationAuditArea = '${baseUrl}api/clarification/download/';
+  static const String documentClarificationAuditArea = '${baseUrl}api/clarification/file/';
 
   //follow up
   static const String followUpAuditArea = 'api/followup';
   static const String inputFollowUpAuditArea = 'api/followup';
-  static const String followUpDocumentAuditArea = 'api/follow-up-doc';
+  static const String followUpDocumentAuditArea = 'api/followup/file/';
   static const String detailFollowUpAuditArea = 'api/followup/';
   static const String downloadFollowUp = 'api/followup/file/';
 
   //kka
   static const String kkaAuditArea = 'api/kka';
   static const String detailKkaAuditArea = 'api/kka/';
-  static const String downloadKKa = 'api/kka/download/';
+  static const String downloadKKaAuditArea = '${baseUrl}api/kka/download/';
 
   //bap
   static const String bapAuditArea = 'api/bap';
@@ -62,13 +66,12 @@ class AppConstant{
   static const String downloadBap = 'api/bap/file/';
 
   //report
-  static const String reportAuditArea = 'api/report';
+  static const String downloadReportClarificationAuditArea = '${baseUrl}api/report/clarification';
 
   //user profile
   static const String detailUserAuditArea = 'api/profile';
   static const String editProfileUserAuditArea = 'api/profile/change-profile';
   static const String changePasswordAuditArea = 'api/profile/change-password';
-
 
 
   //audit region
@@ -94,7 +97,8 @@ class AppConstant{
   //kka
   static const String kkaAuditRegion = 'api/kka';
   static const String detailKkaAuditRegion = 'api/kka/';
-  static const String uploadKkaAuditRegion = '/api/kka/upload';
+  static const String uploadKkaAuditRegion = 'api/kka/upload';
+  static const String downloadKKaAuditRegion = '${baseUrl}api/kka/download/';
 
   //user profile
   static const String detailUserAuditRegion = 'api/profile';
@@ -102,7 +106,7 @@ class AppConstant{
   static const String changePasswordAuditRegion = 'api/profile/change-password';
 
   //report
-  static const String reportAuditRegion = 'api/report';
+  static const String downloadReportClarificationAuditRegion = '${baseUrl}api/report/clarification';
 
   //master
   static const String caseAuditRegion = 'api/dropdown/case';
@@ -112,16 +116,18 @@ class AppConstant{
 
   //clarification
   static const String clarificationAuditRegion = 'api/clarification';
-  static const String detailClarificationAuditRegion = 'api/detail-clarification/';
+  static const String detailClarificationAuditRegion = 'api/clarification/';
   static const String generateClarification = 'api/clarification/generate';
   static const String inputClarificationAuditRegion = 'api/clarification';
-  static const String documentClarificationAuditRegion = 'api/clarification-doc/';
+  static const String documentClarificationAuditRegion = '${baseUrl}api/clarification/file/';
   static const String uploadClarificationAuditRegion = 'api/clarification/upload';
   static const String inputIdentificationClarification = 'api/clarification/identification';
+  static const String downloadClarificationAuditRegion = '${baseUrl}api/clarification/download/';
 
   //bap
   static const String detailBapAuditRegion = 'api/bap/';
   static const String uploadBapAuditRegion = 'api/bap/upload';
   static const String bapAuditRegion = 'api/bap';
+  static const String fileBap = '${baseUrl}api/bap/file/';
 
 }

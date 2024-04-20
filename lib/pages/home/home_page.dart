@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/pages/bap/bap_page.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/follow_up/follow_up_page.dart';
@@ -92,7 +93,6 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
   Widget build(BuildContext context) {
     currentDate = DateFormat('dd, MMMM yyyy').format(DateTime.now());
     currentTime = DateFormat.Hm().format(DateTime.now());
-
     return Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
