@@ -400,7 +400,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                       final data = snapshot.data;
                     return SfPdfViewer.network(
                       headers: {'Authorization': 'Bearer $data'},
-                      '${AppConstant.documentClarificationAuditRegion}$fileName',
+                      '${AppConstant.documentClarification}$fileName',
                       pageSpacing: 0,
                       );
                     }
@@ -414,7 +414,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileClarification('${AppConstant.downloadClarificationAuditRegion}$fileName');
+                downloadFileClarification('${AppConstant.downloadReportClarification}$fileName');
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],

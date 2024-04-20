@@ -1,9 +1,13 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -191,7 +195,7 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAuditArea.filterDataFollowUpAuditArea(startDateController.text, controllerAuditArea.branchFollowUp.value, auditorController.text, endDateController.text);
+                            controllerAuditArea.filterDataFollowUpAuditArea(auditorController.text, controllerAuditArea.branchFollowUp.value, startDateController.text, endDateController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)
@@ -225,7 +229,7 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => DetailFollowUpPageAuditArea(id: id!)));
+                       Get.to(() => DetailFollowUpPageAuditArea(id: id!));
                       },
                       child: Text('Detail tindak lanjut', style: CustomStyles.textMediumWhite15Px)
                      ),
@@ -255,7 +259,8 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
     );
   }
 
-  void downloadFollowUpFile(String fileDownloadName, String followUpDoc) async {
+  void downloadFollowUpFile(String url) async {
+  final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
 
@@ -263,34 +268,43 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
     var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = '${fileDownloadName}_$timestamp.pdf';
+      String saveName = 'tindak_lanjut_$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
       try {
-        await Dio().download(followUpDoc, savePath,
-            onReceiveProgress: (received, total) {
-          if (total != -1) {
-            print((received / total * 100).toStringAsFixed(0) + "%");
-          }
-        });
-        Get.snackbar('Berhasil', 'File $saveName berhasil di unduh',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: CustomColors.green,
-            colorText: CustomColors.white);
+        await dio.download(
+          url,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
-        throw Exception(error);
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
   } else {
-    Get.snackbar('Alert', 'Permintaan izin ditolak',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: CustomColors.red,
-        colorText: CustomColors.white);
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
   }
 }
 
-showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileDownloadName, String file) {
+showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileName) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -315,10 +329,21 @@ showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileD
                   titleTextStyle: CustomStyles.textBold18Px,
                   automaticallyImplyLeading: false,
                 ),
-                body: SfPdfViewer.network(
-                  file,
-                  pageSpacing: 0,
-                ),
+                body: FutureBuilder(
+                  future: getToken(),
+                  builder: (_, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                    } else {
+                      final data = snapshot.data;
+                    return SfPdfViewer.network(
+                      headers: {'Authorization': 'Bearer $data'},
+                      '${AppConstant.followUpDocument}$fileName',
+                      pageSpacing: 0,
+                      );
+                    }
+                  }
+                )
               )),
         ),
         actions: [
@@ -327,10 +352,14 @@ showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileD
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFollowUpFile(fileDownloadName, file);
+                downloadFollowUpFile('${AppConstant.downloadFollowUp}$fileName');
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
       ),
     );
+  }
+
+  Future<String?>getToken()async{
+    return await TokenManager.getToken();
   }

@@ -15,7 +15,6 @@ import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_a
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_category_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_case_category_by_id_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_reschedule_audit_area.dart';
@@ -82,7 +81,6 @@ class ControllerAuditArea extends GetxController{
   final RxList<DataListBranch> branchAuditArea = <DataListBranch>[].obs;
   final RxList<DataCaseAuditArea> caseAuditArea = <DataCaseAuditArea>[].obs;
   final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
-  final RxList<DataCaseCategoryByIdAuditArea>caseCategoryById = <DataCaseCategoryByIdAuditArea>[].obs;
   var caseId = RxnInt();
   final RxList<DataListPenaltyAuditArea> penaltyAuditArea = <DataListPenaltyAuditArea>[].obs;
 
@@ -115,7 +113,7 @@ class ControllerAuditArea extends GetxController{
   final PagingController<int, ContentListBapAuditArea> pagingControllerBapAuditArea = PagingController(firstPageKey: 0);
   var detailBapAuditArea = Rxn<DataDetailBapAuditArea>();
   var nameBap = ''.obs;
-  var branchBap = ''.obs;
+  var branchBap = RxnInt();
   var startDateBap = ''.obs;
   var endDateBap = ''.obs;
 
@@ -226,8 +224,12 @@ class ControllerAuditArea extends GetxController{
         pagingControllerMainSchedule.appendPage(schedule, nextPage);
       }
     } catch (e) {
-      pagingControllerMainSchedule.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerMainSchedule.appendPage([], page + 1);
+      }else {
+        pagingControllerMainSchedule.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -272,6 +274,8 @@ class ControllerAuditArea extends GetxController{
     try{     
       final addSchedules = await repository.addSpecialSchedules(dataListLocalSpecialSchedulesAuditArea.toList());
       pagingControllerSpecialSchedule.refresh();
+      pagingControllerReschedule.refresh();
+      pagingControllerMainSchedule.refresh();
       message(addSchedules.toString());
       snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
       dataListLocalSpecialSchedulesAuditArea.clear();
@@ -311,8 +315,12 @@ class ControllerAuditArea extends GetxController{
         pagingControllerSpecialSchedule.appendPage(schedule, nextPage);
       }
     } catch (e) {
-      pagingControllerSpecialSchedule.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerSpecialSchedule.appendPage([], page + 1);
+      }else {
+        pagingControllerSpecialSchedule.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -356,6 +364,7 @@ class ControllerAuditArea extends GetxController{
     try{     
       final reschedule = await repository.requestReschedule(userId, scheduleId, branchId, startDate, endDate, desc);
       pagingControllerReschedule.refresh();
+      pagingControllerMainSchedule.refresh();
       snakcBarMessageGreen('Berhasil', 'Request reschedule berhasil dibuat');
       message.value = reschedule.message.toString();
     }catch(error){
@@ -375,8 +384,12 @@ class ControllerAuditArea extends GetxController{
        pagingControllerReschedule.appendPage(schedule, nextPage);
      }
    } catch (e) {
-     pagingControllerReschedule.error = e;
-     throw Exception(e);
+     if (e is Error) {
+        pagingControllerReschedule.appendPage([], page + 1);
+      }else {
+        pagingControllerReschedule.error;
+        throw Exception(e);
+      }
    } 
 }
 
@@ -437,15 +450,6 @@ void getDetailRescheduleAuditArea(int id)async{
     try {
       final cases = await repository.getCaseCategoryAuditArea();
       caseCategory.assignAll(cases.data ?? []);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  void loadCaseCategoryById(int casesId)async{
-    try {
-      final cases = await repository.getCaseCategoryByIdAuditArea(caseId.value = casesId);
-      caseCategoryById.assignAll(cases.data ?? []);
     } catch (e) {
       throw Exception(e);
     }
@@ -522,8 +526,12 @@ void getDetailRescheduleAuditArea(int id)async{
         pagingControllerLhaAuditArea.appendPage(lha, nextPage);
       }
     } catch (e) {
-      pagingControllerLhaAuditArea.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerLhaAuditArea.appendPage([], page + 1);
+      }else {
+        pagingControllerLhaAuditArea.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -565,8 +573,12 @@ void getDetailRescheduleAuditArea(int id)async{
         pagingControllerClarificationAuditArea.appendPage(clarification, nextPage);
       }
     } catch (e) {
-      pagingControllerClarificationAuditArea.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerClarificationAuditArea.appendPage([], page + 1);
+      }else{
+        pagingControllerClarificationAuditArea.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -608,8 +620,12 @@ void getDetailRescheduleAuditArea(int id)async{
         pagingControllerKkaAuditArea.appendPage(kka, nextPage);
       }
     } catch (e) {
-      pagingControllerKkaAuditArea.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerKkaAuditArea.appendPage([], page + 1);
+      }else {
+        pagingControllerKkaAuditArea.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -651,8 +667,12 @@ void getDetailRescheduleAuditArea(int id)async{
         pagingControllerBapAuditArea.appendPage(bap, nextPage);
       }
     } catch (e) {
-      pagingControllerBapAuditArea.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerBapAuditArea.appendPage([], page + 1);
+      }else {
+        pagingControllerBapAuditArea.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -665,9 +685,9 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void filterBapAuditArea(String name, String branch, String startDate, String endDate)async{
+  void filterBapAuditArea(String name, int? branchId, String startDate, String endDate)async{
     nameBap.value = name;
-    branchBap.value = branch;
+    branchBap.value = branchId;
     startDateBap.value = startDate;
     endDateBap.value = endDate;
     pagingControllerBapAuditArea.refresh();
@@ -675,7 +695,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void resetFilterBap()async{
     nameBap.value = '';
-    branchBap.value = '';
+    branchBap.value = null;
     startDateBap.value = '';
     endDateBap.value = '';
     pagingControllerBapAuditArea.refresh();
@@ -695,8 +715,12 @@ void getDetailRescheduleAuditArea(int id)async{
         pagingControllerFollowUp.appendPage(followUp, nextPage);
       }
     } catch (e) {
-      pagingControllerFollowUp.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerFollowUp.appendPage([], page + 1);
+      }else {
+        pagingControllerFollowUp.error = e;
+        throw Exception(e);
+      }
     }
   }
 
@@ -716,9 +740,9 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerFollowUp.refresh();
   }
 
-  void inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc, int? isPenalty)async{
+  void inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
     try{
-      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyId, desc, isPenalty);
+      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyId, desc);
       pagingControllerFollowUp.refresh();
       snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
       message.value = inputFollowUp.metadata.toString();

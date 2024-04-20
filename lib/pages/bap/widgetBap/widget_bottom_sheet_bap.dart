@@ -1,12 +1,11 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 void showFilterBapAuditArea(BuildContext context, TextEditingController startDateController, TextEditingController endDateController, 
-TextEditingController auditorController, TextEditingController branchController, ControllerAuditArea controllerAuditArea) {
+TextEditingController auditorController, ControllerAuditArea controllerAuditArea) {
     showModalBottomSheet(
       backgroundColor: CustomColors.white,
       elevation: 0,
@@ -41,30 +40,10 @@ TextEditingController auditorController, TextEditingController branchController,
                 actions: [
                     IconButton(
                       onPressed: (){
-                      if (auditorController.text.isNotEmpty) {
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterBap();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else if(branchController.text.isNotEmpty){
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterBap();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else if(startDateController.text.isNotEmpty || endDateController.text.isNotEmpty){
-                          auditorController.clear();
-                          controllerAuditArea.resetFilterBap();
-                          branchController.clear();
-                          startDateController.clear();
-                          endDateController.clear();
-                          Get.back();
-                        }else{
-                         snakcBarMessageRed('Gagal', 'Reset data filter gagal');
-                        }
+                        auditorController.clear();
+                        startDateController.clear();
+                        endDateController.clear();
+                        controllerAuditArea.resetFilterBap();
                       },
                         icon: const Icon(Icons.refresh_rounded, color: CustomColors.grey, size: 25)
                       ),
@@ -97,22 +76,35 @@ TextEditingController auditorController, TextEditingController branchController,
                   Text('Dengan cabang :', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
 
-                  TextField(
-                    cursorColor: CustomColors.blue,
-                    controller: branchController,
-                    onChanged: (branch) => branchController.text = branch,
-                    decoration: InputDecoration(
-                      label: const Text('Cabang...'),
-                      labelStyle: CustomStyles.textMediumGrey15Px,
-                        enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: CustomColors.grey)),
-                        focusedBorder: OutlineInputBorder(
+                  const SizedBox(height: 15),
+                  Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: CustomColors.grey)
-                        )
-                      )
-                    ),
+                          value: controllerAuditArea.branchBap.value,
+                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.branchAuditArea.map((branch){
+                            return DropdownMenuItem(
+                              value: branch.id,
+                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.branchBap.value = value;
+                            print(controllerAuditArea.branchBap.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
                 
                 const SizedBox(height: 20),
                 Text('Dengan tanggal :', style: CustomStyles.textMedium15Px),
@@ -191,7 +183,7 @@ TextEditingController auditorController, TextEditingController branchController,
                               backgroundColor: CustomColors.blue
                           ),
                           onPressed: (){
-                            controllerAuditArea.filterBapAuditArea(startDateController.text, endDateController.text, auditorController.text, branchController.text);
+                            controllerAuditArea.filterBapAuditArea(auditorController.text, controllerAuditArea.branchBap.value, startDateController.text, endDateController.text);
                             Get.back();
                           },
                           child: Text('Simpan data filter', style: CustomStyles.textMediumWhite15Px)

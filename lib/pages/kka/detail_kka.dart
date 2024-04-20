@@ -98,7 +98,7 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${detailKka.filename}');
+                                  downloadKKaAuditArea('${AppConstant.downloadKKa}${detailKka.filename}');
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),
@@ -208,7 +208,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${detailKka.filename}');
+                                  downloadKKaAuditRegion('${AppConstant.downloadKKa}${detailKka.filename}');
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),

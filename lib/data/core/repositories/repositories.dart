@@ -14,7 +14,6 @@ import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_a
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_category_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_case_category_by_id_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/model_body_add_schedules.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_reschedule_audit_area.dart';
@@ -27,13 +26,13 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_specia
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_clarification.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_cases.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_branch_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_by_id_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
@@ -84,11 +83,9 @@ abstract class Repositories {
   Future<ResponseBranchAuditArea> getBranchAuditArea();
   Future<ResponseCaseAuditArea> getCaseAuditArea();
   Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea();
-  Future<ResponseCaseCategoryByIdAuditArea> getCaseCategoryByIdAuditArea(int? caseId);
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea();
 
   //LHA
-  // Future<ResponseListCaseLha>getCaseLhaAuditArea(int page, int lhaId);
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea();
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
@@ -105,12 +102,12 @@ abstract class Repositories {
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id);
 
   //BAP
-  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, String branch, String startDate, String endDate);
+  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseDetailBapAuditArea>getDetailBapAuditArea(int id);
 
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc, int? isPenalty);
+  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc);
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
 
   //user profile
@@ -147,7 +144,6 @@ abstract class Repositories {
   Future<ResponseBranchAuditRegion>getBranchAuditRegion();
   Future<ResponseCaseAuditRegion>getCasesAuditRegion();
   Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion(int? caseId);
-  Future<ResponseCaseCategoryByIdAuditRegion>getCaseCategoryByIdAuditRegion(int casesId);
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
   //user profile
   Future<ResponseProfileAuditRegion> getDetailUserAuditRegion();
@@ -163,7 +159,7 @@ abstract class Repositories {
   String description, String priority);
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate);
   Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int id);
-  Future<ResponseMessage>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp);
+  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp);
   Future<ResponseDetailClarificationAuditRegion>getDetailClarificationAuditRegion(int id);
 
   //BAP
@@ -279,11 +275,6 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseCaseCategoryByIdAuditArea> getCaseCategoryByIdAuditArea(int? caseId){
-    return apiService.getCaseCategoryByIdAuditArea(caseId);
-  }
-
-  @override
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea() {
     return apiService.getPenaltyAuditArea();
   }
@@ -350,8 +341,8 @@ class RepositoryImpl implements Repositories {
 
   //BAP
   @override
-  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, String branch, String startDate, String endDate) {
-    return apiService.getBapAuditArea(page, name, branch, startDate, endDate);
+  Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, int? branchId, String startDate, String endDate) {
+    return apiService.getBapAuditArea(page, name, branchId, startDate, endDate);
   }
   
   @override
@@ -367,8 +358,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc, int? isPenalty){
-    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, desc, isPenalty);
+  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc){
+    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, desc);
   }
   
   @override
@@ -465,11 +456,6 @@ class RepositoryImpl implements Repositories {
   Future<ResponseCaseCategoryAuditRegion> getCaseCategoryAuditRegion(int? caseId) {
     return apiService.getCaseCategoryAuditRegion(caseId);
   }
-  
-  @override
-  Future<ResponseCaseCategoryByIdAuditRegion> getCaseCategoryByIdAuditRegion(int casesId) {
-    return apiService.getCaseCategoryByIdAuditRegion(casesId);
-  }
 
   @override
   Future<ResponsePriorityFindingAuditRegion> getPriorityFindingAuditRegion() {
@@ -532,7 +518,7 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp) {
+  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp) {
     return apiService.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
   }
 

@@ -7,19 +7,19 @@ class ResponseDetailFollowUp {
   ResponseDetailFollowUp({this.meta, this.message, this.status, this.data});
 
   ResponseDetailFollowUp.fromJson(Map<String, dynamic> json) {
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? DataDetailFollowUp.fromJson(json['data']) : null;
+    data = json['data'] != null ? new DataDetailFollowUp.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['message'] = message;
-    data['status'] = status;
+    data['message'] = this.message;
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -39,9 +39,9 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['timestamp'] = timestamp;
-    data['api_version'] = apiVersion;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['timestamp'] = this.timestamp;
+    data['api_version'] = this.apiVersion;
     return data;
   }
 }
@@ -49,7 +49,7 @@ class Meta {
 class DataDetailFollowUp {
   int? id;
   User? user;
-  String? penalty;
+  Penalty? penalty;
   Clarification? clarification;
   String? code;
   String? description;
@@ -72,10 +72,11 @@ class DataDetailFollowUp {
 
   DataDetailFollowUp.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-    penalty = json['penalty'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    penalty =
+        json['penalty'] != null ? new Penalty.fromJson(json['penalty']) : null;
     clarification = json['clarification'] != null
-        ? Clarification.fromJson(json['clarification'])
+        ? new Clarification.fromJson(json['clarification'])
         : null;
     code = json['code'];
     description = json['description'];
@@ -86,21 +87,23 @@ class DataDetailFollowUp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    if (user != null) {
-      data['user'] = user!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
-    data['penalty'] = penalty;
-    if (clarification != null) {
-      data['clarification'] = clarification!.toJson();
+    if (this.penalty != null) {
+      data['penalty'] = this.penalty!.toJson();
     }
-    data['code'] = code;
-    data['description'] = description;
-    data['status'] = status;
-    data['filename'] = filename;
-    data['file_path'] = filePath;
-    data['is_penalty'] = isPenalty;
+    if (this.clarification != null) {
+      data['clarification'] = this.clarification!.toJson();
+    }
+    data['code'] = this.code;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['filename'] = this.filename;
+    data['file_path'] = this.filePath;
+    data['is_penalty'] = this.isPenalty;
     return data;
   }
 }
@@ -121,11 +124,30 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['email'] = email;
-    data['fullname'] = fullname;
-    data['initial_name'] = initialName;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    return data;
+  }
+}
+
+class Penalty {
+  int? id;
+  String? code;
+
+  Penalty({this.id, this.code});
+
+  Penalty.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
     return data;
   }
 }
@@ -144,10 +166,10 @@ class Clarification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['code'] = code;
-    data['evaluation_limitation'] = evaluationLimitation;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['evaluation_limitation'] = this.evaluationLimitation;
     return data;
   }
 }

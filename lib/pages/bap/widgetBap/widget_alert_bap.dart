@@ -6,6 +6,7 @@ import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -81,10 +82,21 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String url) a
                   titleTextStyle: CustomStyles.textBold18Px,
                   automaticallyImplyLeading: false,
                 ),
-                body: SfPdfViewer.network(
-                  url,
-                  pageSpacing: 0,
-                ),
+                body: FutureBuilder(
+                  future: getToken(), 
+                  builder: (_, snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return const SpinKitCircle(color: CustomColors.blue);
+                    }else{
+                      final token = snapshot.data;
+                      return SfPdfViewer.network(
+                        headers: {'Authorization': 'Bearer $token'},
+                        url,
+                        pageSpacing: 0,
+                    );
+                    }
+                  }
+                )
               )),
         ),
         actions: [
@@ -99,6 +111,10 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String url) a
         ],
       ),
     );
+}
+
+Future<String?>getToken()async{
+  return await TokenManager.getToken();
 }
 
 void showDialogPdfBapAuditRegion(BuildContext context, String title, String url) async {
@@ -126,10 +142,21 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String url)
                   titleTextStyle: CustomStyles.textBold18Px,
                   automaticallyImplyLeading: false,
                 ),
-                body: SfPdfViewer.network(
-                  url,
-                  pageSpacing: 0,
-                ),
+                body: FutureBuilder(
+                  future: getToken(), 
+                  builder: (_, snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return const SpinKitCircle(color: CustomColors.blue);
+                    }else{
+                      final token = snapshot.data;
+                      return SfPdfViewer.network(
+                        headers: {'Authorization': 'Bearer $token'},
+                        url,
+                        pageSpacing: 0,
+                    );
+                    }
+                  }
+                )
               )),
         ),
         actions: [
@@ -146,7 +173,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String url)
     );
 }
 
-void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion) {
+void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controllerAuditRegion, int? idBap) {
     showDialog(
         context: context,
         builder: (_) {
@@ -175,8 +202,8 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
                 Obx(() => TextButton(
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
-                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value);
-                            Get.offAll(() => BotNavAuditRegion());
+                            controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, idBap);
+                            Get.off(() => BotNavAuditRegion());
                          }
                       : null,
                       child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

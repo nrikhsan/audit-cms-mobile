@@ -25,7 +25,6 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
         actions: [
           IconButton(
             onPressed: (){
-              showFilterBapAuditArea(context, startDateController, endDateController, auditorController, branchController, controllerAuditArea);
+              showFilterBapAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
             },
            icon: const Icon(Icons.tune_rounded, size: 25, color: CustomColors.grey)
           ),

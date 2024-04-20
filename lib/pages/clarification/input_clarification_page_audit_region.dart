@@ -128,8 +128,9 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                         Get.snackbar('Klarifikasi gagal dibuat', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else{
                         controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, desc, selectPriority);
-                        final fileName = controllerAuditRegion.dataInputClarification.value?.clarification?.fileName;
-                        Get.to(() => DocumentClarificationPageAuditRegion(id: widget.id, fileName: fileName,));
+                        // final fileName = controllerAuditRegion.dataInputClarification.value?.clarification?.fileName;
+                        // Get.to(() => DocumentClarificationPageAuditRegion(id: widget.id, fileName: fileName));
+                        Get.back();
                       }
                     }, 
                     child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

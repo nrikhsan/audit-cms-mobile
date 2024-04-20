@@ -80,7 +80,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarificationAuditArea, controllerAuditArea, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
+                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
                       },
                       child: Text('Download laporan',
                           style: CustomStyles.textMediumWhite15Px)
@@ -137,7 +137,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarificationAuditRegion, controllerAuditRegion, startDateController, endDateController);
+                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, controllerAuditRegion, startDateController, endDateController);
                       },
                       child: Text('Download laporan',
                           style: CustomStyles.textMediumWhite15Px)

@@ -191,9 +191,9 @@ void filterClarificationAuditArea(
                             backgroundColor: CustomColors.blue),
                         onPressed: () {
                           controllerAuditArea.filterClarificationAuditArea(
-                              startDateController.text,
-                              controllerAuditArea.branchCla.value,
                               auditorController.text,
+                              controllerAuditArea.branchCla.value,
+                              startDateController.text,
                               endDateController.text);
                           Get.back();
                         },
@@ -348,6 +348,63 @@ void showBottomSheetFilterClarificationAuditRegion(
       });
 }
 
+void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, String fileName) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        elevation: 0,
+        backgroundColor: CustomColors.white,
+        content: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: SizedBox(
+              width: double.maxFinite,
+              height: 400,
+              child: Scaffold(
+                appBar: AppBar(
+                  titleSpacing: 5,
+                  backgroundColor: CustomColors.white,
+                  title: Text(title),
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close_rounded,
+                          color: CustomColors.black, size: 25)),
+                  titleTextStyle: CustomStyles.textBold18Px,
+                  automaticallyImplyLeading: false,
+                ),
+                body: FutureBuilder(
+                  future: getToken(),
+                  builder: (_, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                    } else {
+                      print(fileName);
+                      final data = snapshot.data;
+                    return SfPdfViewer.network(
+                      headers: {'Authorization': 'Bearer $data'},
+                      '${AppConstant.documentClarification}$fileName',
+                      pageSpacing: 0,
+                      );
+                    }
+                  }
+                )
+              )),
+        ),
+        actions: [
+          TextButton(
+              style: TextButton.styleFrom(
+                  shape: CustomStyles.customRoundedButton,
+                  backgroundColor: CustomColors.blue),
+              onPressed: () async {
+                downloadFileClarification('${AppConstant.downloadClarification}$fileName');
+              },
+              child: Text('Download', style: CustomStyles.textMediumWhite15Px))
+        ],
+      ),
+    );
+}
+
 void downloadFileClarification(String url) async {
   final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
@@ -393,66 +450,9 @@ void downloadFileClarification(String url) async {
   }
 }
 
-
-void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, String fileName) async {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        elevation: 0,
-        backgroundColor: CustomColors.white,
-        content: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: SizedBox(
-              width: double.maxFinite,
-              height: 400,
-              child: Scaffold(
-                appBar: AppBar(
-                  titleSpacing: 5,
-                  backgroundColor: CustomColors.white,
-                  title: Text(title),
-                  leading: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close_rounded,
-                          color: CustomColors.black, size: 25)),
-                  titleTextStyle: CustomStyles.textBold18Px,
-                  automaticallyImplyLeading: false,
-                ),
-                body: FutureBuilder(
-                  future: getToken(),
-                  builder: (_, snapshot){
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                    } else {
-                      print(fileName);
-                      final data = snapshot.data;
-                    return SfPdfViewer.network(
-                      headers: {'Authorization': 'Bearer $data'},
-                      '${AppConstant.documentClarificationAuditRegion}$fileName',
-                      pageSpacing: 0,
-                      );
-                    }
-                  }
-                )
-              )),
-        ),
-        actions: [
-          TextButton(
-              style: TextButton.styleFrom(
-                  shape: CustomStyles.customRoundedButton,
-                  backgroundColor: CustomColors.blue),
-              onPressed: () async {
-                downloadFileClarification('${AppConstant.downloadClarificationAuditArea}$fileName');
-              },
-              child: Text('Download', style: CustomStyles.textMediumWhite15Px))
-        ],
-      ),
-    );
+Future<String?>getToken()async{
+  return await TokenManager.getToken();
 }
- Future<String?>getToken()async{
-    return await TokenManager.getToken();
-  }
 
 void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
     showDialog(

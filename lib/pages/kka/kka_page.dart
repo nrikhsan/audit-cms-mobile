@@ -101,7 +101,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],
@@ -208,7 +208,7 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                                     shape: CustomStyles.customRoundedButton
                                   ),
                                   onPressed:()async{
-                                    downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${kka.filename}');
+                                    downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
                                   }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
                                 )
                               ],

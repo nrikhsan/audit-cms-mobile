@@ -27,10 +27,11 @@ class ControllerAuth extends GetxController {
       final response = await repository.login(username, password);
       String tokenAuth = '${response.data?.token}';
       dataLogin.value = response.data;
-
+      snakcBarMessageGreen('Login Berhasil', 'Selamat datang $username');
       decodeJWT(tokenAuth); 
       await TokenManager.saveToken(tokenAuth);
     } catch (error) {
+      snakcBarMessageRed('Login gagal', 'periksa kembali username/kata sandi anda');
       throw Exception(error);
     }finally{
       isLoading.value = false;

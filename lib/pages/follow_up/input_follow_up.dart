@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
-
 class InputFollowUp extends StatefulWidget {
   final int followUpId;
   final String auditor;
@@ -22,7 +21,6 @@ class _InputFollowUpState extends State<InputFollowUp> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   int? _penaltyId;
-  int? _isPenalty;
   final TextEditingController realizationController = TextEditingController();
   final TextEditingController explanationPenaltyController = TextEditingController();
 
@@ -55,31 +53,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
               Text('Auditor :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 5),   
               Text('${widget.auditor} :', style: CustomStyles.textMedium13Px),
-
-              const SizedBox(height: 15),
-              Text('Sanksi :', style: CustomStyles.textBold15Px),
-              const SizedBox(height: 15),
-              Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: List.generate(
-                2,
-                (index) {
-                  return ChoiceChip(
-                    elevation: 0,
-                    selectedColor: CustomColors.lightGrey,
-                    label: Text(index == 0 ? 'Tidak memberi sanksi' : 'Memberi anksi', style: CustomStyles.textMedium13Px),
-                    selected: _isPenalty == index,
-                    onSelected: (selected) {
-                      setState(() {
-                        _isPenalty = selected ? index : null;
-                      });
-                    },
-                  );
-                },
-              ).toList(),
-            ),
-
+              
               const SizedBox(height: 15),
               Text('Alasan sanksi :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
@@ -131,12 +105,13 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     shape: CustomStyles.customRoundedButton,
                     backgroundColor: CustomColors.blue
                   ),
+                  
                   onPressed: (){
                   
-                    if (_penaltyId == null || _isPenalty == null || explanationPenaltyController.text.isEmpty) {
+                    if (_penaltyId == null || explanationPenaltyController.text.isEmpty) {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, _penaltyId, explanationPenaltyController.text, _isPenalty);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, _penaltyId, explanationPenaltyController.text);
                         Get.off(() => const DocumentFollowUpPage());
                     }
                   }, 

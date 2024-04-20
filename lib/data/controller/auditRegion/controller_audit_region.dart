@@ -2,12 +2,12 @@ import 'package:audit_cms/data/core/repositories/repositories.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_clarification.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_cases.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_lha_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_branch_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_by_id_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
@@ -58,8 +58,7 @@ class ControllerAuditRegion extends GetxController {
   var caseCategoryId = RxnInt();
   final RxList<DataListBranch> branchAuditRegion = <DataListBranch>[].obs;
   final RxList<DataCaseAuditRegion> caseAuditRegion = <DataCaseAuditRegion>[].obs;
-  final RxList<DataCaseCategory>caseCatgeory = <DataCaseCategory>[].obs;
-  final RxList<DataCaseCategoryByIdAuditRegion>caseCategoryById = <DataCaseCategoryByIdAuditRegion>[].obs;
+  final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
   final RxList<String> priorityFindingClarificationAuditRegion = <String>[].obs;
 
   //lha
@@ -67,14 +66,14 @@ class ControllerAuditRegion extends GetxController {
   var detailCasesLhaAuditRegion = Rxn<DataDetailCasesLha>();
   final RxList<LhaDetail> dataListLocalLhaAuditRegion = RxList<LhaDetail>();
   final PagingController<int, ContentListLhaAuditRegion> pagingControllerLha = PagingController(firstPageKey: 0);
-  var startDatelha = ''.obs;
-  var endDatelha = ''.obs;
+  var startDateLha = ''.obs;
+  var endDateLha = ''.obs;
   var scheduleId = RxnInt();
 
   //kka
   final PagingController<int, ContentListKkaAuditRegion>pagingControllerKka = PagingController(firstPageKey: 0);
   var detailKkaAuditRegion = Rxn<DataDetailKkaAuditRegion>();
-  var startDatekka = ''.obs;
+  var startDateKka = ''.obs;
   var endDateKka = ''.obs;
   var scheduleIdKka = RxnInt();
 
@@ -82,6 +81,7 @@ class ControllerAuditRegion extends GetxController {
   final PagingController<int, ContentListClarificationAuditRegion> pagingControllerClarification = PagingController(firstPageKey: 0);
   var detailClarificationAuditRegion = Rxn<DataDetailClarificationAuditRegion>();
   var dataInputClarification = Rxn<DataInputClarification>();
+  var dataInputIdentification = Rxn<DataIdentification>();
   var startDateCla = ''.obs;
   var endDateCla = ''.obs;
 
@@ -128,7 +128,12 @@ class ControllerAuditRegion extends GetxController {
         pagingControllerMainSchedule.appendPage(schedule, nextPage);
       }
     } catch (e) {
-      pagingControllerMainSchedule.error = e;
+      if (e is Error) {
+        pagingControllerMainSchedule.appendPage([], page + 1);
+      } else {
+        pagingControllerMainSchedule.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -166,8 +171,12 @@ class ControllerAuditRegion extends GetxController {
         pagingControllerSpecialSchedule.appendPage(schedule, nextPage);
       }
     } catch (e) {
-      pagingControllerSpecialSchedule.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerSpecialSchedule.appendPage([], page + 1);
+      } else {
+        pagingControllerSpecialSchedule.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -206,8 +215,12 @@ class ControllerAuditRegion extends GetxController {
         pagingControllerReschedule.appendPage(schedule, nextPage);
       }
     } catch (e) {
-      pagingControllerReschedule.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerReschedule.appendPage([], page + 1);
+      } else {
+        pagingControllerReschedule.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -260,6 +273,7 @@ class ControllerAuditRegion extends GetxController {
     try {
       final response = await repositories.inputLhaAuditRegion(scheduleId, dataListLocalLhaAuditRegion.toList());
       message.value = response.message.toString();
+      pagingControllerClarification.refresh();
       snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
       dataListLocalLhaAuditRegion.clear();
     } catch (error) {
@@ -271,7 +285,7 @@ class ControllerAuditRegion extends GetxController {
 
    void loadLhaAuditRegion(int page)async {
     try {
-      final lhaAuditRegion = await repositories.getListLhaAuditRegion(scheduleId.value, page, startDatelha.value, endDatelha.value);
+      final lhaAuditRegion = await repositories.getListLhaAuditRegion(scheduleId.value, page, startDateLha.value, endDateLha.value);
       final lha = lhaAuditRegion.data!.content;
       final isLastPage = lha!.length < 10;
       if (isLastPage) {
@@ -281,20 +295,24 @@ class ControllerAuditRegion extends GetxController {
         pagingControllerLha.appendPage(lha, nextPage);
       }
     } catch (e) {
-      pagingControllerLha.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerLha.appendPage([], page + 1);
+      } else {
+        pagingControllerLha.error;
+        throw Exception(e);
+      }
     }
    }
 
    void filterLha(String startDate, String endDate)async{
-    startDatelha.value = startDate;
-    endDatelha.value = endDate;
+    startDateLha.value = startDate;
+    endDateLha.value = endDate;
     pagingControllerLha.refresh();
   }
 
   void resetFilterLha()async{
-    startDatelha.value = '';
-    endDatelha.value = '';
+    startDateLha.value = '';
+    endDateLha.value = '';
     pagingControllerLha.refresh();
   }
 
@@ -319,7 +337,7 @@ class ControllerAuditRegion extends GetxController {
 //KKA
   void loadKkaAuditRegion(int page)async {
     try {
-      final kkaAuditRegion = await repositories.getKkaAuditRegion(page, scheduleIdKka.value, startDatekka.value, endDateKka.value);
+      final kkaAuditRegion = await repositories.getKkaAuditRegion(page, scheduleIdKka.value, startDateKka.value, endDateKka.value);
       final kka = kkaAuditRegion.data!.content;
       final isLastPage = kka!.length < 10;
       if (isLastPage) {
@@ -329,19 +347,23 @@ class ControllerAuditRegion extends GetxController {
         pagingControllerKka.appendPage(kka, nextPage);
       }
     } catch (e) {
-      pagingControllerKka.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerKka.appendPage([], page + 1);
+      } else {
+        pagingControllerKka.error;
+        throw Exception(e);
+      }
     }
   }
 
   void filterKka(String startDate, String endDate)async{
-    startDatekka.value = startDate;
+    startDateKka.value = startDate;
     endDateKka.value = endDate;
     pagingControllerKka.refresh();
   }
 
   void resetFilterKka()async{
-    startDatekka.value = '';
+    startDateKka.value = '';
     endDateKka.value = '';
     pagingControllerKka.refresh();
   }
@@ -361,8 +383,12 @@ void uploadKkaAuditRegion(String filePath, int id) async {
       Get.snackbar('Berhasil', 'KKA audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message.value = response.message.toString();
       pagingControllerKka.refresh();
+      pagingControllerMainSchedule.refresh();
+      pagingControllerSpecialSchedule.refresh();
       selectedFileName.value = '';
     } catch (error) {
+      snakcBarMessageRed('Gagal', 'Upload KKA hanya bisa sekali dalam sehari');
+      selectedFileName.value = '';
       throw Exception(error);
     }
   }
@@ -412,7 +438,7 @@ void selectCase(int? value)async{
 void loadCaseCategoryAuditRegion(int? id) async{
   try {
       final cases = await repositories.getCaseCategoryAuditRegion(caseId.value);
-      caseCatgeory.assignAll(cases.data ?? []);
+      caseCategory.assignAll(cases.data ?? []);
     } catch (e) {
       throw Exception(e);
   }
@@ -420,15 +446,6 @@ void loadCaseCategoryAuditRegion(int? id) async{
 
 void selectCaseCategory(int? value)async{
   caseCategoryId.value = value;
-}
-
-void getCaseCategoryById(int casesId)async{
-  try {
-      final cases = await repositories.getCaseCategoryByIdAuditRegion(casesId);
-      caseCategoryById.assignAll(cases.data ?? []);
-    } catch (e) {
-      throw Exception(e);
-  }
 }
 
 //profile
@@ -491,8 +508,12 @@ void getDetailUserAuditRegion() async {
         pagingControllerClarification.appendPage(cla, nextPage);
       }
     } catch (e) {
-      pagingControllerClarification.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerClarification.appendPage([], page + 1);
+      } else {
+        pagingControllerClarification.error;
+        throw Exception(e);
+      }
     }
   }
 
@@ -553,6 +574,7 @@ void getDetailUserAuditRegion() async {
       Get.snackbar('Berhasil', 'Klarifikasi audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       selectedFileName.value = '';
     } catch (error) {
+      selectedFileName.value = '';
       throw Exception(error);
     }
   }
@@ -575,7 +597,9 @@ void getDetailUserAuditRegion() async {
   void inputIdentificatinClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp)async{
     try {
       final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      dataInputIdentification.value = response.data;
       pagingControllerClarification.refresh();
+      pagingControllerBap.refresh();
       Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.message);
     } catch (error) {
@@ -583,14 +607,15 @@ void getDetailUserAuditRegion() async {
     }
   }
 
-  var bapId = RxnInt();
-  void uploadBapAuditRegion(String filePath)async{
+  void uploadBapAuditRegion(String filePath, int? bapId)async{
     try {
-      final response = await repositories.uploadBapAuditRegion(filePath, bapId.value);
+      final response = await repositories.uploadBapAuditRegion(filePath, bapId);
       message(response.toString());
       Get.snackbar('Berhasil', 'BAP audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      pagingControllerBap.refresh();
       selectedFileName.value = '';
     } catch (error) {
+      selectedFileName.value = '';
       throw Exception(error);
     }
   }
@@ -631,8 +656,12 @@ void getDetailUserAuditRegion() async {
         pagingControllerBap.appendPage(bap, nextaPage);
       }
     } catch (e) {
-      pagingControllerBap.error = e;
-      throw Exception(e);
+      if (e is Error) {
+        pagingControllerBap.appendPage([], page + 1);
+      } else {
+        pagingControllerBap.error;
+        throw Exception(e);
+      }
     }
   }
 

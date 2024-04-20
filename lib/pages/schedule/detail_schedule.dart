@@ -115,7 +115,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                   downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                   downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -298,7 +298,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -484,7 +484,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
                               },
                               child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
@@ -704,7 +704,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                   downloadKKaAuditRegion('${AppConstant.downloadKKaAuditRegion}${kka.filename}');
+                                   downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -959,7 +959,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                    downloadKKaAuditArea('${AppConstant.downloadKKaAuditArea}${kka.filename}');
+                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -1090,248 +1090,4 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
     );
   }
 }
-
-//reschedule
-class DetailRescheduleAuditRegion extends StatefulWidget {
-  final int rescheduleId;
-  const DetailRescheduleAuditRegion({super.key, required this.rescheduleId});
-
-  @override
-  State<DetailRescheduleAuditRegion> createState() => _DetailRescheduleAuditRegionState();
-}
-
-class _DetailRescheduleAuditRegionState extends State<DetailRescheduleAuditRegion> {
-
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
-  @override
-  Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailRescheduleAuditRegion(widget.rescheduleId);
-    return Scaffold(
-      backgroundColor: CustomColors.white,
-      appBar: AppBar(
-        backgroundColor: CustomColors.white,
-        title: const Text('Detail reschedule'),
-        titleTextStyle: CustomStyles.textBold18Px,
-      ),
-      floatingActionButton: SpeedDial(
-        elevation: 0,
-        backgroundColor: CustomColors.orange,
-        animatedIcon: AnimatedIcons.menu_close,
-        renderOverlay: false,
-        children: [
-          SpeedDialChild(
-              backgroundColor: CustomColors.blue,
-              label: 'Tambah LHA',
-              labelBackgroundColor: CustomColors.blue,
-              labelStyle: CustomStyles.textMediumWhite15Px,
-              child: const Icon(Icons.add_rounded, color: CustomColors.white),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_) => InputLhaPageAuditRegion(scheduleId: widget.rescheduleId)));
-              }
-          ),
-          SpeedDialChild(
-              backgroundColor: CustomColors.green,
-              label: 'Upload KKA',
-              labelBackgroundColor: CustomColors.green,
-              labelStyle: CustomStyles.textMediumWhite15Px,
-              child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
-              onTap: (){
-                showDialogUploadKkaAuditRegion(widget.rescheduleId);
-              }
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
-          final detail = controllerAuditRegion.detailReschedule.value?.schedule;
-          final lha = controllerAuditRegion.detailReschedule.value?.lha;
-          final kka = controllerAuditRegion.detailReschedule.value?.kka;
-          if (detail == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else{
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-                Text('Kategori :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.category}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.startDateRealization}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.endDateRealization}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () async {
-                                //masukan function download KKA
-                              },
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha!.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  lha[index].isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditRegion(id: lha[index].id!));
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                          ));
-                    })
-              ],
-            );
-          }
-        })),
-      ),
-    );
-  }
-  void showDialogUploadKkaAuditRegion(int id) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            elevation: 0,
-            title: const Text("Upload Excel File"),
-            titleTextStyle: CustomStyles.textBold18Px,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-
-                const SizedBox(height: 10),
-
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
-
-                TextButton(
-                  onPressed: () =>
-                      controllerAuditRegion.pickFileKkaAuditRegion(),
-                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
-                ),
-
-                const SizedBox(height: 10),
-
-                Obx(() => TextButton(
-                  onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                    controllerAuditRegion.uploadKkaAuditRegion(controllerAuditRegion.selectedFileName.value, id);
-                    Get.back();
-                  }
-                      : null,
-                  child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
-                )),
-              ],
-            ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        }
-    );
-  }
-}
-
 

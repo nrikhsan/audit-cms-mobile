@@ -48,7 +48,7 @@ class _DocumentClarificationPageAuditRegionState
                       final data = snapshot.data;
                     return SfPdfViewer.network(
                       headers: {'Authorization': 'Bearer $data'},
-                      '${AppConstant.documentClarificationAuditRegion}${widget.fileName}',
+                      '${AppConstant.documentClarification}${widget.fileName}',
                       pageSpacing: 0,
                       );
                     }
@@ -64,7 +64,8 @@ class _DocumentClarificationPageAuditRegionState
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () async {
-                        downloadFileClarification('${AppConstant.downloadClarificationAuditRegion}${widget.fileName}');
+                        downloadFileClarification('${AppConstant.downloadClarification}${widget.fileName}');
+                        controllerAuditRegion.pagingControllerClarification.refresh();
                       },
                       child: Text('Download',
                           style: CustomStyles.textMediumWhite15Px)),
@@ -82,13 +83,7 @@ class _DocumentClarificationPageAuditRegionState
               )
                   ],
                 ) : Obx((){
-                  final clarification = controllerAuditRegion.dataInputClarification.value;
-                  if (clarification == null) {
-                    return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                  } else {
-                    final fileName = clarification.clarification?.fileName;
-                    final id = clarification.clarification?.id;
-                    return Column(
+                  return Column(
                   children: [
                     SizedBox(
                 width: double.maxFinite,
@@ -102,7 +97,7 @@ class _DocumentClarificationPageAuditRegionState
                       final data = snapshot.data;
                     return SfPdfViewer.network(
                       headers: {'Authorization': 'Bearer $data'},
-                      '${AppConstant.documentClarificationAuditRegion}$fileName',
+                      '${AppConstant.documentClarification}${controllerAuditRegion.dataInputClarification.value?.clarification?.fileName}',
                       pageSpacing: 0,
                       );
                     }
@@ -118,7 +113,8 @@ class _DocumentClarificationPageAuditRegionState
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () async {
-                        downloadFileClarification('${AppConstant.downloadClarificationAuditRegion}$fileName');
+                        downloadFileClarification('${AppConstant.downloadClarification}${controllerAuditRegion.dataInputClarification.value?.clarification?.fileName}');
+                        
                       },
                       child: Text('Download',
                           style: CustomStyles.textMediumWhite15Px)),
@@ -128,7 +124,7 @@ class _DocumentClarificationPageAuditRegionState
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
                       onPressed: () {
-                        uploadClarificationAuditRegion(context, id!, controllerAuditRegion);
+                        uploadClarificationAuditRegion(context, controllerAuditRegion.dataInputClarification.value!.clarification!.id!, controllerAuditRegion);
                       },
                       child: Text('Upload',
                           style: CustomStyles.textMediumWhite15Px)),
@@ -136,7 +132,6 @@ class _DocumentClarificationPageAuditRegionState
               )
                   ],
                 );
-                  }
                 })
               ],
             )

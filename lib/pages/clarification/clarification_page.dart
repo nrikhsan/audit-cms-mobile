@@ -177,9 +177,9 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         if (statusClarificaion == 'INPUT'){
                           Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
-                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName!));
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName));
                           }else if(statusClarificaion == 'UPLOAD'){
-                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName!));
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName));
                           }else if(statusClarificaion == 'IDENTIFICATION'){
                             Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: clarification.id!));
                           }else if(statusClarificaion == 'DONE'){
@@ -302,7 +302,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
 
                 const SizedBox(height: 20),
 
-                SizedBox(
+                Obx(() => SizedBox(
                   width: double.maxFinite,
                   child: DropdownButtonHideUnderline(
                     child: Container(
@@ -314,7 +314,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                           )
                         )
                       ),
-                      child: Obx(() => DropdownButton(
+                      child: DropdownButton(
                         value: controllerAuditRegion.caseId.value,
                         hint: Text('Pilih kasus', style: CustomStyles.textMedium15Px),
                         items: controllerAuditRegion.caseAuditRegion.map((cases){
@@ -331,14 +331,14 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                             print(value);
                           });
                         }
-                      ))
+                      )
                     ),
                   )
-                ),
+                )),
 
                 const SizedBox(height: 20),
 
-                SizedBox(
+                Obx(() => SizedBox(
                   width: double.maxFinite,
                   child: DropdownButtonHideUnderline(
                     child: Container(
@@ -350,10 +350,10 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                           )
                         )
                       ),
-                      child: Obx(() => DropdownButton(
+                      child: DropdownButton(
                         value: controllerAuditRegion.caseCategoryId.value,
                         hint: Text('Pilih kategori kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.caseCatgeory.map((caseCategory){
+                        items: controllerAuditRegion.caseCategory.map((caseCategory){
                           return DropdownMenuItem(
                             value: caseCategory.id,
                             child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
@@ -365,10 +365,10 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                             print(value);
                           });
                         }
-                      ))
+                      )
                     ),
                   )
-                ),
+                )),
 
                 const SizedBox(height: 30),
 

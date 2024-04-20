@@ -26,44 +26,44 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
     
     return Scaffold(
       backgroundColor: CustomColors.white,
-      // body: Obx((){
-      //   final document = controllerAuditArea.documentFollowUpAuditArea.value;
-      //   if (document == null) {
-      //     return const Center(child: SpinKitCircle(color: CustomColors.blue));
-      //   }else{
-      //     return Padding(
-      //       padding: const EdgeInsets.all(15),
-      //       child: SingleChildScrollView(
-      //         child: Column(
-      //         children: [
-      //           SizedBox(
-      //             width: double.maxFinite,
-      //             height: 590,
-      //             child: SfPdfViewer.network(
-      //               document.followUpDoc!),
-      //           ),
+      body: Obx((){
+        // final document = controllerAuditArea.documentFollowUpAuditArea.value;
+        if ('document' == null) {
+          return const Center(child: SpinKitCircle(color: CustomColors.blue));
+        }else{
+          return Padding(
+            padding: const EdgeInsets.all(15),
+            child: SingleChildScrollView(
+              child: Column(
+              children: [
+                SizedBox(
+                  width: double.maxFinite,
+                  height: 590,
+                  child: SfPdfViewer.network(
+                   ''),
+                ),
 
-      //           const SizedBox(height: 15),
-      //           SizedBox(
-      //             width: double.maxFinite,
-      //             child: ElevatedButton(
-      //               style: ElevatedButton.styleFrom(
-      //                 shape: CustomStyles.customRoundedButton,
-      //                 backgroundColor: CustomColors.blue
-      //               ),
-      //               onPressed: () async{
-      //                 downloadFollowUpFile('file_tindak_lanjut', document.followUpDoc!);
-      //                 Get.offAll(() => BotNavePageAuditArea());
-      //               }, 
-      //               child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //       )
-      //     );
-      //   }
-      // })
+                const SizedBox(height: 15),
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: CustomStyles.customRoundedButton,
+                      backgroundColor: CustomColors.blue
+                    ),
+                    onPressed: () async{
+                      // downloadFollowUpFile('file_tindak_lanjut', document.followUpDoc!);
+                      Get.offAll(() => BotNavePageAuditArea());
+                    }, 
+                    child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
+                  ),
+                )
+              ],
+            ),
+            )
+          );
+        }
+      })
     );
   }
 }

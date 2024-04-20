@@ -108,7 +108,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
                       value: controllerAuditRegion.caseCategoryId.value,
-                      items: controllerAuditRegion.caseCatgeory.map((caseCategory){
+                      items: controllerAuditRegion.caseCategory.map((caseCategory){
                         return DropdownMenuItem(
                           value: caseCategory.id,
                           child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)

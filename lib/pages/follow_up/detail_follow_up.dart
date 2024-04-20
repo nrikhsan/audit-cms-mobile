@@ -105,7 +105,8 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.orange),
                                 onPressed: () async {
-                                   showDialogPdfFileDetailFollowUp(context, 'File tindak lanjut', 'file_tindak_lanjut', followUp.filePath!);
+                                   showDialogPdfFileDetailFollowUp(context, 'File tindak lanjut', followUp.filename!);
+                                   print(followUp.filename);
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
