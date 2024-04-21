@@ -138,6 +138,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                     itemCount: lha.length,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
+                      final isFlag = lha[index].isFlag;
                       return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -153,7 +154,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                               Wrap(
                                 
                                 children: [
-                                  lha[index].isFlag == 1 ?
+                                  isFlag == 1 ?
                                   Row(
                                     children: [
                                       const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),

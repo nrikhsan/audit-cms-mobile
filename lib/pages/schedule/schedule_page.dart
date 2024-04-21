@@ -3,7 +3,6 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_s
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_special_schedules_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/schedule/detail_schedule.dart';
@@ -521,6 +520,12 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                 } else if(status == 'REQUEST') {
                                   snakcBarMessageRed('Alert', 'Harap tunggu persetujuan dari audit leader');
                                 }else if(status == 'APPROVE'){
+                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
+                                }else if(status == 'TODO'){
+                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
+                                }else if(status == 'PROGRESS'){
+                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
+                                }else if(status == 'DONE'){
                                   Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
                                 }
                               },

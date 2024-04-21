@@ -129,9 +129,9 @@ class ControllerAuditRegion extends GetxController {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerMainSchedule.appendPage([], page + 1);
+        pagingControllerMainSchedule.appendPage([], null);
       } else {
-        pagingControllerMainSchedule.error;
+        pagingControllerMainSchedule.error = e;
         throw Exception(e);
       }
     }
@@ -172,9 +172,9 @@ class ControllerAuditRegion extends GetxController {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerSpecialSchedule.appendPage([], page + 1);
+        pagingControllerSpecialSchedule.appendPage([], null);
       } else {
-        pagingControllerSpecialSchedule.error;
+        pagingControllerSpecialSchedule.error = e;
         throw Exception(e);
       }
     }
@@ -216,9 +216,9 @@ class ControllerAuditRegion extends GetxController {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerReschedule.appendPage([], page + 1);
+        pagingControllerReschedule.appendPage([], null);
       } else {
-        pagingControllerReschedule.error;
+        pagingControllerReschedule.error = e;
         throw Exception(e);
       }
     }
@@ -283,6 +283,18 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
+  void inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
+    String suggestion, String tempRec, String perRec, int isResearch)async{
+    try {
+      final response = await repositories.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
+      message.value = response.message.toString();
+      snakcBarMessageGreen('Berhasil', 'Kasus Lha berhasil ditambahkan');
+    } catch (error) {
+      snakcBarMessageRed('Gagal menginput data', 'Gagal menambahkan kasus LHA');
+      throw Exception(error);
+    }
+  }
+
    void loadLhaAuditRegion(int page)async {
     try {
       final lhaAuditRegion = await repositories.getListLhaAuditRegion(scheduleId.value, page, startDateLha.value, endDateLha.value);
@@ -296,9 +308,9 @@ class ControllerAuditRegion extends GetxController {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerLha.appendPage([], page + 1);
+        pagingControllerLha.appendPage([], null);
       } else {
-        pagingControllerLha.error;
+        pagingControllerLha.error = e;
         throw Exception(e);
       }
     }
@@ -348,9 +360,9 @@ class ControllerAuditRegion extends GetxController {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerKka.appendPage([], page + 1);
+        pagingControllerKka.appendPage([], null);
       } else {
-        pagingControllerKka.error;
+        pagingControllerKka.error = e;
         throw Exception(e);
       }
     }
@@ -509,9 +521,9 @@ void getDetailUserAuditRegion() async {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerClarification.appendPage([], page + 1);
+        pagingControllerClarification.appendPage([], null);
       } else {
-        pagingControllerClarification.error;
+        pagingControllerClarification.error = e;
         throw Exception(e);
       }
     }
@@ -657,9 +669,9 @@ void getDetailUserAuditRegion() async {
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerBap.appendPage([], page + 1);
+        pagingControllerBap.appendPage([], null);
       } else {
-        pagingControllerBap.error;
+        pagingControllerBap.error = e;
         throw Exception(e);
       }
     }

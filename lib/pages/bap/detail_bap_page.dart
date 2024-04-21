@@ -42,6 +42,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
         if (bap == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
+          final fileBap = bap.filename;
           return Padding(
             padding: const EdgeInsets.all(15),
             child: SingleChildScrollView(
@@ -71,7 +72,10 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
 
                   Text('File BAP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  SizedBox(
+                  Wrap(
+                    children: [
+                      fileBap != null ?
+                      SizedBox(
                     width: 145,
                     child: Card(
                       shape: OutlineInputBorder(
@@ -90,13 +94,15 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}${bap.filename}');
+                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}$fileBap');
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
                         ),
                       ),
                     ),
+                  ) : Text('File BAP tidak tersedia', style: CustomStyles.textRegular13Px)
+                    ],
                   )
                 ],
               ),
@@ -200,7 +206,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                       ),
                     ),
                   ) : SizedBox(
-                    width: 218,
+                    width: 195,
                     child: Card(
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -211,7 +217,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                         padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
                         child: Row(
                           children: [
-                            Text('Upload BAP', style: CustomStyles.textMedium15Px),
+                            Text('File BAP', style: CustomStyles.textMedium15Px),
                             const SizedBox(width: 10),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(

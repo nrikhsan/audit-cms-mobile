@@ -1,7 +1,6 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
-import 'package:audit_cms/pages/clarification/document_clarification_page_audit_region.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_form_input_clarification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -128,8 +127,7 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                         Get.snackbar('Klarifikasi gagal dibuat', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else{
                         controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, desc, selectPriority);
-                        // final fileName = controllerAuditRegion.dataInputClarification.value?.clarification?.fileName;
-                        // Get.to(() => DocumentClarificationPageAuditRegion(id: widget.id, fileName: fileName));
+                        
                         Get.back();
                       }
                     }, 

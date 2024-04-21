@@ -1,9 +1,11 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -273,6 +275,19 @@ class ApiService {
   }
 
   //master
+  Future<ResponseDropdownArea>getArea()async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await dio.get(AppConstant.getDropdownArea);
+      return ResponseDropdownArea.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
   Future<ResponseUsers> getUsersAuditArea() async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -409,13 +424,13 @@ class ApiService {
     }
   }
 
-  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate) async {
+  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate) async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.getListLha, queryParameters: {'page': page, 'schedule_id': scheduleId,
+      final response = await dio.get(AppConstant.getListLha, queryParameters: {'page': page,
       'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
       return ResponseLhaAuditArea.fromJson(response.data);
     } catch (error) {
@@ -536,7 +551,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -546,7 +561,7 @@ class ApiService {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
       data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, description: desc).toJson());
       print(responseInputFollowUp.data);
-      return ResponseMessage.fromJson(responseInputFollowUp.data);
+      return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);
     } catch (error) {
       throw Exception(error);
     }
@@ -706,6 +721,24 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.inputLha,
       data: {'schedule_id': scheduleId, 'lha_detail': lhaDetail.toList()});
+      print(response.data);
+      return ResponseMessage.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseMessage>inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
+    String suggestion, String tempRec, String perRec, int isResearch)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.post(AppConstant.inputCaseLha,
+      data: {'audit_daily_report_id': lhaDetailId, 'case_id': caseId, 'case_category_id': caseCategory, 'description': desc, 'suggestion': suggestion,
+      'temporary_recommendations': tempRec, 'permanent_recommendations': perRec, 'is_research': isResearch});
       print(response.data);
       return ResponseMessage.fromJson(response.data);
     } catch (error) {

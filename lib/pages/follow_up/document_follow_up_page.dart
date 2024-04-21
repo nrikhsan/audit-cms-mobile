@@ -1,6 +1,7 @@
+import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert_follow_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,7 +20,7 @@ class DocumentFollowUpPage extends StatefulWidget {
 class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
 
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
     return Scaffold(
       backgroundColor: CustomColors.white,
       body: Obx((){
-        // final document = controllerAuditArea.documentFollowUpAuditArea.value;
-        if ('document' == null) {
+        final followUp = controllerAuditArea.dataInputFollowUp.value;
+        if (followUp == null) {
           return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           return Padding(
@@ -36,11 +37,23 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
             child: SingleChildScrollView(
               child: Column(
               children: [
-                SizedBox(
-                  width: double.maxFinite,
-                  height: 590,
-                  child: SfPdfViewer.network(
-                   ''),
+                FutureBuilder(
+                  future: getToken(), 
+                  builder: (_, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                    } else {
+                      final token = snapshot.data;
+                      return SizedBox(
+                        width: double.maxFinite,
+                        height: 590,
+                        child: SfPdfViewer.network(
+                          headers: {'Authorization': 'Bearer $token'},
+                        '${AppConstant.followUpDocument}${followUp.followup?.fileName}'
+                        ),
+                      );
+                    }
+                  }
                 ),
 
                 const SizedBox(height: 15),
@@ -52,8 +65,8 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                       backgroundColor: CustomColors.blue
                     ),
                     onPressed: () async{
-                      // downloadFollowUpFile('file_tindak_lanjut', document.followUpDoc!);
-                      Get.offAll(() => BotNavePageAuditArea());
+                      downloadFollowUpFile('${AppConstant.downloadFollowUp}${followUp.followup?.fileName}');
+                      Get.back();
                     }, 
                     child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
                   ),
@@ -66,4 +79,8 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
       })
     );
   }
+}
+
+Future<String?> getToken()async{
+  return await TokenManager.getToken();
 }

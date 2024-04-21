@@ -50,6 +50,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
           } else {
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
+            final fileName = detail.fileName;
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -84,32 +85,32 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
                           Text('Prioritas temuan :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.priority}', style: CustomStyles.textRegular13Px),
+                          Text(detail.priority ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Deskripsi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.description}', style: CustomStyles.textRegular13Px),
+                          Text(detail.description ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Lokasi yang di audit :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.location}', style: CustomStyles.textRegular13Px),
+                          Text(detail.location ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Auditee :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.auditee}', style: CustomStyles.textRegular13Px),
+                          Text(detail.auditee ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Audit leader :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.auditeeLeader}', style: CustomStyles.textRegular13Px),
+                          Text(detail.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Rekomendasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.recomendation ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
                           
                           Text('Evaluasi :', style: CustomStyles.textBold15Px),
@@ -125,17 +126,17 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
                           Text('Status :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text('${detail.status}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.nominalLoss}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.nominalLoss ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Bats evaluasi :', style: CustomStyles.textBold15Px),
+                          Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.evaluationLimitation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.evaluationLimitation ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
@@ -148,8 +149,13 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                             ],
                           ),
                           const SizedBox(height: 20),
-                  
-                  SizedBox(
+
+                  Text('File klarifikasi :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Wrap(
+                    children: [
+                      fileName != null ?
+                      SizedBox(
                     width: 140,
                     child: Card(
                       shape: OutlineInputBorder(
@@ -176,7 +182,10 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                         ),
                       ),
                     ),
-                  ),
+                  ) : Text('File tidak tersedia', style: CustomStyles.textRegular13Px),
+                    ]
+                  )
+                  
                 ],
               ),
             );
@@ -300,7 +309,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
 
                           Text('Status :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text('${detail.status}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Nominal kerugian :', style: CustomStyles.textBold15Px),

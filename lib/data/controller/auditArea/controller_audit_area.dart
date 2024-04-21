@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
@@ -11,6 +12,7 @@ import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_a
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_list_case_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -77,6 +79,7 @@ class ControllerAuditArea extends GetxController{
   var endDateLha = ''.obs;
 
   //master
+  final RxList<DataListArea> area = <DataListArea>[].obs;
   final RxList<DataUsers> usersAuditArea = <DataUsers>[].obs;
   final RxList<DataListBranch> branchAuditArea = <DataListBranch>[].obs;
   final RxList<DataCaseAuditArea> caseAuditArea = <DataCaseAuditArea>[].obs;
@@ -143,6 +146,7 @@ class ControllerAuditArea extends GetxController{
     loadCaseCategory();
     loadPenalty();
     loadRevisiLha();
+    loadArea();
     super.onInit();
   }
 
@@ -225,9 +229,9 @@ class ControllerAuditArea extends GetxController{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerMainSchedule.appendPage([], page + 1);
+        pagingControllerMainSchedule.appendPage([], null);
       }else {
-        pagingControllerMainSchedule.error;
+        pagingControllerMainSchedule.error = e;
         throw Exception(e);
       }
     }
@@ -316,9 +320,9 @@ class ControllerAuditArea extends GetxController{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerSpecialSchedule.appendPage([], page + 1);
+        pagingControllerSpecialSchedule.appendPage([], null);
       }else {
-        pagingControllerSpecialSchedule.error;
+        pagingControllerSpecialSchedule.error = e;
         throw Exception(e);
       }
     }
@@ -385,9 +389,9 @@ class ControllerAuditArea extends GetxController{
      }
    } catch (e) {
      if (e is Error) {
-        pagingControllerReschedule.appendPage([], page + 1);
+        pagingControllerReschedule.appendPage([], null);
       }else {
-        pagingControllerReschedule.error;
+        pagingControllerReschedule.error = e;
         throw Exception(e);
       }
    } 
@@ -419,6 +423,16 @@ void getDetailRescheduleAuditArea(int id)async{
   }
 
   //master
+  var areaId = RxnInt();
+  void loadArea()async{
+    try {
+      final areaMaster = await repository.getArea();
+      area.assignAll(areaMaster.data ?? []);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   void loadUsersAuditArea()async{
     try{
       final responseAuditor = await repository.getUsersAuditArea();
@@ -516,7 +530,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void loadLhaAuditArea(int page)async{
     try {
-      final lhaAuditArea = await repository.getLhaAuditArea(page, scheduleIdLha.value, nameLha.value, branchLha.value, startDateLha.value, endDateLha.value);
+      final lhaAuditArea = await repository.getLhaAuditArea(page, nameLha.value, branchLha.value, startDateLha.value, endDateLha.value);
       final lha = lhaAuditArea.data!.content;
       final isLastPage = lha!.length < 10;
       if (isLastPage) {
@@ -527,9 +541,9 @@ void getDetailRescheduleAuditArea(int id)async{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerLhaAuditArea.appendPage([], page + 1);
-      }else {
-        pagingControllerLhaAuditArea.error;
+        pagingControllerLhaAuditArea.appendPage([], null);
+      } else {
+        pagingControllerLhaAuditArea.error = e;
         throw Exception(e);
       }
     }
@@ -574,9 +588,9 @@ void getDetailRescheduleAuditArea(int id)async{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerClarificationAuditArea.appendPage([], page + 1);
+        pagingControllerClarificationAuditArea.appendPage([], null);
       }else{
-        pagingControllerClarificationAuditArea.error;
+        pagingControllerClarificationAuditArea.error = e;
         throw Exception(e);
       }
     }
@@ -621,9 +635,9 @@ void getDetailRescheduleAuditArea(int id)async{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerKkaAuditArea.appendPage([], page + 1);
+        pagingControllerKkaAuditArea.appendPage([], null);
       }else {
-        pagingControllerKkaAuditArea.error;
+        pagingControllerKkaAuditArea.error = e;
         throw Exception(e);
       }
     }
@@ -668,9 +682,9 @@ void getDetailRescheduleAuditArea(int id)async{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerBapAuditArea.appendPage([], page + 1);
+        pagingControllerBapAuditArea.appendPage([], null);
       }else {
-        pagingControllerBapAuditArea.error;
+        pagingControllerBapAuditArea.error = e;
         throw Exception(e);
       }
     }
@@ -716,7 +730,7 @@ void getDetailRescheduleAuditArea(int id)async{
       }
     } catch (e) {
       if (e is Error) {
-        pagingControllerFollowUp.appendPage([], page + 1);
+        pagingControllerFollowUp.appendPage([], null);
       }else {
         pagingControllerFollowUp.error = e;
         throw Exception(e);
@@ -740,12 +754,13 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerFollowUp.refresh();
   }
 
+  var dataInputFollowUp = Rxn<DataInputFollowUp>();
   void inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
     try{
       final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyId, desc);
-      pagingControllerFollowUp.refresh();
+      dataInputFollowUp.value = inputFollowUp.data;
       snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
-      message.value = inputFollowUp.metadata.toString();
+      message.value = inputFollowUp.message.toString();
     }catch(error){
       throw Exception(error);
     }

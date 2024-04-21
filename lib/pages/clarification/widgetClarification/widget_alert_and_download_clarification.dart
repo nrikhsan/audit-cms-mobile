@@ -431,6 +431,54 @@ void downloadFileClarification(String url) async {
           },
         );
         snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        
+      } catch (error) {
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+      }
+    }
+  } else {
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
+  }
+}
+
+void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion controllerAuditRegion) async {
+  final Dio dio = Dio();
+  Map<Permission, PermissionStatus> statuses =
+      await [Permission.storage].request();
+
+  if (statuses[Permission.storage]!.isGranted) {
+    var dir = await DownloadsPathProvider.downloadsDirectory;
+    if (dir != null) {
+      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = 'klarifikasi_$timestamp.pdf';
+      String savePath = dir.path + "/$saveName";
+      print(savePath);
+
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
+      try {
+        await dio.download(
+          url,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        controllerAuditRegion.pagingControllerClarification.refresh();
+        
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {

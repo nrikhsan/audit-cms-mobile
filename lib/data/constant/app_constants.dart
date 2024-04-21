@@ -26,6 +26,7 @@ class AppConstant{
   static const String detailReschedule = 'api/reschedule/';
 
   //master
+  static const String getDropdownArea = 'api/dropdown/area';
   static const String getDropdownUsers = 'api/dropdown/users';
   static const String getDropdownBranch = 'api/dropdown/branch';
   static const String getsDropdownCase = 'api/dropdown/case';
@@ -35,6 +36,8 @@ class AppConstant{
 
   //lha
   static const String detailCasesLha = 'api/lha-detail/';
+  static const String deleteCaseLha = 'api/lha-detail/';
+  static const String inputCaseLha = 'api/lha-detail';
   static const String listRevisionLha = 'api/lha-revision';
   static const String lhaRevision = 'api/lha-revision';
   static const String detailLhaRevision = 'api/lha-revision/';
@@ -73,6 +76,7 @@ class AppConstant{
 
   //report
   static const String downloadReportClarification = '${baseUrl}api/report/clarification';
+  static const String downloadReportLha = '${baseUrl}api/report/lha';
 
   //user profile
   static const String detailUser = 'api/profile';

@@ -97,7 +97,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                                 Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
           
                                 if(statusClarificaion == 'IDENTIFICATION')
-                                Text('Belum input identifikasi', style: CustomStyles.textMediumGreen13Px),
+                                Text('Belum input identifikasi', style: CustomStyles.textMediumRed13Px),
           
                                 if(statusClarificaion == 'DONE')
                                 Text('Selesai', style: CustomStyles.textMediumGreen13Px),

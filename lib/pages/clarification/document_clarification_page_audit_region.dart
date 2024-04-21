@@ -25,7 +25,6 @@ class _DocumentClarificationPageAuditRegionState
       
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         backgroundColor: CustomColors.white,
         body: Padding(
@@ -63,9 +62,8 @@ class _DocumentClarificationPageAuditRegionState
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: () async {
-                        downloadFileClarification('${AppConstant.downloadClarification}${widget.fileName}');
-                        controllerAuditRegion.pagingControllerClarification.refresh();
+                      onPressed: () {
+                        downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
                       },
                       child: Text('Download',
                           style: CustomStyles.textMediumWhite15Px)),

@@ -27,7 +27,16 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
         appBar: AppBar(
             backgroundColor: CustomColors.white,
             title: const Text('Laporan'),
-            titleTextStyle: CustomStyles.textBold18Px),
+            titleTextStyle: CustomStyles.textBold18Px,
+            actions: [
+              TextButton(
+                onPressed: (){
+                            controllerAuditArea.branchIdReport.value = null;
+                            controllerAuditArea.areaId.value = null;
+                            startDateController.clear();
+                            endDateController.clear();
+              }, child: Text('Reset', style: CustomStyles.textMediumRed15Px))],
+            ),
         body: SingleChildScrollView(
           child: Padding(
           padding: const EdgeInsets.all(15),
@@ -35,6 +44,38 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
+              Text('Dengan Area', style: CustomStyles.textMedium15Px),
+              const SizedBox(height: 15),
+              Obx(() => SizedBox(
+                    width: double.maxFinite,
+                    child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1),
+                          )
+                      ),
+                      child: DropdownButton(
+                          iconEnabledColor: CustomColors.blue,
+                          borderRadius: BorderRadius.circular(10),
+                          value: controllerAuditArea.areaId.value,
+                          hint: Text('Area', style: CustomStyles.textRegularGrey13Px),
+                          items: controllerAuditArea.area.map((area){
+                            return DropdownMenuItem(
+                              value: area.id,
+                              child: Text('${area.name}', style: CustomStyles.textMedium15Px),
+                            );
+                          }).toList(),
+                          onChanged: (value){
+                            controllerAuditArea.areaId.value = value;
+                            print(controllerAuditArea.areaId.value);
+                          }
+                      ),
+                    )
+                ),
+              )),
+
+              const SizedBox(height: 15),
               Text('Dengan cabang', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
               Obx(() => SizedBox(
@@ -80,9 +121,23 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
+                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
                       },
-                      child: Text('Download laporan',
+                      child: Text('Download laporan klarifikasi',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+
+                SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.green),
+                      onPressed: () {
+                        downloadReportLhaAuditArea(AppConstant.downloadReportLha, controllerAuditArea.areaId.value, startDateController, endDateController);
+                      },
+                      child: Text('Download laporan LHA',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     )
@@ -116,6 +171,13 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
           backgroundColor: CustomColors.white,
           title: const Text('Laporan'),
           titleTextStyle: CustomStyles.textBold18Px,
+          actions: [
+              TextButton(
+                onPressed: (){
+                           
+                            startDateController.clear();
+                            endDateController.clear();
+              }, child: Text('Reset', style: CustomStyles.textMediumRed15Px))],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -137,12 +199,26 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: () {
-                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, controllerAuditRegion, startDateController, endDateController);
+                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateController, endDateController);
                       },
-                      child: Text('Download laporan',
+                      child: Text('Download laporan klarifikasi',
                           style: CustomStyles.textMediumWhite15Px)
                       )
-                    )
+                    ),
+
+                  SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.green),
+                      onPressed: () {
+                        downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateController, endDateController);
+                      },
+                      child: Text('Download laporan LHA',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
                   ],
                 ),
             ),

@@ -1,4 +1,5 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
@@ -10,6 +11,7 @@ import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -79,6 +81,7 @@ abstract class Repositories {
   Future<ResponseDetailRescheduleAuditArea> getDetailRescheduleAuditArea(int id);
 
   //master
+  Future<ResponseDropdownArea>getArea();
   Future<ResponseUsers> getUsersAuditArea();
   Future<ResponseBranchAuditArea> getBranchAuditArea();
   Future<ResponseCaseAuditArea> getCaseAuditArea();
@@ -90,7 +93,7 @@ abstract class Repositories {
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
-  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate);
+  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id);
 
   //clarification
@@ -107,7 +110,7 @@ abstract class Repositories {
 
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc);
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc);
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
 
   //user profile
@@ -131,6 +134,8 @@ abstract class Repositories {
 
   //LHA
   Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail);
+  Future<ResponseMessage>inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
+    String suggestion, String tempRec, String perRec, int isResearch);
   Future<ResponseDetailLhaCasesLhaAuditRegion>getDetailCasesLha(int lhaId);
   Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
   Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int? scheduleId, int page, String startDate, String endDate);
@@ -255,6 +260,11 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
+  Future<ResponseDropdownArea> getArea() {
+    return apiService.getArea();
+  }
+
+  @override
   Future<ResponseUsers> getUsersAuditArea() {
     return apiService.getUsersAuditArea();
   }
@@ -306,8 +316,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate) {
-    return apiService.getLhaAuditArea(page, scheduleId, name, branchId, startDate, endDate);
+  Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate) {
+    return apiService.getLhaAuditArea(page, name, branchId, startDate, endDate);
   }
   
   @override
@@ -358,7 +368,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseMessage>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc){
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc){
     return apiService.inputFollowUpAuditArea(followUpId, penaltyId, desc);
   }
   
@@ -467,6 +477,12 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseMessage> inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail){
     return apiService.inputLhaAuditRegion(scheduleId, lhaDetail);
+  }
+
+  @override
+  Future<ResponseMessage>inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
+    String suggestion, String tempRec, String perRec, int isResearch){
+      return apiService.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
   }
 
   @override

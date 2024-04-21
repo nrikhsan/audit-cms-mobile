@@ -1,6 +1,3 @@
-
-import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
-import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
@@ -43,7 +40,7 @@ Widget formInputStarDateEndDate(BuildContext context, String label,
   );
 }
 
-void downloadReportClarificationAuditArea(String url, ControllerAuditArea controllerAuditArea, int? branchId, TextEditingController startDateController, TextEditingController endDateController) async {
+void downloadReportClarificationAuditArea(String url, int? branchId, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
@@ -93,7 +90,57 @@ void downloadReportClarificationAuditArea(String url, ControllerAuditArea contro
   }
 }
 
-void downloadReportClarificationAuditRegion(String url, ControllerAuditRegion controllerAuditRegion, TextEditingController startDateController, TextEditingController endDateController) async {
+void downloadReportLhaAuditArea(String url, int? areaId, TextEditingController startDateController, TextEditingController endDateController) async {
+  final Dio dio = Dio();
+  Map<Permission, PermissionStatus> statuses =
+      await [Permission.storage].request();
+
+  if (statuses[Permission.storage]!.isGranted) {
+    var dir = await DownloadsPathProvider.downloadsDirectory;
+    if (dir != null) {
+      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = 'laporan_lha_$timestamp.pdf';
+      String savePath = dir.path + "/$saveName";
+      print(savePath);
+
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
+      try {
+        await dio.download(
+          url,
+          savePath,
+          queryParameters: {
+            'area_id': areaId,
+            'start_date': startDateController.text,
+            'end_date': endDateController.text
+          },
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+      } catch (error) {
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+      }
+    }
+  } else {
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
+  }
+}
+
+void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
@@ -103,6 +150,55 @@ void downloadReportClarificationAuditRegion(String url, ControllerAuditRegion co
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_klairifkasi_$timestamp.xlsx';
+      String savePath = dir.path + "/$saveName";
+      print(savePath);
+
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
+      try {
+        await dio.download(
+          url,
+          savePath,
+          queryParameters: {
+            'start_date': startDateController.text,
+            'end_date': endDateController.text
+          },
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+      } catch (error) {
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+      }
+    }
+  } else {
+    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
+  }
+}
+
+void downloadReportLhaAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
+  final Dio dio = Dio();
+  Map<Permission, PermissionStatus> statuses =
+      await [Permission.storage].request();
+
+  if (statuses[Permission.storage]!.isGranted) {
+    var dir = await DownloadsPathProvider.downloadsDirectory;
+    if (dir != null) {
+      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = 'laporan_lha_$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 

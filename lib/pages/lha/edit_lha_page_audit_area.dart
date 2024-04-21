@@ -1,109 +1,8 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
-import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-
-class ListRevisionLhaCasesPageAuditArea extends StatefulWidget {
-  const ListRevisionLhaCasesPageAuditArea({super.key});
-
-  @override
-  State<ListRevisionLhaCasesPageAuditArea> createState() => _ListRevisionLhaCasesPageAuditAreaState();
-}
-
-class _ListRevisionLhaCasesPageAuditAreaState extends State<ListRevisionLhaCasesPageAuditArea> {
-
-  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
-
-  @override
-  Widget build(BuildContext context) {
-    // controllerAuditArea.lhaId.value = widget.lhaId;
-    // print(widget.lhaId);
-    return Scaffold(
-            appBar:  AppBar(
-            backgroundColor: CustomColors.white,
-            title: const Text('Hasil revisi LHA'),
-            titleSpacing: 5,
-            titleTextStyle: CustomStyles.textBold18Px,
-            leading: IconButton(onPressed: (){
-               Get.offAll(() => BotNavePageAuditArea());
-            },
-            icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
-            
-          ),
-                body: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Obx((){
-                    if (controllerAuditArea.isLoading.value) {
-                      return  const Center(child: SpinKitCircle(color: CustomColors.blue,));
-                    } else {
-                      return ListView.builder(
-                    itemCount: controllerAuditArea.lhaRevision.length,
-                    itemBuilder: (_, index){
-                      final lha = controllerAuditArea.lhaRevision[index];
-                      return Card(
-                            elevation: 0,
-                              shape: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                          color: CustomColors.grey,
-                                        )),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Wrap(
-                                            
-                                            children: [
-                                              lha.isResearch == 1 ?
-                                              Row(
-                                                children: [
-                                                  const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                                  const SizedBox(width: 5),
-                                                  Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                                ],
-                                              ) :
-                                              const SizedBox()
-                                            ],
-                                          ),
-                  
-                                          const SizedBox(height: 15),
-                  
-                                          Text('Kasus : ${lha.cases!.name}', style: CustomStyles.textBold15Px),
-                                          Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px),
-                  
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                                  TextButton(
-                                                  style: TextButton.styleFrom(
-                                                      shape:
-                                                          CustomStyles.customRoundedButton),
-                                                  onPressed: () {
-                                                    final caseId = lha.id;
-                                                    if(caseId != null){
-                                                      Get.to(() => DetailRevisionLhaAuditArea(caseId: caseId));
-                                                    }
-                                                  },
-                                                  child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  );
-                    }
-                  );
-                    }
-                  })
-                ),
-              );
-  }
-}
 
 class EditLhaPageAuditArea extends StatefulWidget {
   final int lhaId;
@@ -226,7 +125,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                     onPressed: () {
                       controllerAuditArea.revisiLha(widget.lhaId, lhaDescriptionController.text, 
                       suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
-                     Get.to(() => const ListRevisionLhaCasesPageAuditArea());
+                     Get.back();
                     },
                     child:
                         Text('Revisi LHA', style: CustomStyles.textMediumWhite15Px)),
