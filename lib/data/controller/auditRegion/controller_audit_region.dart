@@ -288,6 +288,7 @@ class ControllerAuditRegion extends GetxController {
     try {
       final response = await repositories.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
       message.value = response.message.toString();
+      pagingControllerClarification.refresh();
       snakcBarMessageGreen('Berhasil', 'Kasus Lha berhasil ditambahkan');
     } catch (error) {
       snakcBarMessageRed('Gagal menginput data', 'Gagal menambahkan kasus LHA');

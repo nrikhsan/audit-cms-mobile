@@ -145,7 +145,6 @@ class ControllerAuditArea extends GetxController{
     loadCaseAuditArea();
     loadCaseCategory();
     loadPenalty();
-    loadRevisiLha();
     loadArea();
     super.onInit();
   }
@@ -487,10 +486,10 @@ void getDetailRescheduleAuditArea(int id)async{
   //  } 
   // }
 
-  void loadRevisiLha()async{
+  void loadRevisiLha(int? lhaDetailId)async{
     isLoading.value = true;
     try {
-      final revisiLha = await repository.getRevisiLhaAuditArea();
+      final revisiLha = await repository.getRevisiLhaAuditArea(lhaDetailId);
       lhaRevision.assignAll(revisiLha.data ?? []);
     } catch (e) {
       throw Exception(e);
@@ -502,8 +501,8 @@ void getDetailRescheduleAuditArea(int id)async{
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
       final revisiLha = await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
+      lhaRevision.refresh();
       message.value = revisiLha.message.toString();
-      loadRevisiLha();
       snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
     } catch (e) {
       throw Exception(e);

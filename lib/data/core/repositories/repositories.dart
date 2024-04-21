@@ -89,7 +89,7 @@ abstract class Repositories {
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea();
 
   //LHA
-  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea();
+  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
@@ -296,8 +296,8 @@ class RepositoryImpl implements Repositories {
   // }
 
   @override
-  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(){
-    return apiService.getRevisiLhaAuditArea();
+  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId){
+    return apiService.getRevisiLhaAuditArea(lhaDetailId);
   }
 
   @override

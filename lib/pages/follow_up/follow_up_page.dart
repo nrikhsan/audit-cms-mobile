@@ -88,7 +88,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                     final status = followUp.status;
                       if (status == 'CREATE') {
                           Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
-                        } else if(status == 'PROGRESS') {
+                        } else if(status == 'DONE') {
                           Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                         }
                   },

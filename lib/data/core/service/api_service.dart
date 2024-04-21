@@ -369,13 +369,13 @@ class ApiService {
   //   }
   // }
 
-  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea()async{
+  Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.listRevisionLha);
+      final response = await dio.get(AppConstant.listRevisionLha, queryParameters: {'lha_detail_id': lhaDetailId});
       return ResponseRevisionLhaAuditArea.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
