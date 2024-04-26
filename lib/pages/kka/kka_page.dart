@@ -31,7 +31,6 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
-    // controllerAuditArea.scheduleIdKka.value = 0;
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -52,7 +51,11 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
         ],
       ),
 
-      body: PagedListView<int, ContentListKkaAuditArea>(
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          controllerAuditArea.pagingControllerKkaAuditArea.refresh();
+        },
+        child: PagedListView<int, ContentListKkaAuditArea>(
         pagingController: controllerAuditArea.pagingControllerKkaAuditArea,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (_, kka, index){
@@ -117,6 +120,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
           }
         ),
       )
+      )
     );
   }
 }
@@ -159,7 +163,11 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
         ],
       ),
 
-      body: PagedListView<int, ContentListKkaAuditRegion>(
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          controllerAuditRegion.pagingControllerKka.refresh();
+        },
+        child: PagedListView<int, ContentListKkaAuditRegion>(
         pagingController: controllerAuditRegion.pagingControllerKka, 
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (_, kka, index){
@@ -222,6 +230,7 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
               )
             );
         })
+      )
       )
     );
   }

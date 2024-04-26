@@ -87,7 +87,7 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchIdMainSchedule.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -284,7 +284,7 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchSpecialSchedule.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -483,7 +483,7 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchReschedule.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -491,7 +491,7 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                           }).toList(),
                           onChanged: (value){
                             controllerAuditArea.branchReschedule.value = value;
-                            print(controllerAuditArea.branchReschedule.value);
+                            
                           }
                       ),
                     )

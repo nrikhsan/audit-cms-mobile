@@ -1,7 +1,6 @@
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
@@ -203,7 +202,7 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
                             controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, idBap);
-                            Get.off(() => BotNavAuditRegion());
+                            Get.back();
                          }
                       : null,
                       child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

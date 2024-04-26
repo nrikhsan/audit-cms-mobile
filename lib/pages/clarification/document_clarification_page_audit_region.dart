@@ -10,8 +10,9 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DocumentClarificationPageAuditRegion extends StatefulWidget {
   final String? fileName;
+  final String? status;
   final int id;
-  const DocumentClarificationPageAuditRegion({super.key, required this.fileName, required this.id});
+  const DocumentClarificationPageAuditRegion({super.key, required this.fileName, required this.id, this.status});
 
   @override
   State<DocumentClarificationPageAuditRegion> createState() =>
@@ -35,10 +36,10 @@ class _DocumentClarificationPageAuditRegionState
                 widget.fileName != null ?
                 Column(
                   children: [
-                    SizedBox(
-                width: double.maxFinite,
-                height: 600,
-                child: FutureBuilder(
+                  SizedBox(
+                  width: double.maxFinite,
+                  height: 600,
+                  child: FutureBuilder(
                   future: getToken(),
                   builder: (_, snapshot){
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -62,20 +63,20 @@ class _DocumentClarificationPageAuditRegionState
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: () {
+                      onPressed: widget.status == 'DOWNLOAD' ? () {
                         downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
-                      },
-                      child: Text('Download',
+                      }: null,
+                      child: Text(widget.status == 'DOWNLOAD' ? 'Download': 'Downloaded',
                           style: CustomStyles.textMediumWhite15Px)),
-                  const SizedBox(width: 5),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
-                      onPressed: () {
+                      onPressed: widget.status == 'UPLOAD' ? () {
                         uploadClarificationAuditRegion(context, widget.id, controllerAuditRegion);
-                      },
-                      child: Text('Upload',
+                      }: null,
+                      child: Text(widget.status == 'UPLOAD' ? 'Upload': 'Uploaded',
                           style: CustomStyles.textMediumWhite15Px)),
                 ],
               )
@@ -84,24 +85,24 @@ class _DocumentClarificationPageAuditRegionState
                   return Column(
                   children: [
                     SizedBox(
-                width: double.maxFinite,
-                height: 600,
-                child: FutureBuilder(
-                  future: getToken(),
-                  builder: (_, snapshot){
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
-                    } else {
-                      final data = snapshot.data;
-                    return SfPdfViewer.network(
-                      headers: {'Authorization': 'Bearer $data'},
-                      '${AppConstant.documentClarification}${controllerAuditRegion.dataInputClarification.value?.clarification?.fileName}',
-                      pageSpacing: 0,
-                      );
+                    width: double.maxFinite,
+                    height: 600,
+                    child: FutureBuilder(
+                    future: getToken(),
+                    builder: (_, snapshot){
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                      } else {
+                        final data = snapshot.data;
+                      return SfPdfViewer.network(
+                        headers: {'Authorization': 'Bearer $data'},
+                        '${AppConstant.documentClarification}${controllerAuditRegion.dataInputClarification.value?.clarification?.fileName}',
+                        pageSpacing: 0,
+                        );
+                      }
                     }
-                  }
-                )
-              ),
+                  )
+                ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

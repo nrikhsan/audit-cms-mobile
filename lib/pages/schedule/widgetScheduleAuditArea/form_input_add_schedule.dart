@@ -26,7 +26,7 @@ Widget formInputAddScheduleStartDate(
           confirmText: 'ya',
           context: context,
           initialDate: DateTime.now(),
-          firstDate: DateTime(2001),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100));
       if (picked != null) {
         startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
@@ -59,7 +59,7 @@ Widget formInputAddScheduleEndDate(
           confirmText: 'ya',
           context: context,
           initialDate: DateTime.now(),
-          firstDate: DateTime(2001),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100));
       if (picked != null) {
         endDateController.text = DateFormat('yyyy-MM-dd').format(picked);

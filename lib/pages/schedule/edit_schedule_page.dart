@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/schedule/schedule_page.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,12 @@ import 'package:get/get.dart';
 //main schedule
 class EditMainSchedulePage extends StatefulWidget {
   final int scheduleId;
-  const EditMainSchedulePage({super.key, required this.scheduleId});
+  final String startDate;
+  final String endDate;
+  final int user;
+  final int branch;
+  final String desc;
+  const EditMainSchedulePage({super.key, required this.scheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
   State<EditMainSchedulePage> createState() => _EditMainSchedulePageState();
@@ -22,6 +26,25 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
   final TextEditingController scheduleDescControllerMainSchedule = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  @override
+  void initState(){
+    startDateControllerMainSchedule.text = widget.startDate;
+    endDateControllerMainSchedule.text = widget.endDate;
+    scheduleDescControllerMainSchedule.text = widget.desc;
+    controllerAuditArea.loadBranchAuditArea(widget.user);
+    _users = widget.user;
+    _branch = widget.branch;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    startDateControllerMainSchedule.dispose();
+    endDateControllerMainSchedule.dispose();
+    scheduleDescControllerMainSchedule.dispose();
+    super.dispose();
+  }
 
   int? _users;
   int? _branch;
@@ -63,7 +86,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -86,17 +109,19 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           onChanged: (value)async{
                           setState(() {
                             _users = value;
+                            controllerAuditArea.loadBranchAuditArea(value);
+                            _branch = null;
                           });
                           }
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -124,7 +149,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -142,8 +167,12 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           ),
                           onPressed: ()async{
                     
-                            if (_users == null || _branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                               snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                           if (_users == null || _branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                            }else if(DateTime.parse(startDateControllerMainSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerMainSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                            }else if(DateTime.parse(startDateControllerMainSchedule.text).isAfter(DateTime.parse(endDateControllerMainSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editMainSchedule(widget.scheduleId, _users!, _branch!, startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
                               snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
@@ -166,7 +195,12 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
 //special schedule
 class EditSpecialSchedule extends StatefulWidget {
   final int scheduleId;
-  const EditSpecialSchedule({super.key, required this.scheduleId});
+  final String startDate;
+  final String endDate;
+  final int user;
+  final int branch;
+  final String desc;
+  const EditSpecialSchedule({super.key, required this.scheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
   State<EditSpecialSchedule> createState() => _EditSpecialScheduleState();
@@ -179,6 +213,25 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
   final TextEditingController scheduleDescControllerSpecialSchedule = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  @override
+  void initState() {
+    startDateControllerSpecialSchedule.text = widget.startDate;
+    endDateControllerSpecialSchedule.text = widget.endDate;
+    scheduleDescControllerSpecialSchedule.text = widget.desc;
+    controllerAuditArea.loadBranchAuditArea(widget.user);
+    users = widget.user;
+    branch = widget.branch;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    startDateControllerSpecialSchedule.dispose();
+    endDateControllerSpecialSchedule.dispose();
+    scheduleDescControllerSpecialSchedule.dispose();
+    super.dispose();
+  }
 
   int? users;
   int? branch;
@@ -220,7 +273,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -243,17 +296,19 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           onChanged: (value)async{
                           setState(() {
                             users = value;
+                            controllerAuditArea.loadBranchAuditArea(value);
+                            branch = null;
                           });
                           }
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -281,7 +336,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -299,11 +354,15 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           ),
                           onPressed: ()async{
                             if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                                snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                            }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                            }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editSpecialSchedule(widget.scheduleId, users!, branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
-                            snakcBarMessageGreen('Gagal', 'Data jadwal berhasil di edit');
-                                Navigator.pop(context);
+                              snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
+                              Navigator.pop(context);
                             }
                           },
                           child: Text('Edit jadwal khusus', style: CustomStyles.textMediumWhite15Px)

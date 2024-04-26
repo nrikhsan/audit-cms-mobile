@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/controller/auth/controller_auth.dart';
-import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/auth/login_page.dart';
 import 'package:audit_cms/pages/profile/change_password_page.dart';
@@ -9,6 +10,7 @@ import 'package:audit_cms/pages/profile/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 
 //audit area
@@ -23,6 +25,14 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
+
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +53,18 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
           )
         ],
       ),
-      body: Padding(
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditArea.getDetailUserAuditArea();
+      },
+      children: [
+        Padding(
         padding: const EdgeInsets.all(15),
         child: Obx((){
           final user = controllerAuditArea.detailUserAuditArea.value;
           if (user == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           }else{
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -106,6 +121,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
           }
         })
       ),
+      ])
     );
   }
   
@@ -170,6 +186,15 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
 
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
+
+  
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -190,13 +215,18 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
           )
         ],
       ),
-      body: Padding(
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditRegion.getDetailUserAuditRegion();
+      },
+      children: [
+        Padding(
         padding: const EdgeInsets.all(15),
         child: Obx((){
           final user = controllerAuditRegion.detailUserAuditRegion.value;
           if (user == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           }else{
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -229,7 +259,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Get.to(() => EditProfilePageAuditArea(id: user.id!, email: user.email!, username: user.username!));
+                        Get.to(() => EditProfilePageAuditRegion(id: user.id!, email: user.email!, username: user.username!));
                       },
                       child: Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
                     ),
@@ -243,7 +273,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         leading: const Icon(Icons.password_rounded, color: CustomColors.black, size: 25),
                         title: Text('Ubah kata sandi', style: CustomStyles.textBold15Px),
                         onTap: (){
-                          Get.to(() => const ChangePasswordPageAuditArea());
+                          Get.to(() => const ChangePasswordPageAuditRegion());
                         },
                       ),
                     ],
@@ -253,6 +283,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
           }
         })
       ),
+      ],)
     );
   }
 

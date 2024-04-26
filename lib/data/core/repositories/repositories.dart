@@ -76,20 +76,23 @@ abstract class Repositories {
   Future<ResponseDetailScheduleAuditArea> getDetailSpecialScheduleAuditArea(int id);
 
   //reschedule
-  Future<ResponseMessage>requestReschedule(int userId, int scheduleId, int branchId, String startDate, String endDate, String desc);
-  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate);
+  Future<ResponseMessage>requestReschedule(int? userId, int scheduleId, int? branchId, String startDate, String endDate, String desc);
+  Future<ResponseRescheduleAuditArea> getReschedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseDetailRescheduleAuditArea> getDetailRescheduleAuditArea(int id);
 
   //master
   Future<ResponseDropdownArea>getArea();
   Future<ResponseUsers> getUsersAuditArea();
-  Future<ResponseBranchAuditArea> getBranchAuditArea();
+  Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId);
+  Future<ResponseBranchAuditArea> getBranchForFilterDataAuditArea();
   Future<ResponseCaseAuditArea> getCaseAuditArea();
   Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea();
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea();
 
   //LHA
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
+  Future<ResponseMessage>sendCaseLha(int? lhaDEtailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
+  int? statusFlow, int? statusParsing);
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
@@ -138,7 +141,7 @@ abstract class Repositories {
     String suggestion, String tempRec, String perRec, int isResearch);
   Future<ResponseDetailLhaCasesLhaAuditRegion>getDetailCasesLha(int lhaId);
   Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
-  Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int? scheduleId, int page, String startDate, String endDate);
+  Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int page, String startDate, String endDate);
 
   //KKA
   Future<ResponseMessage>uploadKkaAuditRegion(String filePath, int id);
@@ -146,13 +149,13 @@ abstract class Repositories {
   Future<ResponseDetailKkaAuditRegion>getDetailKkaAuditRegion(int id);
 
   //master
-  Future<ResponseBranchAuditRegion>getBranchAuditRegion();
+  Future<ResponseBranchAuditRegion>getBranchAuditRegion(int? userId);
   Future<ResponseCaseAuditRegion>getCasesAuditRegion();
   Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion(int? caseId);
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
   //user profile
   Future<ResponseProfileAuditRegion> getDetailUserAuditRegion();
-  Future<ResponseMessage>editUserAuditRegion(String email, String username);
+  Future<ResponseMessage>editUserAuditRegion(String? email, String? username);
   Future<ResponseMessage>changePasswordAuditRegion(String oldPassword, String newPassword);
 
   //report
@@ -244,12 +247,12 @@ class RepositoryImpl implements Repositories {
 
   //reschedule
   @override
-  Future<ResponseMessage>requestReschedule(int userId, int scheduleId, int branchId, String startDate, String endDate, String desc){
+  Future<ResponseMessage>requestReschedule(int? userId, int scheduleId, int? branchId, String startDate, String endDate, String desc){
     return apiService.requestReschedule(userId, scheduleId, branchId, startDate, endDate, desc);
   }
 
   @override
-  Future<ResponseReschedulesAuditArea> getReschedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate){
+  Future<ResponseRescheduleAuditArea> getReschedulesAuditArea(int page, String name, int? branchId, String startDate, String endDate){
     return apiService.getReschedulesAuditArea(page, name, branchId, startDate, endDate);
   }
 
@@ -270,8 +273,13 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseBranchAuditArea> getBranchAuditArea() {
-    return apiService.getBranchAuditArea();
+  Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId) {
+    return apiService.getBranchAuditArea(userId);
+  }
+
+  @override
+  Future<ResponseBranchAuditArea> getBranchForFilterDataAuditArea() {
+    return apiService.getBranchForFilterDataAuditArea();
   }
 
   @override
@@ -308,6 +316,12 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec) {
     return apiService.revisiLhaAuditArea(lhaId, desc, suggest, tempRec, perRec);
+  }
+
+  @override
+  Future<ResponseMessage> sendCaseLha(int? lhaDEtailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
+  int? statusFlow, int? statusParsing) {
+    return apiService.sendCaseLha(lhaDEtailId, caseId, caseCategoryId, description, suggestion, tempRec, perRec, isResearch, statusFlow, statusParsing);
   }
 
   @override
@@ -435,7 +449,7 @@ class RepositoryImpl implements Repositories {
   }  
 
   @override
-  Future<ResponseMessage> editUserAuditRegion(String email, String username) {
+  Future<ResponseMessage> editUserAuditRegion(String? email, String? username) {
    return apiService.editProfileUserAuditRegion(email, username);
   }
   
@@ -453,8 +467,8 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
-  Future<ResponseBranchAuditRegion>getBranchAuditRegion(){
-    return apiService.getBranchAuditRegion();
+  Future<ResponseBranchAuditRegion>getBranchAuditRegion(int? userId){
+    return apiService.getBranchAuditRegion(userId);
   }
 
   @override
@@ -496,8 +510,8 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseLhaAuditRegion> getListLhaAuditRegion(int? scheduleId, int page , String startDate, String endDate) {
-    return apiService.getListLhaAuditRegion(scheduleId, page, startDate, endDate);
+  Future<ResponseLhaAuditRegion> getListLhaAuditRegion(int page , String startDate, String endDate) {
+    return apiService.getListLhaAuditRegion(page, startDate, endDate);
   }
 
   //KKA

@@ -1,7 +1,7 @@
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:flutter/material.dart';
 
-Widget formInputAuth(
+Widget formInputUsernameOrEmail(
     String label, TextEditingController textEditingController, IconData icon) {
   return TextField(
       controller: textEditingController,

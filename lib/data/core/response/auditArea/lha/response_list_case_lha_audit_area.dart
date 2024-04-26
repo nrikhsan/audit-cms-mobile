@@ -85,6 +85,8 @@ class LhaDetails {
   String? temporaryRecommendations;
   String? permanentRecommendations;
   int? isResearch;
+  int? statusFlow;
+  int? statusParsing;
 
   LhaDetails(
       {this.id,
@@ -94,7 +96,9 @@ class LhaDetails {
       this.suggestion,
       this.temporaryRecommendations,
       this.permanentRecommendations,
-      this.isResearch});
+      this.isResearch,
+      this.statusFlow,
+      this.statusParsing});
 
   LhaDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -105,6 +109,8 @@ class LhaDetails {
     temporaryRecommendations = json['temporary_recommendations'];
     permanentRecommendations = json['permanent_recommendations'];
     isResearch = json['is_research'];
+    statusFlow = json['status_flow'];
+    statusParsing = json['status_parsing'];
   }
 
   Map<String, dynamic> toJson() {
@@ -117,6 +123,8 @@ class LhaDetails {
     data['temporary_recommendations'] = this.temporaryRecommendations;
     data['permanent_recommendations'] = this.permanentRecommendations;
     data['is_research'] = this.isResearch;
+    data['status_flow'] = this.statusFlow;
+    data['status_parsing'] = this.statusParsing;
     return data;
   }
 }

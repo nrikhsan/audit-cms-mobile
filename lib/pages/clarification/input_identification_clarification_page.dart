@@ -26,7 +26,6 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
 
   @override
   Widget build(BuildContext context) {
-    print(widget.clarificationId);
     return  Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
@@ -63,7 +62,7 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                       onSelected: (bool selected){
                         setState(() {
                           _evaluation = selected ? index: null;
-                          print(_evaluation);
+                          
                         });
                       },
                     );
@@ -86,7 +85,9 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                       onSelected: (bool selected){
                         setState(() {
                           _loss = selected ? index : null;
-                          print(_loss);
+                          if (_loss == 0 || _loss == null) {
+                            lossController.clear();
+                          }
                         });
                       },
                     );
@@ -118,7 +119,6 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                       onSelected: (bool selected){
                         setState(() {
                           _followUp = selected ? index : null;
-                          print(_followUp);
                         });
                       },
                     );
@@ -139,11 +139,9 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                               }else if(lossController.text.isNotEmpty){
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
                                 Get.to(() => const BapAuditRegionPage());
-                                print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
                               }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavAuditRegion());
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
-                                print('${_evaluation}, ${lossController.text}, ${descController.text}, ${_followUp}');
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)

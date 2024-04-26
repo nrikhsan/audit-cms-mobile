@@ -52,7 +52,11 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
         ),
         body: Padding(
           padding: const EdgeInsets.all(15),
-          child: PagedListView<int, ContentListClarificationAuditArea>(
+          child: RefreshIndicator(
+            onRefresh: ()async{
+              controllerAuditArea.pagingControllerClarificationAuditArea.refresh();
+            },
+            child: PagedListView<int, ContentListClarificationAuditArea>(
             pagingController: controllerAuditArea.pagingControllerClarificationAuditArea,
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
@@ -60,7 +64,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                 final priority = clarification.priority;
                 return GestureDetector(
                       onTap: (){
-                        Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!));
+                        Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
                       },
                       child: Card(
                       shape: OutlineInputBorder(
@@ -119,7 +123,8 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                   );
               }
             ),
-          ),
+          )
+          )
         )
     );
   }
@@ -165,7 +170,11 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
 
         body: Padding(
           padding: const EdgeInsets.all(15),
-          child: PagedListView<int, ContentListClarificationAuditRegion>(
+          child: RefreshIndicator(
+            onRefresh: ()async{
+              controllerAuditRegion.pagingControllerClarification.refresh();
+            },
+            child: PagedListView<int, ContentListClarificationAuditRegion>(
             pagingController: controllerAuditRegion.pagingControllerClarification,
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
@@ -173,13 +182,12 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                 final priority = clarification.priority;
                 return GestureDetector(
                       onTap: (){
-                        
                         if (statusClarificaion == 'INPUT'){
                           Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
-                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName));
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName, status: clarification.status,));
                           }else if(statusClarificaion == 'UPLOAD'){
-                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName));
+                            Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName, status: clarification.status));
                           }else if(statusClarificaion == 'IDENTIFICATION'){
                             Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: clarification.id!));
                           }else if(statusClarificaion == 'DONE'){
@@ -243,7 +251,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                   );
               }
             ),
-          ),
+          ))
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blue,
@@ -256,6 +264,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
   }
   
   void showDialogMoreOption() {
+    
     showDialog(
       context: context, 
       builder: (_){
@@ -292,7 +301,6 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         onChanged: (value){
                           setState(() {
                              controllerAuditRegion.selectBranch(value);
-                             print(value);
                           });
                         }
                       ))
@@ -328,7 +336,6 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                             controllerAuditRegion.selectCase(value);
                             controllerAuditRegion.loadCaseCategoryAuditRegion(value);
                             controllerAuditRegion.caseCategoryId.value = null;
-                            print(value);
                           });
                         }
                       )
@@ -362,7 +369,6 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         onChanged: (value){
                           setState(() {
                             controllerAuditRegion.selectCaseCategory(value!);
-                            print(value);
                           });
                         }
                       )
@@ -381,9 +387,20 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                       ),
                       onPressed: (){
                         controllerAuditRegion.generateClarification();
+                        resetValueGenerate();
                         Get.back();
                       }, 
-                      child: Text('Generate klarifikasi', style: CustomStyles.textMediumGreen15Px)
+                      child: Text('Generate', style: CustomStyles.textMediumGreen15Px)
+                    ),
+
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                       resetValueGenerate();
+                      }, 
+                      child: Text('Reset', style: CustomStyles.textMediumRed15Px)
                     )
                   ],
                 )
@@ -393,5 +410,11 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
         );
       }
     );
+  }
+
+  void resetValueGenerate(){
+    controllerAuditRegion.branchId.value = null;
+    controllerAuditRegion.caseId.value = null;
+    controllerAuditRegion.caseCategoryId.value = null;
   }
 }

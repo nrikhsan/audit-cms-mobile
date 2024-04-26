@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
@@ -7,6 +9,7 @@ import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 
 //audit area
@@ -21,6 +24,14 @@ class DetailBapPageAuditArea extends StatefulWidget {
 class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
   
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +48,17 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),
       ),
-      body: Obx((){
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditArea.getDetailBapAuditArea(widget.id);
+      },
+      children: [
+        Obx((){
         final bap = controllerAuditArea.detailBapAuditArea.value;
         if (bap == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           final fileBap = bap.filename;
+          refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
             child: SingleChildScrollView(
@@ -101,7 +117,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                         ),
                       ),
                     ),
-                  ) : Text('File BAP tidak tersedia', style: CustomStyles.textRegular13Px)
+                  ) : Text('Auditor belum mengunggah klarifikasi', style: CustomStyles.textRegular13Px)
                     ],
                   )
                 ],
@@ -110,6 +126,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
           );
         }
       }),
+      ])
     );
   }
 }
@@ -125,10 +142,15 @@ class DetailBapAuditRegion extends StatefulWidget {
 
 class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailBapAuditRegion(widget.id);
-    print(widget.id);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail BAP'),
@@ -141,12 +163,17 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),
       ),
-      body: Obx((){
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditRegion.getDetailBapAuditRegion(widget.id);
+      },
+      children: [
+        Obx((){
         final bap = controllerAuditRegion.detailBapAuditRegion.value;
         if (bap == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           final fileBap = bap.filename;
+          refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
             child: SingleChildScrollView(
@@ -240,6 +267,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
           );
         }
       }),
+      ],)
     );
   }
 }

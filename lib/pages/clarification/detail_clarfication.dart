@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
@@ -8,12 +10,14 @@ import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_a
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 //audit area
 class DetailClarificationPageAuditArea extends StatefulWidget {
   final int id;
-  const DetailClarificationPageAuditArea({super.key, required this.id});
+  final String statusClarificaion;
+  const DetailClarificationPageAuditArea({super.key, required this.id, required this.statusClarificaion});
 
   @override
   State<DetailClarificationPageAuditArea> createState() =>
@@ -23,6 +27,14 @@ class DetailClarificationPageAuditArea extends StatefulWidget {
 class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +54,11 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
               color: CustomColors.black, size: 25),
         ),
       ),
-      body: SingleChildScrollView(
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditArea.getDetailClarificationAuditArea(widget.id);
+      },
+      children: [
+        SingleChildScrollView(
         child: Obx(() {
           final detail = controllerAuditArea.detailClarificationAuditArea.value;
           if (detail == null) {
@@ -51,6 +67,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
             final fileName = detail.fileName;
+            refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -154,7 +171,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                   const SizedBox(height: 5),
                   Wrap(
                     children: [
-                      fileName != null ?
+                      fileName != null && widget.statusClarificaion == 'DONE' || widget.statusClarificaion == 'IDENTIFICATION' ?
                       SizedBox(
                     width: 140,
                     child: Card(
@@ -174,7 +191,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.green),
                                 onPressed: () async {
-                                  showDialogPdfClarificationPdfAuditArea(context, 'File klarifikais', detail.fileName!);
+                                  showDialogPdfClarificationPdfAuditArea(context, 'File klarifikasi', fileName!);
                                 },
                                 child: Text('Lihat',
                                     style: CustomStyles.textMediumWhite15Px))
@@ -182,7 +199,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                         ),
                       ),
                     ),
-                  ) : Text('File tidak tersedia', style: CustomStyles.textRegular13Px),
+                  ) : Text('Auditor belum mengunggah klarifikasi', style: CustomStyles.textRegular13Px),
                     ]
                   )
                   
@@ -192,6 +209,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
           }
         }),
       ),
+      ])
     );
   }
 }
@@ -210,6 +228,14 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
 
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailClarificationAuditRegion(widget.id);
@@ -226,7 +252,11 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
               color: CustomColors.black, size: 25),
         ),
       ),
-      body: SingleChildScrollView(
+      body: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+        controllerAuditRegion.getDetailClarificationAuditRegion(widget.id);
+      },
+      children: [
+        SingleChildScrollView(
         child: Obx(() {
           final detail = controllerAuditRegion.detailClarificationAuditRegion.value;
           if (detail == null) {
@@ -234,6 +264,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
           } else {
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
+            refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -371,6 +402,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
           }
         }),
       ),
+      ],)
     );
   }
   

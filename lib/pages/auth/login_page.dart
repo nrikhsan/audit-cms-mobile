@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final ControllerAuth controllerAuth = Get.put(ControllerAuth(Get.find()));
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +46,34 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 20),
 
-                    formInputAuth('Masukan email atau username...', emailController, Icons.account_circle),
+                    formInputUsernameOrEmail('Masukan email atau username...', emailController, Icons.account_circle),
 
                     const SizedBox(height: 15),
-                    formInputAuth('Masukan kata sandi...', passwordController, Icons.password_rounded),
+                    TextField(
+                      controller: passwordController,
+                      onChanged: (value) => passwordController.text = value,
+                      cursorColor: CustomColors.blue,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: (){
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            }, 
+                            icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25)
+                          ),
+                          labelStyle: CustomStyles.textMediumGrey15Px,
+                          labelText: 'Masukan kata sandi...',
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: CustomColors.grey)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: CustomColors.grey)
+                            )
+                          )
+                        ),
                     const SizedBox(height: 20),
 
                     SizedBox(

@@ -91,7 +91,7 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchBap.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -99,7 +99,6 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                           }).toList(),
                           onChanged: (value){
                             controllerAuditArea.branchBap.value = value;
-                            print(controllerAuditArea.branchBap.value);
                           }
                       ),
                     )

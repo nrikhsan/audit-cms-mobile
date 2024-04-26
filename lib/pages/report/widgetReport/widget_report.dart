@@ -90,62 +90,58 @@ void downloadReportClarificationAuditArea(String url, int? branchId, TextEditing
   }
 }
 
-void downloadReportLhaAuditArea(String url, int? areaId, TextEditingController startDateController, TextEditingController endDateController) async {
+void downloadReportLhaAuditArea(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
   Map<Permission, PermissionStatus> statuses =
       await [Permission.storage].request();
+      if (statuses[Permission.storage]!.isGranted) {
+      var dir = await DownloadsPathProvider.downloadsDirectory;
+      if (dir != null) {
+        String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+        String saveName = 'laporan_lha_$timestamp.pdf';
+        String savePath = dir.path + "/$saveName";
+        print(savePath);
 
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
-    if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_lha_$timestamp.pdf';
-      String savePath = dir.path + "/$saveName";
-      print(savePath);
-
-      final token = await TokenManager.getToken();
-      dio.options.headers = {'Authorization': 'Bearer $token'};
-      try {
-        await dio.download(
-          url,
-          savePath,
-          queryParameters: {
-            'area_id': areaId,
-            'start_date': startDateController.text,
-            'end_date': endDateController.text
-          },
-          onReceiveProgress: (received, total) {
-            if (total != -1) {
-              print((received / total * 100).toStringAsFixed(0) + "%");
+        final token = await TokenManager.getToken();
+        dio.options.headers = {'Authorization': 'Bearer $token'};
+        try {
+          await dio.download(
+            url,
+            savePath,
+            queryParameters: {
+              'start_date': startDateController.text,
+              'end_date': endDateController.text
+            },
+            onReceiveProgress: (received, total) {
+              if (total != -1) {
+                print((received / total * 100).toStringAsFixed(0) + "%");
+              }
+            },
+          );
+          snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        } catch (error) {
+          if (error is DioError) {
+            if (error.response != null) {
+              print('Server responded with error: ${error.response!.statusCode}');
+              print('Response data: ${error.response!.data}');
+            } else {
+              print('Dio error: $error');
             }
-          },
-        );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
-      } catch (error) {
-        if (error is DioError) {
-          if (error.response != null) {
-            print('Server responded with error: ${error.response!.statusCode}');
-            print('Response data: ${error.response!.data}');
           } else {
-            print('Dio error: $error');
+            print('Error: $error');
           }
-        } else {
-          print('Error: $error');
+          snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
-    }
-  } else {
+    }else {
     snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
   }
 }
 
-void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
+void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController, BuildContext context) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
+  PermissionStatus status = await Permission.storage.request();
+  if (status == PermissionStatus.granted) {
     var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
@@ -184,15 +180,18 @@ void downloadReportClarificationAuditRegion(String url, TextEditingController st
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
+  }else if(status == PermissionStatus.denied){
+    ScaffoldMessenger.maybeOf(context)!.showSnackBar(SnackBar(content: Text('Open app setting'), action: SnackBarAction(label: 'Open', onPressed: (){
+      openAppSettings();
+    })));
+  }else if(status == PermissionStatus.limited){
+    print('Permission was limited');
   }
 }
 
 void downloadReportLhaAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
+  Map<Permission, PermissionStatus> statuses = await [Permission.storage].request();
 
   if (statuses[Permission.storage]!.isGranted) {
     var dir = await DownloadsPathProvider.downloadsDirectory;

@@ -127,7 +127,6 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
                         Get.snackbar('Klarifikasi gagal dibuat', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else{
                         controllerAuditRegion.inputClarificationAuditRegion(widget.id, limitEvaluation, locationInspection, divisionInspection, supervisor, desc, selectPriority);
-                        
                         Get.back();
                       }
                     }, 

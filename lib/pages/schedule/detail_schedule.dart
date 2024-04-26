@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
@@ -5,10 +7,12 @@ import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
 //main schedule
@@ -24,6 +28,14 @@ class DetailMainSchedulePageAuditArea extends StatefulWidget {
 class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePageAuditArea> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailMainScheduleAuditArea(widget.mainScheduleId);
@@ -36,7 +48,11 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
+        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+          controllerAuditArea.getDetailMainScheduleAuditArea(widget.mainScheduleId);
+        },
+        children: [
+          SingleChildScrollView(
           child: Obx(() {
             final schedule = controllerAuditArea.detailMainScheduleAuditArea.value;
           if (schedule == null) {
@@ -47,6 +63,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
             final lha = schedule.lha;
             final startDate = detail?.startDateRealization;
             final endDate = detail?.endDateRealization;
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -123,7 +140,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                           ),
                         ),
                       ),
-                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                    ) : Text('Auditor belum mengunggah KKA', style: CustomStyles.textRegular13Px)
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -189,14 +206,14 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                             ],
                           ),
                         ));
-                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                    }) : Text('Auditor belum Membuat LHA', style: CustomStyles.textRegular13Px)
                   ],
                 )
               ],
             );
           }
-        })
-        ),
+        }))
+        ],)
       ),
     );
   }
@@ -215,6 +232,14 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
@@ -227,7 +252,11 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
+        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+          controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
+        },
+        children: [
+          SingleChildScrollView(
           child: Obx(() {
           if (controllerAuditArea.detailSpecialScheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
@@ -237,6 +266,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
             final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
             final startDate = detail?.startDateRealization;
             final endDate = detail?.endDateRealization;
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -307,7 +337,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                           ),
                         ),
                       ),
-                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
+                    ) : Text('Auditor belum mengunggah KKA', style: CustomStyles.textRegular13Px)
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -372,13 +402,14 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                             ],
                           ),
                         ));
-                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
+                    }) : Text('Auditor belum Membuat LHA', style: CustomStyles.textRegular13Px)
                   ],
                 )
               ],
             );
           }
         })),
+        ],)
       ),
     );
   }
@@ -397,10 +428,17 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailRescheduleAuditArea(widget.rescheduleId);
-    print(widget.rescheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -410,7 +448,12 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
+        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+          controllerAuditArea.getDetailRescheduleAuditArea(widget.rescheduleId);
+        },
+        children: [
+          SingleChildScrollView(
+            child: Obx(() {
           if (controllerAuditArea.detailRescheduleAuditArea.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
@@ -419,6 +462,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
             final lha = controllerAuditArea.detailRescheduleAuditArea.value!.lha;
             final startDate = detail?.startDateRealization;
             final endDate = detail?.endDateRealization;
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -565,6 +609,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
             );
           }
         })),
+        ],)
       ),
     );
   }
@@ -575,7 +620,8 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
 //main schedule
 class DetailMainScheduleAuditRegion extends StatefulWidget {
   final int mainScheduleId;
-  const DetailMainScheduleAuditRegion({super.key, required this.mainScheduleId});
+  final String? kka;
+  const DetailMainScheduleAuditRegion({super.key, required this.mainScheduleId, this.kka});
 
   @override
   State<DetailMainScheduleAuditRegion> createState() =>
@@ -585,6 +631,14 @@ class DetailMainScheduleAuditRegion extends StatefulWidget {
 class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditRegion> {
   
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -619,14 +673,22 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                   labelStyle: CustomStyles.textMediumWhite15Px,
                   child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
                   onTap: (){
-                          showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                          if (widget.kka != null) {
+                            snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                          } else {
+                            showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                          }
                         }
                     ),
                   ],
                 ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
+        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+          controllerAuditRegion.getDetailMainScheduleAuditRegion(widget.mainScheduleId);
+        },
+        children: [
+          SingleChildScrollView(
           child: Obx(() {
             final schedule = controllerAuditRegion.detailMainSchedule.value;
           if (schedule == null) {
@@ -637,6 +699,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
             final lha = schedule.lha;
             final startDate = detail?.startDateRealization;
             final endDate = detail?.endDateRealization;
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -785,6 +848,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
             );
           }
         })),
+        ],)
       ),
     );
   }
@@ -841,14 +905,25 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
 //special schedule
 class DetailSpecialScheduleAuditRegion extends StatefulWidget {
   final int specialScheduleId;
-  const DetailSpecialScheduleAuditRegion({super.key, required this.specialScheduleId});
+  final String? kka;
+  const DetailSpecialScheduleAuditRegion({super.key, required this.specialScheduleId, this.kka});
 
   @override
   State<DetailSpecialScheduleAuditRegion> createState() => _DetailSpecialScheduleAuditRegionState();
 }
 
 class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialScheduleAuditRegion> {
+
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
@@ -882,14 +957,22 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
               onTap: (){
-                showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                if (widget.kka != null) {
+                     snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                  } else {
+                    showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                  }
               }
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(child: Obx(() {
+        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
+          controllerAuditRegion.getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
+        },
+        children: [
+          SingleChildScrollView(child: Obx(() {
           if (controllerAuditRegion.detailSpecialSchedule.value == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
@@ -898,6 +981,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
             final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
             final startDate = detail?.startDateRealization;
             final endDate = detail?.endDateRealization;
+            refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -1040,6 +1124,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
             );
           }
         })),
+        ],)
       ),
     );
   }

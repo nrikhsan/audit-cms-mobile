@@ -21,11 +21,14 @@ import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lh
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class ControllerAuditRegion extends GetxController {
   final Repositories repositories;
@@ -108,10 +111,9 @@ class ControllerAuditRegion extends GetxController {
     pagingControllerKka.addPageRequestListener(loadKkaAuditRegion);
     pagingControllerClarification.addPageRequestListener(loadClarificationAuditRegion);
     pagingControllerBap.addPageRequestListener(loadBapAuditRegion);
-    loadBranchAuditRegion();
     loadcaseAuditRegion();
     loadPriorityFindingAuditRegion();
-    
+    loadBranchAuditRegion();
     super.onInit();
   }
 
@@ -247,7 +249,7 @@ class ControllerAuditRegion extends GetxController {
 
   //LHA
   void addToLocalLhaAuditRegion(int? caseId, int? caseCategoryId, String description, String suggestion, String temporaryRecommendation, 
-  String permanentRecommendation, int research)async{
+  String permanentRecommendation, int research, String? caseName, String? caseCategoryName)async{
 
     final newDataLha = LhaDetail(
       caseId: caseId,
@@ -257,6 +259,8 @@ class ControllerAuditRegion extends GetxController {
       temporaryRecommendation: temporaryRecommendation,
       permanentRecommendation: permanentRecommendation,
       research: research,
+      caseName: DataCaseAuditRegion(name: caseName),
+      caseCategoryName: DataCaseCategory(name: caseCategoryName)
       
     );
     dataListLocalLhaAuditRegion.add(newDataLha);
@@ -298,16 +302,31 @@ class ControllerAuditRegion extends GetxController {
 
    void loadLhaAuditRegion(int page)async {
     try {
-      final lhaAuditRegion = await repositories.getListLhaAuditRegion(scheduleId.value, page, startDateLha.value, endDateLha.value);
-      final lha = lhaAuditRegion.data!.content;
-      final isLastPage = lha!.length < 10;
-      if (isLastPage) {
-        pagingControllerLha.appendLastPage(lha);
-      } else {
-        final nextPage = page +1;
-        pagingControllerLha.appendPage(lha, nextPage);
+      final now = DateTime.now();
+      final formatter = DateFormat('yyyy-MM-dd');
+      final today = formatter.format(now);
+      if(startDateLha.value.isEmpty && endDateLha.value.isEmpty){
+        final lhaAuditRegion = await repositories.getListLhaAuditRegion(page, today, today);
+        final lha = lhaAuditRegion.data!.content;
+        final isLastPage = lha!.length < 10;
+        if (isLastPage) {
+          pagingControllerLha.appendLastPage(lha);
+        } else {
+          final nextPage = page +1;
+          pagingControllerLha.appendPage(lha, nextPage);
+        }
+      }else{
+        final lhaAuditRegion = await repositories.getListLhaAuditRegion(page, startDateLha.value, startDateLha.value);
+        final lha = lhaAuditRegion.data!.content;
+        final isLastPage = lha!.length < 10;
+        if (isLastPage) {
+          pagingControllerLha.appendLastPage(lha);
+        } else {
+          final nextPage = page +1;
+          pagingControllerLha.appendPage(lha, nextPage);
+        }
       }
-    } catch (e) {
+    } catch (e){
       if (e is Error) {
         pagingControllerLha.appendPage([], null);
       } else {
@@ -422,14 +441,30 @@ void uploadKkaAuditRegion(String filePath, int id) async {
   }
 
 //master
-void loadBranchAuditRegion()async {
+// void loadBranchAuditRegion(int? userId)async {
+//   try {
+//     final branch = await repositories.getBranchAuditRegion(userId);
+//     branchAuditRegion.assignAll(branch.data ?? []);
+//   } catch (e) {
+//     throw Exception(e);
+//   }
+//  }
+
+ void loadBranchAuditRegion() async {
+  final tokenBranch = await TokenManager.getToken();
   try {
-    final branch = await repositories.getBranchAuditRegion();
-    branchAuditRegion.assignAll(branch.data ?? []);
+    Map<String, dynamic> decodedToken = Jwt.parseJwt(tokenBranch.toString());
+
+    int? userId = decodedToken['user']['id'];
+
+    if (userId != null) {
+      final branch = await repositories.getBranchAuditRegion(userId);
+      branchAuditRegion.assignAll(branch.data ?? []);
+    }
   } catch (e) {
     throw Exception(e);
   }
- }
+}
 
  void selectBranch(int? value)async{
   branchId.value = value;
@@ -450,7 +485,7 @@ void selectCase(int? value)async{
 
 void loadCaseCategoryAuditRegion(int? id) async{
   try {
-      final cases = await repositories.getCaseCategoryAuditRegion(caseId.value);
+      final cases = await repositories.getCaseCategoryAuditRegion(id);
       caseCategory.assignAll(cases.data ?? []);
     } catch (e) {
       throw Exception(e);
@@ -471,7 +506,7 @@ void getDetailUserAuditRegion() async {
     }
   }
 
-  void editProfileUserAuditRegion(String email, String username) async {
+  void editProfileUserAuditRegion(String? email, String? username) async {
     try {
       final response =
           await repositories.editUserAuditRegion(email, username);
@@ -483,8 +518,7 @@ void getDetailUserAuditRegion() async {
     }
   }
 
-  void changePasswordAuditRegions(
-      int id, String oldPassword, String newPassword, String confirmPassword) async {
+  void changePasswordAuditRegions(String oldPassword, String newPassword) async {
     try {
       final response = await repositories.changePasswordAuditRegion(
           oldPassword, newPassword);
@@ -536,7 +570,6 @@ void getDetailUserAuditRegion() async {
       message.value = generate.message.toString();
       pagingControllerClarification.refresh();
       snakcBarMessageGreen('Berhasil', 'Berhasil generate klarifikasi');
-      print('generate value = ${branchId.value}, ${caseId.value}, ${caseCategoryId.value}');
     } catch (e) {
       throw Exception(e);
     }

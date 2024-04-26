@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
-import 'package:audit_cms/pages/schedule/schedule_page.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,16 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
 
   DataUsers? users;
   DataListBranch? branch;
+
+  void resetValue(){
+    setState(() {
+      users = null;
+      branch = null;
+      startDateControllerMainSchedule.clear();
+      endDateControllerMainSchedule.clear();
+      scheduleDescControllerMainSchedule.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +76,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -91,17 +100,19 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           onChanged: (value)async{
                           setState(() {
                             users = value;
+                            controllerAuditArea.loadBranchAuditArea(value?.id);
+                            branch = null;
                           });
-                          }
+                        }
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -129,7 +140,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -148,8 +159,18 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                             shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            controllerAuditArea.addLocalDataMainSchedule(users!.id!, branch!.id!, 
-                            startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
+                            if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                            }else if(DateTime.parse(startDateControllerMainSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerMainSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                            }else if(DateTime.parse(startDateControllerMainSchedule.text).isAfter(DateTime.parse(endDateControllerMainSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                            }else{
+                              controllerAuditArea.addLocalDataMainSchedule(users?.id, branch?.id, 
+                              startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, 
+                              scheduleDescControllerMainSchedule.text, branch?.name, users?.fullname);
+                              resetValue();
+                            }
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -174,8 +195,8 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.userId}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchId}', style: CustomStyles.textRegular13Px),
+                            Text('${data.user?.fullname}', style: CustomStyles.textRegular13Px),
+                            Text('${data.branch?.name}', style: CustomStyles.textRegular13Px),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
@@ -198,11 +219,11 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         ),
                         onPressed: ()async{
 
-                          if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                            snakcBarMessageRed('Gagal', 'Data jadwal gagal dibuat');
+                          if (controllerAuditArea.dataListLocalMainSchedulesAuditArea.isEmpty) {
+                            snakcBarMessageRed('Gagal', 'Data list jadwal utama tidak boleh kosong');
                           }else{
                             controllerAuditArea.addMainSchedules();
-                            Navigator.pop(context);
+                            Get.back();
                           }
                         },
                         child: Text('Buat jadwal utama', style: CustomStyles.textMediumWhite15Px)
@@ -237,6 +258,16 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
 
   DataUsers? users;
   DataListBranch? branch;
+
+  void resetValue() {
+  setState(() {
+    users = null;
+    branch = null;
+    startDateControllerSpecialSchedule.clear();
+    endDateControllerSpecialSchedule.clear();
+    scheduleDescControllerSpecialSchedule.clear();
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -276,7 +307,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -300,18 +331,20 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           onChanged: (value)async{
                             setState(() {
                               users = value;
+                              controllerAuditArea.loadBranchAuditArea(value?.id);
+                              branch = null;
                             });
                           }
                       ),
                     )
                 ),
-              ),
+              )),
 
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -339,7 +372,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -358,8 +391,18 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                               shape: CustomStyles.customRoundedButton
                           ),
                           onPressed: ()async{
-                            controllerAuditArea.addLocalDataSpecialSchedule(users!.id!, branch!.id!, 
-                            startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
+                            if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                            }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                            }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                            }else{
+                              controllerAuditArea.addLocalDataSpecialSchedule(users?.id, branch?.id, 
+                              startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, 
+                              scheduleDescControllerSpecialSchedule.text, branch?.name, users?.fullname);
+                              resetValue();
+                            }
                           },
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
@@ -384,9 +427,8 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.userId}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branchId}', style: CustomStyles.textRegular13Px),
-
+                            Text('${data.user?.fullname}', style: CustomStyles.textRegular13Px),
+                            Text('${data.branch?.name}', style: CustomStyles.textRegular13Px),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
@@ -408,12 +450,11 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                             backgroundColor: CustomColors.blue
                         ),
                         onPressed: ()async{
-
-                          if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal dibuat');
+                          if(controllerAuditArea.dataListLocalSpecialSchedulesAuditArea.isEmpty){
+                            snakcBarMessageRed('Gagal', 'Data list jadwal khusus tidak boleh kosong');
                           }else{
                             controllerAuditArea.addSpecialSchedules();
-                            Navigator.pop(context);
+                            Get.back();
                           }
                         },
                         child: Text('Buat jadwal khusus', style: CustomStyles.textMediumWhite15Px)
@@ -433,7 +474,12 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
 //reschedule
 class InputDataReschedulePage extends StatefulWidget {
   final int rescheduleId;
-  const InputDataReschedulePage({super.key, required this.rescheduleId});
+  final String startDate;
+  final String endDate;
+  final int user;
+  final int branch;
+  final String desc;
+  const InputDataReschedulePage({super.key, required this.rescheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
   State<InputDataReschedulePage> createState() => _InputDataReschedulePageState();
@@ -445,10 +491,29 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
   final TextEditingController endDateControllerReschedule = TextEditingController();
   final TextEditingController scheduleDescControllerReschedule = TextEditingController();
 
-  final ControllerAuditArea controllerAuditArea = Get.find();
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
-  DataUsers? users;
-  DataListBranch? branch;
+   @override
+  void initState() {
+    startDateControllerReschedule.text = widget.startDate;
+    endDateControllerReschedule.text = widget.endDate;
+    scheduleDescControllerReschedule.text = widget.desc;
+    controllerAuditArea.loadBranchAuditArea(widget.user);
+    users  = widget.user;
+    branch = widget.branch;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    startDateControllerReschedule.dispose();
+    endDateControllerReschedule.dispose();
+    scheduleDescControllerReschedule.dispose();
+    super.dispose();
+  }
+
+  int? users;
+  int? branch;
 
   @override
   Widget build(BuildContext context) {
@@ -488,7 +553,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -504,25 +569,27 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
-                              value: users,
+                              value: users.id,
                               child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
-
                             );
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
                               users = value;
+                              final userId = value;
+                              controllerAuditArea.loadBranchAuditArea(userId);
+                              branch = null;
                             });
                           }
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
-              SizedBox(
+              Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
                     child: Container(
@@ -538,7 +605,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
-                              value: branch,
+                              value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
                             );
                           }).toList(),
@@ -546,11 +613,11 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             setState(() {
                               branch = value;
                             });
-                          }
+                          }  
                       ),
                     )
                 ),
-              ),
+              )),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -572,13 +639,18 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         onPressed: ()async{
 
                           if (users == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
-                            snakcBarMessageRed('Gagal', 'Gagal request reschedule');
-                          }else{
-                            controllerAuditArea.requestReschedule(users!.id!, widget.rescheduleId, branch!.id!, 
-                            startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);
-                            
-                            Navigator.pop(context);
-                          }
+                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                            }else if(DateTime.parse(startDateControllerReschedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerReschedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                            }else if(DateTime.parse(startDateControllerReschedule.text).isAfter(DateTime.parse(endDateControllerReschedule.text))){
+                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                            }else if(startDateControllerReschedule.text == widget.startDate && endDateControllerReschedule.text == widget.endDate){
+                              snakcBarMessageRed('Gagal', 'tanggal harus diperbarui');
+                            }else{
+                              controllerAuditArea.requestReschedule(users, widget.rescheduleId, branch, 
+                                startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);
+                              Get.back();
+                            }
                         },
                         child: Text('Request reschedule', style: CustomStyles.textMediumWhite15Px)
                     ),

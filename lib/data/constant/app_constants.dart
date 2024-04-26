@@ -38,6 +38,7 @@ class AppConstant{
   static const String detailCasesLha = 'api/lha-detail/';
   static const String deleteCaseLha = 'api/lha-detail/';
   static const String inputCaseLha = 'api/lha-detail';
+  static const String sendCaseLha = 'api/lha-detail/';
   static const String listRevisionLha = 'api/lha-revision';
   static const String lhaRevision = 'api/lha-revision';
   static const String detailLhaRevision = 'api/lha-revision/';

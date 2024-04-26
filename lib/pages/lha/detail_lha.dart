@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -6,6 +8,7 @@ import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
 class DetailLhaPageAuditArea extends StatefulWidget {
@@ -17,25 +20,32 @@ class DetailLhaPageAuditArea extends StatefulWidget {
 }
 
 class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea =
-      Get.put(ControllerAuditArea(Get.find()));
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  StreamController<SwipeRefreshState> refreshConroller = StreamController();
+
+  @override
+  void initState() {
+    refreshConroller.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailLhaAuditArea(widget.id);
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
             backgroundColor: CustomColors.white,
             title: const Text('Detail LHA'),
             titleSpacing: 5,
-            titleTextStyle: CustomStyles.textBold18Px,
-            leading: IconButton(onPressed: (){
-              Get.back();
-            },
-                icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
-      ),
-                backgroundColor: CustomColors.white,
-                body: SingleChildScrollView(
+            titleTextStyle: CustomStyles.textBold18Px),
+                body: SwipeRefresh.material(
+                  stateStream: refreshConroller.stream,
+                  onRefresh: () {
+                    controllerAuditArea.getDetailLhaAuditArea(widget.id);
+                  },
+                  children: [
+                    SingleChildScrollView(
                   child: Obx(() {
                     final detailLha = controllerAuditArea.detailLhaAuditArea.value;
                     if (detailLha == null) {
@@ -43,6 +53,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                     } else {
                       final research = detailLha.isResearch;
                       final lha = detailLha.lhaDetails;
+                      refreshConroller.add(SwipeRefreshState.hidden);
                         return Padding(
                           padding: const EdgeInsets.all(15),
                           child: Column(
@@ -72,7 +83,6 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               const SizedBox(height: 5),
                               Text(research == 1 ? 'Ada' : 'Tidak ada'),
                               
-
                               const SizedBox(height: 20),
                               Text('Kasus :', style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
@@ -82,6 +92,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: lha!.length,
                                 itemBuilder: (_, index){
+
                                   return Card(
                                   elevation: 0,
                                   shape: OutlineInputBorder(
@@ -124,29 +135,12 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                                         CustomStyles.customRoundedButton),
                                                 onPressed: () {
                                                   final lhaId = lha[index].id;
-                                                  final cases = lha[index].cases;
-                                                  final caseCategory = lha[index].caseCategory;
-                                                  final research = lha[index].isResearch;
-                                                  
                                                   if (lhaId != null) {
-                                                    Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases!, caseCategory: caseCategory!, 
-                                                    selectedValueResearch: research!));
+                                                    Get.to(() => DetailCasesLhaPageAuditArea(caseId: lhaId));
                                                   }
                                                 },
-                                                child: Text('Revisi',style: CustomStyles.textMediumBlue15Px)),
-
-                                            const SizedBox(width: 5),
-
-                                            TextButton(
-                                                style: TextButton.styleFrom(
-                                                    shape: CustomStyles.customRoundedButton),
-                                                onPressed: () {
-                                                  final caseId = lha[index].id;
-                                                  if (caseId != null) {
-                                                    Get.to(() => DetaiCasesLhaPageAuditArea(caseId: caseId));
-                                                  }
-                                                },
-                                                child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                                child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)
+                                            ),
                                           ],
                                         )
                                       ],
@@ -159,25 +153,35 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                         );
                       }   
                   }),
+                )],
                 )
               );
   }
 }
 
 //audit area
-class DetaiCasesLhaPageAuditArea extends StatefulWidget {
+class DetailCasesLhaPageAuditArea extends StatefulWidget {
   final int caseId;
-  const DetaiCasesLhaPageAuditArea({super.key, required this.caseId});
+  const DetailCasesLhaPageAuditArea({super.key, required this.caseId});
 
   @override
-  State<DetaiCasesLhaPageAuditArea> createState() =>
+  State<DetailCasesLhaPageAuditArea> createState() =>
       _DetailCasesLhaPageAuditAreaState();
 }
 
 class _DetailCasesLhaPageAuditAreaState
-    extends State<DetaiCasesLhaPageAuditArea> {
+    extends State<DetailCasesLhaPageAuditArea> {
   final ControllerAuditArea controllerAuditArea =
       Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState>refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  } 
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailCaseLhaAuditArea(widget.caseId);
@@ -217,7 +221,12 @@ class _DetailCasesLhaPageAuditAreaState
 
               //1. detail kasus LHA
               Scaffold(
-                body: SingleChildScrollView(
+                backgroundColor: CustomColors.white,
+                body: RefreshIndicator(
+                  onRefresh: ()async{
+                    controllerAuditArea.getDetailCaseLhaAuditArea(widget.caseId);
+                  },
+                  child: SingleChildScrollView(
                   child: Obx(() {
                     final detailLha = controllerAuditArea.detailCase.value;
                     if (detailLha == null) {
@@ -227,6 +236,10 @@ class _DetailCasesLhaPageAuditAreaState
                       final casesCategory = detailLha.caseCategory?.name;
                       final suggestion = detailLha.suggestion;
                       final cases = detailLha.cases;
+                      final lhaId = detailLha.id;
+                      final statusFlow = detailLha.statusFlow;
+                      final statusParsing = detailLha.statusParsing;
+                      
                       return Padding(
                         padding: const EdgeInsets.all(15),
                         child: Column(
@@ -288,18 +301,62 @@ class _DetailCasesLhaPageAuditAreaState
                             Text('Penelusuran :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
                             Text(research == 1 ? 'Ada' : 'Tidak ada'),
+
+                            const SizedBox(height: 20),
+                            Text('Status terkirim :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(statusFlow == 1 ? 'Terkirim' : 'Belum terkirim'),
+
+                            const SizedBox(height: 30),
+                            SizedBox(
+                              width: double.maxFinite,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: CustomStyles.customRoundedButton,
+                                  backgroundColor: CustomColors.green,
+
+                                ),
+                                onPressed: statusFlow == 0 ?  (){
+                                  controllerAuditArea.sendCaseLha(detailLha.id, cases?.id, detailLha.caseCategory?.id, detailLha.description,
+                                    suggestion, detailLha.temporaryRecommendation, detailLha.permanentRecommendation, detailLha.isResearch,
+                                      1, statusParsing);
+                                } : null,
+                                child: Text(statusFlow == 1 ? 'Terkirim' : 'Kirim', style: CustomStyles.textMediumWhite15Px)
+                              )
+                            ),
+
+                            SizedBox(
+                              width: double.maxFinite,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: CustomStyles.customRoundedButton,
+                                  backgroundColor: CustomColors.blue
+                                ),
+                                onPressed: (){
+                                  if (lhaId != null) {
+                                      Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases!.name!, caseCategory: detailLha.caseCategory!.name!, 
+                                        selectedValueResearch: research!, lhaDescription: detailLha.description!, temRec: detailLha.temporaryRecommendation!, perRec: detailLha.permanentRecommendation!, suggest: suggestion));
+                                  }
+                                }, 
+                                child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)
+                              ),
+                            ),
                           ],
                         ),
                       );
                     }
                   }),
-                ),
+                ))
               ),
 
               //2. list revision LHA audit area
               Scaffold(
                   backgroundColor: CustomColors.white,
-                    body: Padding(
+                    body: RefreshIndicator(
+                      onRefresh: ()async{
+                         controllerAuditArea.loadRevisiLha(widget.caseId);
+                      },
+                      child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Obx((){
                         if (controllerAuditArea.isLoading.value) {
@@ -309,6 +366,7 @@ class _DetailCasesLhaPageAuditAreaState
                         itemCount: controllerAuditArea.lhaRevision.length,
                         itemBuilder: (_, index){
                         final lha = controllerAuditArea.lhaRevision[index];
+                        final numberRevision = lha.revisionNumber;
                         return Card(
                               elevation: 0,
                                 shape: OutlineInputBorder(
@@ -337,7 +395,13 @@ class _DetailCasesLhaPageAuditAreaState
                                             ),
                     
                                             const SizedBox(height: 15),
-                                            Text('No. Revisi : ${lha.revisionNumber}', style: CustomStyles.textBold15Px),
+                                            Wrap(
+                                              children: [
+                                                numberRevision == 0 ? 
+                                                Text('Original', style: CustomStyles.textBold15Px) :
+                                                Text('No. Revisi : $numberRevision', style: CustomStyles.textBold15Px),
+                                              ],
+                                            ),
                                             Text('Kasus : ${lha.cases!.name}', style: CustomStyles.textBold15Px),
                                             Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px),
                                             
@@ -367,6 +431,7 @@ class _DetailCasesLhaPageAuditAreaState
                     }
                   })
                 ),
+                    )
               )
             ]
           ),
@@ -385,14 +450,26 @@ class DetailRevisionLhaAuditArea extends StatefulWidget {
       _DetailRevisionLhaAuditAreaState();
 }
 
+
 class _DetailRevisionLhaAuditAreaState
     extends State<DetailRevisionLhaAuditArea> {
+
   final ControllerAuditArea controllerAuditArea =
       Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshConroller = StreamController();
+
+  @override
+  void initState() {
+    refreshConroller.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailRevision(widget.caseId);
     return Scaffold(
+        backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Detail revisi kasus LHA'),
@@ -404,7 +481,13 @@ class _DetailRevisionLhaAuditAreaState
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
       ),
-      body: SingleChildScrollView(
+      body: SwipeRefresh.material(
+        stateStream: refreshConroller.stream,
+         onRefresh: (){
+          controllerAuditArea.getDetailRevision(widget.caseId);
+         },
+         children: [
+          SingleChildScrollView(
         child: Obx(() {
           final detailLha = controllerAuditArea.detailRevisionLha.value;
           if (detailLha == null) {
@@ -414,6 +497,7 @@ class _DetailRevisionLhaAuditAreaState
             final casesCategory = detailLha.caseCategory?.name;
             final suggestion = detailLha.suggestion;
             final cases = detailLha.cases;
+            refreshConroller.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -481,6 +565,7 @@ class _DetailRevisionLhaAuditAreaState
           }
         }),
       ),
+         ])
     );
   }
 }
@@ -498,6 +583,15 @@ class DetailLhaPageAuditRegion extends StatefulWidget {
 class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion =
       Get.put(ControllerAuditRegion(Get.find()));
+
+      StreamController<SwipeRefreshState> refreshConroller = StreamController();
+
+      @override
+  void initState() {
+    refreshConroller.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailLhaAuditRegion(widget.id);
@@ -505,7 +599,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
       backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: const Text('Detail revisi laporan harian audit'),
+        title: const Text('Detail LHA'),
         titleTextStyle: CustomStyles.textBold18Px,
         leading: IconButton(
             onPressed: () {
@@ -514,7 +608,12 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
       ),
-      body: SingleChildScrollView(
+      body: SwipeRefresh.material(stateStream: refreshConroller.stream, 
+      onRefresh: (){
+        controllerAuditRegion.getDetailLhaAuditRegion(widget.id);
+      },
+      children: [
+        SingleChildScrollView(
         child: Obx(() {
           final detailLha = controllerAuditRegion.detailLhaAuditRegion.value;
           if (detailLha == null) {
@@ -522,6 +621,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
           } else {
             final research = detailLha.isResearch;
             final lha = detailLha.lhaDetails;
+            refreshConroller.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -641,6 +741,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
           }
         }),
       ),
+      ])
     );
   }
 }
@@ -659,10 +760,19 @@ class _DetailCasesLhaPageAuditRegionState
     extends State<DetaiCasesLhaPageAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion =
       Get.put(ControllerAuditRegion(Get.find()));
+
+      StreamController<SwipeRefreshState> refreshConroller = StreamController();
+
+  @override
+  void initState() {
+    refreshConroller.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailCasesLhaAuditRegion(widget.lhaId);
-    print(widget.lhaId);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.white,
@@ -675,7 +785,13 @@ class _DetailCasesLhaPageAuditRegionState
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
       ),
-      body: SingleChildScrollView(
+      body: SwipeRefresh.material(
+        stateStream: refreshConroller.stream, 
+        onRefresh: (){
+        controllerAuditRegion.getDetailCasesLhaAuditRegion(widget.lhaId);
+      },
+      children: [
+        SingleChildScrollView(
         child: Obx(() {
           final detailLha =
               controllerAuditRegion.detailCasesLhaAuditRegion.value;
@@ -686,6 +802,7 @@ class _DetailCasesLhaPageAuditRegionState
             final casesCategory = detailLha.caseCategory?.name;
             final suggestion = detailLha.suggestion;
             final cases = detailLha.cases;
+            refreshConroller.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -753,6 +870,7 @@ class _DetailCasesLhaPageAuditRegionState
           }
         }),
       ),
+      ])
     );
   }
 }

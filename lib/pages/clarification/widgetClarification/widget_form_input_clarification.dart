@@ -26,7 +26,7 @@ Widget formInputLimitEvaluation(
           confirmText: 'ya',
           context: context,
           initialDate: DateTime.now(),
-          firstDate: DateTime(2001),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100));
       if (picked != null) {
         limitEvaluationController.text =

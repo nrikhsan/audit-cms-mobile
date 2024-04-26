@@ -47,55 +47,67 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: PagedListView<int, ContentListFollowUp>(
-          pagingController: controllerAuditArea.pagingControllerFollowUp,
-          builderDelegate: PagedChildBuilderDelegate(
-            itemBuilder: (_, followUp, index){
-              return GestureDetector(
-                  child: Card(
-                  elevation: 0,
-                  color: CustomColors.white,
-                  shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(
-                      color: CustomColors.grey
-                    )
-                  ),
-                  child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: RefreshIndicator(
+            onRefresh: ()async{
+              controllerAuditArea.pagingControllerFollowUp.refresh();
+            },
+            child: PagedListView<int, ContentListFollowUp>(
+            pagingController: controllerAuditArea.pagingControllerFollowUp,
+            builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (_, followUp, index){
+                  return GestureDetector(
+                    child: Card(
+                      elevation: 0,
+                      color: CustomColors.white,
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: CustomColors.grey
+                          )
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('${followUp.user!.fullname}', style: CustomStyles.textBold15Px),
-                                  const SizedBox(height: 5),
-                                  
+                                  Column(
+                                    children: [
+                                      Text('${followUp.user!.fullname}', style: CustomStyles.textBold15Px),
+                                      const SizedBox(height: 5),
+
+                                    ],
+                                  ),
+                                  Text('${followUp.status}', style: CustomStyles.textMedium13Px,),
                                 ],
                               ),
-                               Text('${followUp.status}', style: CustomStyles.textMedium13Px,),
+                              Text('${followUp.code}', style: CustomStyles.textMedium13Px,),
                             ],
-                          ),
-                          Text('${followUp.code}', style: CustomStyles.textMedium13Px,),
-                        ],
-                      )
-                  ),
-                ),
-                onTap: (){
-                    final status = followUp.status;
-                      if (status == 'CREATE') {
-                          Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
-                        } else if(status == 'DONE') {
-                          Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
-                        }
-                  },
-                );
-            }
-          )
-        ),
+                          )
+                      ),
+                    ),
+                    onTap: (){
+                      final status = followUp.status;
+                      if(status == 'CREATE') {
+                        Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
+                      }else if(status == 'DONE') {
+                        Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
+                      }
+
+                      // if (status == 'CREATE') {
+                      //     Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
+                      //   } else if(status == 'PROGRESS'){
+                      //     Get.to(() => const DocumentFollowUpPage());
+                      //   }else if(status == 'DONE') {
+                      //     Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
+                      //   }
+                    },
+                  );
+                }
+            )
+        ))
       )
     );
   }

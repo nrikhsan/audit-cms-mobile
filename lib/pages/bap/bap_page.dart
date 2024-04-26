@@ -48,7 +48,11 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
           ),
         ],
       ),
-      body: Padding(
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          controllerAuditArea.pagingControllerBapAuditArea.refresh();
+        },
+        child: Padding(
         padding: const EdgeInsets.all(15),
         child: PagedListView<int, ContentListBapAuditArea>(
           pagingController: controllerAuditArea.pagingControllerBapAuditArea, 
@@ -91,6 +95,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
           )
         )
       ),
+      )
     );
   }
 }
@@ -134,7 +139,11 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
           ),
         ],
       ),
-    body: Padding(
+    body: RefreshIndicator(
+      onRefresh: ()async{
+        controllerAuditRegion.pagingControllerBap.refresh();
+      },
+      child: Padding(
         padding: const EdgeInsets.all(15),
         child: PagedListView<int, ContentListBapAuditRegion>(
           pagingController: controllerAuditRegion.pagingControllerBap, 
@@ -177,6 +186,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
           )
         )
       ),
+    )
     );
   }
 

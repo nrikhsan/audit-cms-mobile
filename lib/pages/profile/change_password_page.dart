@@ -20,9 +20,14 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
   final TextEditingController confirmPasswordController = TextEditingController();
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  bool obscureTextCurrentPassword = true;
+  bool obscureTextNewPassword = true;
+  bool obscureTextConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Ganti kata sandi'),
@@ -44,6 +49,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
 
             TextField(
               controller: oldPasswordController,
+              obscureText: obscureTextCurrentPassword,
               onChanged: (oldPassword) => oldPasswordController.text = oldPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
@@ -55,7 +61,13 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextCurrentPassword = !obscureTextCurrentPassword;
+                        });
+                    }, icon: Icon(obscureTextCurrentPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
               )
             ),
 
@@ -63,6 +75,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
 
             TextField(
               controller: newPasswordController,
+              obscureText: obscureTextNewPassword,
               onChanged: (newPassword) => newPasswordController.text = newPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
@@ -74,15 +87,22 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
-              )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextNewPassword = !obscureTextNewPassword;
+                        });
+                    }, icon: Icon(obscureTextNewPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
+              ),
             ),
 
             const SizedBox(height: 15),
 
             TextField(
               controller: confirmPasswordController,
-              onChanged: (configrm) => confirmPasswordController.text = configrm,
+              obscureText: obscureTextConfirmPassword,
+              onChanged: (confirm) => confirmPasswordController.text = confirm,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi password baru anda...',
@@ -93,7 +113,13 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextConfirmPassword = !obscureTextConfirmPassword;
+                        });
+                    }, icon: Icon(obscureTextConfirmPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
               )
             ),
 
@@ -123,7 +149,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
                     child:
                         Text('Simpan', style: CustomStyles.textMediumWhite15Px)
                   ),
-              )
+              ) 
           ],
         )
       ),
@@ -135,8 +161,7 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
 
 //audit wilayah
 class ChangePasswordPageAuditRegion extends StatefulWidget {
-  final int id;
-  const ChangePasswordPageAuditRegion({super.key, required this.id});
+  const ChangePasswordPageAuditRegion({super.key});
 
   @override
   State<ChangePasswordPageAuditRegion> createState() => _ChangePasswordPageAuditRegionState();
@@ -147,11 +172,16 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  final ControllerAuditRegion controllerAuditRegion = Get.find();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+
+  bool obscureTextCurrentPassword = true;
+  bool obscureTextNewPassword = true;
+  bool obscureTextConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Ganti kata sandi'),
@@ -164,7 +194,8 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
             icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,6 +203,7 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
 
             TextField(
               controller: oldPasswordController,
+              obscureText: obscureTextCurrentPassword,
               onChanged: (oldPassword) => oldPasswordController.text = oldPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
@@ -183,7 +215,13 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextCurrentPassword = !obscureTextCurrentPassword;
+                        });
+                    }, icon: Icon(obscureTextCurrentPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
               )
             ),
 
@@ -191,6 +229,7 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
 
             TextField(
               controller: newPasswordController,
+              obscureText: obscureTextNewPassword,
               onChanged: (newPassword) => newPasswordController.text = newPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
@@ -202,14 +241,21 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
-              )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextNewPassword = !obscureTextNewPassword;
+                        });
+                    }, icon: Icon(obscureTextNewPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
+              ),
             ),
 
             const SizedBox(height: 15),
 
             TextField(
               controller: confirmPasswordController,
+              obscureText: obscureTextConfirmPassword,
               onChanged: (confirm) => confirmPasswordController.text = confirm,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
@@ -221,7 +267,13 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: CustomColors.grey)
-                    )
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          obscureTextConfirmPassword = !obscureTextConfirmPassword;
+                        });
+                    }, icon: Icon(obscureTextConfirmPassword ? Icons.visibility_off : Icons.visibility, color: CustomColors.grey, size: 25))
               )
             ),
 
@@ -242,7 +294,7 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
                         Get.snackbar('Gagal', 'Kata sandi harus lebih dari 6 karakter', colorText: CustomColors.white, backgroundColor: CustomColors.red);
                       }else if(confirmPasswordController.text == newPasswordController.text){
                         
-                        controllerAuditRegion.changePasswordAuditRegions(widget.id, oldPasswordController.text, newPasswordController.text, confirmPasswordController.text);
+                        controllerAuditRegion.changePasswordAuditRegions(oldPasswordController.text, newPasswordController.text);
                         Navigator.pop(context);
                       }else{
                        Get.snackbar('Gagal', 'Kata sandi Tidak sesuai', colorText: CustomColors.white, backgroundColor: CustomColors.red); 
@@ -255,6 +307,7 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
           ],
         )
       ),
+      )
     );
   }
 }

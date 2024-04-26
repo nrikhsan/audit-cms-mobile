@@ -39,13 +39,14 @@ Widget fomrInputRecommendationOrSuggest(
   );
 }
 
-Widget formEditLha(TextEditingController lhaDescriptionController) {
+Widget formEditLha(TextEditingController lhaDescriptionController, String label) {
   return TextField(
       controller: lhaDescriptionController,
       onChanged: (value) => lhaDescriptionController.text = value,
-      maxLines: 10,
+      maxLines: 5,
       cursorColor: CustomColors.blue,
       decoration: InputDecoration(
+        labelText: label,
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: CustomColors.grey)),

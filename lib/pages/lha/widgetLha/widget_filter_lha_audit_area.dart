@@ -84,7 +84,7 @@ void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startD
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchLha.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -92,7 +92,6 @@ void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startD
                           }).toList(),
                           onChanged: (value){
                             controllerAuditArea.branchLha.value = value;
-                            print(controllerAuditArea.branchLha.value);
                           }
                       ),
                     )

@@ -95,7 +95,7 @@ void filterClarificationAuditArea(
                           borderRadius: BorderRadius.circular(10),
                           value: controllerAuditArea.branchCla.value,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
+                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                             return DropdownMenuItem(
                               value: branch.id,
                               child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
@@ -103,7 +103,6 @@ void filterClarificationAuditArea(
                           }).toList(),
                           onChanged: (value){
                             controllerAuditArea.branchCla.value = value;
-                            print(controllerAuditArea.branchCla.value);
                           }
                       ),
                     )
@@ -533,7 +532,7 @@ void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAudi
                       ? () {
                             controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
                             id);
-                            Get.to(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
+                            Get.off(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
                          }
                       : null,
                       child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

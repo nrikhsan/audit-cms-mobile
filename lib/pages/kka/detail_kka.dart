@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
@@ -6,6 +8,7 @@ import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
 class KkaDetailAuditArea extends StatefulWidget {
@@ -18,6 +21,14 @@ class KkaDetailAuditArea extends StatefulWidget {
 
 class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +47,21 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
       ),
-      body: Padding(
+      body: SwipeRefresh.material(
+        stateStream: refreshController.stream, 
+        onRefresh: (){
+          controllerAuditArea.getDetailKkaAuditArea(widget.id);
+        },
+        children: [
+          Padding(
           padding: const EdgeInsets.all(15),
           child: Obx(() {
             final detailKka = controllerAuditArea.detailKkaAuditArea.value;
             if (detailKka == null) {
               return const Center(
-                  child: SpinKitCircle(color: CustomColors.blue));
+                child: SpinKitCircle(color: CustomColors.blue));
             } else {
+              refreshController.add(SwipeRefreshState.hidden);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -112,8 +130,8 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
             }
           }
         )
-      ),
-    );
+      )
+    ]));
   }
 }
 
@@ -128,6 +146,14 @@ class KkaDetailAuditRegion extends StatefulWidget {
 
 class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +172,13 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
             icon: const Icon(Icons.arrow_back_rounded,
                 color: CustomColors.black, size: 25)),
       ),
-      body: Padding(
+      body: SwipeRefresh.material(
+        stateStream: refreshController.stream,
+        onRefresh: (){
+          controllerAuditRegion.getDetailKkaAuditRegion(widget.id);
+        },
+        children: [
+          Padding(
           padding: const EdgeInsets.all(15),
           child: Obx(() {
             final detailKka = controllerAuditRegion.detailKkaAuditRegion.value;
@@ -154,6 +186,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
               return const Center(
                   child: SpinKitCircle(color: CustomColors.blue));
             } else {
+              refreshController.add(SwipeRefreshState.hidden);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -223,6 +256,8 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
           }
         )
       ),
+        ],
+      )
     );
   }
 }

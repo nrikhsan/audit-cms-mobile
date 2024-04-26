@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
 import '../../helper/styles/custom_styles.dart';
 import 'input_schedule.dart';
@@ -108,7 +109,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: PagedListView<int, ContentMainScheduleAuditArea>(
+                    child: RefreshIndicator(
+                      onRefresh: ()async{
+                        controllerAuditArea.pagingControllerMainSchedule.refresh();
+                      },
+                      child: PagedListView<int, ContentMainScheduleAuditArea>(
                           pagingController: controllerAuditArea.pagingControllerMainSchedule,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
@@ -140,6 +145,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                     const SizedBox(height: 5),
                                     Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
+                                    const SizedBox(height: 5),
+                                    Text('Tanggal : ${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
 
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -148,9 +155,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                           ),
-                                          onPressed: (){
-                                            Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!));
-                                          }, 
+                                          onPressed: mainSchedule.status == 'TODO' ? () {
+                                            String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(mainSchedule.startDate!));
+                                            String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(mainSchedule.endDate!));
+
+                                            Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
+                                            user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description!));
+                                          }: null, 
                                           child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                         )
                                       ],
@@ -191,6 +202,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           }
                         ),
                       )
+                    )
                   ),
                 ),
 
@@ -229,7 +241,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                 ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: PagedListView<int, ContentSpecialScheduleAuditArea>(
+                    child: RefreshIndicator(
+                      onRefresh: ()async{
+                        controllerAuditArea.pagingControllerSpecialSchedule.refresh();
+                      },
+                      child: PagedListView<int, ContentSpecialScheduleAuditArea>(
                           pagingController: controllerAuditArea.pagingControllerSpecialSchedule, 
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, schedule, index){
@@ -261,6 +277,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                       const SizedBox(height: 5),
                                       Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                      Text('Tanggal : ${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
 
                                       Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -269,9 +287,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                           ),
-                                          onPressed: (){
-                                           Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!));
-                                          }, 
+                                          onPressed: schedule.status == 'TODO' ? () {
+                                            String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.startDate!));
+                                            String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.endDate!));
+
+                                            Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
+                                            user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description!));
+                                          }: null, 
                                           child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                         )
                                       ],
@@ -311,6 +333,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                             });
                           })
                         )
+                    )
                   ),
                 ),
 
@@ -339,7 +362,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                   ),
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: PagedListView<int, ContentListRescheduleAuditArea>(
+                    child: RefreshIndicator(
+                      onRefresh: ()async{
+                        controllerAuditArea.pagingControllerReschedule.refresh();
+                      },
+                      child: PagedListView<int, ContentListRescheduleAuditArea>(
                           pagingController: controllerAuditArea.pagingControllerReschedule,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, reschedules, index){
@@ -371,27 +398,37 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                           if(statusReschedules == 'APPROVE')
                                           Text('${reschedules.status}', style: CustomStyles.textMediumGreen13Px),
                                           if(statusReschedules == 'REJECTED')
-                                          Text('${reschedules.status}', style: CustomStyles.textMediumBlue13Px),
+                                          Text('${reschedules.status}', style: CustomStyles.textMediumRed13Px),
                                         ],
                                       ),
                                       const SizedBox(height: 10),
                                       Text('Cabang : ${reschedules.branch!.name}', style: CustomStyles.textMedium13Px),
                                       const SizedBox(height: 5),
-                                      Text('Area : ${reschedules.category}', style: CustomStyles.textMedium13Px),
+                                      Text('Kategori : ${reschedules.category}', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                      Text('Tanggal : ${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
+                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(reschedules.startDate!));
+                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(reschedules.endDate!));
                                 if (reschedules.status == 'PENDING') {
-                                  Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!));
-                                }else{
+                                  Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!, startDate: startDate, endDate: endDate, 
+                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description!));
+                                }else if(reschedules.status == 'REQUEST'){
+                                  Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
+                                }else if(reschedules.status == 'REJECTED'){
+                                  Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
+                                }else if(reschedules.status == 'APPROVE'){
                                   Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
                                 }
                               });
                             }
                           )
                         )
+                    )
                   ),
                 )
               ]
@@ -478,11 +515,17 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
 
                   body: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: PagedListView<int, ContentMainScheduleAuditRegion>(
+                    child: RefreshIndicator(
+                      onRefresh: ()async{
+                        controllerAuditRegion.pagingControllerMainSchedule.refresh();
+                      },
+                      child: PagedListView<int, ContentMainScheduleAuditRegion>(
                           pagingController: controllerAuditRegion.pagingControllerMainSchedule, 
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
                               final status = mainSchedule.status;
+                              final isActive = mainSchedule.isActive;
+                              final kka = mainSchedule.kka?.filename;
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -510,29 +553,37 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       const SizedBox(height: 10),
                                         Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                         Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
+                                        Text('Tanggal : ${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                if (status == 'PENDING') {
-                                  snakcBarMessageRed('Alert', 'Harap tunggu persetujuan dari audit leader');
-                                } else if(status == 'REQUEST') {
-                                  snakcBarMessageRed('Alert', 'Harap tunggu persetujuan dari audit leader');
-                                }else if(status == 'APPROVE'){
-                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
-                                }else if(status == 'TODO'){
-                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
-                                }else if(status == 'PROGRESS'){
-                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
-                                }else if(status == 'DONE'){
-                                  Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!));
-                                }
-                              },
-                            );
+                                  if (isActive == 1) {
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka));
+                                  } else if(isActive == 0){
+                                    snakcBarMessageRed('Alert', 'Anda harus mengunggah KKA terlebih dahulu untuk membuka jadwal berikutnya');
+                                  }else if (status == 'PENDING') {
+                                    snakcBarMessageRed('Alert', 'Harap tunggu proses request dari audit area');
+                                  } else if(status == 'REQUEST') {
+                                    snakcBarMessageRed('Alert', 'Harap tunggu persetujuan dari audit leader');
+                                  }else if(status == 'REJECT'){
+                                    snakcBarMessageRed('Alert', 'Jadwal anda ditolak oleh audit leader');
+                                  }else if(status == 'APPROVE'){
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka));
+                                  }else if(status == 'TODO'){
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka));
+                                  }else if(status == 'PROGRESS'){
+                                    Get.to(() =>DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka));
+                                  }else if(status == 'DONE'){
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka));
+                                  }
+                                },
+                              );
                             }
                           )
                         )
+                    )
                   ),
                 ),
 
@@ -560,10 +611,17 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: PagedListView<int, ContentListSpecialScheduleAuditRegion>(
+                  child: RefreshIndicator(
+                    onRefresh: ()async{
+                      controllerAuditRegion.pagingControllerSpecialSchedule.refresh();
+                    },
+                    child: PagedListView<int, ContentListSpecialScheduleAuditRegion>(
                             pagingController: controllerAuditRegion.pagingControllerSpecialSchedule, 
                             builderDelegate: PagedChildBuilderDelegate(
                               itemBuilder: (_, schedule, index){
+                                final status = schedule.status;
+                                final isActive = schedule.isActive;
+                                final kka = schedule.kka?.filename;
                                 return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -596,12 +654,23 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                 ),
                               ),
                               onTap: (){
-                                Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!));
+                                if (isActive == 1) {
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka));
+                                  } else if(isActive == 0){
+                                    snakcBarMessageRed('Alert', 'Anda harus mengunggah KKA terlebih dahulu untuk membuka jadwal berikutnya');
+                                  }else if(status == 'TODO'){
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka));
+                                  }else if(status == 'PROGRESS'){
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka));
+                                  }else if(status == 'DONE'){
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka));
+                                  }
                               },
                             );
                               }
                             )
                           )
+                  )
                 ),
               ),
             ]
