@@ -1,5 +1,4 @@
 
-import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
@@ -79,12 +78,10 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        const SizedBox(height: 10),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Auditor : ${kka.user!.fullname}', style: CustomStyles.textBold15Px),
+                            Text('${kka.user!.fullname}', style: CustomStyles.textBold15Px),
                             Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
                           ],
                         ),
@@ -94,21 +91,9 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${kka.filename}', style: CustomStyles.textMedium13Px),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton
-                                  ),
-                                  onPressed:()async{
-                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
-                                  }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
-                                )
-                              ],
-                            )
+                            Text('Tanggal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMedium13Px),
+                             const SizedBox(height: 5,),
+                            Text('${kka.filename}', style: CustomStyles.textMediumGrey13Px),
                           ],
                         ),
                       ],
@@ -196,31 +181,19 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Auditor : ${kka.user!.fullname}', style: CustomStyles.textBold15Px),
+                            Text('${kka.user!.fullname}', style: CustomStyles.textBold15Px),
                             Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
                           ],
                         ),
 
-                        const SizedBox(height: 10),
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${kka.filename}', style: CustomStyles.textMedium13Px),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: CustomStyles.customRoundedButton
-                                  ),
-                                  onPressed:()async{
-                                    downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
-                                  }, child: Text('Download KKA', style: CustomStyles.textMediumGreen13Px)
-                                )
-                              ],
-                            )
+                           
+                            Text('Tanggal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMedium13Px),
+                             const SizedBox(height: 5,),
+                            Text('${kka.filename}', style: CustomStyles.textMediumGrey13Px),
+                            
                           ],
                         ),
                       ],

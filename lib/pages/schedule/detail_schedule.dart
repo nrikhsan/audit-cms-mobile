@@ -8,10 +8,13 @@ import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
 import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
@@ -29,7 +32,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
-
+  
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
@@ -132,7 +135,11 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                   downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                   if (await requestPermission(Permission.storage) == true) {
+                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                   } else {
+                                     showSnackbarPermission(context);
+                                   }
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -329,7 +336,11 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                    if (await requestPermission(Permission.storage) == true) {
+                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                   } else {
+                                     showSnackbarPermission(context);
+                                   }
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -529,7 +540,11 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                   backgroundColor: CustomColors.green,
                                   shape: CustomStyles.customRoundedButton),
                               onPressed: () async {
-                                downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                if (await requestPermission(Permission.storage) == true) {
+                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                   } else {
+                                     showSnackbarPermission(context);
+                                   }
                               },
                               child: Text('Unduh',
                                   style: CustomStyles.textMediumWhite15Px)),
@@ -621,7 +636,9 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
 class DetailMainScheduleAuditRegion extends StatefulWidget {
   final int mainScheduleId;
   final String? kka;
-  const DetailMainScheduleAuditRegion({super.key, required this.mainScheduleId, this.kka});
+  final String startDate;
+  final String endDate;
+  const DetailMainScheduleAuditRegion({super.key, required this.mainScheduleId, this.kka, required this.startDate, required this.endDate});
 
   @override
   State<DetailMainScheduleAuditRegion> createState() =>
@@ -639,6 +656,31 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
     refreshController.add(SwipeRefreshState.loading);
     super.initState();
   }
+
+  void checkScheduleInputLhaAndKka(){
+  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+  DateTime startDate = inputFormat.parse(widget.startDate);
+  DateTime endDate = inputFormat.parse(widget.endDate);
+
+  String formattedStartDate = outputFormat.format(startDate);
+  String formattedEndDate = outputFormat.format(endDate);
+
+  DateTime today = DateTime.now();
+  String formattedCurrentTime = outputFormat.format(today);
+
+  startDate = DateTime.parse(formattedStartDate);
+  endDate = DateTime.parse(formattedEndDate);
+  today = DateTime.parse(formattedCurrentTime);
+
+  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+  } else {
+      snakcBarMessageRed('Alert', 'Jadwal tidak dapat diproses');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -663,9 +705,9 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                   labelStyle: CustomStyles.textMediumWhite15Px,
                   child: const Icon(Icons.add_rounded, color: CustomColors.white),
                   onTap: (){
-                        Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-                      }
-                    ),
+                    checkScheduleInputLhaAndKka();
+                  }
+                ),
               SpeedDialChild(
                 backgroundColor: CustomColors.green,
                   label: 'Upload KKA',
@@ -673,12 +715,17 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                   labelStyle: CustomStyles.textMediumWhite15Px,
                   child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
                   onTap: (){
-                          if (widget.kka != null) {
-                            snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
-                          } else {
-                            showDialogUploadKkaAuditRegion(widget.mainScheduleId);
-                          }
-                        }
+                    final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
+                    if (lha != null) {
+                      if (widget.kka != null) {
+                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                      } else {
+                        showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                      }
+                    } else {
+                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
+                    }
+                      }
                     ),
                   ],
                 ),
@@ -768,7 +815,11 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                   downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
+                                   if (await requestPermission(Permission.storage) == true) {
+                                     downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
+                                   } else {
+                                     showSnackbarPermission(context);
+                                   }
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),
@@ -906,7 +957,9 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
 class DetailSpecialScheduleAuditRegion extends StatefulWidget {
   final int specialScheduleId;
   final String? kka;
-  const DetailSpecialScheduleAuditRegion({super.key, required this.specialScheduleId, this.kka});
+  final String startDate;
+  final String endDate;
+  const DetailSpecialScheduleAuditRegion({super.key, required this.specialScheduleId, this.kka, required this.startDate, required this.endDate});
 
   @override
   State<DetailSpecialScheduleAuditRegion> createState() => _DetailSpecialScheduleAuditRegionState();
@@ -922,6 +975,31 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
     super.initState();
+  }
+
+  void checkScheduleInputLhaAndKka(){
+  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+  DateTime startDate = inputFormat.parse(widget.startDate);
+  DateTime endDate = inputFormat.parse(widget.endDate);
+
+  String formattedStartDate = outputFormat.format(startDate);
+  String formattedEndDate = outputFormat.format(endDate);
+
+  DateTime today = DateTime.now();
+  String formattedCurrentTime = outputFormat.format(today);
+
+  startDate = DateTime.parse(formattedStartDate);
+  endDate = DateTime.parse(formattedEndDate);
+  today = DateTime.parse(formattedCurrentTime);
+
+  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+      
+  } else {
+      snakcBarMessageRed('Alert', 'Jadwal tidak dapat diproses');
+    }
   }
 
   @override
@@ -947,7 +1025,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_) => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId)));
+                checkScheduleInputLhaAndKka();
               }
           ),
           SpeedDialChild(
@@ -957,11 +1035,16 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
               onTap: (){
-                if (widget.kka != null) {
-                     snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
-                  } else {
-                    showDialogUploadKkaAuditRegion(widget.specialScheduleId);
-                  }
+                final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
+                if (lha != null) {
+                      if (widget.kka != null) {
+                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                      } else {
+                        showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                      }
+                    } else {
+                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
+                    }
               }
           ),
         ],
@@ -1044,7 +1127,11 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                                       backgroundColor: CustomColors.green,
                                       shape: CustomStyles.customRoundedButton),
                                   onPressed: () async {
-                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
+                                    if (await requestPermission(Permission.storage) == true) {
+                                     downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
+                                   } else {
+                                     showSnackbarPermission(context);
+                                   }
                                   },
                                   child: Text('Unduh',
                                       style: CustomStyles.textMediumWhite15Px)),

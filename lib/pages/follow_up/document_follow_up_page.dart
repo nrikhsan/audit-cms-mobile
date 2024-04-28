@@ -3,9 +3,11 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert_follow_up.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
@@ -65,8 +67,11 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                       backgroundColor: CustomColors.blue
                     ),
                     onPressed: () async{
-                      downloadFollowUpFile('${AppConstant.downloadFollowUp}${followUp.followup?.fileName}');
-                      Get.back();
+                      if (await requestPermission(Permission.storage) == true) {
+                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${followUp.followup?.fileName}');
+                      } else {
+                        showSnackbarPermission(context);
+                      }
                     }, 
                     child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
                   ),

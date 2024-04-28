@@ -84,8 +84,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                               children: [
                                 Wrap(
                                   children: [
-                                    
-                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold15Px),
+                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold13Px),
                                     const SizedBox(width: 10),
                                     Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
                                   ],
@@ -113,7 +112,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                               children: [                                
                                 const SizedBox(height: 5),
                                 Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
+                                const SizedBox(height: 5),
                                 Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
+                               
                               ],
                             ),
                           ],
@@ -213,9 +214,9 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                                 Wrap(
                                   children: [
                                     
-                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold15Px),
+                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold13Px),
                                     const SizedBox(width: 10),
-                                    Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
+                                    
                                   ],
                                 ),
                                 const SizedBox(height: 5),
@@ -241,6 +242,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                               children: [                                
                                 const SizedBox(height: 5),
                                 Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
+                                const SizedBox(height: 5),
                                 Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
                               ],
                             ),
@@ -363,7 +365,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         items: controllerAuditRegion.caseCategory.map((caseCategory){
                           return DropdownMenuItem(
                             value: caseCategory.id,
-                            child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
+                            child: SizedBox(width: 150, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                           );
                         }).toList(),
                         onChanged: (value){

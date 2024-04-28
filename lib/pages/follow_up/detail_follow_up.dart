@@ -135,7 +135,6 @@ class _DetailFollowUpPageAuditAreaState
                                           context,
                                           'File tindak lanjut',
                                           followUp.filename!);
-                                      print(followUp.filename);
                                     },
                                     child: Text('Lihat',
                                         style:

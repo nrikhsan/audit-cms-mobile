@@ -7,9 +7,11 @@ import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_and_download_clarification.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -455,7 +457,11 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileClarification('${AppConstant.downloadReportClarification}$fileName');
+                if (await requestPermission(Permission.storage) == true) {
+                  downloadFileClarification('${AppConstant.downloadReportClarification}$fileName');
+                } else {
+                  showSnackbarPermission(context);
+                }
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],

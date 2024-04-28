@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 Widget formInputStarDateEndDate(BuildContext context, String label,
     TextEditingController textEditingController) {
@@ -40,13 +39,10 @@ Widget formInputStarDateEndDate(BuildContext context, String label,
   );
 }
 
+//sudah d fixing
 void downloadReportClarificationAuditArea(String url, int? branchId, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_klairifkasi_$timestamp.xlsx';
@@ -85,17 +81,12 @@ void downloadReportClarificationAuditArea(String url, int? branchId, TextEditing
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
+//sudah di fixing
 void downloadReportLhaAuditArea(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-      if (statuses[Permission.storage]!.isGranted) {
-      var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
       if (dir != null) {
         String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
         String saveName = 'laporan_lha_$timestamp.pdf';
@@ -133,21 +124,16 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
           snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
         }
       }
-    }else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
-void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController, BuildContext context) async {
+//sudah di fixing
+void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
-  PermissionStatus status = await Permission.storage.request();
-  if (status == PermissionStatus.granted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_klairifkasi_$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
-      print(savePath);
 
       final token = await TokenManager.getToken();
       dio.options.headers = {'Authorization': 'Bearer $token'};
@@ -180,21 +166,12 @@ void downloadReportClarificationAuditRegion(String url, TextEditingController st
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  }else if(status == PermissionStatus.denied){
-    ScaffoldMessenger.maybeOf(context)!.showSnackBar(SnackBar(content: Text('Open app setting'), action: SnackBarAction(label: 'Open', onPressed: (){
-      openAppSettings();
-    })));
-  }else if(status == PermissionStatus.limited){
-    print('Permission was limited');
-  }
 }
 
+//sudah di fixing
 void downloadReportLhaAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses = await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_lha_$timestamp.pdf';
@@ -232,7 +209,4 @@ void downloadReportLhaAuditRegion(String url, TextEditingController startDateCon
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
-}
+  } 

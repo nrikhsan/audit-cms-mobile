@@ -2,7 +2,6 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
@@ -81,9 +80,6 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          // controllerAuditRegion.selectCase(value);
-                          // controllerAuditRegion.loadCaseCategoryAuditRegion(value);
-                          // controllerAuditRegion.caseCategoryId.value = null;
                           _case = value;
                           controllerAuditRegion.loadCaseCategoryAuditRegion(_case?.id);
                           _caseCategory = null;
@@ -114,7 +110,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       items: controllerAuditRegion.caseCategory.map((caseCategory){
                         return DropdownMenuItem(
                           value: caseCategory,
-                          child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
+                          child: SizedBox(width: 280, child: Text('${caseCategory.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                           );
                       }).toList(), 
                       onChanged: (value)async{
@@ -241,7 +237,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                                 children: [
                                     Text('${data.caseName?.name}', style: CustomStyles.textBold13Px),
                                     const SizedBox(height: 10),
-                                    Text('${data.caseCategoryName?.name}', style: CustomStyles.textBold13Px),
+                                    SizedBox(width: 250 ,child: Text('${data.caseCategoryName?.name}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 1)),
                                   ],
                                 ),
                                 
@@ -274,7 +270,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       }else{
                         controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
                           controllerAuditRegion.pagingControllerLha.refresh();
-                          Get.offAll(() => BotNavAuditRegion());
+                          Get.back();
                       }
                   },
                   child: Text('Simpan Lha', style: CustomStyles.textMediumWhite15Px)
@@ -401,13 +397,12 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                       items: controllerAuditRegion.caseCategory.map((caseCategory){
                         return DropdownMenuItem(
                           value: caseCategory.id,
-                          child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px)
+                          child: SizedBox(width: 250, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                           );
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
                           controllerAuditRegion.selectCaseCategory(value);
-                          
                         });
                       }
                     ),

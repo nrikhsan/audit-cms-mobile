@@ -5,6 +5,7 @@ import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/input_identification_clarification_page.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -396,7 +397,11 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileClarification('${AppConstant.downloadClarification}$fileName');
+                if (await requestPermission(Permission.storage) == true) {
+                  downloadFileClarification('${AppConstant.downloadClarification}$fileName');
+                } else {
+                  showSnackbarPermission(context);
+                }
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
@@ -404,13 +409,10 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
     );
 }
 
+// sudah di fixing
 void downloadFileClarification(String url) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'klarifikasi_$timestamp.pdf';
@@ -445,18 +447,12 @@ void downloadFileClarification(String url) async {
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
+//sudah di fixing
 void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion controllerAuditRegion) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'klarifikasi_$timestamp.pdf';
@@ -492,9 +488,6 @@ void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion cont
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
 Future<String?>getToken()async{

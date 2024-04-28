@@ -2,6 +2,7 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,10 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+// sudah difixing
 void downloadFileDetailBap(String url) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'bap_$timestamp.pdf';
@@ -51,9 +49,6 @@ void downloadFileDetailBap(String url) async {
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
 void showDialogPdfBapAuditArea(BuildContext context, String title, String url) async {
@@ -104,7 +99,11 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String url) a
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileDetailBap(url);
+                if (await requestPermission(Permission.storage) == true) {
+                  downloadFileDetailBap(url);
+                } else {
+                  showSnackbarPermission(context);
+                }
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
@@ -164,7 +163,11 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String url)
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFileDetailBap(url);
+                if (await requestPermission(Permission.storage) == true) {
+                  downloadFileDetailBap(url);
+                } else {
+                  showSnackbarPermission(context);
+                }
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],

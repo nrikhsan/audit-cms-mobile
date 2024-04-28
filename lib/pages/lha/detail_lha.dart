@@ -123,7 +123,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                         const SizedBox(height: 15),
                                         Text('Kasus : ${lha[index].cases}', style: CustomStyles.textBold15Px),
                                         const SizedBox(height: 5),
-                                        Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textBold15Px),
+                                        SizedBox(width: 250, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
 
                                         const SizedBox(height: 15),
                                         Row(
@@ -251,11 +251,11 @@ class _DetailCasesLhaPageAuditAreaState
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Kategori kasus :',
-                                        style: CustomStyles.textBold15Px),
+                                    const SizedBox(height: 20),
+                                    Text('Kasus :', style: CustomStyles.textBold15Px),
                                     const SizedBox(height: 5),
-                                    Text(casesCategory ?? '-',
-                                        style: CustomStyles.textRegular13Px),
+                                    Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
+                                    const SizedBox(height: 20),
                                   ],
                                 ),
                                 ElevatedButton(
@@ -267,10 +267,11 @@ class _DetailCasesLhaPageAuditAreaState
                                         style: CustomStyles.textMediumWhite15Px))
                               ],
                             ),
-                            const SizedBox(height: 20),
-                            Text('Kategori :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
+                            Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(casesCategory ?? '-', style: CustomStyles.textRegular13Px),
+                            
                             const SizedBox(height: 20),
                             Text('Uraian temuan :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
@@ -332,12 +333,12 @@ class _DetailCasesLhaPageAuditAreaState
                                   shape: CustomStyles.customRoundedButton,
                                   backgroundColor: CustomColors.blue
                                 ),
-                                onPressed: (){
+                                onPressed: statusFlow == 0 ? (){
                                   if (lhaId != null) {
                                       Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases!.name!, caseCategory: detailLha.caseCategory!.name!, 
                                         selectedValueResearch: research!, lhaDescription: detailLha.description!, temRec: detailLha.temporaryRecommendation!, perRec: detailLha.permanentRecommendation!, suggest: suggestion));
                                   }
-                                }, 
+                                }: null, 
                                 child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)
                               ),
                             ),
@@ -402,8 +403,10 @@ class _DetailCasesLhaPageAuditAreaState
                                                 Text('No. Revisi : $numberRevision', style: CustomStyles.textBold15Px),
                                               ],
                                             ),
+                                            const SizedBox(height: 5),
                                             Text('Kasus : ${lha.cases!.name}', style: CustomStyles.textBold15Px),
-                                            Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px),
+                                            const SizedBox(height: 5),
+                                            Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px, overflow: TextOverflow.ellipsis, maxLines: 1),
                                             
                                             const SizedBox(height: 5),
                                             Row(
@@ -504,32 +507,34 @@ class _DetailRevisionLhaAuditAreaState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Kategori kasus :',
-                              style: CustomStyles.textBold15Px),
-                          const SizedBox(height: 5),
-                          Text(casesCategory ?? '-',
-                              style: CustomStyles.textRegular13Px),
-                        ],
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: CustomStyles.customRoundedButton,
-                              backgroundColor: CustomColors.green),
-                          onPressed: () {},
-                          child: Text(cases?.code ?? '-',
-                              style: CustomStyles.textMediumWhite15Px))
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Text('Kategori :', style: CustomStyles.textBold15Px),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    Text('Kasus :', style: CustomStyles.textBold15Px),
+                                    Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
+                                    const SizedBox(height: 20),
+                                  ],
+                                ),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: CustomStyles.customRoundedButton,
+                                        backgroundColor: CustomColors.green),
+                                    onPressed: () {},
+                                    child: Text(cases?.code ?? '-',
+                                        style: CustomStyles.textMediumWhite15Px))
+                              ],
+                            ),
+
                   const SizedBox(height: 5),
-                  Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
+                  Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+
+                  Text(casesCategory ?? '-', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 20),
+
                   Text('Uraian temuan :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${detailLha.description}',
@@ -708,9 +713,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                   Text('Kasus : ${lha[index].cases}',
                                       style: CustomStyles.textBold15Px),
                                   const SizedBox(height: 5),
-                                  Text(
-                                      'Kategori kasus : ${lha[index].caseCategory}',
-                                      style: CustomStyles.textBold15Px),
+                                  SizedBox(width: 250, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
                                   const SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,

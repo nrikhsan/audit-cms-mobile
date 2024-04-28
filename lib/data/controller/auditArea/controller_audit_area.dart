@@ -203,8 +203,10 @@ class ControllerAuditArea extends GetxController{
     try {
       final editMainSchedule = await repository.editMainSchedule(id, userId, branchId, startDate, endDate, description);
       pagingControllerMainSchedule.refresh();
+      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
       message.value = editMainSchedule.message.toString();
     } catch (e) {
+      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       throw Exception(e);
     }
   }
@@ -338,7 +340,9 @@ class ControllerAuditArea extends GetxController{
       final editSpecialSchedule = await repository.editSpecialSchedule(id, userId, branchId, startDate, endDate, description);
       pagingControllerSpecialSchedule.refresh();
       message.value = editSpecialSchedule.message.toString();
+      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
     } catch (e) {
+      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       throw Exception(e);
     }
   }
@@ -377,6 +381,7 @@ class ControllerAuditArea extends GetxController{
       message.value = reschedule.message.toString();
       snakcBarMessageGreen('Berhasil', 'Reschedul berhasil dibuat');
     }catch(error){
+      snakcBarMessageRed('Gagal', 'Tanggal tersebut sudah digunakan di jadwal lain');
       throw Exception(error);
     }
   }
@@ -461,7 +466,6 @@ void getDetailRescheduleAuditArea(int id)async{
       final responseBranch = await repository.getBranchForFilterDataAuditArea();
       branchForFilterAuditArea.assignAll(responseBranch.data ?? []);
     }catch(error){
-      
       throw Exception(error);
     }
   }

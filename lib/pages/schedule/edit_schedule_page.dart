@@ -175,7 +175,6 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                               snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editMainSchedule(widget.scheduleId, _users!, _branch!, startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
-                              snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
                               Navigator.pop(context);
                             }
                           },
@@ -361,7 +360,6 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                               snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editSpecialSchedule(widget.scheduleId, users!, branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
-                              snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
                               Navigator.pop(context);
                             }
                           },

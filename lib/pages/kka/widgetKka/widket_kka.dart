@@ -8,7 +8,6 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void showFilterKkaAuditArea(
     BuildContext context,
@@ -101,7 +100,7 @@ void showFilterKkaAuditArea(
                           }).toList(),
                           onChanged: (value){
                             controllerAuditArea.branchKka.value = value;
-                            print(controllerAuditArea.branchKka.value);
+                            
                           }
                       ),
                     )
@@ -344,18 +343,14 @@ void showFilterKkaAuditRegion(BuildContext context, TextEditingController startD
     );
   }
 
+//sudah di fixing
 void downloadKKaAuditArea(String url) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_kka$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
-      print(savePath);
 
       final token = await TokenManager.getToken();
       dio.options.headers = {'Authorization': 'Bearer $token'};
@@ -384,23 +379,16 @@ void downloadKKaAuditArea(String url) async {
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
+// sudah di fixing
 void downloadKKaAuditRegion(String url) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'laporan_kka$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
-      print(savePath);
 
       final token = await TokenManager.getToken();
       dio.options.headers = {'Authorization': 'Bearer $token'};
@@ -429,7 +417,4 @@ void downloadKKaAuditRegion(String url) async {
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }

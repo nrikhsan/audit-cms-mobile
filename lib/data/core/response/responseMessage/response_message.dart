@@ -1,44 +1,42 @@
 class ResponseMessage {
-  Metadata? metadata;
-  int? status;
+  Meta? meta;
   String? message;
+  int? status;
 
-  ResponseMessage({this.metadata, this.status, this.message});
+  ResponseMessage(data, {this.meta, this.message, this.status});
 
   ResponseMessage.fromJson(Map<String, dynamic> json) {
-    metadata = json['meta'] != null
-        ? Metadata.fromJson(json['meta'])
-        : null;
-    status = json['status'];
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     message = json['message'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (metadata != null) {
-      data['metadata'] = metadata!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = status;
-    data['message'] = message;
+    data['message'] = this.message;
+    data['status'] = this.status;
     return data;
   }
 }
 
-class Metadata {
+class Meta {
   String? timestamp;
   String? apiVersion;
 
-  Metadata({this.timestamp, this.apiVersion});
+  Meta({this.timestamp, this.apiVersion});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
+  Meta.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];
     apiVersion = json['api_version'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['timestamp'] = timestamp;
-    data['api_version'] = apiVersion;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['timestamp'] = this.timestamp;
+    data['api_version'] = this.apiVersion;
     return data;
   }
 }

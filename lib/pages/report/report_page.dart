@@ -3,8 +3,11 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/report/widgetReport/widget_report.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //audit area
 class ReportPageAuditArea extends StatefulWidget {
@@ -88,8 +91,18 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: () {
-                        downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
+                      onPressed: ()async {
+                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                        }else{
+                          if (await requestPermission(Permission.storage) == true) {
+                          downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                        }
                       },
                       child: Text('Download laporan klarifikasi',
                           style: CustomStyles.textMediumWhite15Px)
@@ -102,8 +115,18 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
-                      onPressed: () {
-                        downloadReportLhaAuditArea(AppConstant.downloadReportLha, startDateController, endDateController);
+                      onPressed: () async{
+                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                        }else{
+                          if (await requestPermission(Permission.storage) == true) {
+                          downloadReportLhaAuditArea(AppConstant.downloadReportLha, startDateController, endDateController);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                        }
                       },
                       child: Text('Download laporan LHA',
                           style: CustomStyles.textMediumWhite15Px)
@@ -130,6 +153,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     
@@ -141,10 +165,9 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
           titleTextStyle: CustomStyles.textBold18Px,
           actions: [
               TextButton(
-                onPressed: (){
-                           
-                            startDateController.clear();
-                            endDateController.clear();
+                onPressed: (){           
+                startDateController.clear();
+                endDateController.clear();
               }, child: Text('Reset', style: CustomStyles.textMediumRed15Px))],
         ),
         body: SingleChildScrollView(
@@ -166,8 +189,18 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: () {
-                       downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateController, endDateController, context);
+                      onPressed: ()async {
+                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                        }else{
+                          if (await requestPermission(Permission.storage) == true) {
+                          downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateController, endDateController);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                      }   
                       },
                       child: Text('Download laporan klarifikasi',
                           style: CustomStyles.textMediumWhite15Px)
@@ -180,8 +213,19 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
-                      onPressed: () {
-                        downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateController, endDateController);
+                      onPressed: () async{
+                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                        }else{
+                          if (await requestPermission(Permission.storage) == true) {
+                          downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateController, endDateController);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                      }   
+                        
                       },
                       child: Text('Download laporan LHA',
                           style: CustomStyles.textMediumWhite15Px)

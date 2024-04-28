@@ -95,14 +95,6 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       }else if(status == 'DONE') {
                         Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                       }
-
-                      // if (status == 'CREATE') {
-                      //     Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
-                      //   } else if(status == 'PROGRESS'){
-                      //     Get.to(() => const DocumentFollowUpPage());
-                      //   }else if(status == 'DONE') {
-                      //     Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
-                      //   }
                     },
                   );
                 }

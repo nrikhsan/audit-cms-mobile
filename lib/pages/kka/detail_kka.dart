@@ -5,9 +5,11 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
@@ -116,7 +118,11 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKKaAuditArea('${AppConstant.downloadKKa}${detailKka.filename}');
+                                  if (await requestPermission(Permission.storage) == true) {
+                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${detailKka.filename}');
+                                  } else {
+                                    showSnackbarPermission(context);
+                                  }
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),
@@ -241,7 +247,11 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                                     backgroundColor: CustomColors.green,
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
-                                  downloadKKaAuditRegion('${AppConstant.downloadKKa}${detailKka.filename}');
+                                  if (await requestPermission(Permission.storage) == true) {
+                                    downloadKKaAuditRegion('${AppConstant.downloadKKa}${detailKka.filename}');
+                                  } else {
+                                    showSnackbarPermission(context);
+                                  }
                                 },
                                 child: Text('Unduh',
                                     style: CustomStyles.textMediumWhite15Px)),

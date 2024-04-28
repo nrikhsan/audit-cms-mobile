@@ -637,7 +637,6 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             backgroundColor: CustomColors.blue
                         ),
                         onPressed: ()async{
-
                           if (users == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
                               snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
                             }else if(DateTime.parse(startDateControllerReschedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerReschedule.text))){

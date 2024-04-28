@@ -4,6 +4,7 @@ import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
@@ -259,18 +260,14 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
     );
   }
 
+  // sudah di fixing
   void downloadFollowUpFile(String url) async {
   final Dio dio = Dio();
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.storage].request();
-
-  if (statuses[Permission.storage]!.isGranted) {
-    var dir = await DownloadsPathProvider.downloadsDirectory;
+  var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       String saveName = 'tindak_lanjut_$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
-      print(savePath);
 
       final token = await TokenManager.getToken();
       dio.options.headers = {'Authorization': 'Bearer $token'};
@@ -299,9 +296,6 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
         snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
-  } else {
-    snakcBarMessageRed('Gagal', 'permintaan akses ditolak');
-  }
 }
 
 showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileName) {
@@ -352,7 +346,11 @@ showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileN
                   shape: CustomStyles.customRoundedButton,
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
-                downloadFollowUpFile('${AppConstant.downloadFollowUp}$fileName');
+               if (await requestPermission(Permission.storage) == true) {
+                  downloadFollowUpFile('${AppConstant.downloadFollowUp}$fileName');
+               }else{
+                showSnackbarPermission(context);
+               }
               },
               child: Text('Download', style: CustomStyles.textMediumWhite15Px))
         ],
