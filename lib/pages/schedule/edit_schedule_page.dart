@@ -76,12 +76,12 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleStartDate(context, startDateControllerMainSchedule),
+              formInputEditScheduleStartDate(context, startDateControllerMainSchedule, widget.startDate),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleEndDate(context, endDateControllerMainSchedule),
+              formInputEditScheduleEndDate(context, endDateControllerMainSchedule, widget.endDate),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
@@ -262,12 +262,12 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleStartDate(context, startDateControllerSpecialSchedule),
+              formInputEditScheduleStartDate(context, startDateControllerSpecialSchedule, widget.startDate),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleEndDate(context, endDateControllerSpecialSchedule),
+              formInputEditScheduleEndDate(context, endDateControllerSpecialSchedule, widget.endDate),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),

@@ -7,7 +7,6 @@ Widget formInputAddScheduleStartDate(
   return TextField(
     readOnly: true,
     controller: startDateController,
-    onChanged: (startDate) => startDateController.text = startDate,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -35,12 +34,13 @@ Widget formInputAddScheduleStartDate(
   );
 }
 
+
+
 Widget formInputAddScheduleEndDate(
     BuildContext context, TextEditingController endDateController) {
   return TextField(
     readOnly: true,
     controller: endDateController,
-    onChanged: (endDate) => endDateController.text = endDate,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -71,7 +71,6 @@ Widget formInputAddScheduleEndDate(
 Widget formInputDescriptionSchedule(TextEditingController scheduleController) {
   return TextField(
     controller: scheduleController,
-    onChanged: (desc) => scheduleController.text = desc,
     cursorColor: CustomColors.blue,
     maxLines: 3,
     decoration: InputDecoration(
@@ -83,5 +82,69 @@ Widget formInputDescriptionSchedule(TextEditingController scheduleController) {
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey))),
+  );
+}
+
+Widget formInputEditScheduleStartDate(
+    BuildContext context, TextEditingController startDateController, String date) {
+  return TextField(
+    readOnly: true,
+    controller: startDateController,
+    cursorColor: CustomColors.blue,
+    decoration: InputDecoration(
+        suffixIcon: const Icon(Icons.date_range_rounded,
+            color: CustomColors.grey, size: 20),
+        hintStyle: CustomStyles.textMediumGrey15Px,
+        hintText: 'Mulai dari...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+    onTap: () async {
+      DateTime? picked = await showDatePicker(
+          cancelText: 'Tidak',
+          confirmText: 'ya',
+          context: context,
+          initialDate: DateTime.parse(date),
+          firstDate: DateTime.parse(date),
+          lastDate: DateTime(2100));
+      if (picked != null) {
+        startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      }
+    },
+  );
+}
+
+Widget formInputEditScheduleEndDate(
+    BuildContext context, TextEditingController startDateController, String date) {
+  return TextField(
+    readOnly: true,
+    controller: startDateController,
+    cursorColor: CustomColors.blue,
+    decoration: InputDecoration(
+        suffixIcon: const Icon(Icons.date_range_rounded,
+            color: CustomColors.grey, size: 20),
+        hintStyle: CustomStyles.textMediumGrey15Px,
+        hintText: 'Mulai dari...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+    onTap: () async {
+      DateTime? picked = await showDatePicker(
+          cancelText: 'Tidak',
+          confirmText: 'ya',
+          context: context,
+          initialDate: DateTime.parse(date),
+          firstDate: DateTime.parse(date),
+          lastDate: DateTime(2100));
+      if (picked != null) {
+        startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      }
+    },
   );
 }

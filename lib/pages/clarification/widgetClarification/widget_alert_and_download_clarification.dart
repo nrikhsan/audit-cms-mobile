@@ -64,7 +64,6 @@ void filterClarificationAuditArea(
                 const SizedBox(height: 20),
                 TextField(
                   controller: auditorController,
-                  onChanged: (auditor) => auditorController.text = auditor,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                     hintText: 'Auditor...',
@@ -112,8 +111,6 @@ void filterClarificationAuditArea(
                 const SizedBox(height: 20),
                 TextField(
                   controller: startDateController,
-                  onChanged: (startDate) =>
-                      startDateController.text = startDate,
                   readOnly: true,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
@@ -149,7 +146,6 @@ void filterClarificationAuditArea(
                 const SizedBox(height: 20),
                 TextField(
                   controller: endDateController,
-                  onChanged: (endDate) => endDateController.text = endDate,
                   readOnly: true,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
@@ -240,8 +236,6 @@ void showBottomSheetFilterClarificationAuditRegion(
                 TextField(
                   readOnly: true,
                   controller: startDateController,
-                  onChanged: (startDate) =>
-                      startDateController.text = startDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                       suffixIcon: const Icon(Icons.date_range_rounded,
@@ -274,7 +268,6 @@ void showBottomSheetFilterClarificationAuditRegion(
                 TextField(
                   readOnly: true,
                   controller: endDateController,
-                  onChanged: (endDate) => endDateController.text = endDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                       suffixIcon: const Icon(Icons.date_range_rounded,

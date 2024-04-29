@@ -69,24 +69,23 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  Text('Username :', style: CustomStyles.textBold15Px),
+                  Text('NIP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${user.username}', style: CustomStyles.textRegular13Px),
+                  Text('${user.nip}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 15),
                   Text('Nama :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
+                  Text('Username :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text('${user.username}', style: CustomStyles.textRegular13Px),
+
                   const SizedBox(height: 15),
                   Text('Email :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.email}', style: CustomStyles.textRegular13Px),
-
-                  const SizedBox(height: 15),
-                  Text('NIP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.nip}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 20),
                   SizedBox(
@@ -231,24 +230,24 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  Text('Username :', style: CustomStyles.textBold15Px),
+                  Text('NIP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${user.username}', style: CustomStyles.textRegular13Px),
+                  Text('${user.nip}', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 15),
                   Text('Nama :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
+                  Text('Username :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text('${user.username}', style: CustomStyles.textRegular13Px),
+
                   const SizedBox(height: 15),
                   Text('Email :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.email}', style: CustomStyles.textRegular13Px),
-
-                  const SizedBox(height: 15),
-                  Text('NIP :', style: CustomStyles.textBold15Px),
-                  const SizedBox(height: 5),
-                  Text('${user.nip}', style: CustomStyles.textRegular13Px),
+                  
 
                   const SizedBox(height: 20),
                   SizedBox(

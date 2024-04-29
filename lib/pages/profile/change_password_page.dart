@@ -50,7 +50,6 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
             TextField(
               controller: oldPasswordController,
               obscureText: obscureTextCurrentPassword,
-              onChanged: (oldPassword) => oldPasswordController.text = oldPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Masukan password lama anda...',
@@ -76,7 +75,6 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
             TextField(
               controller: newPasswordController,
               obscureText: obscureTextNewPassword,
-              onChanged: (newPassword) => newPasswordController.text = newPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Masukan password baru anda...',
@@ -102,7 +100,6 @@ class _ChangePasswordPageAuditAreaState extends State<ChangePasswordPageAuditAre
             TextField(
               controller: confirmPasswordController,
               obscureText: obscureTextConfirmPassword,
-              onChanged: (confirm) => confirmPasswordController.text = confirm,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi password baru anda...',
@@ -204,7 +201,6 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
             TextField(
               controller: oldPasswordController,
               obscureText: obscureTextCurrentPassword,
-              onChanged: (oldPassword) => oldPasswordController.text = oldPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Masukan password lama anda...',
@@ -230,7 +226,6 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
             TextField(
               controller: newPasswordController,
               obscureText: obscureTextNewPassword,
-              onChanged: (newPassword) => newPasswordController.text = newPassword,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Masukan password baru anda...',
@@ -256,7 +251,6 @@ class _ChangePasswordPageAuditRegionState extends State<ChangePasswordPageAuditR
             TextField(
               controller: confirmPasswordController,
               obscureText: obscureTextConfirmPassword,
-              onChanged: (confirm) => confirmPasswordController.text = confirm,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi password baru anda...',

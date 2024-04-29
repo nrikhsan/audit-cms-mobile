@@ -639,6 +639,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       const SizedBox(height: 10),
                                         Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                         Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
+                                        Text('Tanggal : ${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),

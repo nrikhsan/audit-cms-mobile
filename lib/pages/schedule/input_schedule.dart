@@ -543,12 +543,12 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleStartDate(context, startDateControllerReschedule),
+              formInputEditScheduleStartDate(context, startDateControllerReschedule, widget.startDate),
 
               const SizedBox(height: 15),
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAddScheduleEndDate(context, endDateControllerReschedule),
+              formInputEditScheduleEndDate(context, endDateControllerReschedule, widget.endDate),
 
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),

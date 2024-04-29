@@ -51,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 15),
                     TextField(
                       controller: passwordController,
-                      onChanged: (value) => passwordController.text = value,
                       cursorColor: CustomColors.blue,
                       obscureText: obscureText,
                       decoration: InputDecoration(

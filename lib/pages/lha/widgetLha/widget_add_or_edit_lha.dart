@@ -5,7 +5,6 @@ Widget formInputDescFinding(
     TextEditingController descriptionFindingsController) {
   return TextField(
     controller: descriptionFindingsController,
-    onChanged: (desc) => descriptionFindingsController.text = desc,
     cursorColor: CustomColors.blue,
     maxLines: 3,
     decoration: InputDecoration(
@@ -24,7 +23,6 @@ Widget fomrInputRecommendationOrSuggest(
     TextEditingController recomendationController, String label) {
   return TextField(
     controller: recomendationController,
-    onChanged: (value) => recomendationController.text = value,
     cursorColor: CustomColors.blue,
     maxLines: 3,
     decoration: InputDecoration(
@@ -42,7 +40,6 @@ Widget fomrInputRecommendationOrSuggest(
 Widget formEditLha(TextEditingController lhaDescriptionController, String label) {
   return TextField(
       controller: lhaDescriptionController,
-      onChanged: (value) => lhaDescriptionController.text = value,
       maxLines: 5,
       cursorColor: CustomColors.blue,
       decoration: InputDecoration(

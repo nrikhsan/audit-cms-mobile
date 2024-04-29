@@ -10,7 +10,6 @@ Widget formInputStarDateEndDate(BuildContext context, String label,
     TextEditingController textEditingController) {
   return TextField(
     controller: textEditingController,
-    onChanged: (value) => textEditingController.text = value,
     readOnly: true,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(

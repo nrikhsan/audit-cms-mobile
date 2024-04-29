@@ -7,7 +7,6 @@ Widget formInputLimitEvaluation(
   return TextField(
     readOnly: true,
     controller: limitEvaluationController,
-    onChanged: (limit) => limitEvaluationController.text = limit,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -40,7 +39,6 @@ Widget formInputAllClarification(
     String label, TextEditingController textEditingController) {
   return TextField(
     controller: textEditingController,
-    onChanged: (value) => textEditingController.text = value,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -58,7 +56,6 @@ Widget formInputLoss(TextEditingController lossController) {
   return TextField(
     controller: lossController,
     keyboardType: TextInputType.number,
-    onChanged: (loss) => lossController.text = loss,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -76,7 +73,6 @@ Widget formInputDesc(TextEditingController descController) {
   return TextField(
     controller: descController,
     maxLines: 5,
-    onChanged: (desc) => descController.text = desc,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,

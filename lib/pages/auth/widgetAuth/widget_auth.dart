@@ -5,7 +5,6 @@ Widget formInputUsernameOrEmail(
     String label, TextEditingController textEditingController, IconData icon) {
   return TextField(
       controller: textEditingController,
-      onChanged: (value) => textEditingController.text = value,
       cursorColor: CustomColors.blue,
       decoration: InputDecoration(
           suffixIcon: Icon(icon, color: CustomColors.grey, size: 20),

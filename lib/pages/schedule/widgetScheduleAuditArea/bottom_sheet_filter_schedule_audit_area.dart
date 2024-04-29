@@ -53,7 +53,6 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   const SizedBox(height: 15),
                   TextField(
                     controller: auditorControllerMainSchedule,
-                    onChanged: (auditor) => auditorControllerMainSchedule.text = auditor,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -107,7 +106,6 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   TextField(
                     readOnly: true,
                     controller: startDateControllerMainSchedule,
-                    onChanged: (startDate) => startDateControllerMainSchedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -143,7 +141,6 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   TextField(
                     readOnly: true,
                     controller: endDateControllerMainSchedule,
-                    onChanged: (endDate) => endDateControllerMainSchedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -250,7 +247,6 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                   const SizedBox(height: 15),
                   TextField(
                     controller: auditorControllerSpecialSchedule,
-                    onChanged: (auditor) => auditorControllerSpecialSchedule.text = auditor,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -304,7 +300,6 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                   TextField(
                     readOnly: true,
                     controller: startDateControllerSpecialSchedule,
-                    onChanged: (startDate) => startDateControllerSpecialSchedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -340,7 +335,6 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                   TextField(
                     readOnly: true,
                     controller: endDateControllerSpecialSchedule,
-                    onChanged: (endDate) => endDateControllerSpecialSchedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -449,7 +443,6 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                   const SizedBox(height: 15),
                   TextField(
                     controller: auditorControllerReschedule,
-                    onChanged: (auditor) => auditorControllerReschedule.text = auditor,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -503,7 +496,6 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                   TextField(
                     readOnly: true,
                     controller: startDateControllerReschedule,
-                    onChanged: (startDate) => startDateControllerReschedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -539,7 +531,6 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                   TextField(
                     readOnly: true,
                     controller: endDateControllerReschedule,
-                    onChanged: (endDate) => endDateControllerReschedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,

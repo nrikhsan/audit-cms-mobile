@@ -59,7 +59,6 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
             TextField(
               controller: usernameController,
-              onChanged: (username) => usernameController.text = username,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -76,7 +75,6 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
             TextField(
               controller: emailController,
-              onChanged: (email) => emailController.text = email,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -219,7 +217,6 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
 
             TextField(
               controller: usernameController,
-              onChanged: (username) => usernameController.text = username,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -236,7 +233,6 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
 
             TextField(
               controller: emailController,
-              onChanged: (email) => emailController.text = email,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(

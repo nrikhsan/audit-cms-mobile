@@ -6,7 +6,6 @@ Widget formInputRealizationFollowUp(
   return TextField(
     keyboardType: TextInputType.number,
     controller: realizationController,
-    onChanged: (realization) => realizationController.text = realization,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -24,8 +23,6 @@ Widget formInputExplanationPenalty(
     TextEditingController explanationPenaltyController) {
   return TextField(
     controller: explanationPenaltyController,
-    onChanged: (explanationPenalty) =>
-        explanationPenaltyController.text = explanationPenalty,
     cursorColor: CustomColors.blue,
     maxLines: 5,
     decoration: InputDecoration(

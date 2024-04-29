@@ -50,7 +50,6 @@ void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startD
                   const SizedBox(height: 15),
                   TextField(
                     controller: auditorController,
-                    onChanged: (auditor) => auditorController.text = auditor,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -105,7 +104,6 @@ void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startD
                   TextField(
                     readOnly: true,
                     controller: startDateController,
-                    onChanged: (startDate) => startDateController.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -141,7 +139,6 @@ void dialogFilterLhaAuditArea(BuildContext context, TextEditingController startD
                   TextField(
                     readOnly: true,
                     controller: endDateController,
-                    onChanged: (endDate) => endDateController.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -235,7 +232,6 @@ void showFilterLhaAuditRegion(BuildContext context, TextEditingController startD
                 TextField(
                   readOnly: true,
                   controller: startDateController,
-                  onChanged: (startDate) => startDateController.text = startDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded, size: 25),
@@ -267,7 +263,6 @@ void showFilterLhaAuditRegion(BuildContext context, TextEditingController startD
                 TextField(
                   readOnly: true,
                   controller: endDateController,
-                  onChanged: (endDate) => endDateController.text = endDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded, size: 25),

@@ -674,10 +674,10 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
 
-  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+  if (today.isAfter(startDate) || today.isBefore(endDate)) {
       Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
   } else {
-      snakcBarMessageRed('Alert', 'Jadwal tidak dapat diproses');
+      snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     }
   }
 
@@ -994,11 +994,11 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
 
-  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+  if (today.isAfter(startDate) || today.isBefore(endDate)) {
       Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
       
   } else {
-      snakcBarMessageRed('Alert', 'Jadwal tidak dapat diproses');
+      snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     }
   }
 

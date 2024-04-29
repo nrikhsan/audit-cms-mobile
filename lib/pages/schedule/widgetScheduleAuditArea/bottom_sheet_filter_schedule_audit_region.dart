@@ -38,7 +38,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: startDateControllerMainSchedule,
-                    onChanged: (startDate) => startDateControllerMainSchedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -75,7 +74,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: endDateControllerMainSchedule,
-                    onChanged: (endDate) => endDateControllerMainSchedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -185,7 +183,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: startDateControllerSpecialSchedule,
-                    onChanged: (startDate) => startDateControllerSpecialSchedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -222,7 +219,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: endDateControllerSpecialSchedule,
-                    onChanged: (endDate) => endDateControllerSpecialSchedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -332,7 +328,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: startDateControllerReschedule,
-                    onChanged: (startDate) => startDateControllerReschedule.text = startDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,
@@ -369,7 +364,6 @@ ControllerAuditRegion controllerAuditRegion){
                   TextField(
                     readOnly: true,
                     controller: endDateControllerReschedule,
-                    onChanged: (endDate) => endDateControllerReschedule.text = endDate,
                     cursorColor: CustomColors.blue,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.date_range_rounded,

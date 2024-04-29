@@ -58,7 +58,6 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
               TextField(
                   cursorColor: CustomColors.blue,
                   controller: auditorController,
-                  onChanged: (auditor) => auditorController.text = auditor,
                   decoration: InputDecoration(
                     label: const Text('Auditor...'),
                     labelStyle: CustomStyles.textMediumGrey15Px,
@@ -112,7 +111,6 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                 TextField(
                   readOnly: true,
                   controller: startDateController,
-                  onChanged: (startDate) => startDateController.text = startDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded, size: 25),
@@ -144,7 +142,6 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                 TextField(
                   readOnly: true,
                   controller: endDateController,
-                  onChanged: (startDate) => startDateController.text = startDate,
                   cursorColor: CustomColors.blue,
                   decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.date_range_rounded, size: 25),
