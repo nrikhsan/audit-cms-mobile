@@ -10,6 +10,90 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+//audit area
+class DocumentClarificationAuditArea extends StatefulWidget {
+  final String? fileName;
+  final String? status;
+  final int id;
+  const DocumentClarificationAuditArea({super.key, this.fileName, this.status, required this.id});
+
+  @override
+  State<DocumentClarificationAuditArea> createState() => _DocumentClarificationAuditAreaState();
+}
+
+class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAuditArea> {
+
+  final ControllerAuditRegion controllerAuditRegion =
+      Get.put(ControllerAuditRegion(Get.find()));
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: CustomColors.white,
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SingleChildScrollView(
+            child: Column(
+                  children: [
+                  SizedBox(
+                  width: double.maxFinite,
+                  height: 600,
+                  child: FutureBuilder(
+                  future: getToken(),
+                  builder: (_, snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: SpinKitCircle(color: CustomColors.blue));
+                    } else {
+                      final data = snapshot.data;
+                    return SfPdfViewer.network(
+                      headers: {'Authorization': 'Bearer $data'},
+                      '${AppConstant.documentClarification}${widget.fileName}',
+                      pageSpacing: 0,
+                      );
+                    }
+                  }
+                )
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue),
+                      onPressed:() async{
+                        if (await requestPermission(Permission.storage) == true) {
+                          downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                      },
+                      child: Text('Download', style: CustomStyles.textMediumWhite15Px)),
+                      
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.green),
+                      onPressed: widget.status == 'UPLOAD' ? () {
+                        uploadClarificationAuditArea(context, widget.id, controllerAuditRegion);
+                      }: null,
+                      child: Text(widget.status == 'UPLOAD' ? 'Upload': 'Upload',
+                          style: CustomStyles.textMediumWhite15Px)),
+                ],
+              )
+            ]) 
+          )
+        ));
+  }
+
+  Future<String?>getToken()async{
+    return await TokenManager.getToken();
+  }
+}
+
+//audit region
 class DocumentClarificationPageAuditRegion extends StatefulWidget {
   final String? fileName;
   final String? status;
@@ -62,15 +146,15 @@ class _DocumentClarificationPageAuditRegionState
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
-                      onPressed: widget.status == 'DOWNLOAD' ? () async{
+                      onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
                           downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
                         } else {
                           showSnackbarPermission(context);
                         }
-                      }: null,
-                      child: Text(widget.status == 'DOWNLOAD' ? 'Download': 'Download',
-                          style: CustomStyles.textMediumWhite15Px)),
+                      },
+                      child: Text('Download', style: CustomStyles.textMediumWhite15Px)),
+                      
                       const SizedBox(width: 5),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(

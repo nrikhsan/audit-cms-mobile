@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/follow_up/document_follow_up_page.dart';
 import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_form_input_follow_up.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +111,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
                         controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, _penaltyId, explanationPenaltyController.text);
-                        Get.off(() => const DocumentFollowUpPage());
+                        Get.back();
                     }
                   }, 
                   child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

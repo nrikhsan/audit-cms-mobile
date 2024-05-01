@@ -84,7 +84,20 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               Text(research == 1 ? 'Ada' : 'Tidak ada'),
                               
                               const SizedBox(height: 20),
-                              Text('Kasus :', style: CustomStyles.textBold15Px),
+                              Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Kasus :', style: CustomStyles.textBold15Px),
+                                    TextButton(
+                                      onPressed: (){
+                                        final lhaDetailId = detailLha.id;
+                                        if (lhaDetailId != null) {
+                                          Get.to(() => InputCaseLhaAuditArea(lhaDetailId: lhaDetailId));
+                                        }
+                                      }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
+                                    )
+                                  ],
+                                ),
                               const SizedBox(height: 5),
                               
                               ListView.builder(
@@ -275,21 +288,21 @@ class _DetailCasesLhaPageAuditAreaState
                             const SizedBox(height: 20),
                             Text('Uraian temuan :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text('${detailLha.description}',
+                            Text(detailLha.description ?? '-',
                                 style: CustomStyles.textRegular13Px,
                                 textAlign: TextAlign.justify),
                             const SizedBox(height: 20),
                             Text('Rekomendasi sementara :',
                                 style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text('${detailLha.temporaryRecommendation}',
+                            Text(detailLha.temporaryRecommendation ?? '-',
                                 style: CustomStyles.textRegular13Px,
                                 textAlign: TextAlign.justify),
                             const SizedBox(height: 20),
                             Text('Rekomendasi permanen :',
                                 style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text('${detailLha.permanentRecommendation}',
+                            Text(detailLha.permanentRecommendation ?? '-',
                                 style: CustomStyles.textRegular13Px,
                                 textAlign: TextAlign.justify),
                             const SizedBox(height: 20),
@@ -335,8 +348,8 @@ class _DetailCasesLhaPageAuditAreaState
                                 ),
                                 onPressed: statusFlow == 0 ? (){
                                   if (lhaId != null) {
-                                      Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases!.name!, caseCategory: detailLha.caseCategory!.name!, 
-                                        selectedValueResearch: research!, lhaDescription: detailLha.description!, temRec: detailLha.temporaryRecommendation!, perRec: detailLha.permanentRecommendation!, suggest: suggestion));
+                                      Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
+                                        selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));
                                   }
                                 }: null, 
                                 child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)
@@ -537,21 +550,21 @@ class _DetailRevisionLhaAuditAreaState
 
                   Text('Uraian temuan :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailLha.description}',
+                  Text(detailLha.description ?? '-',
                       style: CustomStyles.textRegular13Px,
                       textAlign: TextAlign.justify),
                   const SizedBox(height: 20),
                   Text('Rekomendasi sementara :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailLha.temporaryRecommendations}',
+                  Text(detailLha.temporaryRecommendations ?? '-',
                       style: CustomStyles.textRegular13Px,
                       textAlign: TextAlign.justify),
                   const SizedBox(height: 20),
                   Text('Rekomendasi permanen :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailLha.permanentRecommendations}',
+                  Text(detailLha.permanentRecommendations ?? '-',
                       style: CustomStyles.textRegular13Px,
                       textAlign: TextAlign.justify),
                   const SizedBox(height: 20),

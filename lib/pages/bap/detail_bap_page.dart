@@ -110,14 +110,40 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}$fileBap');
+                                  showDialogPdfBapAuditRegion(context, 'File BAP', '${AppConstant.fileBap}$fileBap');
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
                         ),
                       ),
                     ),
-                  ) : Text('Auditor belum mengunggah klarifikasi', style: CustomStyles.textRegular13Px)
+                  ) : SizedBox(
+                    width: 195,
+                    child: Card(
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: CustomColors.lightGrey)),
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+                        child: Row(
+                          children: [
+                            Text('File BAP', style: CustomStyles.textMedium15Px),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: CustomStyles.customRoundedButton,
+                                    backgroundColor: CustomColors.blue),
+                                onPressed: () async {
+                                  Get.to(() => InputBapAuditArea(bapId: bap.id));
+                                },
+                                child: Text('Upload', style: CustomStyles.textMediumWhite15Px))
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                     ],
                   )
                 ],

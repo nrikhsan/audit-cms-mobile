@@ -487,6 +487,55 @@ Future<String?>getToken()async{
   return await TokenManager.getToken();
 }
 
+void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            elevation: 0,
+            title: const Text("Upload PDF File"),
+            titleTextStyle: CustomStyles.textBold18Px,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                const SizedBox(height: 10),
+
+                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
+
+                const SizedBox(height: 10),
+
+                TextButton(
+                  onPressed: () =>
+                      controllerAuditRegion.pickFileClarificationAuditRegion(),
+                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                ),
+
+                const SizedBox(height: 10),
+
+                Obx(() => TextButton(
+                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
+                      ? () {
+                            controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
+                            id);
+                            Get.off(() => InputIdentifcationClarificationAuditArea(clarificationId: id));
+                         }
+                      : null,
+                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    )),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text("Close", style: CustomStyles.textMediumRed15Px),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        }
+      );
+  }
+
 void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
     showDialog(
         context: context,

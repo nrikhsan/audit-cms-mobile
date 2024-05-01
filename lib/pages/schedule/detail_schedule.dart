@@ -229,7 +229,11 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
 //special schedule
 class DetailSpecialSchedulePageAuditArea extends StatefulWidget {
   final int specialScheduleId;
-  const DetailSpecialSchedulePageAuditArea({super.key, required this.specialScheduleId});
+  final String? startDate;
+  final String? endDate;
+  final String? kka;
+  final String? createdBy; 
+  const DetailSpecialSchedulePageAuditArea({super.key, required this.specialScheduleId, required this.startDate, required this.endDate, required this.kka, this.createdBy});
 
   @override
   State<DetailSpecialSchedulePageAuditArea> createState() => _DetailSpecialSchedulePageAuditAreaState();
@@ -238,6 +242,7 @@ class DetailSpecialSchedulePageAuditArea extends StatefulWidget {
 class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedulePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -247,11 +252,72 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
     super.initState();
   }
 
+  void checkScheduleInputLhaAndKka(){
+  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+  DateTime startDate = inputFormat.parse(widget.startDate!);
+  DateTime endDate = inputFormat.parse(widget.endDate!);
+
+  String formattedStartDate = outputFormat.format(startDate);
+  String formattedEndDate = outputFormat.format(endDate);
+
+  DateTime today = DateTime.now();
+  String formattedCurrentTime = outputFormat.format(today);
+
+  startDate = DateTime.parse(formattedStartDate);
+  endDate = DateTime.parse(formattedEndDate);
+  today = DateTime.parse(formattedCurrentTime);
+  
+  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+  } else {
+    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
+      floatingActionButton: widget.createdBy == 'LEAD' ? SpeedDial(
+        elevation: 0,
+        backgroundColor: CustomColors.orange,
+        animatedIcon: AnimatedIcons.menu_close,
+          renderOverlay: false,
+            children: [
+              SpeedDialChild(
+                backgroundColor: CustomColors.blue,
+                  label: 'Tambah LHA',
+                  labelBackgroundColor: CustomColors.blue,
+                  labelStyle: CustomStyles.textMediumWhite15Px,
+                  child: const Icon(Icons.add_rounded, color: CustomColors.white),
+                  onTap: (){
+                    checkScheduleInputLhaAndKka();
+                  }
+                ),
+              SpeedDialChild(
+                backgroundColor: CustomColors.green,
+                  label: 'Upload KKA',
+                  labelBackgroundColor: CustomColors.green,
+                  labelStyle: CustomStyles.textMediumWhite15Px,
+                  child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
+                  onTap: (){
+                    final lha = controllerAuditArea.detailMainScheduleAuditArea.value?.lha;
+                    if (lha != null) {
+                      if (widget.kka != null) {
+                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                      } else {
+                        showDialogUploadKkaAuditArea(widget.specialScheduleId);
+                      }
+                    } else {
+                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
+                    }
+                      }
+                    ),
+                  ],
+                ) : null,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Detail jadwal khusus'),
@@ -423,6 +489,54 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
         ],)
       ),
     );
+  }
+
+  void showDialogUploadKkaAuditArea(int id) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            elevation: 0,
+            title: const Text("Upload Excel File"),
+            titleTextStyle: CustomStyles.textBold18Px,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                const SizedBox(height: 10),
+
+                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
+
+                const SizedBox(height: 10),
+
+                TextButton(
+                  onPressed: () =>
+                      controllerAuditRegion.pickFileKkaAuditRegion(),
+                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                ),
+
+                const SizedBox(height: 10),
+
+                Obx(() => TextButton(
+                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
+                      ? () {
+                            controllerAuditRegion.uploadKkaAuditRegion(controllerAuditRegion.selectedFileName.value, id);
+                            Get.back();
+                         }
+                      : null,
+                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    )),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Close", style: CustomStyles.textMediumRed15Px),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        }
+      );
   }
 }
 
@@ -657,7 +771,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
     super.initState();
   }
 
-  void checkScheduleInputLhaAndKka(){
+ void checkScheduleInputLhaAndKka(){
   DateFormat inputFormat = DateFormat('dd-MM-yyyy');
   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
@@ -673,13 +787,13 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
   startDate = DateTime.parse(formattedStartDate);
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
-
-  if (today.isAtSameMomentAs(startDate) || today.isAfter(startDate) || today.isBefore(startDate) || today.isAtSameMomentAs(endDate) || today.isAfter(endDate) || today.isBefore(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+  
+  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
   } else {
-      snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-    }
+    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
   }
+}
 
 
   @override
@@ -977,7 +1091,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
     super.initState();
   }
 
-  void checkScheduleInputLhaAndKka(){
+ void checkScheduleInputLhaAndKka(){
   DateFormat inputFormat = DateFormat('dd-MM-yyyy');
   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
@@ -993,14 +1107,13 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   startDate = DateTime.parse(formattedStartDate);
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
-
-  if (today.isAtSameMomentAs(startDate) || today.isAfter(startDate) || today.isBefore(startDate) || today.isAtSameMomentAs(endDate) || today.isAfter(endDate) || today.isBefore(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-      
+  
+  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
   } else {
-      snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-    }
+    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
   }
+}
 
   @override
   Widget build(BuildContext context) {

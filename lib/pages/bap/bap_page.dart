@@ -128,7 +128,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
         titleSpacing: 5,
         leading: IconButton(
           onPressed: (){
-            Get.offAll(() => BotNavAuditRegion());
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),

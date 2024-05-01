@@ -2,6 +2,7 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
+import 'package:audit_cms/pages/follow_up/document_follow_up_page.dart';
 import 'package:audit_cms/pages/follow_up/input_follow_up.dart';
 import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert_follow_up.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,9 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       final status = followUp.status;
                       if(status == 'CREATE') {
                         Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
-                      }else if(status == 'DONE') {
+                      }else if(status == 'PROGRESS') {
+                        Get.to(() => DocumentFollowUpPage(fileName: followUp.filename,));
+                      }else if(status == 'DONE'){
                         Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                       }
                     },

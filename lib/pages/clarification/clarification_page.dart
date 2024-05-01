@@ -24,6 +24,7 @@ class ClarificationPageAuditArea extends StatefulWidget {
 
 class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
@@ -64,7 +65,17 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                 final priority = clarification.priority;
                 return GestureDetector(
                       onTap: (){
-                        Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
+                        if (statusClarificaion == 'INPUT'){
+                          Get.to(() =>  InputClarificationAuditArea(id: clarification.id!));
+                          } else if(statusClarificaion == 'DOWNLOAD'){
+                            Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status,));
+                          }else if(statusClarificaion == 'UPLOAD'){
+                            Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status));
+                          }else if(statusClarificaion == 'IDENTIFICATION'){
+                            Get.to(() => InputIdentifcationClarificationAuditArea(clarificationId: clarification.id!));
+                          }else if(statusClarificaion == 'DONE'){
+                            Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
+                          }
                       },
                       child: Card(
                       shape: OutlineInputBorder(
@@ -126,8 +137,171 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
             ),
           )
           )
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.blue,
+          onPressed: (){
+            showDialogMoreOption();
+          },
+          child: const Icon(Icons.add_box_rounded, color: CustomColors.white, size: 25),
+        ),
     );
+  }
+
+  void showDialogMoreOption() {
+    
+    showDialog(
+      context: context, 
+      builder: (_){
+        return AlertDialog(
+          elevation: 0,
+          title: const Text('Generate klarifikasi', textAlign: TextAlign.center),
+          titleTextStyle: CustomStyles.textBold18Px,
+          actions: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+
+                SizedBox(
+                  width: double.maxFinite,
+                  child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: CustomColors.grey,
+                            width: 1
+                          )
+                        )
+                      ),
+                      child: Obx(() => DropdownButton(
+                        value: controllerAuditRegion.branchId.value,
+                        hint: Text('Pilih cabang', style: CustomStyles.textMedium15Px),
+                        items: controllerAuditRegion.branchAuditRegion.map((branch){
+                          return DropdownMenuItem(
+                            value: branch.id,
+                            child: Text('${branch.name}', style: CustomStyles.textMedium15Px)
+                          );
+                        }).toList(),
+                        onChanged: (value){
+                          setState(() {
+                             controllerAuditRegion.selectBranch(value);
+                          });
+                        }
+                      ))
+                    ),
+                  )
+                ),
+
+                const SizedBox(height: 20),
+
+                Obx(() => SizedBox(
+                  width: double.maxFinite,
+                  child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: CustomColors.grey,
+                            width: 1
+                          )
+                        )
+                      ),
+                      child: DropdownButton(
+                        value: controllerAuditRegion.caseId.value,
+                        hint: Text('Pilih kasus', style: CustomStyles.textMedium15Px),
+                        items: controllerAuditRegion.caseAuditRegion.map((cases){
+                          return DropdownMenuItem(
+                            value: cases.id,
+                            child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
+                          );
+                        }).toList(),
+                        onChanged: (value){
+                          setState(() {
+                            controllerAuditRegion.selectCase(value);
+                            controllerAuditRegion.loadCaseCategoryAuditRegion(value);
+                            controllerAuditRegion.caseCategoryId.value = null;
+                          });
+                        }
+                      )
+                    ),
+                  )
+                )),
+
+                const SizedBox(height: 20),
+
+                Obx(() => SizedBox(
+                  width: double.maxFinite,
+                  child: DropdownButtonHideUnderline(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: CustomColors.grey,
+                            width: 1
+                          )
+                        )
+                      ),
+                      child: DropdownButton(
+                        value: controllerAuditRegion.caseCategoryId.value,
+                        hint: Text('Pilih kategori kasus', style: CustomStyles.textMedium15Px),
+                        items: controllerAuditRegion.caseCategory.map((caseCategory){
+                          return DropdownMenuItem(
+                            value: caseCategory.id,
+                            child: SizedBox(width: 150, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
+                          );
+                        }).toList(),
+                        onChanged: (value){
+                          setState(() {
+                            controllerAuditRegion.selectCaseCategory(value!);
+                          });
+                        }
+                      )
+                    ),
+                  )
+                )),
+
+                const SizedBox(height: 30),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.generateClarification();
+                        controllerAuditArea.pagingControllerClarificationAuditArea.refresh();
+                        resetValueGenerate();
+                        Get.back();
+                      }, 
+                      child: Text('Generate', style: CustomStyles.textMediumGreen15Px)
+                    ),
+
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                       resetValueGenerate();
+                      }, 
+                      child: Text('Reset', style: CustomStyles.textMediumRed15Px)
+                    )
+                  ],
+                )
+              ],
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  void resetValueGenerate(){
+    controllerAuditRegion.branchId.value = null;
+    controllerAuditRegion.caseId.value = null;
+    controllerAuditRegion.caseCategoryId.value = null;
   }
 }
 

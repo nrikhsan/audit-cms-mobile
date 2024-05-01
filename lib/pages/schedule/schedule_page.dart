@@ -43,6 +43,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
   final TextEditingController endDateControllerReschedule = TextEditingController();
   final TextEditingController auditorControllerReschedule = TextEditingController();
 
+  
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -249,13 +251,16 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           pagingController: controllerAuditArea.pagingControllerSpecialSchedule, 
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, schedule, index){
-                              
+                              final createdBy = schedule.createdBy!.level?.name;
                                return GestureDetector(
                                 onTap: (){
-                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: schedule.startDate, endDate:  schedule.endDate, kka: schedule.kka, createdBy: createdBy));
                               },
                               onLongPress: schedule.status == 'TODO' ? ()async{
-                              alertDeleteWidget(
+                              if (createdBy == 'Indawan') {
+                                  null;
+                              } else {
+                                alertDeleteWidget(
                                 context, 
                                 'Hapus jadwal', 
                                 'Apakah anda yakin untuk menghapus jadwal ini?',
@@ -279,6 +284,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                   ],
                                 )
                               );
+                              }
                             }: null,
                                 child: Card(
                                 elevation: 0,
@@ -310,24 +316,30 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       const SizedBox(height: 5),
                                       Text('Tanggal : ${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
 
-                                     Row(
+                                     Wrap(
+                                      children: [
+                                        createdBy == 'LEAD' ? const SizedBox()
+                                        : Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                             TextButton(
                                               style: TextButton.styleFrom(
                                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                                 ),
-                                                onPressed: schedule.status == 'TODO' ? () {
+                                                onPressed: schedule.status == 'TODO' ? (){
                                                   String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.startDate!));
-                                                  String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.endDate!));
+                                                    String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.endDate!));
 
-                                                  Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
-                                                  user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description!));
+                                                    Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
+                                                    user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description!));
+
                                                 }: null, 
                                                 child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                               ),
                                             ],
                                           )
+                                      ],
+                                     )
                                     ],
                                   ),
                                 ),
@@ -567,6 +579,10 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                   }else if(status == 'PROGRESS'){
                                     Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
                                   }else if(status == 'DONE'){
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
+                                  }else if(status == 'PENDING'){
+                                    snakcBarMessageRed('Alert', 'Anda harus reschedule terlebih dahulu');
+                                  }else if(status == 'APPROVE'){
                                     Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
                                   }
                                 },

@@ -296,6 +296,216 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
   }
 }
 
+class InputCaseLhaAuditArea extends StatefulWidget {
+  final int lhaDetailId;
+  const InputCaseLhaAuditArea({super.key, required this.lhaDetailId});
+
+  @override
+  State<InputCaseLhaAuditArea> createState() => _InputCaseLhaAuditAreaState();
+}
+
+class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
+  
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  
+  final TextEditingController lhaDescriptionController = TextEditingController();
+  final TextEditingController temporaryRecommendationController = TextEditingController();
+  final TextEditingController permanentRecommendationController = TextEditingController();
+  final TextEditingController suggestController = TextEditingController();
+
+  int? _selectedSuggest;
+  int? selectValueResearch;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CustomColors.white,
+      appBar: AppBar(
+        title: const Text('Tambah kasus LHA'),
+        titleTextStyle: CustomStyles.textBold18Px,
+        titleSpacing: 5,
+        backgroundColor: CustomColors.white,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: (){
+            Get.back();
+          }, 
+          icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25),
+        ),
+      ),
+
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              Text('Kasus :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Obx(() => SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: CustomColors.grey, width: 1),
+                        
+                      )
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
+                      value: controllerAuditRegion.caseId.value,
+                      items: controllerAuditRegion.caseAuditRegion.map((cases){
+                        return DropdownMenuItem(
+                          value: cases.id,
+                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
+                          );
+                      }).toList(), 
+                      onChanged: (value)async{
+                        setState(() {
+                          controllerAuditRegion.selectCase(value);
+                          controllerAuditRegion.loadCaseCategoryAuditRegion(value);
+                          controllerAuditRegion.caseCategoryId.value = null;
+                        });
+                      }
+                    ),
+                  )
+                ),
+              )),
+
+              const SizedBox(height: 20),
+              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Obx(() => SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: CustomColors.grey, width: 1),
+                        
+                      )
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
+                      value: controllerAuditRegion.caseCategoryId.value,
+                      items: controllerAuditRegion.caseCategory.map((caseCategory){
+                        return DropdownMenuItem(
+                          value: caseCategory.id,
+                          child: SizedBox(width: 250, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
+                          );
+                      }).toList(), 
+                      onChanged: (value)async{
+                        setState(() {
+                          controllerAuditRegion.selectCaseCategory(value);
+                        });
+                      }
+                    ),
+                  )
+                ),
+              )),
+
+              const SizedBox(height: 15),
+              Text('Uraian temuan :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              fomrInputRecommendationOrSuggest(lhaDescriptionController, 'Masukan rekomendasi sementara...'),
+
+              const SizedBox(height: 15),
+              Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan rekomendasi sementara...'),
+
+              const SizedBox(height: 15),
+              Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan rekomendasi permanent...'),
+              
+              const SizedBox(height: 15),
+              Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: List.generate(
+                  2, (index){
+                    return ChoiceChip(
+                      label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium13Px), 
+                      selected: _selectedSuggest == index,
+                      onSelected: (bool selected){
+                        setState(() {
+                          _selectedSuggest = selected ? index: null;
+                          if (_selectedSuggest == 0 || _selectedSuggest == null) {
+                            suggestController.clear();
+                          }
+                        });
+                      },
+                    );
+                  }
+                ).toList(),
+              ),
+
+              const SizedBox(height: 15),
+              if(_selectedSuggest == 1)
+              fomrInputRecommendationOrSuggest(suggestController, 'Masukan rekomendasi atau saran...'),
+
+              const SizedBox(height: 15),
+              Text('Penelusuran :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: List.generate(
+                    2, (index){
+                    return ChoiceChip(
+                      label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium13Px),
+                      selected: selectValueResearch == index,
+                      onSelected: (bool selected){
+                        setState(() {
+                          selectValueResearch = selected ? index: null;
+                          
+                        });
+                      },
+                    );
+                  }
+                ).toList(),
+              ),
+
+              const SizedBox(height: 25),
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: CustomStyles.customRoundedButton,
+                    backgroundColor: CustomColors.blue
+                  ),
+                  onPressed: (){
+                    if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || selectValueResearch == null) {
+                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                        }else if(selectValueResearch == 1){
+                          controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
+                          temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          Get.to(() => const ClarificationPageAuditArea());
+                      }else{
+                        controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
+                          temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          Get.back();
+                      } 
+                    
+                  },
+                  child: Text('Tambah kasus', style: CustomStyles.textMediumWhite15Px)
+                ),
+              )
+            ]
+          )
+    )
+      ));
+  }
+}
+
 
 class InputCaseLhaAuditRegion extends StatefulWidget {
   final int lhaDetailId;

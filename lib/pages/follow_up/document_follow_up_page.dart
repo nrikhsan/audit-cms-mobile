@@ -13,7 +13,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 class DocumentFollowUpPage extends StatefulWidget {
-  const DocumentFollowUpPage({super.key});
+  final String? fileName;
+  const DocumentFollowUpPage({super.key, required this.fileName});
 
   @override
   State<DocumentFollowUpPage> createState() => _DocumentFollowUpPageState();
@@ -29,12 +30,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
     
     return Scaffold(
       backgroundColor: CustomColors.white,
-      body: Obx((){
-        final followUp = controllerAuditArea.dataInputFollowUp.value;
-        if (followUp == null) {
-          return const Center(child: SpinKitCircle(color: CustomColors.blue));
-        }else{
-          return Padding(
+      body: Padding(
             padding: const EdgeInsets.all(15),
             child: SingleChildScrollView(
               child: Column(
@@ -51,7 +47,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                         height: 590,
                         child: SfPdfViewer.network(
                           headers: {'Authorization': 'Bearer $token'},
-                        '${AppConstant.followUpDocument}${followUp.followup?.fileName}'
+                        '${AppConstant.followUpDocument}${widget.fileName}'
                         ),
                       );
                     }
@@ -68,7 +64,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                     ),
                     onPressed: () async{
                       if (await requestPermission(Permission.storage) == true) {
-                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${followUp.followup?.fileName}');
+                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
                       } else {
                         showSnackbarPermission(context);
                       }
@@ -79,9 +75,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
               ],
             ),
             )
-          );
-        }
-      })
+          )
     );
   }
 }

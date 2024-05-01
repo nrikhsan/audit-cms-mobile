@@ -7,12 +7,12 @@ import 'package:get/get.dart';
 
 class EditLhaPageAuditArea extends StatefulWidget {
   final int lhaId;
-  final String cases;
-  final String caseCategory;
-  final int selectedValueResearch;
-  final String lhaDescription;
-  final String temRec;
-  final String perRec;
+  final String? cases;
+  final String? caseCategory;
+  final int? selectedValueResearch;
+  final String? lhaDescription;
+  final String? temRec;
+  final String? perRec;
   final String? suggest;
   const EditLhaPageAuditArea(
       {super.key, required this.lhaId, required this.cases, required this.caseCategory, required this.selectedValueResearch, 
@@ -33,9 +33,9 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
   
   @override
   void initState() {
-    lhaDescriptionController.text = widget.lhaDescription;
-    temporaryRecommendationController.text = widget.temRec;
-    permanentRecommendationController.text = widget.perRec;
+    lhaDescriptionController.text = widget.lhaDescription ?? '';
+    temporaryRecommendationController.text = widget.temRec ?? '';
+    permanentRecommendationController.text = widget.perRec ?? '';
     suggestController.text = widget.suggest ?? '';
     selectedSuggest = widget.suggest != null && widget.suggest!.isNotEmpty ? 1 : 0;
     super.initState();
@@ -77,12 +77,12 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               
               Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              Text(widget.cases, style: CustomStyles.textRegular13Px),
+              Text(widget.cases!, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              Text(widget.caseCategory, style: CustomStyles.textRegular13Px),
+              Text(widget.caseCategory!, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 20),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
