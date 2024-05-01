@@ -487,7 +487,47 @@ Future<String?>getToken()async{
   return await TokenManager.getToken();
 }
 
-void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
+void downloadFileClarificationAuditArea(String url, ControllerAuditArea controllerAuditArea) async {
+  final Dio dio = Dio();
+  var dir = await DownloadsPathProvider.downloadsDirectory;
+    if (dir != null) {
+      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = 'klarifikasi_$timestamp.pdf';
+      String savePath = dir.path + "/$saveName";
+      print(savePath);
+
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
+      try {
+        await dio.download(
+          url,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        controllerAuditArea.pagingControllerClarificationAuditArea.refresh();
+        
+      } catch (error) {
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+      }
+    }
+}
+
+void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditArea controllerAuditArea) {
     showDialog(
         context: context,
         builder: (_) {
@@ -501,27 +541,27 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditR
 
                 const SizedBox(height: 10),
 
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
+                Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
 
                 const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
-                      controllerAuditRegion.pickFileClarificationAuditRegion(),
+                      controllerAuditArea.pickFileClarificationAuditRegion(),
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 
                 const SizedBox(height: 10),
 
                 Obx(() => TextButton(
-                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                            controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
-                            id);
-                            Get.off(() => InputIdentifcationClarificationAuditArea(clarificationId: id));
+                    onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
+                    ? () {
+                        controllerAuditArea.uploadClarificationAuditArea(controllerAuditArea.selectedFileName.value,
+                        id);
+                          Get.off(() => InputIdentifcationClarificationAuditArea(clarificationId: id));
                          }
-                      : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    : null,
+                    child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
                     )),
               ],
             ),

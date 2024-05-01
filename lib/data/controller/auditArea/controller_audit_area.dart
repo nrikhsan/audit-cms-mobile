@@ -28,6 +28,7 @@ import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_ar
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
@@ -622,7 +623,36 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerLhaAuditArea.refresh();
   }
 
+  var selectedFileName = ''.obs;
+
   //clarification
+  void uploadClarificationAuditArea(String filePath, int id)async{
+    try {
+      final response = await repository.uploadClarificationAuditRegion(filePath, id);
+      pagingControllerClarificationAuditArea.refresh();
+      message(response.toString());
+      Get.snackbar('Berhasil', 'Klarifikasi audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      selectedFileName.value = '';
+    } catch (error) {
+      selectedFileName.value = '';
+      throw Exception(error);
+    }
+  }
+
+  void pickFileClarificationAuditRegion() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      selectedFileName.value = result.files.single.name;
+      selectedFileName.value = filePath;
+      } else {
+      selectedFileName.value = '';
+    }
+  }
 
   void inputClarificationAuditArea(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
     String description, String priority)async {

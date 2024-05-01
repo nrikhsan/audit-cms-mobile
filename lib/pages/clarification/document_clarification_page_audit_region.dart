@@ -1,4 +1,5 @@
 import 'package:audit_cms/data/constant/app_constants.dart';
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -25,6 +26,8 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
 
   final ControllerAuditRegion controllerAuditRegion =
       Get.put(ControllerAuditRegion(Get.find()));
+  final ControllerAuditArea controllerAuditArea =
+      Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,7 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
                           backgroundColor: CustomColors.blue),
                       onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
+                          downloadFileClarificationAuditArea('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditArea);
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -77,7 +80,7 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
                       onPressed: widget.status == 'UPLOAD' ? () {
-                        uploadClarificationAuditArea(context, widget.id, controllerAuditRegion);
+                        uploadClarificationAuditArea(context, widget.id, controllerAuditArea);
                       }: null,
                       child: Text(widget.status == 'UPLOAD' ? 'Upload': 'Upload',
                           style: CustomStyles.textMediumWhite15Px)),
