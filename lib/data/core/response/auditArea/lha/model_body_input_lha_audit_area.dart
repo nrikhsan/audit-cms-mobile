@@ -1,21 +1,22 @@
-import 'package:audit_cms/data/core/response/auditRegion/master/response_case_audit_region.dart';
-import 'package:audit_cms/data/core/response/auditRegion/master/response_case_category_audit_region.dart';
 
-class ModelBodyInputLhaAuditRegion {
+import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_case_category_audit_area.dart';
+
+class ModelBodyInputLhaAuditArea {
   int? scheduleId;
   int? branchId;
-  List<LhaDetail>? lhaDetail;
+  List<LhaDetailArea>? lhaDetail;
 
-  ModelBodyInputLhaAuditRegion(
+  ModelBodyInputLhaAuditArea(
       {this.scheduleId, this.branchId, this.lhaDetail});
 
-  ModelBodyInputLhaAuditRegion.fromJson(Map<String, dynamic> json) {
+  ModelBodyInputLhaAuditArea.fromJson(Map<String, dynamic> json) {
     scheduleId = json['schedule_id'];
     branchId = json['branch_id'];
     if (json['lha_detail'] != null) {
-      lhaDetail = <LhaDetail>[];
+      lhaDetail = <LhaDetailArea>[];
       json['lha_detail'].forEach((v) {
-        lhaDetail!.add(new LhaDetail.fromJson(v));
+        lhaDetail!.add(new LhaDetailArea.fromJson(v));
       });
     }
   }
@@ -31,7 +32,7 @@ class ModelBodyInputLhaAuditRegion {
   }
 }
 
-class LhaDetail {
+class LhaDetailArea {
   int? caseId;
   int? caseCategoryId;
   String? description;
@@ -39,10 +40,10 @@ class LhaDetail {
   String? temporaryRecommendation;
   String? permanentRecommendation;
   int? research;
-  DataCaseAuditRegion? caseName;
-  DataCaseCategoryAuditRegion? caseCategoryName;
+  DataCaseAuditArea? caseName;
+  DataCaseCategory? caseCategoryName;
 
-  LhaDetail(
+  LhaDetailArea(
       {this.caseId,
       this.caseCategoryId,
       this.description,
@@ -53,7 +54,7 @@ class LhaDetail {
       this.caseName,
       this.caseCategoryName});
 
-  LhaDetail.fromJson(Map<String, dynamic> json) {
+  LhaDetailArea.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
     caseCategoryId = json['case_category_id'];
     description = json['description'];

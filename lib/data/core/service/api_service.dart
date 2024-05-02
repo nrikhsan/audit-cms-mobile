@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/model_body_input_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
@@ -741,6 +742,21 @@ class ApiService {
   }
 
   //LHA
+  Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.post(AppConstant.inputLha,
+      data: {'schedule_id': scheduleId, 'lha_detail': lhaDetail.toList()});
+      return ResponseMessage.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
   Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {

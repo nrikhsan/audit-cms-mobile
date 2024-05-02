@@ -61,7 +61,7 @@ class ControllerAuditRegion extends GetxController {
   var caseCategoryId = RxnInt();
   final RxList<DataListBranch> branchAuditRegion = <DataListBranch>[].obs;
   final RxList<DataCaseAuditRegion> caseAuditRegion = <DataCaseAuditRegion>[].obs;
-  final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
+  final RxList<DataCaseCategoryAuditRegion>caseCategory = <DataCaseCategoryAuditRegion>[].obs;
   final RxList<String> priorityFindingClarificationAuditRegion = <String>[].obs;
 
   //lha
@@ -260,7 +260,7 @@ class ControllerAuditRegion extends GetxController {
       permanentRecommendation: permanentRecommendation,
       research: research,
       caseName: DataCaseAuditRegion(name: caseName),
-      caseCategoryName: DataCaseCategory(name: caseCategoryName)
+      caseCategoryName: DataCaseCategoryAuditRegion(name: caseCategoryName)
       
     );
     dataListLocalLhaAuditRegion.add(newDataLha);

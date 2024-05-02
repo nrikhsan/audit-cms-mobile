@@ -191,6 +191,7 @@ class ContentListRescheduleAuditArea {
   String? endDateRealization;
   Kka? kka;
   int? isActive;
+  CreatedBy? createdBy;
 
   ContentListRescheduleAuditArea(
       {this.id,
@@ -204,7 +205,8 @@ class ContentListRescheduleAuditArea {
       this.startDateRealization,
       this.endDateRealization,
       this.kka,
-      this.isActive});
+      this.isActive,
+      this.createdBy});
 
   ContentListRescheduleAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -220,6 +222,9 @@ class ContentListRescheduleAuditArea {
     endDateRealization = json['end_date_realization'];
     kka = json['kka'] != null ? new Kka.fromJson(json['kka']) : null;
     isActive = json['is_active'];
+    createdBy = json['created_by'] != null
+        ? new CreatedBy.fromJson(json['created_by'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -242,6 +247,9 @@ class ContentListRescheduleAuditArea {
       data['kka'] = this.kka!.toJson();
     }
     data['is_active'] = this.isActive;
+    if (this.createdBy != null) {
+      data['created_by'] = this.createdBy!.toJson();
+    }
     return data;
   }
 }
@@ -252,8 +260,15 @@ class User {
   String? nip;
   String? fullname;
   String? initialName;
+  Level? level;
 
-  User({this.id, this.email, this.nip, this.fullname, this.initialName});
+  User(
+      {this.id,
+      this.email,
+      this.nip,
+      this.fullname,
+      this.initialName,
+      this.level});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -261,6 +276,7 @@ class User {
     nip = json['nip'];
     fullname = json['fullname'];
     initialName = json['initial_name'];
+    level = json['level'] != null ? new Level.fromJson(json['level']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -270,6 +286,37 @@ class User {
     data['nip'] = this.nip;
     data['fullname'] = this.fullname;
     data['initial_name'] = this.initialName;
+    if (this.level != null) {
+      data['level'] = this.level!.toJson();
+    }
+    return data;
+  }
+}
+
+class Level {
+  int? id;
+  String? name;
+  String? code;
+  String? createdAt;
+  String? updatedAt;
+
+  Level({this.id, this.name, this.code, this.createdAt, this.updatedAt});
+
+  Level.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['code'] = this.code;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -277,18 +324,115 @@ class User {
 class Branch {
   int? id;
   String? name;
+  String? createdAt;
+  String? updatedAt;
+  Area? area;
 
-  Branch({this.id, this.name});
+  Branch({this.id, this.name, this.createdAt, this.updatedAt, this.area});
 
   Branch.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    area = json['area'] != null ? new Area.fromJson(json['area']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.area != null) {
+      data['area'] = this.area!.toJson();
+    }
+    return data;
+  }
+}
+
+class Area {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  Region? region;
+
+  Area({this.id, this.name, this.createdAt, this.updatedAt, this.region});
+
+  Area.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    region =
+        json['region'] != null ? new Region.fromJson(json['region']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.region != null) {
+      data['region'] = this.region!.toJson();
+    }
+    return data;
+  }
+}
+
+class Region {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  Main? main;
+
+  Region({this.id, this.name, this.createdAt, this.updatedAt, this.main});
+
+  Region.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    main = json['main'] != null ? new Main.fromJson(json['main']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.main != null) {
+      data['main'] = this.main!.toJson();
+    }
+    return data;
+  }
+}
+
+class Main {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+
+  Main({this.id, this.name, this.createdAt, this.updatedAt});
+
+  Main.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -311,6 +455,33 @@ class Kka {
     data['id'] = this.id;
     data['filename'] = this.filename;
     data['file_path'] = this.filePath;
+    return data;
+  }
+}
+
+class CreatedBy {
+  int? id;
+  String? fullname;
+  String? initialName;
+  Level? level;
+
+  CreatedBy({this.id, this.fullname, this.initialName, this.level});
+
+  CreatedBy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    level = json['level'] != null ? new Level.fromJson(json['level']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    if (this.level != null) {
+      data['level'] = this.level!.toJson();
+    }
     return data;
   }
 }

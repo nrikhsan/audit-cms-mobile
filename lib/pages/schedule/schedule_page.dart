@@ -119,10 +119,9 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           pagingController: controllerAuditArea.pagingControllerMainSchedule,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
-                              final level = mainSchedule.createdBy?.level?.name;
                               return GestureDetector(
                               onTap: (){
-                              Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!, level: level));
+                              Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
                             },
                             onLongPress: mainSchedule.status == 'TODO' ? (){
                               alertDeleteWidget(
@@ -255,7 +254,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               final createdBy = schedule.createdBy!.level?.name;
                                return GestureDetector(
                                 onTap: (){
-                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: schedule.startDate, endDate:  schedule.endDate, kka: schedule.kka, createdBy: createdBy));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: schedule.startDate, endDate:  schedule.endDate, kka: schedule.kka?.filename, createdBy: createdBy));
                               },
                               onLongPress: schedule.status == 'TODO' ? ()async{
                               if (createdBy == 'PUSAT') {

@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/model_body_input_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
@@ -91,6 +92,7 @@ abstract class Repositories {
 
   //LHA
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
+  Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail);
   Future<ResponseMessage>sendCaseLha(int? lhaDEtailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
   int? statusFlow, int? statusParsing);
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
@@ -302,6 +304,11 @@ class RepositoryImpl implements Repositories {
   // Future<ResponseListCaseLha> getCaseLhaAuditArea(int page, int lhaId) {
   //   return apiService.getCaseLhaAuditArea(page, lhaId);
   // }
+
+  @override
+  Future<ResponseMessage> inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail){
+    return apiService.inputLhaAuditArea(scheduleId, lhaDetail);
+  }
 
   @override
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId){

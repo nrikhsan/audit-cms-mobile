@@ -2,7 +2,7 @@ class ResponseCaseCategoryAuditRegion {
   Meta? meta;
   String? message;
   int? status;
-  List<DataCaseCategory>? data;
+  List<DataCaseCategoryAuditRegion>? data;
 
   ResponseCaseCategoryAuditRegion(
       {this.meta, this.message, this.status, this.data});
@@ -12,9 +12,9 @@ class ResponseCaseCategoryAuditRegion {
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataCaseCategory>[];
+      data = <DataCaseCategoryAuditRegion>[];
       json['data'].forEach((v) {
-        data!.add(DataCaseCategory.fromJson(v));
+        data!.add(DataCaseCategoryAuditRegion.fromJson(v));
       });
     }
   }
@@ -52,13 +52,13 @@ class Meta {
   }
 }
 
-class DataCaseCategory {
+class DataCaseCategoryAuditRegion {
   String? name;
   int? id;
 
-  DataCaseCategory({this.name, this.id});
+  DataCaseCategoryAuditRegion({this.name, this.id});
 
-  DataCaseCategory.fromJson(Map<String, dynamic> json) {
+  DataCaseCategoryAuditRegion.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
   }

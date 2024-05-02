@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
+import 'package:audit_cms/data/core/response/auditArea/lha/model_body_input_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
@@ -72,6 +73,7 @@ class ControllerAuditArea extends GetxController{
   final PagingController<int, ContentListLhaAuditArea> pagingControllerLhaAuditArea = PagingController(firstPageKey: 0);
   final PagingController<int, LhaDetails>pagingControllerListCase = PagingController(firstPageKey: 0);
   final RxList<DataRevisiLha> lhaRevision = <DataRevisiLha>[].obs;
+  final RxList<LhaDetailArea> dataListLocalLhaAuditArea = RxList<LhaDetailArea>();
   var detailCase = Rxn<DataDetailCasesLha>();
   var detailRevisionLha = Rxn<DataDetailRevision>();
   var detailLhaAuditArea = Rxn<DataDetailLhaAuditArea>();
@@ -517,6 +519,45 @@ void getDetailRescheduleAuditArea(int id)async{
   //    throw Exception(e);
   //  } 
   // }
+
+  void addToLocalLhaAuditArea(int? caseId, int? caseCategoryId, String description, String suggestion, String temporaryRecommendation, 
+  String permanentRecommendation, int research, String? caseName, String? caseCategoryName)async{
+
+    final newDataLha = LhaDetailArea(
+      caseId: caseId,
+      caseCategoryId: caseCategoryId,
+      description: description,
+      suggestion: suggestion,
+      temporaryRecommendation: temporaryRecommendation,
+      permanentRecommendation: permanentRecommendation,
+      research: research,
+      caseName: DataCaseAuditArea(name: caseName),
+      caseCategoryName: DataCaseCategory(name: caseCategoryName)
+      
+    );
+    dataListLocalLhaAuditArea.add(newDataLha);
+  }
+
+   void deleteLocalLha(int caseId)async{
+    final index = dataListLocalLhaAuditArea.indexWhere((items) => items.caseId == caseId);
+    if(index != -1){
+      dataListLocalLhaAuditArea.removeAt(index);
+    }
+  }
+
+  void inputLhaAuditArea(int scheduleId)async{
+    try {
+      final response = await repository.inputLhaAuditArea(scheduleId, dataListLocalLhaAuditArea.toList());
+      message.value = response.message.toString();
+      pagingControllerClarificationAuditArea.refresh();
+      snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
+      dataListLocalLhaAuditArea.clear();
+    } catch (error) {
+      snakcBarMessageRed('Gagal menginput data', 'Tidak bisa upload LHA lagi untuk hari ini');
+      dataListLocalLhaAuditArea.clear();
+      throw Exception(error);
+    }
+  }
 
   void loadRevisiLha(int? lhaDetailId)async{
     isLoading.value = true;

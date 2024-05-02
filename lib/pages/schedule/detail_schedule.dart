@@ -21,8 +21,7 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 //main schedule
 class DetailMainSchedulePageAuditArea extends StatefulWidget {
   final int mainScheduleId;
-  final String? level;
-  const DetailMainSchedulePageAuditArea({super.key, required this.mainScheduleId, this.level});
+  const DetailMainSchedulePageAuditArea({super.key, required this.mainScheduleId});
 
   @override
   State<DetailMainSchedulePageAuditArea> createState() =>
@@ -204,8 +203,9 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
                                         final lhaId = lha[index].id;
+                                        final level = detail.user?.level?.name;
                                         if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: widget.level));
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
                                         }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
@@ -270,8 +270,8 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
   } else {
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
   }
@@ -790,7 +790,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
+  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
   } else {
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
@@ -1110,7 +1110,7 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) || today.isAtSameMomentAs(endDate)) {
+  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
   } else {
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
