@@ -191,7 +191,7 @@ class ContentListClarificationAuditArea {
   String? filePath;
   String? description;
   String? status;
-  String? isFollowUp;
+  int? isFollowUp;
   int? isFlag;
   String? createdAt;
 

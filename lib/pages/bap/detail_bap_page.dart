@@ -15,7 +15,8 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 //audit area
 class DetailBapPageAuditArea extends StatefulWidget {
   final int id;
-  const DetailBapPageAuditArea({super.key, required this.id});
+  final String? level;
+  const DetailBapPageAuditArea({super.key, required this.id, required this.level});
 
   @override
   State<DetailBapPageAuditArea> createState() => _DetailBapPageAuditAreaState();
@@ -117,7 +118,10 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                         ),
                       ),
                     ),
-                  ) : SizedBox(
+                  ) : Wrap(
+                    children: [
+                      widget.level == 'AREA' ?
+                      SizedBox(
                     width: 195,
                     child: Card(
                       shape: OutlineInputBorder(
@@ -143,9 +147,10 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                         ),
                       ),
                     ),
-                  )
+                  ): Text('Auditor ini belum mengunggah BAP', style: CustomStyles.textRegular13Px),
                     ],
                   )
+                  ])
                 ],
               ),
             ),

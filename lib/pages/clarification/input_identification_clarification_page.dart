@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/bap_page.dart';
@@ -16,7 +17,7 @@ class InputIdentifcationClarificationAuditArea extends StatefulWidget {
 }
 
 class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifcationClarificationAuditArea> {
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   int? _evaluation;
   int? _loss;
@@ -137,11 +138,11 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(lossController.text.isNotEmpty){
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
                                 Get.to(() => const BapAuditAreaPage());
                               }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavePageAuditArea());
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)

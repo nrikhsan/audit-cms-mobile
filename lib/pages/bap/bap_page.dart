@@ -90,7 +90,8 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
                     ),
                   ),
                   onTap: () {
-                    Get.to(() => DetailBapPageAuditArea(id: bap.id!));
+                    final level = bap.user?.level?.name;
+                    Get.to(() => DetailBapPageAuditArea(id: bap.id!, level: level));
                   },
                 );
             }
@@ -128,7 +129,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
         titleSpacing: 5,
         leading: IconButton(
           onPressed: (){
-            Get.back();
+           Get.offAll(() => BotNavAuditRegion());
           },
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)
           ),

@@ -730,6 +730,18 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
+   void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, String loss, String description, int followUp)async{
+    try {
+      final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      pagingControllerClarificationAuditArea.refresh();
+      pagingControllerBapAuditArea.refresh();
+      Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      message(response.message);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
   void loadClarificationAuditArea(int page) async{
     try {
       final clarificationAuditArea = await repository.getClarificationAuditArea(page, nameCla.value, branchCla.value, startDateCla.value, endDateCla.value);
