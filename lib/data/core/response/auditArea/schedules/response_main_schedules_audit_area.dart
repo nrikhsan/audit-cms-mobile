@@ -189,8 +189,9 @@ class ContentMainScheduleAuditArea {
   String? endDate;
   String? startDateRealization;
   String? endDateRealization;
-  Kka? kka;
+  String? kka;
   int? isActive;
+  CreatedBy? createdBy;
 
   ContentMainScheduleAuditArea(
       {this.id,
@@ -204,7 +205,8 @@ class ContentMainScheduleAuditArea {
       this.startDateRealization,
       this.endDateRealization,
       this.kka,
-      this.isActive});
+      this.isActive,
+      this.createdBy});
 
   ContentMainScheduleAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -218,8 +220,11 @@ class ContentMainScheduleAuditArea {
     endDate = json['end_date'];
     startDateRealization = json['start_date_realization'];
     endDateRealization = json['end_date_realization'];
-    kka = json['kka'] != null ? new Kka.fromJson(json['kka']) : null;
+    kka = json['kka'];
     isActive = json['is_active'];
+    createdBy = json['created_by'] != null
+        ? new CreatedBy.fromJson(json['created_by'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -238,10 +243,11 @@ class ContentMainScheduleAuditArea {
     data['end_date'] = this.endDate;
     data['start_date_realization'] = this.startDateRealization;
     data['end_date_realization'] = this.endDateRealization;
-    if (this.kka != null) {
-      data['kka'] = this.kka!.toJson();
-    }
+    data['kka'] = this.kka;
     data['is_active'] = this.isActive;
+    if (this.createdBy != null) {
+      data['created_by'] = this.createdBy!.toJson();
+    }
     return data;
   }
 }
@@ -293,24 +299,51 @@ class Branch {
   }
 }
 
-class Kka {
+class CreatedBy {
   int? id;
-  String? filename;
-  String? filePath;
+  String? fullname;
+  String? initialName;
+  Level? level;
 
-  Kka({this.id, this.filename, this.filePath});
+  CreatedBy({this.id, this.fullname, this.initialName, this.level});
 
-  Kka.fromJson(Map<String, dynamic> json) {
+  CreatedBy.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    filename = json['filename'];
-    filePath = json['file_path'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    level = json['level'] != null ? new Level.fromJson(json['level']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['filename'] = this.filename;
-    data['file_path'] = this.filePath;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    if (this.level != null) {
+      data['level'] = this.level!.toJson();
+    }
+    return data;
+  }
+}
+
+class Level {
+  int? id;
+  String? name;
+  String? code;
+
+  Level({this.id, this.name, this.code});
+
+  Level.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['code'] = this.code;
     return data;
   }
 }

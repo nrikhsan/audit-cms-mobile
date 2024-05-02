@@ -1,5 +1,3 @@
-import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
-
 class ResponseSpecialScheduleAuditArea {
   Meta? meta;
   String? message;

@@ -63,9 +63,11 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
               itemBuilder: (_, clarification, index){
                 final statusClarificaion = clarification.status;
                 final priority = clarification.priority;
+                final level = clarification.user?.level?.name;
                 return GestureDetector(
                       onTap: (){
-                        if (statusClarificaion == 'INPUT'){
+                        if (level == 'AREA') {
+                          if (statusClarificaion == 'INPUT'){
                           Get.to(() =>  InputClarificationAuditArea(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
                             Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status,));
@@ -76,6 +78,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                           }else if(statusClarificaion == 'DONE'){
                             Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
                           }
+                        }else{
+                          Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
+                        }
                       },
                       child: Card(
                       shape: OutlineInputBorder(
@@ -141,14 +146,14 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blue,
           onPressed: (){
-            showDialogMoreOption();
+            generateClarificationAuditArea();
           },
           child: const Icon(Icons.add_box_rounded, color: CustomColors.white, size: 25),
         ),
     );
   }
 
-  void showDialogMoreOption() {
+  void generateClarificationAuditArea() {
     
     showDialog(
       context: context, 
@@ -175,9 +180,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         )
                       ),
                       child: Obx(() => DropdownButton(
-                        value: controllerAuditRegion.branchId.value,
+                        value: controllerAuditArea.branchId.value,
                         hint: Text('Pilih cabang', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.branchAuditRegion.map((branch){
+                        items: controllerAuditArea.branchForFilterAuditArea.map((branch){
                           return DropdownMenuItem(
                             value: branch.id,
                             child: Text('${branch.name}', style: CustomStyles.textMedium15Px)
@@ -185,7 +190,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         }).toList(),
                         onChanged: (value){
                           setState(() {
-                             controllerAuditRegion.selectBranch(value);
+                             controllerAuditArea.selectBranch(value);
                           });
                         }
                       ))
@@ -208,9 +213,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         )
                       ),
                       child: DropdownButton(
-                        value: controllerAuditRegion.caseId.value,
+                        value: controllerAuditArea.caseId.value,
                         hint: Text('Pilih kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.caseAuditRegion.map((cases){
+                        items: controllerAuditArea.caseAuditArea.map((cases){
                           return DropdownMenuItem(
                             value: cases.id,
                             child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
@@ -218,9 +223,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         }).toList(),
                         onChanged: (value){
                           setState(() {
-                            controllerAuditRegion.selectCase(value);
-                            controllerAuditRegion.loadCaseCategoryAuditRegion(value);
-                            controllerAuditRegion.caseCategoryId.value = null;
+                            controllerAuditArea.selectCase(value);
+                            controllerAuditArea.loadCaseCategory(value);
+                            controllerAuditArea.caseCategoryId.value = null;
                           });
                         }
                       )
@@ -243,17 +248,17 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         )
                       ),
                       child: DropdownButton(
-                        value: controllerAuditRegion.caseCategoryId.value,
+                        value: controllerAuditArea.caseCategoryId.value,
                         hint: Text('Pilih kategori kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.caseCategory.map((caseCategory){
+                        items: controllerAuditArea.caseCategory.map((caseCategory){
                           return DropdownMenuItem(
                             value: caseCategory.id,
-                            child: SizedBox(width: 150, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
+                            child: SizedBox(width: 200, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                           );
                         }).toList(),
                         onChanged: (value){
                           setState(() {
-                            controllerAuditRegion.selectCaseCategory(value!);
+                            controllerAuditArea.selectCaseCategory(value);
                           });
                         }
                       )
@@ -271,8 +276,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         shape: CustomStyles.customRoundedButton
                       ),
                       onPressed: (){
-                        controllerAuditRegion.generateClarification();
-                        controllerAuditArea.pagingControllerClarificationAuditArea.refresh();
+                        controllerAuditArea.generateClarification();
                         resetValueGenerate();
                         Get.back();
                       }, 
@@ -299,9 +303,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
   }
 
   void resetValueGenerate(){
-    controllerAuditRegion.branchId.value = null;
-    controllerAuditRegion.caseId.value = null;
-    controllerAuditRegion.caseCategoryId.value = null;
+    controllerAuditArea.branchId.value = null;
+    controllerAuditArea.caseId.value = null;
+    controllerAuditArea.caseCategoryId.value = null;
   }
 }
 
@@ -432,14 +436,14 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blue,
           onPressed: (){
-            showDialogMoreOption();
+            generateClarificationAuditRegion();
           },
           child: const Icon(Icons.add_box_rounded, color: CustomColors.white, size: 25),
         ),
     );
   }
   
-  void showDialogMoreOption() {
+  void generateClarificationAuditRegion() {
     
     showDialog(
       context: context, 
@@ -539,7 +543,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                         items: controllerAuditRegion.caseCategory.map((caseCategory){
                           return DropdownMenuItem(
                             value: caseCategory.id,
-                            child: SizedBox(width: 150, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
+                            child: SizedBox(width: 200, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                           );
                         }).toList(),
                         onChanged: (value){

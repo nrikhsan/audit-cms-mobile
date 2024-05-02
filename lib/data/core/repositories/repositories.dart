@@ -86,7 +86,7 @@ abstract class Repositories {
   Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId);
   Future<ResponseBranchAuditArea> getBranchForFilterDataAuditArea();
   Future<ResponseCaseAuditArea> getCaseAuditArea();
-  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea();
+  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(int? caseId);
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea();
 
   //LHA
@@ -288,8 +288,8 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(){
-    return apiService.getCaseCategoryAuditArea();
+  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(int? caseId){
+    return apiService.getCaseCategoryAuditArea(caseId);
   }
 
   @override

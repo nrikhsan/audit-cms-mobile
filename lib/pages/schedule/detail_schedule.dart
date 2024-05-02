@@ -21,7 +21,8 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 //main schedule
 class DetailMainSchedulePageAuditArea extends StatefulWidget {
   final int mainScheduleId;
-  const DetailMainSchedulePageAuditArea({super.key, required this.mainScheduleId});
+  final String? level;
+  const DetailMainSchedulePageAuditArea({super.key, required this.mainScheduleId, this.level});
 
   @override
   State<DetailMainSchedulePageAuditArea> createState() =>
@@ -204,7 +205,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
                                       onPressed: () {
                                         final lhaId = lha[index].id;
                                         if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: widget.level));
                                         }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
@@ -281,7 +282,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
     controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
-      floatingActionButton: widget.createdBy == 'LEAD' ? SpeedDial(
+      floatingActionButton: widget.createdBy == 'PUSAT' ? SpeedDial(
         elevation: 0,
         backgroundColor: CustomColors.orange,
         animatedIcon: AnimatedIcons.menu_close,
@@ -304,7 +305,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                   labelStyle: CustomStyles.textMediumWhite15Px,
                   child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
                   onTap: (){
-                    final lha = controllerAuditArea.detailMainScheduleAuditArea.value?.lha;
+                    final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
                     if (lha != null) {
                       if (widget.kka != null) {
                         snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
@@ -469,8 +470,9 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
                                         final lhaId = lha[index].id;
+                                        final level = detail.user?.level?.name;
                                         if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
                                         }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
@@ -722,7 +724,7 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                       onPressed: () {
                                         final lhaId = lha[index].id;
                                         if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                          // Get.to(() => DetailLhaPageAuditArea(id:lhaId));
                                         }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))

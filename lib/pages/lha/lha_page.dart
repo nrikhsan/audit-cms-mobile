@@ -61,6 +61,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                 itemBuilder: (_, lha, index){
                   final startDare = lha.schedule?.startDate;
                   final endDate = lha.schedule?.endDate;
+                  final level = lha.user?.level?.name;
                   return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -104,7 +105,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                       style: TextButton.styleFrom(
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditArea(id: lha.id!));
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha.id!, level: level));
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
                                 ],

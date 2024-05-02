@@ -13,7 +13,8 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 //audit area
 class DetailLhaPageAuditArea extends StatefulWidget {
   final int id;
-  const DetailLhaPageAuditArea({super.key, required this.id});
+  final String? level;
+  const DetailLhaPageAuditArea({super.key, required this.id, required this.level});
 
   @override
   State<DetailLhaPageAuditArea> createState() => _DetailLhaPageAuditAreaState();
@@ -86,16 +87,21 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               const SizedBox(height: 20),
                               Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Kasus :', style: CustomStyles.textBold15Px),
-                                    TextButton(
+                                children: [
+                                  Text('Kasus :', style: CustomStyles.textBold15Px),
+                                  Wrap(
+                                    children: [
+                                      widget.level == 'AREA' ?
+                                      TextButton(
                                       onPressed: (){
                                         final lhaDetailId = detailLha.id;
                                         if (lhaDetailId != null) {
                                           Get.to(() => InputCaseLhaAuditArea(lhaDetailId: lhaDetailId));
                                         }
                                       }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
-                                    )
+                                    ): const SizedBox()
+                                    ],
+                                  )
                                   ],
                                 ),
                               const SizedBox(height: 5),

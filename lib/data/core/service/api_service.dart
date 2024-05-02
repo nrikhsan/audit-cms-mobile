@@ -339,13 +339,13 @@ class ApiService {
     }
   }
 
-  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea() async {
+  Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(int? caseId) async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.getDropdownCaseCategory);
+      final response = await dio.get(AppConstant.getDropdownCaseCategory, queryParameters: {'case_id': caseId});
       return ResponseCaseCategoryAuditArea.fromJson(response.data);
     } catch (error) {
       throw Exception(error);

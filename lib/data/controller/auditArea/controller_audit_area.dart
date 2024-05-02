@@ -87,7 +87,6 @@ class ControllerAuditArea extends GetxController{
   final RxList<DataListBranch> branchForFilterAuditArea = <DataListBranch>[].obs;
   final RxList<DataCaseAuditArea> caseAuditArea = <DataCaseAuditArea>[].obs;
   final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
-  var caseId = RxnInt();
   final RxList<DataListPenaltyAuditArea> penaltyAuditArea = <DataListPenaltyAuditArea>[].obs;
 
   //kka
@@ -145,7 +144,6 @@ class ControllerAuditArea extends GetxController{
     // pagingControllerListCase.addPageRequestListener(loadListCaseLha);
     loadUsersAuditArea();
     loadCaseAuditArea();
-    loadCaseCategory();
     loadPenalty();
     loadArea();
     loadBranchForFilterDataAuditArea();
@@ -470,6 +468,10 @@ void getDetailRescheduleAuditArea(int id)async{
       throw Exception(error);
     }
   }
+  var branchId = RxnInt();
+   void selectBranch(int? value)async{
+    branchId.value = value;
+  }
 
   void loadCaseAuditArea()async{
     try {
@@ -479,15 +481,24 @@ void getDetailRescheduleAuditArea(int id)async{
       throw Exception(e);
     }
   }
+   var caseId = RxnInt();
+  void selectCase(int? value)async{
+    caseId.value = value;
+}
 
-  void loadCaseCategory()async{
+  var caseCategoryId = RxnInt();
+  void loadCaseCategory(int? caseId)async{
     try {
-      final cases = await repository.getCaseCategoryAuditArea();
+      final cases = await repository.getCaseCategoryAuditArea(caseId);
       caseCategory.assignAll(cases.data ?? []);
     } catch (e) {
       throw Exception(e);
     }
   }
+
+  void selectCaseCategory(int? value)async{
+    caseCategoryId.value = value;
+}
 
   //LHA
   //  void loadListCaseLha(int page) async{
@@ -626,6 +637,17 @@ void getDetailRescheduleAuditArea(int id)async{
   var selectedFileName = ''.obs;
 
   //clarification
+  void generateClarification()async{
+    try {
+      final generate = await repository.generateClarification(caseId.value, caseCategoryId.value, branchId.value);
+      message.value = generate.message.toString();
+      pagingControllerClarificationAuditArea.refresh();
+      snakcBarMessageGreen('Berhasil', 'Berhasil generate klarifikasi');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   void uploadClarificationAuditArea(String filePath, int id)async{
     try {
       final response = await repository.uploadClarificationAuditRegion(filePath, id);
