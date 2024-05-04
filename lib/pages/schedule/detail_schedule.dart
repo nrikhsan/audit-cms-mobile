@@ -602,9 +602,14 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 5),
                 Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
+                Text('Tanggal jadwal lama :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.startDate} s/d ${detail.endDate}',
+                    style: CustomStyles.textRegular13Px),
+                const SizedBox(height: 20),
+                Text('Tanggal jadwal baru :', style: CustomStyles.textBold15Px),
+                const SizedBox(height: 5),
+                Text('${detail.newStartDate} s/d ${detail.newEndDate}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
@@ -723,8 +728,9 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                                           shape: CustomStyles.customRoundedButton),
                                       onPressed: () {
                                         final lhaId = lha[index].id;
+                                        final level = detail.user?.level?.name;
                                         if (lhaId != null) {
-                                          // Get.to(() => DetailLhaPageAuditArea(id:lhaId));
+                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
                                         }
                                       },
                                       child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))

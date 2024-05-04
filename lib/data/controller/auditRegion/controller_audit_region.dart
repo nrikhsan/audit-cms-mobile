@@ -300,6 +300,16 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
+  void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
+    try {
+      final revisiLha = await repositories.revisiLha(lhaId, desc, suggest, tempRec, perRec);
+      message.value = revisiLha.message.toString();
+      snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
    void loadLhaAuditRegion(int page)async {
     try {
       final now = DateTime.now();

@@ -36,3 +36,21 @@ Widget formInputExplanationPenalty(
             borderSide: const BorderSide(color: CustomColors.grey))),
   );
 }
+
+Widget formInputcharCossPenalty(
+    TextEditingController explanationPenaltyController) {
+  return TextField(
+    keyboardType: TextInputType.number,
+    controller: explanationPenaltyController,
+    cursorColor: CustomColors.blue,
+    decoration: InputDecoration(
+        labelStyle: CustomStyles.textMediumGrey15Px,
+        labelText: 'Masukan nominal kerugian...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+  );
+}

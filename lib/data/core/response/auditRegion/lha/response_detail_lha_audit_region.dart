@@ -174,6 +174,9 @@ class LhaAuditArea {
   String? temporaryRecommendations;
   String? permanentRecommendations;
   int? isResearch;
+  int? statusFlow;
+  int? statusParsing;
+  int? isRevision;
 
   LhaAuditArea(
       {this.id,
@@ -183,7 +186,10 @@ class LhaAuditArea {
       this.suggestion,
       this.temporaryRecommendations,
       this.permanentRecommendations,
-      this.isResearch});
+      this.isResearch,
+      this.statusFlow,
+      this.statusParsing,
+      this.isRevision});
 
   LhaAuditArea.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -194,6 +200,9 @@ class LhaAuditArea {
     temporaryRecommendations = json['temporary_recommendations'];
     permanentRecommendations = json['permanent_recommendations'];
     isResearch = json['is_research'];
+    statusFlow = json['status_flow'];
+    statusParsing = json['status_parsing'];
+    isRevision = json['is_revision'];
   }
 
   Map<String, dynamic> toJson() {
@@ -206,6 +215,9 @@ class LhaAuditArea {
     data['temporary_recommendations'] = temporaryRecommendations;
     data['permanent_recommendations'] = permanentRecommendations;
     data['is_research'] = isResearch;
+    data['status_flow'] = statusFlow;
+    data['status_parsing'] = statusParsing;
+    data['is_revision'] = isRevision;
     return data;
   }
 }

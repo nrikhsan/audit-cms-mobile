@@ -204,19 +204,6 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
 
                               const SizedBox(height: 15),
 
-                              Wrap(        
-                                children: [
-                                lha.isResearch == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                      ],
-                                    ) :
-                                  const SizedBox()
-                                ],
-                              ),
                               Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
                               Text('Tanggal : ${outputFormat.format(DateTime.parse(startDare!))} s/d ${outputFormat.format(DateTime.parse(endDate!))}', style: CustomStyles.textBold15Px),

@@ -49,7 +49,7 @@ class Meta {
 class DataDetailFollowUp {
   int? id;
   User? user;
-  Penalty? penalty;
+  List<Penalty>? penalty;
   Clarification? clarification;
   String? code;
   String? description;
@@ -73,8 +73,12 @@ class DataDetailFollowUp {
   DataDetailFollowUp.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    penalty =
-        json['penalty'] != null ? new Penalty.fromJson(json['penalty']) : null;
+    if (json['penalty'] != null) {
+      penalty = <Penalty>[];
+      json['penalty'].forEach((v) {
+        penalty!.add(new Penalty.fromJson(v));
+      });
+    }
     clarification = json['clarification'] != null
         ? new Clarification.fromJson(json['clarification'])
         : null;
@@ -93,7 +97,7 @@ class DataDetailFollowUp {
       data['user'] = this.user!.toJson();
     }
     if (this.penalty != null) {
-      data['penalty'] = this.penalty!.toJson();
+      data['penalty'] = this.penalty!.map((v) => v.toJson()).toList();
     }
     if (this.clarification != null) {
       data['clarification'] = this.clarification!.toJson();

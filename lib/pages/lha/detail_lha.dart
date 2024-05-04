@@ -257,7 +257,6 @@ class _DetailCasesLhaPageAuditAreaState
                       final cases = detailLha.cases;
                       final lhaId = detailLha.id;
                       final statusFlow = detailLha.statusFlow;
-                      final statusParsing = detailLha.statusParsing;
                       
                       return Padding(
                         padding: const EdgeInsets.all(15),
@@ -337,9 +336,7 @@ class _DetailCasesLhaPageAuditAreaState
 
                                 ),
                                 onPressed: statusFlow == 0 ?  (){
-                                  controllerAuditArea.sendCaseLha(detailLha.id, cases?.id, detailLha.caseCategory?.id, detailLha.description,
-                                    suggestion, detailLha.temporaryRecommendation, detailLha.permanentRecommendation, detailLha.isResearch,
-                                      1, statusParsing);
+                                  controllerAuditArea.sendCaseLha(detailLha.id);
                                 } : null,
                                 child: Text(statusFlow == 1 ? 'Terkirim' : 'Kirim', style: CustomStyles.textMediumWhite15Px)
                               )
@@ -697,6 +694,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: lha!.length,
                       itemBuilder: (_, index) {
+                        final isRevision = lha[index].isRevision;
                         return Card(
                             elevation: 0,
                             shape: OutlineInputBorder(
@@ -745,8 +743,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                                   .customRoundedButton),
                                           onPressed: () {
                                             Get.to(() =>
-                                                DetaiCasesLhaPageAuditRegion(
-                                                    lhaId: lha[index].id!));
+                                                DetaiCasesLhaPageAuditRegion(lhaId: lha[index].id!, isRevision: isRevision));
                                           },
                                           child: Text('Lihat rincian',
                                               style: CustomStyles
@@ -771,7 +768,8 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
 //audit region
 class DetaiCasesLhaPageAuditRegion extends StatefulWidget {
   final int lhaId;
-  const DetaiCasesLhaPageAuditRegion({super.key, required this.lhaId});
+  final int? isRevision;
+  const DetaiCasesLhaPageAuditRegion({super.key, required this.lhaId, this.isRevision});
 
   @override
   State<DetaiCasesLhaPageAuditRegion> createState() =>
@@ -886,6 +884,29 @@ class _DetailCasesLhaPageAuditRegionState
                   Text('Penelusuran :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text(research == 1 ? 'Ada' : 'Tidak ada'),
+
+                  const SizedBox(height: 20),
+                  Text('Status :', style: CustomStyles.textBold15Px),
+                  const SizedBox(height: 5),
+                  Text(widget.isRevision == 1 ? 'Sudah diproses' : 'Belum diproses'),
+
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: CustomStyles.customRoundedButton,
+                        backgroundColor: CustomColors.blue
+                      ),
+                      onPressed: widget.isRevision == 0 ? (){
+                        final lhaId = detailLha.id;
+                        if (lhaId != null) {
+                              Get.to(() => EditLhaPageAuditRegion(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
+                              selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));
+                        }
+                    }: null
+                    , child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)),
+                  )
                 ],
               ),
             );

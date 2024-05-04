@@ -1,4 +1,5 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
@@ -140,6 +141,148 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                           snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                       }else{
                          controllerAuditArea.revisiLha(widget.lhaId, lhaDescriptionController.text, 
+                            suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
+                          
+                          Get.back();
+                      }
+                     
+                    },
+                    child:
+                        Text('Revisi LHA', style: CustomStyles.textMediumWhite15Px)),
+              )
+            ],
+          ),
+        ),
+        )
+    );
+  }
+}
+
+class EditLhaPageAuditRegion extends StatefulWidget {
+  final int lhaId;
+  final String? cases;
+  final String? caseCategory;
+  final int? selectedValueResearch;
+  final String? lhaDescription;
+  final String? temRec;
+  final String? perRec;
+  final String? suggest;
+  const EditLhaPageAuditRegion({super.key, required this.lhaId, this.cases, this.caseCategory, this.selectedValueResearch, this.lhaDescription, this.temRec, this.perRec, this.suggest});
+
+  @override
+  State<EditLhaPageAuditRegion> createState() => _EditLhaPageAuditRegionState();
+}
+
+class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
+
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  final TextEditingController lhaDescriptionController = TextEditingController();
+  final TextEditingController temporaryRecommendationController = TextEditingController();
+  final TextEditingController permanentRecommendationController = TextEditingController();
+  final TextEditingController suggestController = TextEditingController();
+
+  
+  
+  @override
+  void initState() {
+    lhaDescriptionController.text = widget.lhaDescription ?? '';
+    temporaryRecommendationController.text = widget.temRec ?? '';
+    permanentRecommendationController.text = widget.perRec ?? '';
+    suggestController.text = widget.suggest ?? '';
+    selectedSuggest = widget.suggest != null && widget.suggest!.isNotEmpty ? 1 : 0;
+    super.initState();
+  }
+
+  int? selectedSuggest;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: CustomColors.white,
+        appBar: AppBar(
+          title: const Text('Edit laporan harian audit'),
+          backgroundColor: CustomColors.white,
+          titleTextStyle: CustomStyles.textBold18Px,
+          titleSpacing: 5,
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_rounded,
+                  size: 25, color: CustomColors.black)),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+              Text('Divisi :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Text(widget.cases!, style: CustomStyles.textRegular13Px),
+
+              const SizedBox(height: 20),
+              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              Text(widget.caseCategory!, style: CustomStyles.textRegular13Px),
+
+              const SizedBox(height: 20),
+              Text('Uraian temuan :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              formEditLha(lhaDescriptionController, 'Masukan uraian temuan...'),
+
+              const SizedBox(height: 15),
+              Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan rekomendasi sementara...'),
+
+              const SizedBox(height: 15),
+              Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan rekomendasi permanent...'),
+              
+              const SizedBox(height: 15),
+              Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+
+              Wrap(
+                runSpacing: 5,
+                spacing: 5,
+                children: List.generate(
+                    2, (index){
+                    return ChoiceChip(
+                      label: Text(index == 0 ? 'Tidak ada': 'Ada'), 
+                      selected: selectedSuggest == index,
+                      onSelected: (selected){
+                        setState(() {
+                          selectedSuggest = selected ? index : null;
+                          if (selectedSuggest == 0) {
+                            suggestController.clear();
+                          }else if(selectedSuggest == null){
+                            suggestController.clear();
+                          }
+                        });
+                      });
+                  }).toList()
+              ),
+
+              const SizedBox(height: 15),
+              if (selectedSuggest == 1)
+              formEditLha(suggestController, 'Masukan rekomendasi atau saran...'),
+              const SizedBox(height: 30),
+
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton),
+                    onPressed: () {
+                       if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || selectedSuggest == null) {
+                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                      }else{
+                         controllerAuditRegion.revisiLha(widget.lhaId, lhaDescriptionController.text, 
                             suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
                           
                           Get.back();

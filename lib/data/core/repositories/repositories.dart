@@ -93,8 +93,7 @@ abstract class Repositories {
   //LHA
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
   Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail);
-  Future<ResponseMessage>sendCaseLha(int? lhaDEtailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
-  int? statusFlow, int? statusParsing);
+  Future<ResponseMessage>sendCaseLha(int? lhaDEtailId);
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
@@ -115,7 +114,7 @@ abstract class Repositories {
 
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc);
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc);
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
 
   //user profile
@@ -326,9 +325,8 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> sendCaseLha(int? lhaDEtailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
-  int? statusFlow, int? statusParsing) {
-    return apiService.sendCaseLha(lhaDEtailId, caseId, caseCategoryId, description, suggestion, tempRec, perRec, isResearch, statusFlow, statusParsing);
+  Future<ResponseMessage> sendCaseLha(int? lhaDEtailId) {
+    return apiService.sendCaseLha(lhaDEtailId);
   }
 
   @override
@@ -389,8 +387,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc){
-    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, desc);
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc){
+    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, charCoss, desc);
   }
   
   @override

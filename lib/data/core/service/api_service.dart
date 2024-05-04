@@ -411,17 +411,13 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>sendCaseLha(int? lhaDetailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch, 
-  int? statusFlow, int? statusParsing)async{
+  Future<ResponseMessage>sendCaseLha(int? lhaDetailId)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
+      'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.put('${AppConstant.sendCaseLha}$lhaDetailId',
-      data: {'case_id': caseId, 'case_category_id': caseCategoryId, 'description': description, 'suggestion': suggestion, 
-      'temporary_recommendations': tempRec, 'permanent_recommendations': perRec, 'is_research': isResearch, 'status_flow': statusFlow, 'status_parsing': statusParsing});
+      final response = await dio.patch('${AppConstant.sendCaseLha}$lhaDetailId');
       return ResponseMessage.fromJson(response.data);
     } catch (e) {
       throw Exception(e);
@@ -582,7 +578,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -590,7 +586,7 @@ class ApiService {
     };
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
-      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, description: desc).toJson());
+      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId?.toList(), chargingCosts: charCoss, description: desc).toJson());
       return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);
     } catch (error) {
       throw Exception(error);

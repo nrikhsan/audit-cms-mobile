@@ -1,6 +1,6 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/followUp/response_input_follow_up.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/model_body_input_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
@@ -582,11 +582,9 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void sendCaseLha(int? lhaDetailId, int? caseId, int? caseCategoryId, String? description, String? suggestion, String? tempRec, String? perRec, int? isResearch,
-   int? statusFlow, int? statusParsing)async{
+  void sendCaseLha(int? lhaDetailId)async{
     try {
-      final response = await repository.sendCaseLha(lhaDetailId, caseId, caseCategoryId, description, suggestion, tempRec, perRec,
-      isResearch, statusFlow, statusParsing);
+      final response = await repository.sendCaseLha(lhaDetailId);
       message.value = response.message.toString();
       snakcBarMessageGreen('Berhasil', 'LHA berhasil di kirim ke pusat');
     } catch (e) {
@@ -735,6 +733,7 @@ void getDetailRescheduleAuditArea(int id)async{
       final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       pagingControllerClarificationAuditArea.refresh();
       pagingControllerBapAuditArea.refresh();
+      pagingControllerFollowUp.refresh();
       Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.message);
     } catch (error) {
@@ -921,19 +920,24 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerFollowUp.refresh();
   }
 
-  var dataInputFollowUp = Rxn<DataInputFollowUp>();
-  void inputFollowUpAuditArea(int followUpId, int? penaltyId, String desc)async{
+  RxList<int>penalty = RxList<int>();
+
+  void inputFollowUpAuditArea(int followUpId, String charCoss, String desc)async{
     try{
-      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyId, desc);
+      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penalty.toList(), charCoss, desc);
       pagingControllerFollowUp.refresh();
-      dataInputFollowUp.value = inputFollowUp.data;
       snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
       message.value = inputFollowUp.message.toString();
+      penalty.clear();
     }catch(error){
+      pagingControllerFollowUp.refresh();
+      penalty.clear();
+      snakcBarMessageRed('Gagal', 'Tindak lanjut gagal dibuat');
       throw Exception(error);
     }
   }
   
+  var penaltyId = RxnInt();
   void loadPenalty()async{
     try {
       final penalty = await repository.getPenaltyAuditArea();

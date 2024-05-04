@@ -19,9 +19,9 @@ class InputFollowUp extends StatefulWidget {
 class _InputFollowUpState extends State<InputFollowUp> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
-  int? _penaltyId;
   final TextEditingController realizationController = TextEditingController();
   final TextEditingController explanationPenaltyController = TextEditingController();
+  final TextEditingController charCossController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih lampiran', style: CustomStyles.textRegular13Px),
-                      value: _penaltyId,
+                      value: controllerAuditArea.penaltyId.value,
                       items: controllerAuditArea.penaltyAuditArea.map((penalty){
                         return DropdownMenuItem(
                           value: penalty.id,
@@ -85,14 +85,54 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       }).toList(),
                       onChanged: (value)async{
                         setState(() {
-                          _penaltyId = value;
-                          
+                         controllerAuditArea.penaltyId.value = value;
+                         charCossController.clear();
+
                         });
                       }
                     ),
                   )
                 ),
               ),
+
+              Wrap(
+                children: [
+                  controllerAuditArea.penaltyId.value == 5 ?
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 15),
+                  Text('Kerugian :', style: CustomStyles.textMedium15Px),
+                  const SizedBox(height: 15),
+                  formInputcharCossPenalty(charCossController),
+                ],
+              ): const SizedBox()
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('List penalty', style: CustomStyles.textMedium15Px),
+                  TextButton(
+                    onPressed: (){
+                    
+                  }, child: Text('Tambah penalty', style: CustomStyles.textMediumGreen15Px),
+                  )
+                ],
+              ),
+
+              Obx(() => ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controllerAuditArea.penalty.length,
+                itemBuilder: (_, index){
+                  return ListTile(
+                    title: Text('${controllerAuditArea.penalty}'),
+                  );
+                }
+              )),
 
 
               const SizedBox(height: 30),
@@ -107,11 +147,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   
                   onPressed: (){
                   
-                    if (_penaltyId == null || explanationPenaltyController.text.isEmpty) {
+                    if (controllerAuditArea.penaltyId.value == null || explanationPenaltyController.text.isEmpty) {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, _penaltyId, explanationPenaltyController.text);
-                        Get.back();
+                        
                     }
                   }, 
                   child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

@@ -185,6 +185,8 @@ class ContentListRescheduleAuditArea {
   String? description;
   String? status;
   String? category;
+  String? newStartDate;
+  String? newEndDate;
   String? startDate;
   String? endDate;
   String? startDateRealization;
@@ -200,6 +202,8 @@ class ContentListRescheduleAuditArea {
       this.description,
       this.status,
       this.category,
+      this.newStartDate,
+      this.newEndDate,
       this.startDate,
       this.endDate,
       this.startDateRealization,
@@ -216,6 +220,8 @@ class ContentListRescheduleAuditArea {
     description = json['description'];
     status = json['status'];
     category = json['category'];
+    newStartDate = json['new_start_date'];
+    newEndDate = json['new_end_date'];
     startDate = json['start_date'];
     endDate = json['end_date'];
     startDateRealization = json['start_date_realization'];
@@ -239,6 +245,8 @@ class ContentListRescheduleAuditArea {
     data['description'] = this.description;
     data['status'] = this.status;
     data['category'] = this.category;
+    data['new_start_date'] = this.newStartDate;
+    data['new_end_date'] = this.newEndDate;
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['start_date_realization'] = this.startDateRealization;
