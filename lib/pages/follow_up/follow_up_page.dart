@@ -56,6 +56,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
             pagingController: controllerAuditArea.pagingControllerFollowUp,
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (_, followUp, index){
+                  final status = followUp.status;
                   return GestureDetector(
                     child: Card(
                       elevation: 0,
@@ -81,7 +82,17 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
 
                                     ],
                                   ),
-                                  Text('${followUp.status}', style: CustomStyles.textMedium13Px,),
+                                  Wrap(
+                                    children: [
+                                      if(status == 'CREATE')
+                                      Text('Buat', style: CustomStyles.textMedium13Px),
+                                      if(status == 'PROGRESS')
+                                      Text('Sedang dibuat', style: CustomStyles.textMedium13Px),
+                                      if(status == 'DONE')
+                                      Text('Selesai', style: CustomStyles.textMedium13Px),
+                                    ],
+                                  )
+                                  
                                 ],
                               ),
                               Text('${followUp.code}', style: CustomStyles.textMedium13Px,),

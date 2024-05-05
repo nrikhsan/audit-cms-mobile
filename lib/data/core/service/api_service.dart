@@ -586,7 +586,7 @@ class ApiService {
     };
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
-      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId?.toList(), chargingCosts: charCoss, description: desc).toJson());
+      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, chargingCosts: charCoss, description: desc));
       return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);
     } catch (error) {
       throw Exception(error);

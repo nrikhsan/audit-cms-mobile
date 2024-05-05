@@ -55,43 +55,42 @@ class Meta {
 class DataRevisiLha {
   int? id;
   Cases? cases;
-  CaseCategory? caseCategory;
   int? revisionNumber;
+  CaseCategory? caseCategory;
   String? description;
   String? suggestion;
   String? temporaryRecommendations;
   String? permanentRecommendations;
   int? isResearch;
-  int? createdBy;
-  String? createdAt;
+  CreatedBy? createdBy;
 
   DataRevisiLha(
       {this.id,
       this.cases,
-      this.caseCategory,
       this.revisionNumber,
+      this.caseCategory,
       this.description,
       this.suggestion,
       this.temporaryRecommendations,
       this.permanentRecommendations,
       this.isResearch,
-      this.createdBy,
-      this.createdAt});
+      this.createdBy});
 
   DataRevisiLha.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
+    revisionNumber = json['revisionNumber'];
     caseCategory = json['caseCategory'] != null
         ? new CaseCategory.fromJson(json['caseCategory'])
         : null;
-    revisionNumber = json['revisionNumber'];
     description = json['description'];
     suggestion = json['suggestion'];
     temporaryRecommendations = json['temporary_recommendations'];
     permanentRecommendations = json['permanent_recommendations'];
     isResearch = json['is_research'];
-    createdBy = json['created_by'];
-    createdAt = json['created_at'];
+    createdBy = json['created_by'] != null
+        ? new CreatedBy.fromJson(json['created_by'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -100,17 +99,18 @@ class DataRevisiLha {
     if (this.cases != null) {
       data['cases'] = this.cases!.toJson();
     }
+    data['revisionNumber'] = this.revisionNumber;
     if (this.caseCategory != null) {
       data['caseCategory'] = this.caseCategory!.toJson();
     }
-    data['revisionNumber'] = this.revisionNumber;
     data['description'] = this.description;
     data['suggestion'] = this.suggestion;
     data['temporary_recommendations'] = this.temporaryRecommendations;
     data['permanent_recommendations'] = this.permanentRecommendations;
     data['is_research'] = this.isResearch;
-    data['created_by'] = this.createdBy;
-    data['created_at'] = this.createdAt;
+    if (this.createdBy != null) {
+      data['created_by'] = this.createdBy!.toJson();
+    }
     return data;
   }
 }
@@ -169,6 +169,36 @@ class CaseCategory {
     data['updated_at'] = this.updatedAt;
     if (this.cases != null) {
       data['cases'] = this.cases!.toJson();
+    }
+    return data;
+  }
+}
+
+class CreatedBy {
+  int? id;
+  String? fullname;
+  String? initialName;
+  String? nip;
+  Cases? level;
+
+  CreatedBy({this.id, this.fullname, this.initialName, this.nip, this.level});
+
+  CreatedBy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    nip = json['nip'];
+    level = json['level'] != null ? new Cases.fromJson(json['level']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    data['nip'] = this.nip;
+    if (this.level != null) {
+      data['level'] = this.level!.toJson();
     }
     return data;
   }

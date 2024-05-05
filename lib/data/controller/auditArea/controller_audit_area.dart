@@ -920,11 +920,12 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerFollowUp.refresh();
   }
 
-  RxList<int>penalty = RxList<int>();
+  RxList<RequestBodyFollowUp>penalty = RxList<RequestBodyFollowUp>();
+  RxList<int>penaltyIdList = RxList<int>();
 
   void inputFollowUpAuditArea(int followUpId, String charCoss, String desc)async{
     try{
-      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penalty.toList(), charCoss, desc);
+     final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, charCoss, desc);
       pagingControllerFollowUp.refresh();
       snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
       message.value = inputFollowUp.message.toString();
@@ -936,8 +937,19 @@ void getDetailRescheduleAuditArea(int id)async{
       throw Exception(error);
     }
   }
+
+  void addPenalty(int followUpId, int? penaltyId, String charCoss, String desc, String? name)async{
+    penaltyIdList.add(penaltyId!);
+    final newData = RequestBodyFollowUp(
+      followupId: followUpId,
+      penaltyId: penaltyIdList,
+      chargingCosts: charCoss,
+      description: desc,
+      penaltyName: DataListPenaltyAuditArea(name: name)
+    );
+    penalty.add(newData);
+  }
   
-  var penaltyId = RxnInt();
   void loadPenalty()async{
     try {
       final penalty = await repository.getPenaltyAuditArea();

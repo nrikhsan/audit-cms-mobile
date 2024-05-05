@@ -1,11 +1,14 @@
+import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
+
 class RequestBodyFollowUp {
   int? followupId;
   List<int>? penaltyId;
   String? chargingCosts;
   String? description;
+  DataListPenaltyAuditArea? penaltyName;
 
   RequestBodyFollowUp(
-      {this.followupId, this.penaltyId, this.chargingCosts, this.description});
+      {this.followupId, this.penaltyId, this.chargingCosts, this.description, this.penaltyName});
 
   RequestBodyFollowUp.fromJson(Map<String, dynamic> json) {
     followupId = json['followup_id'];

@@ -119,6 +119,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           pagingController: controllerAuditArea.pagingControllerMainSchedule,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
+                              final status = mainSchedule.status;
                               return GestureDetector(
                               onTap: (){
                               Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
@@ -168,7 +169,24 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('${mainSchedule.user!.fullname}', style: CustomStyles.textBold15Px),
-                                        Text('${mainSchedule.status}', style: CustomStyles.textMedium13Px),
+                                        Wrap(
+                                          children: [
+                                            if(status == 'TODO')
+                                            Text('Belum dikerjakan', style: CustomStyles.textMedium13Px),
+                                            if(status == 'PROGRESS')
+                                            Text('Sedang dikerjakan', style: CustomStyles.textMedium13Px),
+                                            if(status == 'DONE')
+                                            Text('Sudah selesai', style: CustomStyles.textMedium13Px),
+                                            if(status == 'PENDING')
+                                            Text('Pending', style: CustomStyles.textMedium13Px),
+                                            if(status == 'REQUEST')
+                                            Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
+                                            if(status == 'APPROVE')
+                                            Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                            if(status == 'REJECTED')
+                                            Text('Ditolak', style: CustomStyles.textMedium13Px),
+                                          ],
+                                        )
                                       ],
                                     ),
                     
@@ -252,6 +270,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, schedule, index){
                               final createdBy = schedule.createdBy!.level?.name;
+                              final status = schedule.status;
                                return GestureDetector(
                                 onTap: (){
                                 Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: schedule.startDate, endDate:  schedule.endDate, kka: schedule.kka?.filename, createdBy: createdBy));
@@ -305,7 +324,24 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${schedule.user!.fullname}', style: CustomStyles.textBold15Px),
-                                          Text('${schedule.status}', style: CustomStyles.textMedium13Px),
+                                          Wrap(
+                                          children: [
+                                            if(status == 'TODO')
+                                            Text('Belum dikerjakan', style: CustomStyles.textMedium13Px),
+                                            if(status == 'PROGRESS')
+                                            Text('Sedang dikerjakan', style: CustomStyles.textMedium13Px),
+                                            if(status == 'DONE')
+                                            Text('Sudah selesai', style: CustomStyles.textMedium13Px),
+                                            // if(status == 'PENDING')
+                                            // Text('Pending', style: CustomStyles.textMedium13Px),
+                                            // if(status == 'REQUEST')
+                                            // Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
+                                            // if(status == 'APPROVE')
+                                            // Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                            // if(status == 'REJECTED')
+                                            // Text('Ditolak', style: CustomStyles.textMedium13Px),
+                                          ],
+                                        )
                                         ],
                                       ),
                     
@@ -403,14 +439,18 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${reschedules.user!.fullname}', style: CustomStyles.textBold15Px),
-                                          if(statusReschedules == 'PENDING')
-                                          Text('${reschedules.status}', style: CustomStyles.textMediumGrey13Px),
-                                          if(statusReschedules == 'REQUEST')
-                                          Text('${reschedules.status}', style: CustomStyles.textMediumRed13Px),
-                                          if(statusReschedules == 'APPROVE')
-                                          Text('${reschedules.status}', style: CustomStyles.textMediumGreen13Px),
-                                          if(statusReschedules == 'REJECTED')
-                                          Text('${reschedules.status}', style: CustomStyles.textMediumRed13Px),
+                                          Wrap(
+                                            children: [
+                                              if(statusReschedules == 'PENDING')
+                                              Text('Pending', style: CustomStyles.textMedium13Px),
+                                              if(statusReschedules == 'REQUEST')
+                                              Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
+                                              if(statusReschedules == 'APPROVE')
+                                              Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                              if(statusReschedules == 'REJECTED')
+                                              Text('Ditolak', style: CustomStyles.textMedium13Px),
+                                            ],
+                                          )
                                         ],
                                       ),
                                       const SizedBox(height: 10),
@@ -557,7 +597,24 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${mainSchedule.user!.fullname}', style: CustomStyles.textBold15Px),
-                                          Text('${mainSchedule.status}', style: CustomStyles.textMedium13Px),
+                                          Wrap(
+                                            children: [
+                                              if(status == 'TODO')
+                                              Text('Belum dikerjakan', style: CustomStyles.textMedium13Px),
+                                              if(status == 'PROGRESS')
+                                              Text('Sedang dikerjakan', style: CustomStyles.textMedium13Px),
+                                              if(status == 'DONE')
+                                              Text('Sudah selesai', style: CustomStyles.textMedium13Px),
+                                              if(status == 'PENDING')
+                                              Text('Pending', style: CustomStyles.textMedium13Px),
+                                              if(status == 'REQUEST')
+                                              Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
+                                              if(status == 'APPROVE')
+                                              Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                              if(status == 'REJECTED')
+                                              Text('Ditolak', style: CustomStyles.textMedium13Px),
+                                            ],
+                                          )
                                         ],
                                       ),
                       
@@ -648,7 +705,24 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('${schedule.user!.fullname}', style: CustomStyles.textBold15Px),
-                                          Text('${schedule.status}', style: CustomStyles.textMedium13Px),
+                                          Wrap(
+                                            children: [
+                                              if(status == 'TODO')
+                                              Text('Belum dikerjakan', style: CustomStyles.textMedium13Px),
+                                              if(status == 'PROGRESS')
+                                              Text('Sedang dikerjakan', style: CustomStyles.textMedium13Px),
+                                              if(status == 'DONE')
+                                              Text('Sudah selesai', style: CustomStyles.textMedium13Px),
+                                              // if(status == 'PENDING')
+                                              // Text('Pending', style: CustomStyles.textMedium13Px),
+                                              // if(status == 'REQUEST')
+                                              // Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
+                                              // if(status == 'APPROVE')
+                                              // Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                              // if(status == 'REJECTED')
+                                              // Text('Ditolak', style: CustomStyles.textMedium13Px),
+                                            ],
+                                          )
                                         ],
                                       ),
                       
