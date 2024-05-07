@@ -88,7 +88,6 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       onChanged: (value)async{
                         setState(() {
                          penaltyId = value;
-                         charCossController.clear();
 
                         });
                       }
@@ -122,7 +121,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       if (penaltyId == null || explanationPenaltyController.text.isEmpty) {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
-                        controllerAuditArea.addPenalty(widget.followUpId, penaltyId?.id, charCossController.text, explanationPenaltyController.text, penaltyId?.name);
+                        controllerAuditArea.addPenalty(penaltyId?.id, penaltyId?.name);
                         clearFollowUp();  
                     }
                   }, child: Text('Tambah penalty', style: CustomStyles.textMediumGreen15Px),
@@ -133,15 +132,16 @@ class _InputFollowUpState extends State<InputFollowUp> {
               Obx(() => ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: controllerAuditArea.penalty.length,
+                itemCount: controllerAuditArea.penaltyIdList.length,
                 itemBuilder: (_, index){
                   return ListTile(
-                    title: Text('${controllerAuditArea.penalty[index].penaltyName?.name}', style: CustomStyles.textMedium15Px),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        
-                        Text(controllerAuditArea.penalty[index].description!, style: CustomStyles.textRegular13Px),
+                        Text('${controllerAuditArea.penaltyIdList[index]}', style: CustomStyles.textMedium15Px),
+                        IconButton(onPressed: (){
+                          controllerAuditArea.penaltyIdList.removeAt(index);
+                        }, icon: const Icon(Icons.delete, color: CustomColors.red))
                       ],
                     )
                   );
@@ -160,10 +160,11 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   ),
                   
                   onPressed: (){
-                    if (controllerAuditArea.penalty.isEmpty) {
+                    if (controllerAuditArea.penaltyIdList.isEmpty) {
                       snakcBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
                       controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCossController.text, explanationPenaltyController.text);
+                      explanationPenaltyController.clear();
                     }
                   }, 
                   child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)
@@ -175,11 +176,9 @@ class _InputFollowUpState extends State<InputFollowUp> {
     )
   );
 }
-void clearFollowUp(){
-  setState(() {
-    penaltyId = null;
-    explanationPenaltyController.clear();
-    charCossController.clear();
-  });
-}
+  void clearFollowUp(){
+    setState(() {
+      penaltyId = null;
+    });
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_detail_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/model_body_input_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_cases_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revision_lha.dart';
@@ -920,7 +919,6 @@ void getDetailRescheduleAuditArea(int id)async{
     pagingControllerFollowUp.refresh();
   }
 
-  RxList<RequestBodyFollowUp>penalty = RxList<RequestBodyFollowUp>();
   RxList<int>penaltyIdList = RxList<int>();
 
   void inputFollowUpAuditArea(int followUpId, String charCoss, String desc)async{
@@ -928,26 +926,18 @@ void getDetailRescheduleAuditArea(int id)async{
      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, charCoss, desc);
       pagingControllerFollowUp.refresh();
       snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
+      penaltyIdList.clear();
       message.value = inputFollowUp.message.toString();
-      penalty.clear();
     }catch(error){
       pagingControllerFollowUp.refresh();
-      penalty.clear();
+      penaltyIdList.clear();
       snakcBarMessageRed('Gagal', 'Tindak lanjut gagal dibuat');
       throw Exception(error);
     }
   }
 
-  void addPenalty(int followUpId, int? penaltyId, String charCoss, String desc, String? name)async{
+  void addPenalty(int? penaltyId, String? name)async{
     penaltyIdList.add(penaltyId!);
-    final newData = RequestBodyFollowUp(
-      followupId: followUpId,
-      penaltyId: penaltyIdList,
-      chargingCosts: charCoss,
-      description: desc,
-      penaltyName: DataListPenaltyAuditArea(name: name)
-    );
-    penalty.add(newData);
   }
   
   void loadPenalty()async{

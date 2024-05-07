@@ -117,13 +117,15 @@ class User {
 class Clarification {
   int? id;
   String? code;
+  String? nominalLoss;
   String? evaluationLimitation;
 
-  Clarification({this.id, this.code, this.evaluationLimitation});
+  Clarification({this.id, this.code, this.nominalLoss, this.evaluationLimitation});
 
   Clarification.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
+    nominalLoss = json['nominal_loss'];
     evaluationLimitation = json['evaluation_limitation'];
   }
 
@@ -131,6 +133,7 @@ class Clarification {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['code'] = code;
+    data['nominal_loss'] = nominalLoss;
     data['evaluation_limitation'] = evaluationLimitation;
     return data;
   }

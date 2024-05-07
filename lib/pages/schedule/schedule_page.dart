@@ -120,6 +120,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
                               final status = mainSchedule.status;
+                              final startDate = DateTime.parse(mainSchedule.startDate!);
+                              final endDate = DateTime.parse(mainSchedule.endDate!);
+                              final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+                              final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                               return GestureDetector(
                               onTap: (){
                               Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
@@ -195,7 +199,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     const SizedBox(height: 5),
                                     Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
                                     const SizedBox(height: 5),
-                                    Text('Tanggal : ${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
+                                    Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
 
                                     Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
@@ -205,8 +209,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                               ),
                                               onPressed: mainSchedule.status == 'TODO' ? () {
-                                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(mainSchedule.startDate!));
-                                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(mainSchedule.endDate!));
+                                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
                                                 Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
                                                 user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description!));

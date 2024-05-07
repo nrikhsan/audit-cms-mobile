@@ -62,6 +62,8 @@ void filterClarificationAuditArea(
                   ],
                 ),
                 const SizedBox(height: 20),
+                Text('Dengan auditor :', style: CustomStyles.textMedium15Px),
+                const SizedBox(height: 15),
                 TextField(
                   controller: auditorController,
                   cursorColor: CustomColors.blue,
@@ -79,7 +81,9 @@ void filterClarificationAuditArea(
                             const BorderSide(color: CustomColors.lightGrey)),
                   ),
                 ),
-                
+
+                  const SizedBox(height: 20),
+                  Text('Dengan cabanng :', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
                   Obx(() => SizedBox(
                     width: double.maxFinite,
@@ -108,6 +112,8 @@ void filterClarificationAuditArea(
                     )
                 ),
               )),
+                const SizedBox(height: 20),
+                Text('Dengan tanggal :', style: CustomStyles.textMedium15Px),
                 const SizedBox(height: 20),
                 TextField(
                   controller: startDateController,

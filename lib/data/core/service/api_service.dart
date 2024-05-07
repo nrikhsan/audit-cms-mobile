@@ -22,7 +22,6 @@ import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_a
 import 'package:audit_cms/data/core/response/auditArea/schedules/request_body_edit_schedule.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/followUp/request_body_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_detail_schedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_main_schedules_audit_area.dart';
@@ -586,7 +585,8 @@ class ApiService {
     };
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
-      data: RequestBodyFollowUp(followupId: followUpId, penaltyId: penaltyId, chargingCosts: charCoss, description: desc));
+      data: {'followup_id': followUpId, 'penalty_id': penaltyId, 'charging_costs': charCoss, 'description': desc});
+      print(responseInputFollowUp.data);
       return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);
     } catch (error) {
       throw Exception(error);

@@ -3,6 +3,7 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert_follow_up.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -42,36 +43,75 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                         return const Center(child: SpinKitCircle(color: CustomColors.blue));
                     } else {
                       final token = snapshot.data;
-                      return SizedBox(
-                        width: double.maxFinite,
-                        height: 590,
-                        child: SfPdfViewer.network(
-                          headers: {'Authorization': 'Bearer $token'},
-                        '${AppConstant.followUpDocument}${widget.fileName}'
+                      return Center(
+                        child: Wrap(
+                          children: [
+                            widget.fileName == null ?
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('Dokumen tidak tersedia', style: CustomStyles.textMedium18Px),
+                                const SizedBox(height: 15),
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: CustomStyles.customRoundedButton,
+                                      backgroundColor: CustomColors.blue
+                                    ),
+                                    onPressed: () async{
+                                      if (widget.fileName == null) {
+                                        snakcBarMessageRed('Gagal', 'File tidak tersedia');
+                                      } else {
+                                          if (await requestPermission(Permission.storage) == true) {
+                                          downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
+                                        } else {
+                                          showSnackbarPermission(context);
+                                        }
+                                      }
+                                    }, 
+                                    child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
+                                  ),
+                                )
+                              ],
+                            )
+                            : Column(
+                              children: [
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  height: 590,
+                                  child: SfPdfViewer.network(
+                                    headers: {'Authorization': 'Bearer $token'},
+                                  '${AppConstant.followUpDocument}${widget.fileName}'
+                                  ),
+                                ),
+                        
+                                const SizedBox(height: 15),
+                                SizedBox(
+                                  width: double.maxFinite,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: CustomStyles.customRoundedButton,
+                                      backgroundColor: CustomColors.blue
+                                    ),
+                                    onPressed: () async{
+                                      if (await requestPermission(Permission.storage) == true) {
+                                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
+                                      } else {
+                                        showSnackbarPermission(context);
+                                      }
+                                    }, 
+                                    child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
                         ),
                       );
                     }
                   }
                 ),
-
-                const SizedBox(height: 15),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: CustomStyles.customRoundedButton,
-                      backgroundColor: CustomColors.blue
-                    ),
-                    onPressed: () async{
-                      if (await requestPermission(Permission.storage) == true) {
-                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
-                      } else {
-                        showSnackbarPermission(context);
-                      }
-                    }, 
-                    child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
-                  ),
-                )
               ],
             ),
             )

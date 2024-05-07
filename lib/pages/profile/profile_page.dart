@@ -78,6 +78,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                   const SizedBox(height: 5),
                   Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
+                  const SizedBox(height: 15),
                   Text('Username :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.username}', style: CustomStyles.textRegular13Px),
@@ -239,6 +240,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                   const SizedBox(height: 5),
                   Text('${user.fullname}', style: CustomStyles.textRegular13Px),
 
+                  const SizedBox(height: 15),
                   Text('Username :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text('${user.username}', style: CustomStyles.textRegular13Px),
