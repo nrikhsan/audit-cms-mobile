@@ -23,7 +23,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
   final TextEditingController realizationController = TextEditingController();
   final TextEditingController explanationPenaltyController = TextEditingController();
   final TextEditingController charCossController = TextEditingController();
-  DataListPenaltyAuditArea? penaltyId;
+  DataListPenaltyAuditArea? penalty;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih lampiran', style: CustomStyles.textRegular13Px),
-                      value: penaltyId,
+                      value: penalty,
                       items: controllerAuditArea.penaltyAuditArea.map((penalty){
                         return DropdownMenuItem(
                           value: penalty,
@@ -87,7 +87,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       }).toList(),
                       onChanged: (value)async{
                         setState(() {
-                         penaltyId = value;
+                         penalty = value;
 
                         });
                       }
@@ -98,7 +98,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
 
               Wrap(
                 children: [
-                  penaltyId?.id == 5 ?
+                  penalty?.id == 5 ?
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -118,10 +118,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   Text('List penalty', style: CustomStyles.textMedium15Px),
                   TextButton(
                     onPressed: (){
-                      if (penaltyId == null || explanationPenaltyController.text.isEmpty) {
+                      if (penalty == null || explanationPenaltyController.text.isEmpty) {
                         snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
-                        controllerAuditArea.addPenalty(penaltyId?.id, penaltyId?.name);
+                        controllerAuditArea.addPenalty(penalty?.id, penalty?.name);
                         clearFollowUp();  
                     }
                   }, child: Text('Tambah penalty', style: CustomStyles.textMediumGreen15Px),
@@ -134,13 +134,21 @@ class _InputFollowUpState extends State<InputFollowUp> {
                 shrinkWrap: true,
                 itemCount: controllerAuditArea.penaltyIdList.length,
                 itemBuilder: (_, index){
+                  final penaltyId = controllerAuditArea.penaltyIdList[index];
+                  final penaltyName = controllerAuditArea.penaltyAuditArea.firstWhere((element) => element.id == penaltyId);
                   return ListTile(
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${controllerAuditArea.penaltyIdList[index]}', style: CustomStyles.textMedium15Px),
-                        IconButton(onPressed: (){
-                          controllerAuditArea.penaltyIdList.removeAt(index);
+                        Text('${penaltyName.name}', style: CustomStyles.textMedium15Px),
+                        IconButton(
+                          onPressed: (){
+                          if (controllerAuditArea.penaltyIdList[index] == 5) {
+                            controllerAuditArea.penaltyIdList.removeAt(index);
+                            charCossController.clear();
+                          } else {
+                            controllerAuditArea.penaltyIdList.removeAt(index);
+                          }
                         }, icon: const Icon(Icons.delete, color: CustomColors.red))
                       ],
                     )
@@ -178,7 +186,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
 }
   void clearFollowUp(){
     setState(() {
-      penaltyId = null;
+      penalty = null;
     });
   }
 }
