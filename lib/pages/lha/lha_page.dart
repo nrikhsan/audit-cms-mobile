@@ -23,7 +23,6 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
-  final DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +58,8 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
               pagingController: controllerAuditArea.pagingControllerLhaAuditArea,
               builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (_, lha, index){
-                  final startDare = lha.schedule?.startDate;
-                  final endDate = lha.schedule?.endDate;
+                  final startDare = DateTime.parse('${lha.schedule?.startDate}');
+                  final endDate = DateTime.parse('${lha.schedule?.endDate}');
                   final level = lha.user?.level?.name;
                   return Card(
                         elevation: 0,
@@ -95,7 +94,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                               Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
                               
-                              Text('Tanggal : ${outputFormat.format(DateTime.parse(startDare!))} s/d ${outputFormat.format(DateTime.parse(endDate!))}', style: CustomStyles.textBold15Px),
+                              Text('Tanggal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textBold15Px),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -137,7 +136,6 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
-  final DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +171,8 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
           pagingController: controllerAuditRegion.pagingControllerLha,
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (_, lha, index){
-              final startDare = lha.schedule?.startDate;
-              final endDate = lha.schedule?.endDate;
+              final startDare = DateTime.parse('${lha.schedule?.startDate}');
+              final endDate = DateTime.parse('${lha.schedule?.endDate}');
               return Card(
                         elevation: 0,
                         shape: OutlineInputBorder(
@@ -206,7 +204,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
 
                               Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
-                              Text('Tanggal : ${outputFormat.format(DateTime.parse(startDare!))} s/d ${outputFormat.format(DateTime.parse(endDate!))}', style: CustomStyles.textBold15Px),
+                              Text('Tanggal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textBold15Px),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,

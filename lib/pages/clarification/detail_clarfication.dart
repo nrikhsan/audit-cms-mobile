@@ -268,6 +268,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
           } else {
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
+            final nominalLoss = detail.nominalLoss != null ? CurrencyFormat.convertToIdr(detail.nominalLoss, 2) : null;
             refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -349,10 +350,10 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
 
                           Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.nominalLoss}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(nominalLoss ?? '', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Bats evaluasi :', style: CustomStyles.textBold15Px),
+                          Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.evaluationLimitation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),

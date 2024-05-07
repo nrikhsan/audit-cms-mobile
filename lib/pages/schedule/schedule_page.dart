@@ -587,7 +587,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
                               final status = mainSchedule.status;
-                              final isActive = mainSchedule.isActive;
+                              // final isActive = mainSchedule.isActive;
                               final kka = mainSchedule.kka?.filename;
                               final startDate = DateTime.parse(mainSchedule.startDate!);
                               final endDate = DateTime.parse(mainSchedule.endDate!);

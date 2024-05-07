@@ -58,6 +58,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
           pagingController: controllerAuditArea.pagingControllerBapAuditArea, 
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (_, bap, index){
+              final limitEvaluation = DateTime.parse('${bap.clarification?.evaluationLimitation}');
               return GestureDetector(
                   child: Card(
                     elevation: 0,
@@ -79,7 +80,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
                             ],
                           ),
                           const SizedBox(height: 15),
-                          Text('Batas evaluasi : ${bap.clarification!.evaluationLimitation}', style: CustomStyles.textMedium13Px),
+                          Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
                           Text('Kode BAP : ${bap.code}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
@@ -152,6 +153,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
           pagingController: controllerAuditRegion.pagingControllerBap, 
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (_, bap, index){
+              final limitEvaluation = DateTime.parse('${bap.clarification?.evaluationLimitation}');
               return GestureDetector(
                   child: Card(
                     elevation: 0,
@@ -174,7 +176,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                           ),
                           const SizedBox(height: 15),
 
-                          Text('Batas evaluasi : ${bap.clarification!.evaluationLimitation}', style: CustomStyles.textMedium13Px),
+                          Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
                           Text('Kode BAP : ${bap.code}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
