@@ -219,8 +219,8 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
     endDateControllerSpecialSchedule.text = widget.endDate;
     scheduleDescControllerSpecialSchedule.text = widget.desc;
     controllerAuditArea.loadBranchAuditArea(widget.user);
-    users = widget.user;
-    branch = widget.branch;
+    _users = widget.user;
+    _branch = widget.branch;
     super.initState();
   }
 
@@ -232,8 +232,8 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
     super.dispose();
   }
 
-  int? users;
-  int? branch;
+  int? _users;
+  int? _branch;
 
   @override
   Widget build(BuildContext context) {
@@ -284,7 +284,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                       child: DropdownButton(
                         iconEnabledColor: CustomColors.blue,
                         borderRadius: BorderRadius.circular(10),
-                        value: users,
+                        value: _users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
@@ -294,9 +294,9 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           }).toList(),
                           onChanged: (value)async{
                           setState(() {
-                            users = value;
+                            _users = value;
                             controllerAuditArea.loadBranchAuditArea(value);
-                            branch = null;
+                            _branch = null;
                           });
                           }
                       ),
@@ -319,7 +319,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: branch,
+                          value: _branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
@@ -329,7 +329,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              branch = value;
+                              _branch = value;
                             });
                           }
                       ),
@@ -352,14 +352,14 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                             backgroundColor: CustomColors.blue
                           ),
                           onPressed: ()async{
-                            if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
+                            if (_users == null || _branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
                               snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
                               snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
                               snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
-                            controllerAuditArea.editSpecialSchedule(widget.scheduleId, users!, branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
+                            controllerAuditArea.editSpecialSchedule(widget.scheduleId, _users!, _branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
                               Navigator.pop(context);
                             }
                           },

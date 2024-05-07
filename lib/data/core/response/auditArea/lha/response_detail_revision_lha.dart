@@ -56,7 +56,7 @@ class DataDetailRevision {
   String? temporaryRecommendations;
   String? permanentRecommendations;
   int? isResearch;
-  int? createdBy;
+  CreatedBy? createdBy;
   String? createdAt;
 
   DataDetailRevision(
@@ -84,7 +84,9 @@ class DataDetailRevision {
     temporaryRecommendations = json['temporary_recommendations'];
     permanentRecommendations = json['permanent_recommendations'];
     isResearch = json['is_research'];
-    createdBy = json['created_by'];
+    createdBy = json['created_by'] != null
+        ? new CreatedBy.fromJson(json['created_by'])
+        : null;
     createdAt = json['created_at'];
   }
 
@@ -103,7 +105,9 @@ class DataDetailRevision {
     data['temporary_recommendations'] = this.temporaryRecommendations;
     data['permanent_recommendations'] = this.permanentRecommendations;
     data['is_research'] = this.isResearch;
-    data['created_by'] = this.createdBy;
+    if (this.createdBy != null) {
+      data['created_by'] = this.createdBy!.toJson();
+    }
     data['created_at'] = this.createdAt;
     return data;
   }
@@ -163,6 +167,36 @@ class CaseCategory {
     data['updated_at'] = this.updatedAt;
     if (this.cases != null) {
       data['cases'] = this.cases!.toJson();
+    }
+    return data;
+  }
+}
+
+class CreatedBy {
+  int? id;
+  String? fullname;
+  String? initialName;
+  String? nip;
+  Cases? level;
+
+  CreatedBy({this.id, this.fullname, this.initialName, this.nip, this.level});
+
+  CreatedBy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    fullname = json['fullname'];
+    initialName = json['initial_name'];
+    nip = json['nip'];
+    level = json['level'] != null ? new Cases.fromJson(json['level']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['fullname'] = this.fullname;
+    data['initial_name'] = this.initialName;
+    data['nip'] = this.nip;
+    if (this.level != null) {
+      data['level'] = this.level!.toJson();
     }
     return data;
   }

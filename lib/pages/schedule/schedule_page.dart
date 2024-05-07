@@ -275,9 +275,13 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                             itemBuilder: (_, schedule, index){
                               final createdBy = schedule.createdBy!.level?.name;
                               final status = schedule.status;
+                              final startDate = DateTime.parse(schedule.startDate!);
+                              final endDate = DateTime.parse(schedule.endDate!);
+                              final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+                              final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                                return GestureDetector(
                                 onTap: (){
-                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: schedule.startDate, endDate:  schedule.endDate, kka: schedule.kka?.filename, createdBy: createdBy));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: outputStartDate, endDate:  outputEndDate, kka: schedule.kka?.filename, createdBy: createdBy));
                               },
                               onLongPress: schedule.status == 'TODO' ? ()async{
                               if (createdBy == 'PUSAT') {
@@ -354,7 +358,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       const SizedBox(height: 5),
                                       Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
                                       const SizedBox(height: 5),
-                                      Text('Tanggal : ${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
 
                                      Wrap(
                                       children: [
@@ -367,8 +371,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                                                 ),
                                                 onPressed: schedule.status == 'TODO' ? (){
-                                                  String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.startDate!));
-                                                    String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(schedule.endDate!));
+                                                  String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                  String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
                                                     Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
                                                     user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description!));
@@ -423,6 +427,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, reschedules, index){
                               final statusReschedules = reschedules.status;
+                              final startDate = DateTime.parse(reschedules.startDate!);
+                              final endDate = DateTime.parse(reschedules.endDate!);
+                              final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+                              final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -462,14 +470,14 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       const SizedBox(height: 5),
                                       Text('Kategori : ${reschedules.category}', style: CustomStyles.textMedium13Px),
                                       const SizedBox(height: 5),
-                                      Text('Tanggal : ${reschedules.startDate} s/d ${reschedules.endDate}', style: CustomStyles.textMedium13Px),
+                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(reschedules.startDate!));
-                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(reschedules.endDate!));
+                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
                                 if (reschedules.status == 'PENDING') {
                                   Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!, startDate: startDate, endDate: endDate, 
                                     user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description!));
@@ -581,6 +589,10 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                               final status = mainSchedule.status;
                               final isActive = mainSchedule.isActive;
                               final kka = mainSchedule.kka?.filename;
+                              final startDate = DateTime.parse(mainSchedule.startDate!);
+                              final endDate = DateTime.parse(mainSchedule.endDate!);
+                              final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+                              final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                               return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -625,26 +637,22 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       const SizedBox(height: 10),
                                         Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                         Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
-                                        Text('Tanggal : ${mainSchedule.startDate} s/d ${mainSchedule.endDate}', style: CustomStyles.textMedium13Px),
+                                        Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                  if (isActive == 1) {
-                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
-                                  } else if(isActive == 0){
-                                    snakcBarMessageRed('Alert', 'Anda harus mengunggah KKA terlebih dahulu untuk membuka jadwal berikutnya');
-                                  }else if(status == 'TODO'){
-                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
+                                  if(status == 'TODO'){
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'PROGRESS'){
-                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'DONE'){
-                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'PENDING'){
                                     snakcBarMessageRed('Alert', 'Anda harus reschedule terlebih dahulu');
                                   }else if(status == 'APPROVE'){
-                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: mainSchedule.startDate!, endDate: mainSchedule.endDate!));
+                                    Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }
                                 },
                               );
@@ -687,8 +695,11 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                             builderDelegate: PagedChildBuilderDelegate(
                               itemBuilder: (_, schedule, index){
                                 final status = schedule.status;
-                                final isActive = schedule.isActive;
                                 final kka = schedule.kka?.filename;
+                                final startDate = DateTime.parse(schedule.startDate!);
+                                final endDate = DateTime.parse(schedule.endDate!);
+                                final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+                                final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                                 return GestureDetector(
                                 child: Card(
                                 elevation: 0,
@@ -733,22 +744,18 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                       const SizedBox(height: 10),
                                         Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
                                         Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
-                                        Text('Tanggal : ${schedule.startDate} s/d ${schedule.endDate}', style: CustomStyles.textMedium13Px),
+                                        Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
                                     ],
                                   ),
                                 ),
                               ),
                               onTap: (){
-                                if (isActive == 1) {
-                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: schedule.startDate!, endDate: schedule.endDate!));
-                                  } else if(isActive == 0){
-                                    snakcBarMessageRed('Alert', 'Anda harus mengunggah KKA terlebih dahulu untuk membuka jadwal berikutnya');
-                                  }else if(status == 'TODO'){
-                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: schedule.startDate!, endDate: schedule.endDate!));
+                                  if(status == 'TODO'){
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'PROGRESS'){
-                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: schedule.startDate!, endDate: schedule.endDate!));
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'DONE'){
-                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: schedule.startDate!, endDate: schedule.endDate!));
+                                    Get.to(() => DetailSpecialScheduleAuditRegion(specialScheduleId: schedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }
                               },
                             );

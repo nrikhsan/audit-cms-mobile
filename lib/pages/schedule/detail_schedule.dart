@@ -64,8 +64,14 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
             final detail = schedule.schedule;
             final kka = schedule.kka;
             final lha = schedule.lha;
-            final startDate = detail?.startDateRealization;
-            final endDate = detail?.endDateRealization;
+            final startDate = DateTime.parse('${detail?.startDate}');
+            final endDateDate = DateTime.parse('${detail?.endDate}');
+            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
+
+            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
+            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+
             refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +89,7 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
 
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
+                Text('$outputStartDate s/d $outputEndDate',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
@@ -101,13 +107,13 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
 
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(startDate != null ? '${detail.startDateRealization}' : '-',
+                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(endDate != null ? '${detail.endDateRealization}' : '-',
+                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 
@@ -338,8 +344,15 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
             final detail = controllerAuditArea.detailSpecialScheduleAuditArea.value?.schedule;
             final kka = controllerAuditArea.detailSpecialScheduleAuditArea.value?.kka;
             final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
-            final startDate = detail?.startDateRealization;
-            final endDate = detail?.endDateRealization;
+
+            final startDate = DateTime.parse('${detail?.startDate}');
+            final endDateDate = DateTime.parse('${detail?.endDate}');
+            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
+            
+            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
+            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+
             refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,7 +368,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 20),
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
+                Text('$outputStartDate s/d $outputEndDate',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
@@ -368,17 +381,19 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(startDate != null ? '${detail.startDateRealization}' : '-',
+                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(endDate != null ? '${detail.endDateRealization}' : '-',
+                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Wrap(
@@ -587,8 +602,20 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
             final detail = controllerAuditArea.detailRescheduleAuditArea.value!.schedule;
             final kka = controllerAuditArea.detailRescheduleAuditArea.value!.kka;
             final lha = controllerAuditArea.detailRescheduleAuditArea.value!.lha;
-            final startDate = detail?.startDateRealization;
-            final endDate = detail?.endDateRealization;
+
+            final startDate = DateTime.parse('${detail?.startDate}');
+            final endDateDate = DateTime.parse('${detail?.endDate}');
+            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
+            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
+
+            final newStartDate = DateTime.parse('${detail?.newStartDate}');
+            final newEendDateDate = DateTime.parse('${detail?.newEndDate}');
+            final outputNewStartDate = DateFormat('dd-MM-yyyy').format(newStartDate);
+            final outputNewEndDate = DateFormat('dd-MM-yyyy').format(newEendDateDate);
+            
+            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
+            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+
             refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -604,12 +631,12 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 20),
                 Text('Tanggal jadwal lama :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
+                Text('$outputStartDate s/d $outputEndDate',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Tanggal jadwal baru :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.newStartDate} s/d ${detail.newEndDate}',
+                Text('$outputNewStartDate s/d $outputNewEndDate',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
@@ -626,17 +653,19 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
-               Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
+
+                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(startDate != null ? '${detail.startDateRealization}' : '-',
+                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(endDate != null ? '${detail.endDateRealization}' : '-',
+                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Wrap(
@@ -866,8 +895,13 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
             final detail = schedule.schedule;
             final kka = schedule.kka;
             final lha = schedule.lha;
-            final startDate = detail?.startDateRealization;
-            final endDate = detail?.endDateRealization;
+
+            final startDateSchedule = DateTime.parse('${detail?.startDate}');
+            final endDateSchedule = DateTime.parse('${detail?.endDate}');
+
+            final startDateRealization = detail?.startDateRealization != null ? DateTime.parse('${detail?.startDateRealization}') : null;
+            final endDateRealization = detail?.endDateRealization != null ? DateTime.parse('${detail?.endDateRealization}') : null;
+
             refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -885,7 +919,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
 
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
+                Text('${DateFormat('dd-MM-yyyy').format(startDateSchedule)} s/d ${DateFormat('dd-MM-yyyy').format(endDateSchedule)}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
@@ -903,13 +937,13 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
 
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(startDate != null ? '${detail.startDateRealization}' : '-',
+                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(endDate != null ? '${detail.endDateRealization}' : '-',
+                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
                 
@@ -1183,8 +1217,14 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
             final detail = controllerAuditRegion.detailSpecialSchedule.value?.schedule;
             final kka = controllerAuditRegion.detailSpecialSchedule.value?.kka;
             final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
-            final startDate = detail?.startDateRealization;
-            final endDate = detail?.endDateRealization;
+
+            final startDateRealization = detail?.startDateRealization != null ? DateTime.parse('${detail?.startDateRealization}') : null;
+            final endDateRealization = detail?.endDateRealization != null ? DateTime.parse('${detail?.endDateRealization}') : null;
+
+
+            final startDate = DateTime.parse('${detail?.startDate}');
+            final endDate = DateTime.parse('${detail?.endDate}');
+
             refreshController.add(SwipeRefreshState.hidden);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1198,11 +1238,13 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                 const SizedBox(height: 5),
                 Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Tanggal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text('${detail.startDate} s/d ${detail.endDate}',
+                Text('${DateFormat('dd-MM-yyyy').format(startDate)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Text('${detail.description}',
@@ -1213,17 +1255,19 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
                 const SizedBox(height: 5),
                 Text('${detail.status}', style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(startDate != null ? '${detail.startDateRealization}' : '-',
+                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
 
                 Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
-                Text(endDate != null ? '${detail.endDateRealization}' : '-',
+                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
                     style: CustomStyles.textRegular13Px),
                 const SizedBox(height: 20),
+
                 Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
                 const SizedBox(height: 5),
                 Wrap(
