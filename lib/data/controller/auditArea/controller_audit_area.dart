@@ -699,7 +699,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void pickFileClarificationAuditRegion() async {
+  void pickFileClarificationAuditArea() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -933,6 +933,33 @@ void getDetailRescheduleAuditArea(int id)async{
       penaltyIdList.clear();
       snakcBarMessageRed('Gagal', 'Tindak lanjut gagal dibuat');
       throw Exception(error);
+    }
+  }
+
+  void uploadFollowUp(String filePath, int followUpId)async{
+    try {
+      final response = await repository.uploadFollowUpAuditArea(filePath, followUpId);
+      pagingControllerFollowUp.refresh();
+      message(response.toString());
+      Get.snackbar('Berhasil', 'Tindak lanut berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      selectedFileName.value = '';
+    } catch (error) {
+      selectedFileName.value = '';
+      throw Exception(error);
+    }
+  }
+
+  void pickFileFollowUpAuditArea() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      selectedFileName.value = result.files.single.name;
+      selectedFileName.value = filePath;
+      } else {
+      selectedFileName.value = '';
     }
   }
 

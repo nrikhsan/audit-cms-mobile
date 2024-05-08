@@ -62,6 +62,7 @@ class AppConstant{
   static const String followUpDocument = '${baseUrl}api/followup/file/';
   static const String detailFollowUp = 'api/followup/';
   static const String downloadFollowUp = '${baseUrl}api/followup/download/';
+  static const String uploadFollowUp = 'api/followup/file';
 
   //kka
   static const String uploadKka = 'api/kka/upload';

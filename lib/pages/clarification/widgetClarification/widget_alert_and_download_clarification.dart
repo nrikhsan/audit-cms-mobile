@@ -553,7 +553,7 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditA
 
                 TextButton(
                   onPressed: () =>
-                      controllerAuditArea.pickFileClarificationAuditRegion(),
+                      controllerAuditArea.pickFileClarificationAuditArea(),
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 

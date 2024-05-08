@@ -593,6 +593,25 @@ class ApiService {
     }
   }
 
+  Future<ResponseMessage>uploadFollowUp(String filePath, int followUpId)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'multipart/form-data'
+    };
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(filePath),
+      'followup_id': followUpId
+    });
+    try {
+    final response = await dio.post(AppConstant.uploadFollowUp, data: formData);
+    print(response.data);
+    return ResponseMessage.fromJson(response.data);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {

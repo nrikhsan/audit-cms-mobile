@@ -115,6 +115,7 @@ abstract class Repositories {
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc);
+  Future<ResponseMessage>uploadFollowUpAuditArea(String filePath, int followupId);
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
 
   //user profile
@@ -389,6 +390,11 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc){
     return apiService.inputFollowUpAuditArea(followUpId, penaltyId, charCoss, desc);
+  }
+
+  @override
+  Future<ResponseMessage> uploadFollowUpAuditArea(String filePath, int followupId) {
+    return apiService.uploadFollowUp(filePath, followupId);
   }
   
   @override

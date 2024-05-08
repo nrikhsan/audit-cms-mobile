@@ -88,7 +88,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                                       Text('Buat', style: CustomStyles.textMedium13Px),
                                       if(status == 'PROGRESS')
                                       Text('Sedang dibuat', style: CustomStyles.textMedium13Px),
-                                      if(status == 'DONE')
+                                      if(status == 'CLOSE')
                                       Text('Selesai', style: CustomStyles.textMedium13Px),
                                     ],
                                   )
@@ -105,8 +105,8 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       if(status == 'CREATE') {
                         Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
                       }else if(status == 'PROGRESS') {
-                        Get.to(() => DocumentFollowUpPage(fileName: followUp.filename,));
-                      }else if(status == 'DONE'){
+                        Get.to(() => DocumentFollowUpPage(fileName: followUp.filename, followUpId: followUp.id));
+                      }else if(status == 'CLOSE'){
                         Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                       }
                     },

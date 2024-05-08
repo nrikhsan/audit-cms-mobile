@@ -15,7 +15,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DocumentFollowUpPage extends StatefulWidget {
   final String? fileName;
-  const DocumentFollowUpPage({super.key, required this.fileName});
+  final int? followUpId;
+  const DocumentFollowUpPage({super.key, required this.fileName, required this.followUpId});
 
   @override
   State<DocumentFollowUpPage> createState() => _DocumentFollowUpPageState();
@@ -87,22 +88,43 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                 ),
                         
                                 const SizedBox(height: 15),
-                                SizedBox(
-                                  width: double.maxFinite,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: CustomStyles.customRoundedButton,
-                                      backgroundColor: CustomColors.blue
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton,
+                                          backgroundColor: CustomColors.blue
+                                        ),
+                                        onPressed: () async{
+                                          if (await requestPermission(Permission.storage) == true) {
+                                            downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
+                                          } else {
+                                            showSnackbarPermission(context);
+                                          }
+                                        }, 
+                                        child: Text('Download', style: CustomStyles.textMediumWhite15Px)
+                                      ),
                                     ),
-                                    onPressed: () async{
-                                      if (await requestPermission(Permission.storage) == true) {
-                                        downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
-                                      } else {
-                                        showSnackbarPermission(context);
-                                      }
-                                    }, 
-                                    child: Text('Download file', style: CustomStyles.textMediumWhite15Px)
-                                  ),
+
+                                    const SizedBox(width: 5),
+
+                                    SizedBox(
+                                      width: 150,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton,
+                                          backgroundColor: CustomColors.green
+                                        ),
+                                        onPressed: () async{
+                                          uploadFollowUpAuditArea(context, widget.followUpId!, controllerAuditArea);
+                                        }, 
+                                        child: Text('Upload', style: CustomStyles.textMediumWhite15Px)
+                                      ),
+                                    )
+                                  ],
                                 )
                               ],
                             )
