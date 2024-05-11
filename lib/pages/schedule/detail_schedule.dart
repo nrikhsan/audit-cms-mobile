@@ -276,10 +276,18 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+  if (today.isAtSameMomentAs(startDate)) {
     Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  } else {
+  }else if(today.isAfter(startDate)){
+    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+  }else if(today.isBefore(endDate)){
+    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+  }else if(today.isAtSameMomentAs(endDate)){
+    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+  }else if(today.isBefore(startDate)){
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+  }else if(today.isAfter(endDate)){
+    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
   }
 }
 
@@ -288,7 +296,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
     controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
-      floatingActionButton: widget.createdBy == 'PUSAT' ? SpeedDial(
+      floatingActionButton: widget.createdBy == 'PUSAT' || widget.createdBy == 'LEAD' ? SpeedDial(
         elevation: 0,
         backgroundColor: CustomColors.orange,
         animatedIcon: AnimatedIcons.menu_close,
@@ -825,10 +833,18 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+  if (today.isAtSameMomentAs(startDate)) {
     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  } else {
+  }else if(today.isAfter(startDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+  }else if(today.isBefore(endDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+  }else if(today.isAtSameMomentAs(endDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+  }else if(today.isBefore(startDate)){
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+  }else if(today.isAfter(endDate)){
+    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
   }
 }
 
@@ -1150,10 +1166,18 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
   endDate = DateTime.parse(formattedEndDate);
   today = DateTime.parse(formattedCurrentTime);
   
-  if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+  if (today.isAtSameMomentAs(startDate)) {
     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  } else {
+  }else if(today.isAfter(startDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+  }else if(today.isBefore(endDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+  }else if(today.isAtSameMomentAs(endDate)){
+    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+  }else if(today.isBefore(startDate)){
     return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+  }else if(today.isAfter(endDate)){
+    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
   }
 }
 

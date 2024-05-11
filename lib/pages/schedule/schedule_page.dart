@@ -281,10 +281,11 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
                                return GestureDetector(
                                 onTap: (){
-                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: outputStartDate, endDate:  outputEndDate, kka: schedule.kka?.filename, createdBy: createdBy));
+                                Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: outputStartDate, 
+                                endDate:  outputEndDate, kka: schedule.kka?.filename, createdBy: createdBy));
                               },
                               onLongPress: schedule.status == 'TODO' ? ()async{
-                              if (createdBy == 'PUSAT') {
+                              if (createdBy == 'PUSAT' || createdBy == 'LEAD') {
                                   null;
                               } else {
                                 alertDeleteWidget(
@@ -362,7 +363,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
                                      Wrap(
                                       children: [
-                                        createdBy == 'PUSAT' ? const SizedBox()
+                                        createdBy == 'PUSAT' || createdBy == 'LEAD' ? const SizedBox()
                                         : Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [

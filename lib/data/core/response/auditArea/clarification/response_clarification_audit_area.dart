@@ -1,4 +1,3 @@
-
 class ResponseClarificationAuditArea {
   Meta? meta;
   String? message;
@@ -59,7 +58,7 @@ class DataClarificationAuditArea {
   int? numberOfElement;
   bool? empty;
   Sort? sort;
-  List<ContentListClarificationAuditArea>? content;
+  List<ContentListClarificationAuditArea>?content;
 
   DataClarificationAuditArea(
       {this.pageable,
@@ -184,7 +183,7 @@ class ContentListClarificationAuditArea {
   User? user;
   Branch? branch;
   Cases? cases;
-  Branch? caseCategory;
+  CaseCategory? caseCategory;
   String? code;
   String? priority;
   String? fileName;
@@ -218,7 +217,7 @@ class ContentListClarificationAuditArea {
         json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
     cases = json['cases'] != null ? new Cases.fromJson(json['cases']) : null;
     caseCategory = json['case_category'] != null
-        ? new Branch.fromJson(json['case_category'])
+        ? new CaseCategory.fromJson(json['case_category'])
         : null;
     code = json['code'];
     priority = json['priority'];
@@ -320,18 +319,115 @@ class Level {
 class Branch {
   int? id;
   String? name;
+  String? createdAt;
+  String? updatedAt;
+  Area? area;
 
-  Branch({this.id, this.name});
+  Branch({this.id, this.name, this.createdAt, this.updatedAt, this.area});
 
   Branch.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    area = json['area'] != null ? new Area.fromJson(json['area']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.area != null) {
+      data['area'] = this.area!.toJson();
+    }
+    return data;
+  }
+}
+
+class Area {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  Region? region;
+
+  Area({this.id, this.name, this.createdAt, this.updatedAt, this.region});
+
+  Area.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    region =
+        json['region'] != null ? new Region.fromJson(json['region']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.region != null) {
+      data['region'] = this.region!.toJson();
+    }
+    return data;
+  }
+}
+
+class Region {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  Main? main;
+
+  Region({this.id, this.name, this.createdAt, this.updatedAt, this.main});
+
+  Region.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    main = json['main'] != null ? new Main.fromJson(json['main']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.main != null) {
+      data['main'] = this.main!.toJson();
+    }
+    return data;
+  }
+}
+
+class Main {
+  int? id;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+
+  Main({this.id, this.name, this.createdAt, this.updatedAt});
+
+  Main.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -354,6 +450,25 @@ class Cases {
     data['id'] = this.id;
     data['name'] = this.name;
     data['code'] = this.code;
+    return data;
+  }
+}
+
+class CaseCategory {
+  int? id;
+  String? name;
+
+  CaseCategory({this.id, this.name});
+
+  CaseCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }

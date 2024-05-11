@@ -476,8 +476,8 @@ class InputDataReschedulePage extends StatefulWidget {
   final int rescheduleId;
   final String startDate;
   final String endDate;
-  final int user;
-  final int branch;
+  final int? user;
+  final int? branch;
   final String desc;
   const InputDataReschedulePage({super.key, required this.rescheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
@@ -499,8 +499,8 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
     endDateControllerReschedule.text = widget.endDate;
     scheduleDescControllerReschedule.text = widget.desc;
     controllerAuditArea.loadBranchAuditArea(widget.user);
-    users  = widget.user;
-    branch = widget.branch;
+    _users  = widget.user;
+    _branch = widget.branch;
     super.initState();
   }
 
@@ -512,8 +512,8 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
     super.dispose();
   }
 
-  int? users;
-  int? branch;
+  int? _users;
+  int? _branch;
 
   @override
   Widget build(BuildContext context) {
@@ -565,7 +565,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: users,
+                          value: _users,
                           hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
@@ -575,10 +575,10 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              users = value;
+                              _users = value;
                               final userId = value;
                               controllerAuditArea.loadBranchAuditArea(userId);
-                              branch = null;
+                              _branch = null;
                             });
                           }
                       ),
@@ -601,7 +601,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                       child: DropdownButton(
                           iconEnabledColor: CustomColors.blue,
                           borderRadius: BorderRadius.circular(10),
-                          value: branch,
+                          value: _branch,
                           hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
                           items: controllerAuditArea.branchAuditArea.map((branch){
                             return DropdownMenuItem(
@@ -611,7 +611,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           }).toList(),
                           onChanged: (value)async{
                             setState(() {
-                              branch = value;
+                               _branch = value;
                             });
                           }  
                       ),
@@ -637,7 +637,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             backgroundColor: CustomColors.blue
                         ),
                         onPressed: ()async{
-                          if (users == null || branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
+                          if (_users == null || _branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
                               snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
                             }else if(DateTime.parse(startDateControllerReschedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerReschedule.text))){
                               snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
@@ -646,7 +646,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             }else if(startDateControllerReschedule.text == widget.startDate && endDateControllerReschedule.text == widget.endDate){
                               snakcBarMessageRed('Gagal', 'tanggal harus diperbarui');
                             }else{
-                              controllerAuditArea.requestReschedule(users, widget.rescheduleId, branch, 
+                              controllerAuditArea.requestReschedule(_users, widget.rescheduleId, _branch, 
                                 startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);
                               Get.back();
                             }

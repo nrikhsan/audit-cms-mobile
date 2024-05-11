@@ -83,7 +83,7 @@ void filterClarificationAuditArea(
                 ),
 
                   const SizedBox(height: 20),
-                  Text('Dengan cabanng :', style: CustomStyles.textMedium15Px),
+                  Text('Dengan cabang :', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
                   Obx(() => SizedBox(
                     width: double.maxFinite,
