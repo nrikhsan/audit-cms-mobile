@@ -1,4 +1,5 @@
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -57,6 +58,13 @@ Widget formInputLoss(TextEditingController lossController) {
     controller: lossController,
     keyboardType: TextInputType.number,
     cursorColor: CustomColors.blue,
+    inputFormatters: [
+      CurrencyTextInputFormatter.currency(
+        locale: 'id_ID',
+        decimalDigits: 2,
+        symbol: 'Rp.'
+      )
+    ],
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
         labelText: 'Masukan kerugian...',

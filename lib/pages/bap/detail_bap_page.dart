@@ -4,7 +4,6 @@ import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/helper/styles/formatter.dart';
 import 'package:audit_cms/pages/bap/input_bap_page.audit_region.dart';
 import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           final fileBap = bap.filename;
-          final nominalLoss = CurrencyFormat.convertToIdr(bap.clarification?.nominalLoss, 2);
+          final nominalLoss = bap.clarification?.nominalLoss;
           refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -86,7 +85,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
 
                   Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text(nominalLoss, style: CustomStyles.textRegular13Px),
+                  Text(nominalLoss ?? 'Tidak ada nominal kerugian', style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
                   Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
@@ -211,7 +210,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
         }else{
           final fileBap = bap.filename;
-          final nominalLoss = CurrencyFormat.convertToIdr(bap.clarification?.nominalLoss, 2);
+          final nominalLoss = bap.clarification?.nominalLoss;
           refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -237,8 +236,8 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
 
                   Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text(nominalLoss, style: CustomStyles.textRegular13Px),
-                  const SizedBox(height: 15),
+                  Text(nominalLoss ?? 'Tidak ada nominal kerugian', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                  const SizedBox(height: 20),
 
                   Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
