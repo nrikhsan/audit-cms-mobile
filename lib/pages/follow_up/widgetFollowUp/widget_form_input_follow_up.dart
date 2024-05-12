@@ -1,6 +1,7 @@
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 Widget formInputRealizationFollowUp(
     TextEditingController realizationController) {
@@ -38,22 +39,19 @@ Widget formInputExplanationPenalty(
   );
 }
 
-Widget formInputcharCossPenalty(
-  TextEditingController explanationPenaltyController) {
+Widget formInputcharCossPenalty(TextEditingController lossController, {required String symbol}) {
   return TextField(
     keyboardType: TextInputType.number,
-    controller: explanationPenaltyController,
+    controller: lossController,
     cursorColor: CustomColors.blue,
     inputFormatters: [
-      CurrencyTextInputFormatter.currency(
-        locale: 'id_ID',
-        decimalDigits: 2,
-        symbol: 'Rp.'
-      )
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      if(symbol.isNotEmpty) currencyInputFormatter(symbol: symbol),
     ],
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
         labelText: 'Masukan nominal kerugian...',
+
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey)),
@@ -61,4 +59,26 @@ Widget formInputcharCossPenalty(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey))),
   );
+}
+
+TextInputFormatter currencyInputFormatter({required String symbol}) {
+  return TextInputFormatter.withFunction((oldValue, newValue) {
+    String newText = newValue.text;
+    newText = _formatCurrency(newText);
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
+  });
+}
+
+String _formatCurrency(String value) {
+  if (value.isEmpty) return '';
+  final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+  String result = formatter.format(double.parse(value));
+  return result;
+}
+
+String convertToServerString(String formattedValue) {
+  return formattedValue.replaceAll(RegExp(r'[^0-9]'), '');
 }

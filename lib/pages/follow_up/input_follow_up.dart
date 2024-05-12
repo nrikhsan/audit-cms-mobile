@@ -105,7 +105,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   const SizedBox(height: 15),
                   Text('Kerugian :', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  formInputcharCossPenalty(charCossController),
+                  formInputcharCossPenalty(charCossController, symbol: 'Rp'),
                 ],
               ): const SizedBox()
                 ],
@@ -171,7 +171,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     if (controllerAuditArea.penaltyIdList.isEmpty) {
                       snakcBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
-                      controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCossController.text, explanationPenaltyController.text);
+                      String formattedValue = charCossController.text;
+                      String cahrCossServerValue = convertToServerString(formattedValue);
+                      controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, cahrCossServerValue, explanationPenaltyController.text);
+                      print('ni hasilnya : $cahrCossServerValue');
                       explanationPenaltyController.clear();
                     }
                   }, 

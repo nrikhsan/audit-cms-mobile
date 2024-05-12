@@ -61,8 +61,8 @@ Widget formInputLoss(TextEditingController lossController) {
     inputFormatters: [
       CurrencyTextInputFormatter.currency(
         locale: 'id_ID',
-        decimalDigits: 2,
-        symbol: 'Rp.'
+        decimalDigits: 0,
+        symbol: 'Rp'
       )
     ],
     decoration: InputDecoration(

@@ -138,11 +138,11 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(lossController.text.isNotEmpty){
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text.toString(), descController.text, _followUp!);
                                 Get.to(() => const BapAuditAreaPage());
                               }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavePageAuditArea());
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text.toString(), descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)
