@@ -135,14 +135,20 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                             onPressed: () async {
+                             String nominalLossText = lossController.text;
+
+                              nominalLossText = nominalLossText.replaceAll('Rp', '');
+                              nominalLossText = nominalLossText.replaceAll('.', '');
+
+                              double loss = double.parse(nominalLossText);
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(lossController.text.isNotEmpty){
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text.toString(), descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                                 Get.to(() => const BapAuditAreaPage());
                               }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavePageAuditArea());
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, lossController.text.toString(), descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)
@@ -285,14 +291,19 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                             onPressed: () async {
+                              String nominalLossText = lossController.text;
+                              nominalLossText = nominalLossText.replaceAll('Rp', '');
+                              nominalLossText = nominalLossText.replaceAll('.', '');
+
+                              double loss = double.parse(nominalLossText);
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(lossController.text.isNotEmpty){
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                                 Get.to(() => const BapAuditRegionPage());
                               }else if (lossController.text.isEmpty){
                                 Get.offAll(() => BotNavAuditRegion());
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, lossController.text, descController.text, _followUp!);
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)

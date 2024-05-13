@@ -727,7 +727,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-   void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, String loss, String description, int followUp)async{
+   void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
     try {
       final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       pagingControllerClarificationAuditArea.refresh();
@@ -921,7 +921,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   RxList<int>penaltyIdList = RxList<int>();
 
-  void inputFollowUpAuditArea(int followUpId, String charCoss, String desc)async{
+  void inputFollowUpAuditArea(int followUpId, num charCoss, String desc)async{
     try{
      final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, charCoss, desc);
       pagingControllerFollowUp.refresh();

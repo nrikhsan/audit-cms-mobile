@@ -168,13 +168,14 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   ),
                   
                   onPressed: (){
+                    String chargingCoss = charCossController.text;
+                    chargingCoss = chargingCoss.replaceAll('Rp', '');
+                    chargingCoss = chargingCoss.replaceAll('.', '');
+                    double charCoss = double.parse(chargingCoss);
                     if (controllerAuditArea.penaltyIdList.isEmpty) {
                       snakcBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
-                      String formattedValue = charCossController.text;
-                      String cahrCossServerValue = convertToServerString(formattedValue);
-                      controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, cahrCossServerValue, explanationPenaltyController.text);
-                      print('ni hasilnya : $cahrCossServerValue');
+                      controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
                       explanationPenaltyController.clear();
                     }
                   }, 

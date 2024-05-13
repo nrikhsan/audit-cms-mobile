@@ -1,7 +1,6 @@
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 Widget formInputRealizationFollowUp(
     TextEditingController realizationController) {
@@ -45,8 +44,11 @@ Widget formInputcharCossPenalty(TextEditingController lossController, {required 
     controller: lossController,
     cursorColor: CustomColors.blue,
     inputFormatters: [
-      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-      if(symbol.isNotEmpty) currencyInputFormatter(symbol: symbol),
+      CurrencyTextInputFormatter.currency(
+        locale: 'id_ID',
+        decimalDigits: 0,
+        symbol: 'Rp'
+      )
     ],
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
@@ -59,26 +61,4 @@ Widget formInputcharCossPenalty(TextEditingController lossController, {required 
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey))),
   );
-}
-
-TextInputFormatter currencyInputFormatter({required String symbol}) {
-  return TextInputFormatter.withFunction((oldValue, newValue) {
-    String newText = newValue.text;
-    newText = _formatCurrency(newText);
-    return TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: newText.length),
-    );
-  });
-}
-
-String _formatCurrency(String value) {
-  if (value.isEmpty) return '';
-  final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
-  String result = formatter.format(double.parse(value));
-  return result;
-}
-
-String convertToServerString(String formattedValue) {
-  return formattedValue.replaceAll(RegExp(r'[^0-9]'), '');
 }

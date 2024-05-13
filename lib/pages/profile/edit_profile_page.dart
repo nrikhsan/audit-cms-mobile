@@ -7,10 +7,9 @@ import 'package:get/get.dart';
 
 //audit area
 class EditProfilePageAuditArea extends StatefulWidget {
-  final int id;
-  final String email;
-  final String username;
-  const EditProfilePageAuditArea({super.key, required this.id, required this.email, required this.username});
+  final String? email;
+  final String? username;
+  const EditProfilePageAuditArea({super.key, required this.email, required this.username});
 
   @override
   State<EditProfilePageAuditArea> createState() => _EditProfilePageAuditAreaState();
@@ -24,8 +23,8 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
   @override
   void initState() {
-    emailController.text = widget.email;
-    usernameController.text = widget.username;
+    emailController.text = widget.email!;
+    usernameController.text = widget.username!;
     super.initState();
   }
 
@@ -96,7 +95,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      showDialogEditProfileAuditArea(widget.id, emailController.text, usernameController.text);
+                      showDialogEditProfileAuditArea(emailController.text, usernameController.text);
                     },
                     child:
                         Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
@@ -108,7 +107,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
     );
   }
   
-  void showDialogEditProfileAuditArea(int id, String email, String username) {
+  void showDialogEditProfileAuditArea(String email, String username) {
     showDialog(
         context: context,
         builder: (_) {

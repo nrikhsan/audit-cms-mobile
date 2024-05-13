@@ -650,7 +650,7 @@ void getDetailUserAuditRegion() async {
     }
   }
 
-  void inputIdentificatinClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp)async{
+  void inputIdentificatinClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
     try {
       final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       dataInputIdentification.value = response.data;

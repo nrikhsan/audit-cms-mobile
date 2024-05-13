@@ -114,7 +114,7 @@ abstract class Repositories {
 
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc);
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, num charCoss, String desc);
   Future<ResponseMessage>uploadFollowUpAuditArea(String filePath, int followupId);
   Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
 
@@ -169,7 +169,7 @@ abstract class Repositories {
   String description, String priority);
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate);
   Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int id);
-  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp);
+  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp);
   Future<ResponseDetailClarificationAuditRegion>getDetailClarificationAuditRegion(int id);
 
   //BAP
@@ -388,7 +388,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String charCoss, String desc){
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, num charCoss, String desc){
     return apiService.inputFollowUpAuditArea(followUpId, penaltyId, charCoss, desc);
   }
 
@@ -559,7 +559,7 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, String loss, String description, int followUp) {
+  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp) {
     return apiService.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
   }
 

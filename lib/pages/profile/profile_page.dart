@@ -65,6 +65,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           }else{
             refreshController.add(SwipeRefreshState.hidden);
+            final userName = user.username;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,7 +82,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                   const SizedBox(height: 15),
                   Text('Username :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${user.username}', style: CustomStyles.textRegular13Px),
+                  Text(userName ?? '-', style: CustomStyles.textRegular13Px),
 
                   const SizedBox(height: 15),
                   Text('Email :', style: CustomStyles.textBold15Px),
@@ -97,7 +98,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Get.to(() => EditProfilePageAuditArea(id: user.id!, email: user.email!, username: user.username!));
+                        Get.to(() => EditProfilePageAuditArea(email: user.email, username: user.username));
                         },
                       child: Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
                     ),
