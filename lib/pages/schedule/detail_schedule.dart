@@ -21,18 +21,21 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 //main schedule
 class DetailMainSchedulePageAuditArea extends StatefulWidget {
   final int mainScheduleId;
-  const DetailMainSchedulePageAuditArea({super.key, required this.mainScheduleId});
+  const DetailMainSchedulePageAuditArea(
+      {super.key, required this.mainScheduleId});
 
   @override
   State<DetailMainSchedulePageAuditArea> createState() =>
       _DetailMainSchedulePageAuditAreaState();
 }
 
-class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePageAuditArea> {
-  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+class _DetailMainSchedulePageAuditAreaState
+    extends State<DetailMainSchedulePageAuditArea> {
+  final ControllerAuditArea controllerAuditArea =
+      Get.put(ControllerAuditArea(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
-  
+
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
@@ -50,185 +53,261 @@ class _DetailMainSchedulePageAuditAreaState extends State<DetailMainSchedulePage
         titleTextStyle: CustomStyles.textBold18Px,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
-          controllerAuditArea.getDetailMainScheduleAuditArea(widget.mainScheduleId);
-        },
-        children: [
-          SingleChildScrollView(
-          child: Obx(() {
-            final schedule = controllerAuditArea.detailMainScheduleAuditArea.value;
-          if (schedule == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            final detail = schedule.schedule;
-            final kka = schedule.kka;
-            final lha = schedule.lha;
-            final startDate = DateTime.parse('${detail?.startDate}');
-            final endDateDate = DateTime.parse('${detail?.endDate}');
-            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
-            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
+          padding: const EdgeInsets.all(15),
+          child: SwipeRefresh.material(
+            stateStream: refreshController.stream,
+            onRefresh: () {
+              controllerAuditArea
+                  .getDetailMainScheduleAuditArea(widget.mainScheduleId);
+            },
+            children: [
+              SingleChildScrollView(child: Obx(() {
+                final schedule =
+                    controllerAuditArea.detailMainScheduleAuditArea.value;
+                if (schedule == null) {
+                  return const Center(
+                      child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  final detail = schedule.schedule;
+                  final kka = schedule.kka;
+                  final lha = schedule.lha;
+                  final status = detail?.status;
+                  final startDate = DateTime.parse('${detail?.startDate}');
+                  final endDateDate = DateTime.parse('${detail?.endDate}');
+                  final outputStartDate =
+                      DateFormat('dd-MM-yyyy').format(startDate);
+                  final outputEndDate =
+                      DateFormat('dd-MM-yyyy').format(endDateDate);
 
-            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
-            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+                  DateTime? startDateRealization =
+                      detail?.startDateRealization != null
+                          ? DateTime.parse(detail!.startDateRealization!)
+                          : null;
+                  DateTime? endDateRealization =
+                      detail?.endDateRealization != null
+                          ? DateTime.parse(detail!.endDateRealization!)
+                          : null;
 
-            refreshController.add(SwipeRefreshState.hidden);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('$outputStartDate s/d $outputEndDate',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Wrap(
-                  children: [
-                    kka != null ? 
-                    SizedBox(
-                      width: 150,
-                      child: Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: CustomColors.lightGrey)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('File', style: CustomStyles.textMedium15Px),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: CustomColors.green,
-                                      shape: CustomStyles.customRoundedButton),
-                                  onPressed: () async {
-                                   if (await requestPermission(Permission.storage) == true) {
-                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
-                                   } else {
-                                     showSnackbarPermission(context);
-                                   }
-                                  },
-                                  child: Text('Unduh',
-                                      style: CustomStyles.textMediumWhite15Px)),
-                            ],
-                          ),
-                        ),
+                  refreshController.add(SwipeRefreshState.hidden);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail!.user!.fullname}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Nama cabang :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.branch!.name}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('$outputStartDate s/d $outputEndDate',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.description}',
+                          style: CustomStyles.textRegular13Px,
+                          textAlign: TextAlign.justify),
+                      const SizedBox(height: 20),
+                      Text('Status :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          if (status == 'TODO')
+                            Text('Belum dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PROGRESS')
+                            Text('Sedang dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'DONE')
+                            Text('Sudah selesai',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PENDING')
+                            Text('Pending', style: CustomStyles.textMedium13Px),
+                          if (status == 'REQUEST')
+                            Text('Menunggu persetujuan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'APPROVE')
+                            Text('Disetujui',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'REJECTED')
+                            Text('Ditolak', style: CustomStyles.textMedium13Px),
+                        ],
                       ),
-                    ) : Text('Auditor belum mengunggah KKA', style: CustomStyles.textRegular13Px)
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                Wrap(
-                  children: [
-                    lha != null ?
-                    ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      final isFlag = lha[index].isFlag;
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        final lhaId = lha[index].id;
-                                        final level = detail.user?.level?.name;
-                                        if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
-                                        }
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                        ));
-                    }) : Text('Auditor belum Membuat LHA', style: CustomStyles.textRegular13Px)
-                  ],
-                )
-              ],
-            );
-          }
-        }))
-        ],)
-      ),
+                      const SizedBox(height: 20),
+                      Text('Awal tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          startDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(startDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Akhir tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          endDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(endDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Kertas kerja audit',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          kka != null
+                              ? SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: CustomColors.lightGrey)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('File',
+                                              style:
+                                                  CustomStyles.textMedium15Px),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      CustomColors.green,
+                                                  shape: CustomStyles
+                                                      .customRoundedButton),
+                                              onPressed: () async {
+                                                if (await requestPermission(
+                                                        Permission.storage) ==
+                                                    true) {
+                                                  downloadKKaAuditArea(
+                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                } else {
+                                                  showSnackbarPermission(
+                                                      context);
+                                                }
+                                              },
+                                              child: Text('Unduh',
+                                                  style: CustomStyles
+                                                      .textMediumWhite15Px)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text('Auditor belum mengunggah KKA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('List laporan harian audit :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: [
+                          lha != null
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: lha.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    final isFlag = lha[index].isFlag;
+                                    return Card(
+                                        elevation: 0,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              color: CustomColors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  isFlag == 1
+                                                      ? Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .notifications_rounded,
+                                                                color:
+                                                                    CustomColors
+                                                                        .red,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                                'Belum melakukan klarifikasi',
+                                                                style: CustomStyles
+                                                                    .textMediumRed15Px)
+                                                          ],
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Text(
+                                                  'Cabang : ${lha[index].branch!.name}',
+                                                  style: CustomStyles
+                                                      .textBold15Px),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          shape: CustomStyles
+                                                              .customRoundedButton),
+                                                      onPressed: () {
+                                                        final lhaId =
+                                                            lha[index].id;
+                                                        final level = detail
+                                                            .user?.level?.name;
+                                                        if (lhaId != null) {
+                                                          Get.to(() =>
+                                                              DetailLhaPageAuditArea(
+                                                                  id: lhaId,
+                                                                  level:
+                                                                      level));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          'Lihat rincian',
+                                                          style: CustomStyles
+                                                              .textMediumGreen15Px))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                  })
+                              : Text('Auditor belum Membuat LHA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      )
+                    ],
+                  );
+                }
+              }))
+            ],
+          )),
     );
   }
 }
@@ -239,17 +318,26 @@ class DetailSpecialSchedulePageAuditArea extends StatefulWidget {
   final String? startDate;
   final String? endDate;
   final String? kka;
-  final String? createdBy; 
-  const DetailSpecialSchedulePageAuditArea({super.key, required this.specialScheduleId, required this.startDate, required this.endDate, required this.kka, this.createdBy});
+  final String? createdBy;
+  const DetailSpecialSchedulePageAuditArea(
+      {super.key,
+      required this.specialScheduleId,
+      required this.startDate,
+      required this.endDate,
+      required this.kka,
+      this.createdBy});
 
   @override
-  State<DetailSpecialSchedulePageAuditArea> createState() => _DetailSpecialSchedulePageAuditAreaState();
+  State<DetailSpecialSchedulePageAuditArea> createState() =>
+      _DetailSpecialSchedulePageAuditAreaState();
 }
 
-class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedulePageAuditArea> {
-
-  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+class _DetailSpecialSchedulePageAuditAreaState
+    extends State<DetailSpecialSchedulePageAuditArea> {
+  final ControllerAuditArea controllerAuditArea =
+      Get.put(ControllerAuditArea(Get.find()));
+  final ControllerAuditRegion controllerAuditRegion =
+      Get.put(ControllerAuditRegion(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -259,260 +347,342 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
     super.initState();
   }
 
-  void checkScheduleInputLhaAndKka(){
-  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  DateTime startDate = inputFormat.parse(widget.startDate!);
-  DateTime endDate = inputFormat.parse(widget.endDate!);
+    DateTime startDate = inputFormat.parse(widget.startDate!);
+    DateTime endDate = inputFormat.parse(widget.endDate!);
 
-  String formattedStartDate = outputFormat.format(startDate);
-  String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  DateTime today = DateTime.now();
-  String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  startDate = DateTime.parse(formattedStartDate);
-  endDate = DateTime.parse(formattedEndDate);
-  today = DateTime.parse(formattedCurrentTime);
-  
-  if (today.isAtSameMomentAs(startDate)) {
-    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  }else if(today.isAfter(startDate)){
-    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  }else if(today.isBefore(endDate)){
-    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  }else if(today.isAtSameMomentAs(endDate)){
-    Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  }else if(today.isBefore(startDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  }else if(today.isAfter(endDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
+
+    if (today.isAtSameMomentAs(startDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    } else if (today.isAfter(startDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    } else if (today.isBefore(endDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    } else if (today.isAtSameMomentAs(endDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    } else if (today.isBefore(startDate)) {
+      return snakcBarMessageRed('Alert',
+          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
+    controllerAuditArea
+        .getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
-      floatingActionButton: widget.createdBy == 'PUSAT' || widget.createdBy == 'LEAD' ? SpeedDial(
-        elevation: 0,
-        backgroundColor: CustomColors.orange,
-        animatedIcon: AnimatedIcons.menu_close,
-          renderOverlay: false,
-            children: [
-              SpeedDialChild(
-                backgroundColor: CustomColors.blue,
-                  label: 'Tambah LHA',
-                  labelBackgroundColor: CustomColors.blue,
-                  labelStyle: CustomStyles.textMediumWhite15Px,
-                  child: const Icon(Icons.add_rounded, color: CustomColors.white),
-                  onTap: (){
-                    checkScheduleInputLhaAndKka();
-                  }
-                ),
-              SpeedDialChild(
-                backgroundColor: CustomColors.green,
-                  label: 'Upload KKA',
-                  labelBackgroundColor: CustomColors.green,
-                  labelStyle: CustomStyles.textMediumWhite15Px,
-                  child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
-                  onTap: (){
-                    final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
-                    if (lha != null) {
-                      if (widget.kka != null) {
-                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+      floatingActionButton: widget.createdBy == 'PUSAT' ||
+              widget.createdBy == 'LEAD'
+          ? SpeedDial(
+              elevation: 0,
+              backgroundColor: CustomColors.orange,
+              animatedIcon: AnimatedIcons.menu_close,
+              renderOverlay: false,
+              children: [
+                SpeedDialChild(
+                    backgroundColor: CustomColors.blue,
+                    label: 'Tambah LHA',
+                    labelBackgroundColor: CustomColors.blue,
+                    labelStyle: CustomStyles.textMediumWhite15Px,
+                    child: const Icon(Icons.add_rounded,
+                        color: CustomColors.white),
+                    onTap: () {
+                      checkScheduleInputLhaAndKka();
+                    }),
+                SpeedDialChild(
+                    backgroundColor: CustomColors.green,
+                    label: 'Upload KKA',
+                    labelBackgroundColor: CustomColors.green,
+                    labelStyle: CustomStyles.textMediumWhite15Px,
+                    child: const Icon(Icons.upload_file_rounded,
+                        color: CustomColors.white),
+                    onTap: () {
+                      final lha = controllerAuditArea
+                          .detailSpecialScheduleAuditArea.value?.lha;
+                      if (lha != null) {
+                        if (widget.kka != null) {
+                          snakcBarMessageGreen(
+                              'Alert', 'Anda sudah mengunggah KKA');
+                        } else {
+                          showDialogUploadKkaAuditArea(
+                              widget.specialScheduleId);
+                        }
                       } else {
-                        showDialogUploadKkaAuditArea(widget.specialScheduleId);
+                        snakcBarMessageRed(
+                            'Alert', 'Anda harus membuat LHA terlebih dahulu');
                       }
-                    } else {
-                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
-                    }
-                      }
-                    ),
-                  ],
-                ) : null,
+                    }),
+              ],
+            )
+          : null,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Detail jadwal khusus'),
         titleTextStyle: CustomStyles.textBold18Px,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
-          controllerAuditArea.getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
-        },
-        children: [
-          SingleChildScrollView(
-          child: Obx(() {
-          if (controllerAuditArea.detailSpecialScheduleAuditArea.value == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            final detail = controllerAuditArea.detailSpecialScheduleAuditArea.value?.schedule;
-            final kka = controllerAuditArea.detailSpecialScheduleAuditArea.value?.kka;
-            final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
+          padding: const EdgeInsets.all(15),
+          child: SwipeRefresh.material(
+            stateStream: refreshController.stream,
+            onRefresh: () {
+              controllerAuditArea
+                  .getDetailSpecialScheduleAuditArea(widget.specialScheduleId);
+            },
+            children: [
+              SingleChildScrollView(child: Obx(() {
+                if (controllerAuditArea.detailSpecialScheduleAuditArea.value ==
+                    null) {
+                  return const Center(
+                      child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  final detail = controllerAuditArea
+                      .detailSpecialScheduleAuditArea.value?.schedule;
+                  final kka = controllerAuditArea
+                      .detailSpecialScheduleAuditArea.value?.kka;
+                  final lha = controllerAuditArea
+                      .detailSpecialScheduleAuditArea.value?.lha;
+                  final status = detail?.status;
 
-            final startDate = DateTime.parse('${detail?.startDate}');
-            final endDateDate = DateTime.parse('${detail?.endDate}');
-            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
-            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
-            
-            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
-            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+                  final startDate = DateTime.parse('${detail?.startDate}');
+                  final endDateDate = DateTime.parse('${detail?.endDate}');
+                  final outputStartDate =
+                      DateFormat('dd-MM-yyyy').format(startDate);
+                  final outputEndDate =
+                      DateFormat('dd-MM-yyyy').format(endDateDate);
 
-            refreshController.add(SwipeRefreshState.hidden);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('$outputStartDate s/d $outputEndDate',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
+                  DateTime? startDateRealization =
+                      detail?.startDateRealization != null
+                          ? DateTime.parse(detail!.startDateRealization!)
+                          : null;
+                  DateTime? endDateRealization =
+                      detail?.endDateRealization != null
+                          ? DateTime.parse(detail!.endDateRealization!)
+                          : null;
 
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Wrap(
-                  children: [
-                    kka != null ? 
-                    SizedBox(
-                      width: 150,
-                      child: Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: CustomColors.lightGrey)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('File', style: CustomStyles.textMedium15Px),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: CustomColors.green,
-                                      shape: CustomStyles.customRoundedButton),
-                                  onPressed: () async {
-                                    if (await requestPermission(Permission.storage) == true) {
-                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
-                                   } else {
-                                     showSnackbarPermission(context);
-                                   }
-                                  },
-                                  child: Text('Unduh',
-                                      style: CustomStyles.textMediumWhite15Px)),
-                            ],
-                          ),
-                        ),
+                  refreshController.add(SwipeRefreshState.hidden);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail!.user!.fullname}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Nama cabang :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.branch!.name}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('$outputStartDate s/d $outputEndDate',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.description}',
+                          style: CustomStyles.textRegular13Px,
+                          textAlign: TextAlign.justify),
+                      const SizedBox(height: 20),
+                      Text('Status :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          if (status == 'TODO')
+                            Text('Belum dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PROGRESS')
+                            Text('Sedang dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'DONE')
+                            Text('Sudah selesai',
+                                style: CustomStyles.textMedium13Px),
+                        ],
                       ),
-                    ) : Text('Auditor belum mengunggah KKA', style: CustomStyles.textRegular13Px)
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                Wrap(
-                  children: [
-                    lha != null ?
-                    ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  lha[index].isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        final lhaId = lha[index].id;
-                                        final level = detail.user?.level?.name;
-                                        if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
-                                        }
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                        ));
-                    }) : Text('Auditor belum Membuat LHA', style: CustomStyles.textRegular13Px)
-                  ],
-                )
-              ],
-            );
-          }
-        })),
-        ],)
-      ),
+                      const SizedBox(height: 20),
+                      Text('Awal tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          startDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(startDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Akhir tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          endDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(endDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Kertas kerja audit',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          kka != null
+                              ? SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: CustomColors.lightGrey)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('File',
+                                              style:
+                                                  CustomStyles.textMedium15Px),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      CustomColors.green,
+                                                  shape: CustomStyles
+                                                      .customRoundedButton),
+                                              onPressed: () async {
+                                                if (await requestPermission(
+                                                        Permission.storage) ==
+                                                    true) {
+                                                  downloadKKaAuditArea(
+                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                } else {
+                                                  showSnackbarPermission(
+                                                      context);
+                                                }
+                                              },
+                                              child: Text('Unduh',
+                                                  style: CustomStyles
+                                                      .textMediumWhite15Px)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text('Auditor belum mengunggah KKA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('List laporan harian audit :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: [
+                          lha != null
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: lha.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    return Card(
+                                        elevation: 0,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              color: CustomColors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  lha[index].isFlag == 1
+                                                      ? Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .notifications_rounded,
+                                                                color:
+                                                                    CustomColors
+                                                                        .red,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                                'Belum melakukan klarifikasi',
+                                                                style: CustomStyles
+                                                                    .textMediumRed15Px)
+                                                          ],
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Text(
+                                                  'Cabang : ${lha[index].branch!.name}',
+                                                  style: CustomStyles
+                                                      .textBold15Px),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          shape: CustomStyles
+                                                              .customRoundedButton),
+                                                      onPressed: () {
+                                                        final lhaId =
+                                                            lha[index].id;
+                                                        final level = detail
+                                                            .user?.level?.name;
+                                                        if (lhaId != null) {
+                                                          Get.to(() =>
+                                                              DetailLhaPageAuditArea(
+                                                                  id: lhaId,
+                                                                  level:
+                                                                      level));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          'Lihat rincian',
+                                                          style: CustomStyles
+                                                              .textMediumGreen15Px))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                  })
+                              : Text('Auditor belum Membuat LHA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      )
+                    ],
+                  );
+                }
+              })),
+            ],
+          )),
     );
   }
 
@@ -527,29 +697,29 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 const SizedBox(height: 10),
-
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
+                Obx(() => Text(controllerAuditRegion.selectedFileName.value,
+                    style: CustomStyles.textRegularGrey13Px)),
                 const SizedBox(height: 10),
-
                 TextButton(
                   onPressed: () =>
                       controllerAuditRegion.pickFileKkaAuditRegion(),
-                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                  child: Text('Choose File',
+                      style: CustomStyles.textMediumGreen15Px),
                 ),
-
                 const SizedBox(height: 10),
-
                 Obx(() => TextButton(
-                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                            controllerAuditRegion.uploadKkaAuditRegion(controllerAuditRegion.selectedFileName.value, id);
-                            Get.back();
-                         }
-                      : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                      onPressed: controllerAuditRegion
+                              .selectedFileName.value.isNotEmpty
+                          ? () {
+                              controllerAuditRegion.uploadKkaAuditRegion(
+                                  controllerAuditRegion.selectedFileName.value,
+                                  id);
+                              Get.back();
+                            }
+                          : null,
+                      child: Text('Upload',
+                          style: CustomStyles.textMediumBlue15Px),
                     )),
               ],
             ),
@@ -560,8 +730,7 @@ class _DetailSpecialSchedulePageAuditAreaState extends State<DetailSpecialSchedu
               ),
             ],
           );
-        }
-      );
+        });
   }
 }
 
@@ -571,12 +740,14 @@ class DetailReschedulePageAuditArea extends StatefulWidget {
   const DetailReschedulePageAuditArea({super.key, required this.rescheduleId});
 
   @override
-  State<DetailReschedulePageAuditArea> createState() => _DetailReschedulePageAuditAreaState();
+  State<DetailReschedulePageAuditArea> createState() =>
+      _DetailReschedulePageAuditAreaState();
 }
 
-class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAuditArea> {
-
-  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+class _DetailReschedulePageAuditAreaState
+    extends State<DetailReschedulePageAuditArea> {
+  final ControllerAuditArea controllerAuditArea =
+      Get.put(ControllerAuditArea(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -597,198 +768,278 @@ class _DetailReschedulePageAuditAreaState extends State<DetailReschedulePageAudi
         titleTextStyle: CustomStyles.textBold18Px,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
-          controllerAuditArea.getDetailRescheduleAuditArea(widget.rescheduleId);
-        },
-        children: [
-          SingleChildScrollView(
-            child: Obx(() {
-          if (controllerAuditArea.detailRescheduleAuditArea.value == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            final detail = controllerAuditArea.detailRescheduleAuditArea.value!.schedule;
-            final kka = controllerAuditArea.detailRescheduleAuditArea.value!.kka;
-            final lha = controllerAuditArea.detailRescheduleAuditArea.value!.lha;
+          padding: const EdgeInsets.all(15),
+          child: SwipeRefresh.material(
+            stateStream: refreshController.stream,
+            onRefresh: () {
+              controllerAuditArea
+                  .getDetailRescheduleAuditArea(widget.rescheduleId);
+            },
+            children: [
+              SingleChildScrollView(child: Obx(() {
+                if (controllerAuditArea.detailRescheduleAuditArea.value ==
+                    null) {
+                  return const Center(
+                      child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  final detail = controllerAuditArea
+                      .detailRescheduleAuditArea.value!.schedule;
+                  final kka =
+                      controllerAuditArea.detailRescheduleAuditArea.value!.kka;
+                  final lha =
+                      controllerAuditArea.detailRescheduleAuditArea.value!.lha;
+                  final statusReschedules = detail?.status;
 
-            final startDate = DateTime.parse('${detail?.startDate}');
-            final endDateDate = DateTime.parse('${detail?.endDate}');
-            final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
-            final outputEndDate = DateFormat('dd-MM-yyyy').format(endDateDate);
+                  final startDate = DateTime.parse('${detail?.startDate}');
+                  final endDateDate = DateTime.parse('${detail?.endDate}');
+                  final outputStartDate =
+                      DateFormat('dd-MM-yyyy').format(startDate);
+                  final outputEndDate =
+                      DateFormat('dd-MM-yyyy').format(endDateDate);
 
-            final newStartDate = DateTime.parse('${detail?.newStartDate}');
-            final newEendDateDate = DateTime.parse('${detail?.newEndDate}');
-            final outputNewStartDate = DateFormat('dd-MM-yyyy').format(newStartDate);
-            final outputNewEndDate = DateFormat('dd-MM-yyyy').format(newEendDateDate);
-            
-            DateTime? startDateRealization =  detail?.startDateRealization != null ? DateTime.parse(detail!.startDateRealization!) : null;
-            DateTime? endDateRealization =  detail?.endDateRealization != null ? DateTime.parse(detail!.endDateRealization!) : null;
+                  final newStartDate =
+                      DateTime.parse('${detail?.newStartDate}');
+                  final newEendDateDate =
+                      DateTime.parse('${detail?.newEndDate}');
+                  final outputNewStartDate =
+                      DateFormat('dd-MM-yyyy').format(newStartDate);
+                  final outputNewEndDate =
+                      DateFormat('dd-MM-yyyy').format(newEendDateDate);
 
-            refreshController.add(SwipeRefreshState.hidden);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal jadwal lama :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('$outputStartDate s/d $outputEndDate',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Tanggal jadwal baru :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('$outputNewStartDate s/d $outputNewEndDate',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-                Text('Kategori :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.category}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
+                  DateTime? startDateRealization =
+                      detail?.startDateRealization != null
+                          ? DateTime.parse(detail!.startDateRealization!)
+                          : null;
+                  DateTime? endDateRealization =
+                      detail?.endDateRealization != null
+                          ? DateTime.parse(detail!.endDateRealization!)
+                          : null;
 
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Wrap(
-                  children: [
-                    kka != null ?
-                    SizedBox(
-                  width: 150,
-                  child: Card(
-                    elevation: 0,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        const BorderSide(color: CustomColors.lightGrey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  refreshController.add(SwipeRefreshState.hidden);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail!.user!.fullname}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Nama cabang :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.branch!.name}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal jadwal lama :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('$outputStartDate s/d $outputEndDate',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal jadwal baru :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('$outputNewStartDate s/d $outputNewEndDate',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.description}',
+                          style: CustomStyles.textRegular13Px,
+                          textAlign: TextAlign.justify),
+                      const SizedBox(height: 20),
+                      Text('Kategori :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.category}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Status :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
                         children: [
-                          Text('File', style: CustomStyles.textMedium15Px),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: CustomColors.green,
-                                  shape: CustomStyles.customRoundedButton),
-                              onPressed: () async {
-                                if (await requestPermission(Permission.storage) == true) {
-                                     downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}');
-                                   } else {
-                                     showSnackbarPermission(context);
-                                   }
-                              },
-                              child: Text('Unduh',
-                                  style: CustomStyles.textMediumWhite15Px)),
+                          if (statusReschedules == 'PENDING')
+                            Text('Pending', style: CustomStyles.textMedium13Px),
+                          if (statusReschedules == 'REQUEST')
+                            Text('Menunggu persetujuan',
+                                style: CustomStyles.textMedium13Px),
+                          if (statusReschedules == 'APPROVE')
+                            Text('Disetujui',
+                                style: CustomStyles.textMedium13Px),
+                          if (statusReschedules == 'REJECTED')
+                            Text('Ditolak', style: CustomStyles.textMedium13Px),
                         ],
                       ),
-                    ),
-                  ),
-                ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                Wrap(
-                  children: [
-                    lha != null ?
-                    ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  lha[index].isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        final lhaId = lha[index].id;
-                                        final level = detail.user?.level?.name;
-                                        if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditArea(id:lhaId, level: level));
-                                        }
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                        ));
-                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
-                  ],
-                )
-              ],
-            );
-          }
-        })),
-        ],)
-      ),
+                      const SizedBox(height: 20),
+                      Text('Awal tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          startDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(startDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Akhir tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          endDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(endDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Kertas kerja audit',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          kka != null
+                              ? SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: CustomColors.lightGrey)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('File',
+                                              style:
+                                                  CustomStyles.textMedium15Px),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      CustomColors.green,
+                                                  shape: CustomStyles
+                                                      .customRoundedButton),
+                                              onPressed: () async {
+                                                if (await requestPermission(
+                                                        Permission.storage) ==
+                                                    true) {
+                                                  downloadKKaAuditArea(
+                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                } else {
+                                                  showSnackbarPermission(
+                                                      context);
+                                                }
+                                              },
+                                              child: Text('Unduh',
+                                                  style: CustomStyles
+                                                      .textMediumWhite15Px)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text('Anda belum mengunggah KKA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('List laporan harian audit :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: [
+                          lha != null
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: lha.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    return Card(
+                                        elevation: 0,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              color: CustomColors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  lha[index].isFlag == 1
+                                                      ? Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .notifications_rounded,
+                                                                color:
+                                                                    CustomColors
+                                                                        .red,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                                'Perlu melakukan klarifikasi',
+                                                                style: CustomStyles
+                                                                    .textMediumRed15Px)
+                                                          ],
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Text(
+                                                  'Cabang : ${lha[index].branch!.name}',
+                                                  style: CustomStyles
+                                                      .textBold15Px),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          shape: CustomStyles
+                                                              .customRoundedButton),
+                                                      onPressed: () {
+                                                        final lhaId =
+                                                            lha[index].id;
+                                                        final level = detail
+                                                            .user?.level?.name;
+                                                        if (lhaId != null) {
+                                                          Get.to(() =>
+                                                              DetailLhaPageAuditArea(
+                                                                  id: lhaId,
+                                                                  level:
+                                                                      level));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          'Lihat rincian',
+                                                          style: CustomStyles
+                                                              .textMediumGreen15Px))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                  })
+                              : Text('Anda belum Membuat LHA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      )
+                    ],
+                  );
+                }
+              })),
+            ],
+          )),
     );
   }
 }
-
 
 //audit region
 //main schedule
@@ -797,16 +1048,22 @@ class DetailMainScheduleAuditRegion extends StatefulWidget {
   final String? kka;
   final String startDate;
   final String endDate;
-  const DetailMainScheduleAuditRegion({super.key, required this.mainScheduleId, this.kka, required this.startDate, required this.endDate});
+  const DetailMainScheduleAuditRegion(
+      {super.key,
+      required this.mainScheduleId,
+      this.kka,
+      required this.startDate,
+      required this.endDate});
 
   @override
   State<DetailMainScheduleAuditRegion> createState() =>
       _DetailMainScheduleAuditRegionState();
 }
 
-class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditRegion> {
-  
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+class _DetailMainScheduleAuditRegionState
+    extends State<DetailMainScheduleAuditRegion> {
+  final ControllerAuditRegion controllerAuditRegion =
+      Get.put(ControllerAuditRegion(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -816,42 +1073,43 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
     super.initState();
   }
 
- void checkScheduleInputLhaAndKka(){
-  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  DateTime startDate = inputFormat.parse(widget.startDate);
-  DateTime endDate = inputFormat.parse(widget.endDate);
+    DateTime startDate = inputFormat.parse(widget.startDate);
+    DateTime endDate = inputFormat.parse(widget.endDate);
 
-  String formattedStartDate = outputFormat.format(startDate);
-  String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  DateTime today = DateTime.now();
-  String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  startDate = DateTime.parse(formattedStartDate);
-  endDate = DateTime.parse(formattedEndDate);
-  today = DateTime.parse(formattedCurrentTime);
-  
-  if (today.isAtSameMomentAs(startDate)) {
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  }else if(today.isAfter(startDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  }else if(today.isBefore(endDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  }else if(today.isAtSameMomentAs(endDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  }else if(today.isBefore(startDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  }else if(today.isAfter(endDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
+
+    if (today.isAtSameMomentAs(startDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+    } else if (today.isAfter(startDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+    } else if (today.isBefore(endDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+    } else if (today.isAtSameMomentAs(endDate)) {
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+    } else if (today.isBefore(startDate)) {
+      return snakcBarMessageRed('Alert',
+          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailMainScheduleAuditRegion(widget.mainScheduleId);
+    controllerAuditRegion
+        .getDetailMainScheduleAuditRegion(widget.mainScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -863,219 +1121,289 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
         elevation: 0,
         backgroundColor: CustomColors.orange,
         animatedIcon: AnimatedIcons.menu_close,
-          renderOverlay: false,
-            children: [
-              SpeedDialChild(
-                backgroundColor: CustomColors.blue,
-                  label: 'Tambah LHA',
-                  labelBackgroundColor: CustomColors.blue,
-                  labelStyle: CustomStyles.textMediumWhite15Px,
-                  child: const Icon(Icons.add_rounded, color: CustomColors.white),
-                  onTap: (){
-                    checkScheduleInputLhaAndKka();
-                  }
-                ),
-              SpeedDialChild(
-                backgroundColor: CustomColors.green,
-                  label: 'Upload KKA',
-                  labelBackgroundColor: CustomColors.green,
-                  labelStyle: CustomStyles.textMediumWhite15Px,
-                  child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
-                  onTap: (){
-                    final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
-                    if (lha != null) {
-                      if (widget.kka != null) {
-                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
-                      } else {
-                        showDialogUploadKkaAuditRegion(widget.mainScheduleId);
-                      }
-                    } else {
-                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
-                    }
-                      }
-                    ),
-                  ],
-                ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
-          controllerAuditRegion.getDetailMainScheduleAuditRegion(widget.mainScheduleId);
-        },
+        renderOverlay: false,
         children: [
-          SingleChildScrollView(
-          child: Obx(() {
-            final schedule = controllerAuditRegion.detailMainSchedule.value;
-          if (schedule == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            final detail = schedule.schedule;
-            final kka = schedule.kka;
-            final lha = schedule.lha;
-
-            final startDateSchedule = DateTime.parse('${detail?.startDate}');
-            final endDateSchedule = DateTime.parse('${detail?.endDate}');
-
-            final startDateRealization = detail?.startDateRealization != null ? DateTime.parse('${detail?.startDateRealization}') : null;
-            final endDateRealization = detail?.endDateRealization != null ? DateTime.parse('${detail?.endDateRealization}') : null;
-
-            refreshController.add(SwipeRefreshState.hidden);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${DateFormat('dd-MM-yyyy').format(startDateSchedule)} s/d ${DateFormat('dd-MM-yyyy').format(endDateSchedule)}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Wrap(
-                  children: [
-                    kka != null ? 
-                    SizedBox(
-                      width: 150,
-                      child: Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: CustomColors.lightGrey)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('File', style: CustomStyles.textMedium15Px),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: CustomColors.green,
-                                      shape: CustomStyles.customRoundedButton),
-                                  onPressed: () async {
-                                   if (await requestPermission(Permission.storage) == true) {
-                                     downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
-                                   } else {
-                                     showSnackbarPermission(context);
-                                   }
-                                  },
-                                  child: Text('Unduh',
-                                      style: CustomStyles.textMediumWhite15Px)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                Wrap(
-                  children: [
-                    lha != null ?
-                    ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  lha[index].isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        final lhaId = lha[index].id;
-                                        if (lhaId != null) {
-                                          Get.to(() => DetailLhaPageAuditRegion(id:lhaId));
-                                        }
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                        ));
-                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
-                  ],
-                )
-              ],
-            );
-          }
-        })),
-        ],)
+          SpeedDialChild(
+              backgroundColor: CustomColors.blue,
+              label: 'Tambah LHA',
+              labelBackgroundColor: CustomColors.blue,
+              labelStyle: CustomStyles.textMediumWhite15Px,
+              child: const Icon(Icons.add_rounded, color: CustomColors.white),
+              onTap: () {
+                checkScheduleInputLhaAndKka();
+              }),
+          SpeedDialChild(
+              backgroundColor: CustomColors.green,
+              label: 'Upload KKA',
+              labelBackgroundColor: CustomColors.green,
+              labelStyle: CustomStyles.textMediumWhite15Px,
+              child: const Icon(Icons.upload_file_rounded,
+                  color: CustomColors.white),
+              onTap: () {
+                final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
+                if (lha != null) {
+                  if (widget.kka != null) {
+                    snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                  } else {
+                    showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                  }
+                } else {
+                  snakcBarMessageRed(
+                      'Alert', 'Anda harus membuat LHA terlebih dahulu');
+                }
+              }),
+        ],
       ),
+      body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SwipeRefresh.material(
+            stateStream: refreshController.stream,
+            onRefresh: () {
+              controllerAuditRegion
+                  .getDetailMainScheduleAuditRegion(widget.mainScheduleId);
+            },
+            children: [
+              SingleChildScrollView(child: Obx(() {
+                final schedule = controllerAuditRegion.detailMainSchedule.value;
+                if (schedule == null) {
+                  return const Center(
+                      child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  final detail = schedule.schedule;
+                  final kka = schedule.kka;
+                  final lha = schedule.lha;
+                  final status = detail?.status;
+                  final startDateSchedule =
+                      DateTime.parse('${detail?.startDate}');
+                  final endDateSchedule = DateTime.parse('${detail?.endDate}');
+
+                  final startDateRealization =
+                      detail?.startDateRealization != null
+                          ? DateTime.parse('${detail?.startDateRealization}')
+                          : null;
+                  final endDateRealization = detail?.endDateRealization != null
+                      ? DateTime.parse('${detail?.endDateRealization}')
+                      : null;
+
+                  refreshController.add(SwipeRefreshState.hidden);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail!.user!.fullname}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Nama cabang :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.branch!.name}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          '${DateFormat('dd-MM-yyyy').format(startDateSchedule)} s/d ${DateFormat('dd-MM-yyyy').format(endDateSchedule)}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.description}',
+                          style: CustomStyles.textRegular13Px,
+                          textAlign: TextAlign.justify),
+                      const SizedBox(height: 20),
+                      Text('Status :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          if (status == 'TODO')
+                            Text('Belum dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PROGRESS')
+                            Text('Sedang dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'DONE')
+                            Text('Sudah selesai',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PENDING')
+                            Text('Pending', style: CustomStyles.textMedium13Px),
+                          if (status == 'REQUEST')
+                            Text('Menunggu persetujuan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'APPROVE')
+                            Text('Disetujui',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'REJECTED')
+                            Text('Ditolak', style: CustomStyles.textMedium13Px),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('Awal tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          startDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(startDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Akhir tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          endDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(endDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Kertas kerja audit',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          kka != null
+                              ? SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: CustomColors.lightGrey)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('File',
+                                              style:
+                                                  CustomStyles.textMedium15Px),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      CustomColors.green,
+                                                  shape: CustomStyles
+                                                      .customRoundedButton),
+                                              onPressed: () async {
+                                                if (await requestPermission(
+                                                        Permission.storage) ==
+                                                    true) {
+                                                  downloadKKaAuditRegion(
+                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                } else {
+                                                  showSnackbarPermission(
+                                                      context);
+                                                }
+                                              },
+                                              child: Text('Unduh',
+                                                  style: CustomStyles
+                                                      .textMediumWhite15Px)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text('Anda belum mengunggah KKA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('List laporan harian audit :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: [
+                          lha != null
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: lha.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    return Card(
+                                        elevation: 0,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              color: CustomColors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  lha[index].isFlag == 1
+                                                      ? Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .notifications_rounded,
+                                                                color:
+                                                                    CustomColors
+                                                                        .red,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                                'Belum melakukan klarifikasi',
+                                                                style: CustomStyles
+                                                                    .textMediumRed15Px)
+                                                          ],
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Text(
+                                                  'Cabang : ${lha[index].branch!.name}',
+                                                  style: CustomStyles
+                                                      .textBold15Px),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          shape: CustomStyles
+                                                              .customRoundedButton),
+                                                      onPressed: () {
+                                                        final lhaId =
+                                                            lha[index].id;
+                                                        if (lhaId != null) {
+                                                          Get.to(() =>
+                                                              DetailLhaPageAuditRegion(
+                                                                  id: lhaId));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          'Lihat rincian',
+                                                          style: CustomStyles
+                                                              .textMediumGreen15Px))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                  })
+                              : Text('Anda belum Membuat LHA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      )
+                    ],
+                  );
+                }
+              })),
+            ],
+          )),
     );
   }
-  
+
   void showDialogUploadKkaAuditRegion(int id) {
     showDialog(
         context: context,
@@ -1087,29 +1415,29 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 const SizedBox(height: 10),
-
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
+                Obx(() => Text(controllerAuditRegion.selectedFileName.value,
+                    style: CustomStyles.textRegularGrey13Px)),
                 const SizedBox(height: 10),
-
                 TextButton(
                   onPressed: () =>
                       controllerAuditRegion.pickFileKkaAuditRegion(),
-                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                  child: Text('Choose File',
+                      style: CustomStyles.textMediumGreen15Px),
                 ),
-
                 const SizedBox(height: 10),
-
                 Obx(() => TextButton(
-                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                            controllerAuditRegion.uploadKkaAuditRegion(controllerAuditRegion.selectedFileName.value, id);
-                            Get.back();
-                         }
-                      : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                      onPressed: controllerAuditRegion
+                              .selectedFileName.value.isNotEmpty
+                          ? () {
+                              controllerAuditRegion.uploadKkaAuditRegion(
+                                  controllerAuditRegion.selectedFileName.value,
+                                  id);
+                              Get.back();
+                            }
+                          : null,
+                      child: Text('Upload',
+                          style: CustomStyles.textMediumBlue15Px),
                     )),
               ],
             ),
@@ -1120,8 +1448,7 @@ class _DetailMainScheduleAuditRegionState extends State<DetailMainScheduleAuditR
               ),
             ],
           );
-        }
-      );
+        });
   }
 }
 
@@ -1131,15 +1458,22 @@ class DetailSpecialScheduleAuditRegion extends StatefulWidget {
   final String? kka;
   final String startDate;
   final String endDate;
-  const DetailSpecialScheduleAuditRegion({super.key, required this.specialScheduleId, this.kka, required this.startDate, required this.endDate});
+  const DetailSpecialScheduleAuditRegion(
+      {super.key,
+      required this.specialScheduleId,
+      this.kka,
+      required this.startDate,
+      required this.endDate});
 
   @override
-  State<DetailSpecialScheduleAuditRegion> createState() => _DetailSpecialScheduleAuditRegionState();
+  State<DetailSpecialScheduleAuditRegion> createState() =>
+      _DetailSpecialScheduleAuditRegionState();
 }
 
-class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialScheduleAuditRegion> {
-
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+class _DetailSpecialScheduleAuditRegionState
+    extends State<DetailSpecialScheduleAuditRegion> {
+  final ControllerAuditRegion controllerAuditRegion =
+      Get.put(ControllerAuditRegion(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -1149,41 +1483,47 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
     super.initState();
   }
 
- void checkScheduleInputLhaAndKka(){
-  DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  DateTime startDate = inputFormat.parse(widget.startDate);
-  DateTime endDate = inputFormat.parse(widget.endDate);
+    DateTime startDate = inputFormat.parse(widget.startDate);
+    DateTime endDate = inputFormat.parse(widget.endDate);
 
-  String formattedStartDate = outputFormat.format(startDate);
-  String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  DateTime today = DateTime.now();
-  String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  startDate = DateTime.parse(formattedStartDate);
-  endDate = DateTime.parse(formattedEndDate);
-  today = DateTime.parse(formattedCurrentTime);
-  
-  if (today.isAtSameMomentAs(startDate)) {
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  }else if(today.isAfter(startDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  }else if(today.isBefore(endDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  }else if(today.isAtSameMomentAs(endDate)){
-    Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  }else if(today.isBefore(startDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  }else if(today.isAfter(endDate)){
-    return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
+
+    if (today.isAtSameMomentAs(startDate)) {
+      Get.to(
+          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+    } else if (today.isAfter(startDate)) {
+      Get.to(
+          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+    } else if (today.isBefore(endDate)) {
+      Get.to(
+          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+    } else if (today.isAtSameMomentAs(endDate)) {
+      Get.to(
+          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+    } else if (today.isBefore(startDate)) {
+      return snakcBarMessageRed('Alert',
+          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
+    controllerAuditRegion
+        .getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -1203,207 +1543,274 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               labelBackgroundColor: CustomColors.blue,
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
-              onTap: (){
+              onTap: () {
                 checkScheduleInputLhaAndKka();
-              }
-          ),
+              }),
           SpeedDialChild(
               backgroundColor: CustomColors.green,
               label: 'Upload KKA',
               labelBackgroundColor: CustomColors.green,
               labelStyle: CustomStyles.textMediumWhite15Px,
-              child: const Icon(Icons.upload_file_rounded, color: CustomColors.white),
-              onTap: (){
-                final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
+              child: const Icon(Icons.upload_file_rounded,
+                  color: CustomColors.white),
+              onTap: () {
+                final lha =
+                    controllerAuditRegion.detailSpecialSchedule.value?.lha;
                 if (lha != null) {
-                      if (widget.kka != null) {
-                        snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
-                      } else {
-                        showDialogUploadKkaAuditRegion(widget.specialScheduleId);
-                      }
-                    } else {
-                      snakcBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
-                    }
-              }
-          ),
+                  if (widget.kka != null) {
+                    snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                  } else {
+                    showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                  }
+                } else {
+                  snakcBarMessageRed(
+                      'Alert', 'Anda harus membuat LHA terlebih dahulu');
+                }
+              }),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SwipeRefresh.material(stateStream: refreshController.stream, onRefresh: (){
-          controllerAuditRegion.getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
-        },
-        children: [
-          SingleChildScrollView(child: Obx(() {
-          if (controllerAuditRegion.detailSpecialSchedule.value == null) {
-            return const Center(child: SpinKitCircle(color: CustomColors.blue));
-          } else {
-            final detail = controllerAuditRegion.detailSpecialSchedule.value?.schedule;
-            final kka = controllerAuditRegion.detailSpecialSchedule.value?.kka;
-            final lha = controllerAuditRegion.detailSpecialSchedule.value?.lha;
+          padding: const EdgeInsets.all(15),
+          child: SwipeRefresh.material(
+            stateStream: refreshController.stream,
+            onRefresh: () {
+              controllerAuditRegion.getDetailSpecialScheduleAuditRegion(
+                  widget.specialScheduleId);
+            },
+            children: [
+              SingleChildScrollView(child: Obx(() {
+                if (controllerAuditRegion.detailSpecialSchedule.value == null) {
+                  return const Center(
+                      child: SpinKitCircle(color: CustomColors.blue));
+                } else {
+                  final detail = controllerAuditRegion
+                      .detailSpecialSchedule.value?.schedule;
+                  final kka =
+                      controllerAuditRegion.detailSpecialSchedule.value?.kka;
+                  final lha =
+                      controllerAuditRegion.detailSpecialSchedule.value?.lha;
+                  
+                  final status = detail?.status;
+                  final startDateRealization =
+                      detail?.startDateRealization != null
+                          ? DateTime.parse('${detail?.startDateRealization}')
+                          : null;
+                  final endDateRealization = detail?.endDateRealization != null
+                      ? DateTime.parse('${detail?.endDateRealization}')
+                      : null;
 
-            final startDateRealization = detail?.startDateRealization != null ? DateTime.parse('${detail?.startDateRealization}') : null;
-            final endDateRealization = detail?.endDateRealization != null ? DateTime.parse('${detail?.endDateRealization}') : null;
+                  final startDate = DateTime.parse('${detail?.startDate}');
+                  final endDate = DateTime.parse('${detail?.endDate}');
 
-
-            final startDate = DateTime.parse('${detail?.startDate}');
-            final endDate = DateTime.parse('${detail?.endDate}');
-
-            refreshController.add(SwipeRefreshState.hidden);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('Auditor :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail!.user!.fullname}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-                Text('Nama cabang :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Tanggal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${DateFormat('dd-MM-yyyy').format(startDate)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.description}',
-                    style: CustomStyles.textRegular13Px,
-                    textAlign: TextAlign.justify),
-                const SizedBox(height: 20),
-                Text('Status :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text('${detail.status}', style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Awal tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(startDateRealization != null ? DateFormat('dd-MM-yyyy').format(startDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Akhir tanggal proses :', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Text(endDateRealization != null ? DateFormat('dd-MM-yyyy').format(endDateRealization) : '-',
-                    style: CustomStyles.textRegular13Px),
-                const SizedBox(height: 20),
-
-                Text('Kertas kerja audit', style: CustomStyles.textBold15Px),
-                const SizedBox(height: 5),
-                Wrap(
-                  children: [
-                    kka != null ? 
-                    SizedBox(
-                      width: 150,
-                      child: Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: CustomColors.lightGrey)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('File', style: CustomStyles.textMedium15Px),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: CustomColors.green,
-                                      shape: CustomStyles.customRoundedButton),
-                                  onPressed: () async {
-                                    if (await requestPermission(Permission.storage) == true) {
-                                     downloadKKaAuditRegion('${AppConstant.downloadKKa}${kka.filename}');
-                                   } else {
-                                     showSnackbarPermission(context);
-                                   }
-                                  },
-                                  child: Text('Unduh',
-                                      style: CustomStyles.textMediumWhite15Px)),
-                            ],
-                          ),
-                        ),
+                  refreshController.add(SwipeRefreshState.hidden);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail!.user!.fullname}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Nama cabang :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.branch!.name}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Tanggal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          '${DateFormat('dd-MM-yyyy').format(startDate)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Uraian jadwal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${detail.description}',
+                          style: CustomStyles.textRegular13Px,
+                          textAlign: TextAlign.justify),
+                      const SizedBox(height: 20),
+                      Text('Status :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          if (status == 'TODO')
+                            Text('Belum dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'PROGRESS')
+                            Text('Sedang dikerjakan',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'DONE')
+                            Text('Sudah selesai',
+                                style: CustomStyles.textMedium13Px),
+                        ],
                       ),
-                    ) : Text('Anda belum mengunggah KKA', style: CustomStyles.textRegular13Px)
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text('List laporan harian audit :',
-                    style: CustomStyles.textBold15Px),
-                const SizedBox(height: 10),
-                Wrap(
-                  children: [
-                    lha != null ?
-                    ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lha.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
-                                children: [
-                                  lha[index].isFlag == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha[index].branch!.name}', style: CustomStyles.textBold15Px),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        final lhaId = lha[index].id;
-                                        if (lhaId != null) {
-                                         Get.to(() => DetailLhaPageAuditRegion(id:lhaId));
-                                        }
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
-                                ],
-                              )
-                            ],
-                          ),
-                        ));
-                    }) : Text('Anda belum Membuat LHA', style: CustomStyles.textRegular13Px)
-                  ],
-                )
-              ],
-            );
-          }
-        })),
-        ],)
-      ),
+                      const SizedBox(height: 20),
+                      Text('Awal tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          startDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(startDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Akhir tanggal proses :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(
+                          endDateRealization != null
+                              ? DateFormat('dd-MM-yyyy')
+                                  .format(endDateRealization)
+                              : '-',
+                          style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 20),
+                      Text('Kertas kerja audit',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          kka != null
+                              ? SizedBox(
+                                  width: 150,
+                                  child: Card(
+                                    elevation: 0,
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: CustomColors.lightGrey)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('File',
+                                              style:
+                                                  CustomStyles.textMedium15Px),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      CustomColors.green,
+                                                  shape: CustomStyles
+                                                      .customRoundedButton),
+                                              onPressed: () async {
+                                                if (await requestPermission(
+                                                        Permission.storage) ==
+                                                    true) {
+                                                  downloadKKaAuditRegion(
+                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                } else {
+                                                  showSnackbarPermission(
+                                                      context);
+                                                }
+                                              },
+                                              child: Text('Unduh',
+                                                  style: CustomStyles
+                                                      .textMediumWhite15Px)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text('Anda belum mengunggah KKA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text('List laporan harian audit :',
+                          style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: [
+                          lha != null
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: lha.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    return Card(
+                                        elevation: 0,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              color: CustomColors.grey,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  lha[index].isFlag == 1
+                                                      ? Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .notifications_rounded,
+                                                                color:
+                                                                    CustomColors
+                                                                        .red,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                                'Belum melakukan klarifikasi',
+                                                                style: CustomStyles
+                                                                    .textMediumRed15Px)
+                                                          ],
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Text(
+                                                  'Cabang : ${lha[index].branch!.name}',
+                                                  style: CustomStyles
+                                                      .textBold15Px),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          shape: CustomStyles
+                                                              .customRoundedButton),
+                                                      onPressed: () {
+                                                        final lhaId =
+                                                            lha[index].id;
+                                                        if (lhaId != null) {
+                                                          Get.to(() =>
+                                                              DetailLhaPageAuditRegion(
+                                                                  id: lhaId));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                          'Lihat rincian',
+                                                          style: CustomStyles
+                                                              .textMediumGreen15Px))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                  })
+                              : Text('Anda belum Membuat LHA',
+                                  style: CustomStyles.textRegular13Px)
+                        ],
+                      )
+                    ],
+                  );
+                }
+              })),
+            ],
+          )),
     );
   }
+
   void showDialogUploadKkaAuditRegion(int id) {
     showDialog(
         context: context,
@@ -1415,30 +1822,30 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 const SizedBox(height: 10),
-
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
+                Obx(() => Text(controllerAuditRegion.selectedFileName.value,
+                    style: CustomStyles.textRegularGrey13Px)),
                 const SizedBox(height: 10),
-
                 TextButton(
                   onPressed: () =>
                       controllerAuditRegion.pickFileKkaAuditRegion(),
-                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                  child: Text('Choose File',
+                      style: CustomStyles.textMediumGreen15Px),
                 ),
-
                 const SizedBox(height: 10),
-
                 Obx(() => TextButton(
-                  onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                    controllerAuditRegion.uploadKkaAuditRegion(controllerAuditRegion.selectedFileName.value, id);
-                    Get.back();
-                  }
-                      : null,
-                  child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
-                )),
+                      onPressed: controllerAuditRegion
+                              .selectedFileName.value.isNotEmpty
+                          ? () {
+                              controllerAuditRegion.uploadKkaAuditRegion(
+                                  controllerAuditRegion.selectedFileName.value,
+                                  id);
+                              Get.back();
+                            }
+                          : null,
+                      child: Text('Upload',
+                          style: CustomStyles.textMediumBlue15Px),
+                    )),
               ],
             ),
             actions: <Widget>[
@@ -1448,8 +1855,6 @@ class _DetailSpecialScheduleAuditRegionState extends State<DetailSpecialSchedule
               ),
             ],
           );
-        }
-    );
+        });
   }
 }
-
