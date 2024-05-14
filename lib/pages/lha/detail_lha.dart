@@ -193,13 +193,6 @@ class _DetailCasesLhaPageAuditAreaState
   final ControllerAuditArea controllerAuditArea =
       Get.put(ControllerAuditArea(Get.find()));
 
-  StreamController<SwipeRefreshState>refreshController = StreamController();
-
-  @override
-  void initState() {
-    refreshController.add(SwipeRefreshState.loading);
-    super.initState();
-  } 
 
   @override
   Widget build(BuildContext context) {
