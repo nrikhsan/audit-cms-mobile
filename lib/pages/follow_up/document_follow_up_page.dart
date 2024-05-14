@@ -6,6 +6,7 @@ import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -49,10 +50,11 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                           children: [
                             widget.fileName == null ?
                             Column(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                const SizedBox(height: 25),
                                 Text('Dokumen tidak tersedia', style: CustomStyles.textMedium18Px),
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 30),
                                 SizedBox(
                                   width: double.maxFinite,
                                   child: ElevatedButton(
@@ -76,18 +78,20 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                 )
                               ],
                             )
-                            : Column(
+                            : SingleChildScrollView(
+                              child: Column(
                               children: [
-                                SizedBox(
+                                const SizedBox(height: 25),
+                                Container(
                                   width: double.maxFinite,
-                                  height: 590,
+                                  height: 670,
                                   child: SfPdfViewer.network(
                                     headers: {'Authorization': 'Bearer $token'},
                                   '${AppConstant.followUpDocument}${widget.fileName}'
                                   ),
                                 ),
                         
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 30),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -127,6 +131,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                   ],
                                 )
                               ],
+                            )
                             )
                           ],
                         ),

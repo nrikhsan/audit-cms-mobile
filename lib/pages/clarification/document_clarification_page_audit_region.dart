@@ -38,9 +38,10 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
           child: SingleChildScrollView(
             child: Column(
                   children: [
+                    const SizedBox(height: 25,),
                   SizedBox(
                   width: double.maxFinite,
-                  height: 600,
+                  height: 670,
                   child: FutureBuilder(
                   future: getToken(),
                   builder: (_, snapshot){
