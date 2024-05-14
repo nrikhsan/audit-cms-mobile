@@ -373,10 +373,10 @@ class _DetailSpecialSchedulePageAuditAreaState
     } else if (today.isAtSameMomentAs(endDate)) {
       Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
     } else if (today.isBefore(startDate)) {
-      return snakcBarMessageRed('Alert',
+      return snackBarMessageRed('Alert',
           'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
@@ -416,14 +416,14 @@ class _DetailSpecialSchedulePageAuditAreaState
                           .detailSpecialScheduleAuditArea.value?.lha;
                       if (lha != null) {
                         if (widget.kka != null) {
-                          snakcBarMessageGreen(
+                          snackBarMessageGreen(
                               'Alert', 'Anda sudah mengunggah KKA');
                         } else {
                           showDialogUploadKkaAuditArea(
                               widget.specialScheduleId);
                         }
                       } else {
-                        snakcBarMessageRed(
+                        snackBarMessageRed(
                             'Alert', 'Anda harus membuat LHA terlebih dahulu');
                       }
                     }),
@@ -1099,10 +1099,10 @@ class _DetailMainScheduleAuditRegionState
     } else if (today.isAtSameMomentAs(endDate)) {
       Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
     } else if (today.isBefore(startDate)) {
-      return snakcBarMessageRed('Alert',
+      return snackBarMessageRed('Alert',
           'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
@@ -1143,12 +1143,12 @@ class _DetailMainScheduleAuditRegionState
                 final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
                 if (lha != null) {
                   if (widget.kka != null) {
-                    snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                    snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
                     showDialogUploadKkaAuditRegion(widget.mainScheduleId);
                   }
                 } else {
-                  snakcBarMessageRed(
+                  snackBarMessageRed(
                       'Alert', 'Anda harus membuat LHA terlebih dahulu');
                 }
               }),
@@ -1513,10 +1513,10 @@ class _DetailSpecialScheduleAuditRegionState
       Get.to(
           () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
     } else if (today.isBefore(startDate)) {
-      return snakcBarMessageRed('Alert',
+      return snackBarMessageRed('Alert',
           'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snakcBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
@@ -1558,12 +1558,12 @@ class _DetailSpecialScheduleAuditRegionState
                     controllerAuditRegion.detailSpecialSchedule.value?.lha;
                 if (lha != null) {
                   if (widget.kka != null) {
-                    snakcBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
+                    snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
                     showDialogUploadKkaAuditRegion(widget.specialScheduleId);
                   }
                 } else {
-                  snakcBarMessageRed(
+                  snackBarMessageRed(
                       'Alert', 'Anda harus membuat LHA terlebih dahulu');
                 }
               }),

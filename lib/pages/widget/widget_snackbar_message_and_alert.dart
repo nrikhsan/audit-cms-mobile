@@ -2,12 +2,12 @@ import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void snakcBarMessageRed(String title, String message){
+void snackBarMessageRed(String title, String message){
   Get.snackbar(title, message, snackPosition: SnackPosition.TOP, 
       colorText: CustomColors.white, backgroundColor: CustomColors.red);
 }
 
-void snakcBarMessageGreen(String title, String message){
+void snackBarMessageGreen(String title, String message){
   Get.snackbar(title, message, snackPosition: SnackPosition.TOP, 
       colorText: CustomColors.white, backgroundColor: CustomColors.green);
 }

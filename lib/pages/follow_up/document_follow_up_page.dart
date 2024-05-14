@@ -62,7 +62,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                     ),
                                     onPressed: () async{
                                       if (widget.fileName == null) {
-                                        snakcBarMessageRed('Gagal', 'File tidak tersedia');
+                                        snackBarMessageRed('Gagal', 'File tidak tersedia');
                                       } else {
                                           if (await requestPermission(Permission.storage) == true) {
                                           downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');

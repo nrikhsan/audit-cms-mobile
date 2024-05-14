@@ -3,7 +3,7 @@ class ResponseMessage {
   String? message;
   int? status;
 
-  ResponseMessage(data, {this.meta, this.message, this.status});
+  ResponseMessage({this.meta, this.message, this.status});
 
   ResponseMessage.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;

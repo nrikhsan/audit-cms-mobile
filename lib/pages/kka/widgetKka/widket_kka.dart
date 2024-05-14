@@ -358,7 +358,7 @@ void downloadKKaAuditArea(String url) async {
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -370,7 +370,7 @@ void downloadKKaAuditArea(String url) async {
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }
@@ -396,7 +396,7 @@ void downloadKKaAuditRegion(String url) async {
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -408,7 +408,7 @@ void downloadKKaAuditRegion(String url) async {
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }

@@ -1,7 +1,6 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -10,7 +9,6 @@ class ControllerAuth extends GetxController {
   var isLoading = false.obs;
   var isLogin = false.obs;
   var userLevel = ''.obs;
-  var message = ''.obs;
   ControllerAuth(this.repository);
 
   @override
@@ -24,12 +22,9 @@ class ControllerAuth extends GetxController {
     try {
       final response = await repository.login(username, password);
       String tokenAuth = '${response.data?.token}';
-      message.value = response.message.toString();
-      snakcBarMessageGreen('Login Berhasil', 'Selamat datang $username');
-      decodeJWT(tokenAuth); 
-      await TokenManager.saveToken(tokenAuth);
+        decodeJWT(tokenAuth); 
+        await TokenManager.saveToken(tokenAuth);
     } catch (error){
-      snakcBarMessageRed('Login gagal', 'periksa kembali username/kata sandi anda');
       throw Exception(error);
     }finally{
       isLoading.value = false;
@@ -60,10 +55,8 @@ class ControllerAuth extends GetxController {
 
   void logout()async{
     try{
-      final signOut = await repository.logOut();
+      await repository.logOut();
       await TokenManager.clearToken();
-      message.value = signOut.message.toString();
-      snakcBarMessageGreen('Berhasil Logout', 'Kamu sudah Keluar dari aplikasi');
     }catch(e){
       throw Exception(e);
     }

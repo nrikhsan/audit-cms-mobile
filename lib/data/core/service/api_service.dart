@@ -6,7 +6,6 @@ import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_revis
 import 'package:audit_cms/data/core/response/auditArea/lha/response_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -51,6 +50,7 @@ import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
 import '../../../helper/prefs/token_manager.dart';
 import '../../constant/app_constants.dart';
@@ -67,8 +67,12 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.auth,
       data: ModelAuth(username: username, password: password).toJson());
+      final messageSuccess = response.data['message'];
+      snackBarMessageGreen(messageSuccess, 'Selamat datang $username');
       return ResponseAuth.fromJson(response.data);
-    } catch (error) { 
+    } on DioException catch (error) { 
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Login gagal', messageError);
       throw Exception(error);
     }
   }
@@ -80,8 +84,10 @@ class ApiService {
     };
     try {
       final response = await dio.post(AppConstant.logOut);
+      final messageSuccess = response.data['message'];
+      snackBarMessageGreen(messageSuccess, 'Kamu telah keluar dari aplikasi');
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
+    }catch (error) {
       throw Exception(error);
     }
   }
@@ -97,8 +103,12 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.addMainSchedules,
           data: {'schedules': schedule.toList()});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
       throw Exception(error);
     }
   }
@@ -112,9 +122,13 @@ class ApiService {
     try {
       final response = await dio.put('${AppConstant.editMainSchedule}$id', data: RequestBodyEditSchedule(userId: userId, branchId: branchId,
       startDate: startDate, endDate: endDate, description: description).toJson());
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(error);
     }
   }
 
@@ -125,9 +139,13 @@ class ApiService {
     };
     try {
       final response = await dio.delete('${AppConstant.deleteMainSchedule}$id');
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(error);
     }
   }
 
@@ -168,8 +186,12 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.addSpecialSchedule,
           data: {'schedules': schedule.toList()});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
       throw Exception(error);
     }
   }
@@ -197,9 +219,13 @@ class ApiService {
     try {
       final response = await dio.put('${AppConstant.editSpecialSchedule}$id', data: RequestBodyEditSchedule(userId: userId, branchId: branchId,
       startDate: startDate, endDate: endDate, description: description).toJson());
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(error);
     }
   }
 
@@ -210,9 +236,13 @@ class ApiService {
     };
     try {
       final response = await dio.delete('${AppConstant.deleteSpecialSchedule}$id');
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(error);
     }
   }
 
@@ -240,8 +270,12 @@ class ApiService {
       final response = await dio.post(AppConstant.requestReschedule,
           data: ModelBodyReschedulesAuditArea(userId: userId, scheduleId: scheduleId, 
           branchId: branchId, startDate: startDate, endDate: endDate, description: desc).toJson());
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
       throw Exception(error);
     }
   }
@@ -274,19 +308,6 @@ class ApiService {
   }
 
   //master
-  Future<ResponseDropdownArea>getArea()async{
-    final token = await TokenManager.getToken();
-    dio.options.headers = {
-      'Authorization': 'Bearer $token'
-    };
-    try {
-      final response = await dio.get(AppConstant.getDropdownArea);
-      return ResponseDropdownArea.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
   Future<ResponseUsers> getUsersAuditArea() async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -300,7 +321,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId) async {
+  Future<ResponseBranchAuditArea> getBranchByUserIdAuditArea(int? userId) async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
@@ -366,20 +387,24 @@ class ApiService {
   }
 
   //LHA
-  // Future<ResponseListCaseLha>getCaseLhaAuditArea(int page, int lhaId)async{
-  //   final token = await TokenManager.getToken();
-  //   dio.options.headers = {
-  //     'Authorization': 'Bearer $token'
-  //   };
-  //   try {
-  //     final response = await dio.get(AppConstant.listCaseLha, queryParameters: {
-  //       'page': page, 'lha_id': lhaId
-  //     });
-  //     return ResponseListCaseLha.fromJson(response.data);
-  //   } catch (e) {
-  //     throw Exception(e);
-  //   }
-  // }
+  Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.post(AppConstant.inputLha,
+      data: {'schedule_id': scheduleId, 'lha_detail': lhaDetail.toList()});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
+      return ResponseMessage.fromJson(response.data);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Berhasil', messageError);
+      throw Exception(error);
+    }
+  }
 
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId)async{
     final token = await TokenManager.getToken();
@@ -404,9 +429,13 @@ class ApiService {
       final response = await dio.post(AppConstant.lhaRevision, 
       data: {'audit_daily_report_detail_id': lhaId, 'description': desc, 'suggestion': suggest, 
       'temporary_recommendations': tempRec, 'permanent_recommendations': perRec});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Berhasil', messageError);
+      throw Exception(error);
     }
   }
 
@@ -417,9 +446,13 @@ class ApiService {
     };
     try {
       final response = await dio.patch('${AppConstant.sendCaseLha}$lhaDetailId');
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
-      throw Exception(e);
+    } on DioException catch (error) {
+      final messageError = error.response?.data['message'];
+      snackBarMessageRed('Berhasil', messageError);
+      throw Exception(error);
     }
   }
 
@@ -586,10 +619,13 @@ class ApiService {
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
       data: {'followup_id': followUpId, 'penalty_id': penaltyId, 'charging_costs': charCoss, 'description': desc});
-      print(responseInputFollowUp.data);
+      final messageSucces = responseInputFollowUp.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -605,9 +641,12 @@ class ApiService {
     });
     try {
     final response = await dio.post(AppConstant.uploadFollowUp, data: formData);
-    print(response.data);
-    return ResponseMessage.fromJson(response.data);
-    } catch (e) {
+    final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
+      return ResponseMessage.fromJson(response.data);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
       throw Exception(e);
     }
   }
@@ -648,9 +687,13 @@ class ApiService {
     try {
       final response = await dio.patch(AppConstant.editProfileUser,
       data: {'email': email, 'fullname': fullName});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -663,9 +706,13 @@ class ApiService {
     try {
       final response = await dio.patch(AppConstant.changePassword,
       data: {'current_password': currentPassword, 'new_password': newPassword});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -757,21 +804,6 @@ class ApiService {
   }
 
   //LHA
-  Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail)async{
-    final token = await TokenManager.getToken();
-    dio.options.headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
-    };
-    try {
-      final response = await dio.post(AppConstant.inputLha,
-      data: {'schedule_id': scheduleId, 'lha_detail': lhaDetail.toList()});
-      return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
   Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -989,9 +1021,12 @@ class ApiService {
       final response = await dio.post(AppConstant.generateClarification, data: {
         'case_id': caseId, 'case_category_id': caseCategoryId, 'branch_id': branchId
       });
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (e) {
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
       throw Exception(e);
     }
   }
@@ -1007,10 +1042,13 @@ class ApiService {
       final response = await dio.post(AppConstant.inputClarification,
           data: {'clarification_id': clarificationId, 'evaluation_limitation': evaluationLimitation, 'location': location, 
           'auditee': auditee, 'auditee_leader': auditeeLeader, 'description': description, 'priority': priority});
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseInputClarification.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1027,10 +1065,13 @@ class ApiService {
     });
     try {
       final response = await dio.post(AppConstant.uploadClarification, data: formData);
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1049,10 +1090,13 @@ class ApiService {
         'recommendation': description,
         'is_followup': followUp
       });
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseIdentification.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1083,10 +1127,13 @@ class ApiService {
     );
     try {
       final response = await dio.post(AppConstant.uploadBap, data: formData);
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1140,9 +1187,13 @@ class ApiService {
     try {
       final response = await dio.patch(AppConstant.editProfileUser,
       data: {'email': email, 'fullname': fullName});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1155,9 +1206,13 @@ class ApiService {
     try {
       final response = await dio.patch(AppConstant.changePassword,
       data: {'current_password': currentPassword, 'new_password': newPassword});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 

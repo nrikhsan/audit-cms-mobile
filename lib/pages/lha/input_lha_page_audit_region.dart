@@ -206,7 +206,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                           ),
                           onPressed: ()async{
                             if (_case == null || _caseCategory == null || lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
-                                snakcBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
+                                snackBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
                             }else{
                               controllerAuditArea.addToLocalLhaAuditArea(_case?.id, _caseCategory?.id, lhaDescriptionController.text,
                               suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _case?.name, _caseCategory?.name);
@@ -269,7 +269,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                   ),
                   onPressed: (){
                       if(controllerAuditArea.dataListLocalLhaAuditArea.isEmpty){
-                        snakcBarMessageRed('Gagal', 'Data list kasus LHA tidak boleh kosong');
+                        snackBarMessageRed('Gagal', 'Data list kasus LHA tidak boleh kosong');
                       }else{
                         controllerAuditArea.inputLhaAuditArea(widget.scheduleId);
                           controllerAuditArea.pagingControllerLhaAuditArea.refresh();
@@ -495,7 +495,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                           ),
                           onPressed: ()async{
                             if (_case == null || _caseCategory == null || lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || _selectedValueResearch == null) {
-                                snakcBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
+                                snackBarMessageRed('Gagal', 'Tidak boleh ada field yang kosong');
                             }else{
                               controllerAuditRegion.addToLocalLhaAuditRegion(_case?.id, _caseCategory?.id, lhaDescriptionController.text,
                               suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text, _selectedValueResearch!, _case?.name, _caseCategory?.name);
@@ -558,7 +558,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                   ),
                   onPressed: (){
                       if(controllerAuditRegion.dataListLocalLhaAuditRegion.isEmpty){
-                        snakcBarMessageRed('Gagal', 'Data list kasus LHA tidak boleh kosong');
+                        snackBarMessageRed('Gagal', 'Data list kasus LHA tidak boleh kosong');
                       }else{
                         controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
                           controllerAuditRegion.pagingControllerLha.refresh();
@@ -776,7 +776,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                   ),
                   onPressed: (){
                     if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || selectValueResearch == null) {
-                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                          snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(selectValueResearch == 1){
                           controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
@@ -987,7 +987,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                   ),
                   onPressed: (){
                     if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || selectValueResearch == null) {
-                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                          snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(selectValueResearch == 1){
                           controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);

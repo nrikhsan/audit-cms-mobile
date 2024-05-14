@@ -22,8 +22,6 @@ import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
-import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -275,13 +273,10 @@ class ControllerAuditRegion extends GetxController {
 
   void inputLhaAuditRegion(int scheduleId)async{
     try {
-      final response = await repositories.inputLhaAuditRegion(scheduleId, dataListLocalLhaAuditRegion.toList());
-      message.value = response.message.toString();
+      await repositories.inputLhaAuditRegion(scheduleId, dataListLocalLhaAuditRegion.toList());
       pagingControllerClarification.refresh();
-      snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
       dataListLocalLhaAuditRegion.clear();
     } catch (error) {
-      snakcBarMessageRed('Gagal menginput data', 'Tidak bisa upload LHA lagi untuk hari ini');
       dataListLocalLhaAuditRegion.clear();
       throw Exception(error);
     }
@@ -290,21 +285,16 @@ class ControllerAuditRegion extends GetxController {
   void inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
     String suggestion, String tempRec, String perRec, int isResearch)async{
     try {
-      final response = await repositories.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
-      message.value = response.message.toString();
+      await repositories.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
       pagingControllerClarification.refresh();
-      snakcBarMessageGreen('Berhasil', 'Kasus Lha berhasil ditambahkan');
     } catch (error) {
-      snakcBarMessageRed('Gagal menginput data', 'Gagal menambahkan kasus LHA');
       throw Exception(error);
     }
   }
 
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
-      final revisiLha = await repositories.revisiLha(lhaId, desc, suggest, tempRec, perRec);
-      message.value = revisiLha.message.toString();
-      snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
+      await repositories.revisiLha(lhaId, desc, suggest, tempRec, perRec);
     } catch (e) {
       throw Exception(e);
     }
@@ -421,15 +411,12 @@ class ControllerAuditRegion extends GetxController {
 
 void uploadKkaAuditRegion(String filePath, int id) async {
     try {
-      final response = await repositories.uploadKkaAuditRegion(filePath, id);
-      Get.snackbar('Berhasil', 'KKA audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message.value = response.message.toString();
+      await repositories.uploadKkaAuditRegion(filePath, id);
       pagingControllerKka.refresh();
       pagingControllerMainSchedule.refresh();
       pagingControllerSpecialSchedule.refresh();
       selectedFileName.value = '';
     } catch (error) {
-      snakcBarMessageRed('Gagal', 'Upload KKA hanya bisa sekali dalam sehari');
       selectedFileName.value = '';
       throw Exception(error);
     }
@@ -449,16 +436,6 @@ void uploadKkaAuditRegion(String filePath, int id) async {
       selectedFileName.value = '';
     }
   }
-
-//master
-// void loadBranchAuditRegion(int? userId)async {
-//   try {
-//     final branch = await repositories.getBranchAuditRegion(userId);
-//     branchAuditRegion.assignAll(branch.data ?? []);
-//   } catch (e) {
-//     throw Exception(e);
-//   }
-//  }
 
  void loadBranchAuditRegion() async {
   final tokenBranch = await TokenManager.getToken();
@@ -518,11 +495,7 @@ void getDetailUserAuditRegion() async {
 
   void editProfileUserAuditRegion(String? email, String? fullName) async {
     try {
-      final response =
-          await repositories.editUserAuditRegion(email, fullName);
-           Get.snackbar('Berhasil', 'Profil berhasil di edit',
-                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
+      await repositories.editUserAuditRegion(email, fullName);
     } catch (error) {
       throw Exception(error);
     }
@@ -530,10 +503,8 @@ void getDetailUserAuditRegion() async {
 
   void changePasswordAuditRegions(String oldPassword, String newPassword) async {
     try {
-      final response = await repositories.changePasswordAuditRegion(
+      await repositories.changePasswordAuditRegion(
           oldPassword, newPassword);
-          Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
     } catch (error) {
       throw Exception(error);
     }
@@ -576,10 +547,8 @@ void getDetailUserAuditRegion() async {
 
   void generateClarification()async{
     try {
-      final generate = await repositories.generateClarification(caseId.value, caseCategoryId.value, branchId.value);
-      message.value = generate.message.toString();
+      await repositories.generateClarification(caseId.value, caseCategoryId.value, branchId.value);
       pagingControllerClarification.refresh();
-      snakcBarMessageGreen('Berhasil', 'Berhasil generate klarifikasi');
     } catch (e) {
       throw Exception(e);
     }
@@ -615,8 +584,6 @@ void getDetailUserAuditRegion() async {
        description, priority);
        dataInputClarification.value = inputClarificationAuditRegion.data;
        pagingControllerClarification.refresh();
-       Get.snackbar('Berhasil', 'Klarifikasi berhasil dibuat', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message.value = inputClarificationAuditRegion.message.toString();
     } catch (error) {
       throw Exception(error);
     }
@@ -624,10 +591,8 @@ void getDetailUserAuditRegion() async {
 
   void uploadClarificationAuditRegion(String filePath, int id)async{
     try {
-      final response = await repositories.uploadClarificationAuditRegion(filePath, id);
+      await repositories.uploadClarificationAuditRegion(filePath, id);
       pagingControllerClarification.refresh();
-      message(response.toString());
-      Get.snackbar('Berhasil', 'Klarifikasi audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -656,8 +621,6 @@ void getDetailUserAuditRegion() async {
       dataInputIdentification.value = response.data;
       pagingControllerClarification.refresh();
       pagingControllerBap.refresh();
-      Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
     } catch (error) {
       throw Exception(error);
     }
@@ -665,9 +628,7 @@ void getDetailUserAuditRegion() async {
 
   void uploadBapAuditRegion(String filePath, int? bapId)async{
     try {
-      final response = await repositories.uploadBapAuditRegion(filePath, bapId);
-      message(response.toString());
-      Get.snackbar('Berhasil', 'BAP audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
+      await repositories.uploadBapAuditRegion(filePath, bapId);
       pagingControllerBap.refresh();
       selectedFileName.value = '';
     } catch (error) {

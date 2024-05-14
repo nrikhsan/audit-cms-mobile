@@ -140,7 +140,6 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       onPressed: (){
                                         controllerAuditArea.deleteMainSchedule(mainSchedule.id!);
                                         Get.back();
-                                        snakcBarMessageGreen('Berhasil', 'Jadwal berhasil dihapus');
                                       }, 
                                       child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
                                     ),
@@ -299,7 +298,6 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                       onPressed: (){
                                         controllerAuditArea.deleteSpecialSchedule(schedule.id!);
                                         Get.back();
-                                        snakcBarMessageGreen('Berhasil', 'Jadwal berhasil dihapus');
                                       }, 
                                       child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
                                     ),
@@ -651,7 +649,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                   }else if(status == 'DONE'){
                                     Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }else if(status == 'PENDING'){
-                                    snakcBarMessageRed('Alert', 'Anda harus reschedule terlebih dahulu');
+                                    snackBarMessageRed('Alert', 'Anda harus reschedule terlebih dahulu');
                                   }else if(status == 'APPROVE'){
                                     Get.to(() => DetailMainScheduleAuditRegion(mainScheduleId: mainSchedule.id!, kka: kka, startDate: outputStartDate, endDate: outputEndDate));
                                   }

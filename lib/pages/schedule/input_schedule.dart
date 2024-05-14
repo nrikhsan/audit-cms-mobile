@@ -100,7 +100,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           onChanged: (value)async{
                           setState(() {
                             users = value;
-                            controllerAuditArea.loadBranchAuditArea(value?.id);
+                            controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
                             branch = null;
                           });
                         }
@@ -160,11 +160,11 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           ),
                           onPressed: ()async{
                             if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                              snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
                             }else if(DateTime.parse(startDateControllerMainSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerMainSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerMainSchedule.text).isAfter(DateTime.parse(endDateControllerMainSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                               controllerAuditArea.addLocalDataMainSchedule(users?.id, branch?.id, 
                               startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, 
@@ -220,7 +220,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         onPressed: ()async{
 
                           if (controllerAuditArea.dataListLocalMainSchedulesAuditArea.isEmpty) {
-                            snakcBarMessageRed('Gagal', 'Data list jadwal utama tidak boleh kosong');
+                            snackBarMessageRed('Gagal', 'Data list jadwal utama tidak boleh kosong');
                           }else{
                             controllerAuditArea.addMainSchedules();
                             Get.back();
@@ -331,7 +331,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           onChanged: (value)async{
                             setState(() {
                               users = value;
-                              controllerAuditArea.loadBranchAuditArea(value?.id);
+                              controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
                               branch = null;
                             });
                           }
@@ -392,11 +392,11 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           ),
                           onPressed: ()async{
                             if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                              snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                               controllerAuditArea.addLocalDataSpecialSchedule(users?.id, branch?.id, 
                               startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, 
@@ -451,7 +451,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         ),
                         onPressed: ()async{
                           if(controllerAuditArea.dataListLocalSpecialSchedulesAuditArea.isEmpty){
-                            snakcBarMessageRed('Gagal', 'Data list jadwal khusus tidak boleh kosong');
+                            snackBarMessageRed('Gagal', 'Data list jadwal khusus tidak boleh kosong');
                           }else{
                             controllerAuditArea.addSpecialSchedules();
                             Get.back();
@@ -498,7 +498,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
     startDateControllerReschedule.text = widget.startDate;
     endDateControllerReschedule.text = widget.endDate;
     scheduleDescControllerReschedule.text = widget.desc;
-    controllerAuditArea.loadBranchAuditArea(widget.user);
+    controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users  = widget.user;
     _branch = widget.branch;
     super.initState();
@@ -577,7 +577,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                             setState(() {
                               _users = value;
                               final userId = value;
-                              controllerAuditArea.loadBranchAuditArea(userId);
+                              controllerAuditArea.loadBranchByUserIdAuditArea(userId);
                               _branch = null;
                             });
                           }
@@ -638,13 +638,13 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         ),
                         onPressed: ()async{
                           if (_users == null || _branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
+                              snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
                             }else if(DateTime.parse(startDateControllerReschedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerReschedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerReschedule.text).isAfter(DateTime.parse(endDateControllerReschedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else if(startDateControllerReschedule.text == widget.startDate && endDateControllerReschedule.text == widget.endDate){
-                              snakcBarMessageRed('Gagal', 'tanggal harus diperbarui');
+                              snackBarMessageRed('Gagal', 'tanggal harus diperbarui');
                             }else{
                               controllerAuditArea.requestReschedule(_users, widget.rescheduleId, _branch, 
                                 startDateControllerReschedule.text, endDateControllerReschedule.text, scheduleDescControllerReschedule.text);

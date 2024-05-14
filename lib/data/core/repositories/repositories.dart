@@ -12,7 +12,6 @@ import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_
 import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -82,9 +81,8 @@ abstract class Repositories {
   Future<ResponseDetailRescheduleAuditArea> getDetailRescheduleAuditArea(int id);
 
   //master
-  Future<ResponseDropdownArea>getArea();
   Future<ResponseUsers> getUsersAuditArea();
-  Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId);
+  Future<ResponseBranchAuditArea> getBranchByUserIdAuditArea(int? userId);
   Future<ResponseBranchAuditArea> getBranchForFilterDataAuditArea();
   Future<ResponseCaseAuditArea> getCaseAuditArea();
   Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(int? caseId);
@@ -265,18 +263,13 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
-  Future<ResponseDropdownArea> getArea() {
-    return apiService.getArea();
-  }
-
-  @override
   Future<ResponseUsers> getUsersAuditArea() {
     return apiService.getUsersAuditArea();
   }
 
   @override
-  Future<ResponseBranchAuditArea> getBranchAuditArea(int? userId) {
-    return apiService.getBranchAuditArea(userId);
+  Future<ResponseBranchAuditArea> getBranchByUserIdAuditArea(int? userId) {
+    return apiService.getBranchByUserIdAuditArea(userId);
   }
 
   @override
@@ -298,12 +291,6 @@ class RepositoryImpl implements Repositories {
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea() {
     return apiService.getPenaltyAuditArea();
   }
-
-  //LHA
-  // @override
-  // Future<ResponseListCaseLha> getCaseLhaAuditArea(int page, int lhaId) {
-  //   return apiService.getCaseLhaAuditArea(page, lhaId);
-  // }
 
   @override
   Future<ResponseMessage> inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail){

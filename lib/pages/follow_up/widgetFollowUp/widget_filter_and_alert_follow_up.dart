@@ -278,7 +278,7 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -290,7 +290,7 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }

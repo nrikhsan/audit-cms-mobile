@@ -12,7 +12,6 @@ import 'package:audit_cms/data/core/response/auditArea/kka/response_detail_kka_a
 import 'package:audit_cms/data/core/response/auditArea/lha/response_detail_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_list_case_lha_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/lha/response_revisi_lha_audit_area.dart';
-import 'package:audit_cms/data/core/response/auditArea/master/response_dropdown_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_branch_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/master/response_case_audit_area.dart';
@@ -26,8 +25,6 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_specia
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
-import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -82,7 +79,6 @@ class ControllerAuditArea extends GetxController{
   var endDateLha = ''.obs;
 
   //master
-  final RxList<DataListArea> area = <DataListArea>[].obs;
   final RxList<DataUsers> usersAuditArea = <DataUsers>[].obs;
   final RxList<DataListBranch> branchAuditArea = <DataListBranch>[].obs;
   final RxList<DataListBranch> branchForFilterAuditArea = <DataListBranch>[].obs;
@@ -146,7 +142,6 @@ class ControllerAuditArea extends GetxController{
     loadUsersAuditArea();
     loadCaseAuditArea();
     loadPenalty();
-    loadArea();
     loadBranchForFilterDataAuditArea();
     super.onInit();
   }
@@ -187,13 +182,10 @@ class ControllerAuditArea extends GetxController{
 
   void addMainSchedules()async{
     try{     
-      final addSchedules = await repository.addMainSchedules(dataListLocalMainSchedulesAuditArea.toList());
+      await repository.addMainSchedules(dataListLocalMainSchedulesAuditArea.toList());
       pagingControllerMainSchedule.refresh();
-      message(addSchedules.toString());
-      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
       dataListLocalMainSchedulesAuditArea.clear();
     }catch(error){
-      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       dataListLocalMainSchedulesAuditArea.clear();
       throw Exception(error);
     }
@@ -201,20 +193,16 @@ class ControllerAuditArea extends GetxController{
 
   void editMainSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
     try {
-      final editMainSchedule = await repository.editMainSchedule(id, userId, branchId, startDate, endDate, description);
+      await repository.editMainSchedule(id, userId, branchId, startDate, endDate, description);
       pagingControllerMainSchedule.refresh();
-      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
-      message.value = editMainSchedule.message.toString();
     } catch (e) {
-      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       throw Exception(e);
     }
   }
   
   void deleteMainSchedule(int id)async{
     try {
-      final delete = await repository.deleteMainSchedule(id);
-      message.value = delete.message.toString();
+      await repository.deleteMainSchedule(id);
       pagingControllerMainSchedule.refresh();
     } catch (e) {
       throw Exception(e);
@@ -290,15 +278,12 @@ class ControllerAuditArea extends GetxController{
 
   void addSpecialSchedules()async{
     try{     
-      final addSchedules = await repository.addSpecialSchedules(dataListLocalSpecialSchedulesAuditArea.toList());
+      await repository.addSpecialSchedules(dataListLocalSpecialSchedulesAuditArea.toList());
       pagingControllerSpecialSchedule.refresh();
       pagingControllerReschedule.refresh();
       pagingControllerMainSchedule.refresh();
-      message(addSchedules.toString());
-      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil dibuat');
       dataListLocalSpecialSchedulesAuditArea.clear();
     }catch(error){
-      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       dataListLocalSpecialSchedulesAuditArea.clear();
       throw Exception(error);
     }
@@ -306,8 +291,7 @@ class ControllerAuditArea extends GetxController{
 
   void deleteSpecialSchedule(int id)async{
     try {
-      final delete = await repository.deleteSpecialSchedule(id);
-      message.value = delete.message.toString();
+      await repository.deleteSpecialSchedule(id);
       pagingControllerSpecialSchedule.refresh();
     } catch (e) {
       throw Exception(e);
@@ -337,12 +321,9 @@ class ControllerAuditArea extends GetxController{
 
   void editSpecialSchedule(int id, int userId, int branchId, String startDate, String endDate, String description)async{
     try {
-      final editSpecialSchedule = await repository.editSpecialSchedule(id, userId, branchId, startDate, endDate, description);
+      await repository.editSpecialSchedule(id, userId, branchId, startDate, endDate, description);
       pagingControllerSpecialSchedule.refresh();
-      message.value = editSpecialSchedule.message.toString();
-      snakcBarMessageGreen('Berhasil', 'Data jadwal berhasil di edit');
     } catch (e) {
-      snakcBarMessageRed('Gagal menginput data', 'Start and end date is already exist');
       throw Exception(e);
     }
   }
@@ -375,13 +356,10 @@ class ControllerAuditArea extends GetxController{
   //reschedules
   void requestReschedule(int? userId, int scheduleId, int? branchId, String startDate, String endDate, String desc)async{
     try{     
-      final reschedule = await repository.requestReschedule(userId, scheduleId, branchId, startDate, endDate, desc);
+      await repository.requestReschedule(userId, scheduleId, branchId, startDate, endDate, desc);
       pagingControllerReschedule.refresh();
       pagingControllerMainSchedule.refresh();
-      message.value = reschedule.message.toString();
-      snakcBarMessageGreen('Berhasil', 'Reschedul berhasil dibuat');
     }catch(error){
-      snakcBarMessageRed('Gagal', 'Tanggal tersebut sudah digunakan di jadwal lain');
       throw Exception(error);
     }
   }
@@ -433,16 +411,6 @@ void getDetailRescheduleAuditArea(int id)async{
   }
 
   //master
-  var areaId = RxnInt();
-  void loadArea()async{
-    try {
-      final areaMaster = await repository.getArea();
-      area.assignAll(areaMaster.data ?? []);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
   void loadUsersAuditArea()async{
     try{
       final responseAuditor = await repository.getUsersAuditArea();
@@ -452,9 +420,9 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void loadBranchAuditArea(int? userId)async {
+  void loadBranchByUserIdAuditArea(int? userId)async {
     try{
-      final responseBranch = await repository.getBranchAuditArea(userId);
+      final responseBranch = await repository.getBranchByUserIdAuditArea(userId);
       branchAuditArea.assignAll(responseBranch.data ?? []);
     }catch(error){
       throw Exception(error);
@@ -502,23 +470,6 @@ void getDetailRescheduleAuditArea(int id)async{
 }
 
   //LHA
-  //  void loadListCaseLha(int page) async{
-  //   try {
-  //    final cases = await repository.getCaseLhaAuditArea(page, lhaId.value!);
-  //    final lhaCase = cases.data!.lhaDetails;
-  //    final isLastPage = lhaCase!.length < 10;
-  //    if (isLastPage) {
-  //      pagingControllerListCase.appendLastPage(lhaCase);
-  //    } else {
-  //      final nextPage = page + 1;
-  //      pagingControllerListCase.appendPage(lhaCase, nextPage);
-  //    }
-  //  } catch (e) {
-  //    pagingControllerListCase.error = e;
-  //    throw Exception(e);
-  //  } 
-  // }
-
   void addToLocalLhaAuditArea(int? caseId, int? caseCategoryId, String description, String suggestion, String temporaryRecommendation, 
   String permanentRecommendation, int research, String? caseName, String? caseCategoryName)async{
 
@@ -546,13 +497,10 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void inputLhaAuditArea(int scheduleId)async{
     try {
-      final response = await repository.inputLhaAuditArea(scheduleId, dataListLocalLhaAuditArea.toList());
-      message.value = response.message.toString();
+      await repository.inputLhaAuditArea(scheduleId, dataListLocalLhaAuditArea.toList());
       pagingControllerClarificationAuditArea.refresh();
-      snakcBarMessageGreen('Berhasil', 'Lha berhasil dibuat');
       dataListLocalLhaAuditArea.clear();
     } catch (error) {
-      snakcBarMessageRed('Gagal menginput data', 'Tidak bisa upload LHA lagi untuk hari ini');
       dataListLocalLhaAuditArea.clear();
       throw Exception(error);
     }
@@ -572,10 +520,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
-      final revisiLha = await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
-      lhaRevision.refresh();
-      message.value = revisiLha.message.toString();
-      snakcBarMessageGreen('Berhasil', 'LHA berhasil di revisi');
+      await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
     } catch (e) {
       throw Exception(e);
     }
@@ -583,9 +528,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void sendCaseLha(int? lhaDetailId)async{
     try {
-      final response = await repository.sendCaseLha(lhaDetailId);
-      message.value = response.message.toString();
-      snakcBarMessageGreen('Berhasil', 'LHA berhasil di kirim ke pusat');
+      await repository.sendCaseLha(lhaDetailId);
     } catch (e) {
       throw Exception(e);
     }
@@ -677,10 +620,8 @@ void getDetailRescheduleAuditArea(int id)async{
   //clarification
   void generateClarification()async{
     try {
-      final generate = await repository.generateClarification(caseId.value, caseCategoryId.value, branchId.value);
-      message.value = generate.message.toString();
+      await repository.generateClarification(caseId.value, caseCategoryId.value, branchId.value);
       pagingControllerClarificationAuditArea.refresh();
-      snakcBarMessageGreen('Berhasil', 'Berhasil generate klarifikasi');
     } catch (e) {
       throw Exception(e);
     }
@@ -688,10 +629,8 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void uploadClarificationAuditArea(String filePath, int id)async{
     try {
-      final response = await repository.uploadClarificationAuditRegion(filePath, id);
+      await repository.uploadClarificationAuditRegion(filePath, id);
       pagingControllerClarificationAuditArea.refresh();
-      message(response.toString());
-      Get.snackbar('Berhasil', 'Klarifikasi audit berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -717,11 +656,9 @@ void getDetailRescheduleAuditArea(int id)async{
   void inputClarificationAuditArea(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
     String description, String priority)async {
     try {
-      final inputClarificationAuditRegion = await repository.inputClarificationAuditRegion(clarificationId, evaluationLimitation, location, auditee, auditeeLeader,
+      await repository.inputClarificationAuditRegion(clarificationId, evaluationLimitation, location, auditee, auditeeLeader,
        description, priority);
        pagingControllerClarificationAuditArea.refresh();
-       Get.snackbar('Berhasil', 'Klarifikasi berhasil dibuat', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message.value = inputClarificationAuditRegion.message.toString();
     } catch (error) {
       throw Exception(error);
     }
@@ -729,12 +666,10 @@ void getDetailRescheduleAuditArea(int id)async{
 
    void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
     try {
-      final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       pagingControllerClarificationAuditArea.refresh();
       pagingControllerBapAuditArea.refresh();
       pagingControllerFollowUp.refresh();
-      Get.snackbar('Berhasil', 'Identifikasi klarifikasi berhasil dibuat', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.message);
     } catch (error) {
       throw Exception(error);
     }
@@ -923,25 +858,20 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void inputFollowUpAuditArea(int followUpId, num charCoss, String desc)async{
     try{
-     final inputFollowUp = await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, charCoss, desc);
+      await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, charCoss, desc);
       pagingControllerFollowUp.refresh();
-      snakcBarMessageGreen('Berhasil', 'Tindak lanjut berhasil dibuat');
       penaltyIdList.clear();
-      message.value = inputFollowUp.message.toString();
     }catch(error){
       pagingControllerFollowUp.refresh();
       penaltyIdList.clear();
-      snakcBarMessageRed('Gagal', 'Tindak lanjut gagal dibuat');
       throw Exception(error);
     }
   }
 
   void uploadFollowUp(String filePath, int followUpId)async{
     try {
-      final response = await repository.uploadFollowUpAuditArea(filePath, followUpId);
+      await repository.uploadFollowUpAuditArea(filePath, followUpId);
       pagingControllerFollowUp.refresh();
-      message(response.toString());
-      Get.snackbar('Berhasil', 'Tindak lanut berhasil di unggah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -996,10 +926,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void editProfileUserAuditArea(String email, String fullName)async{
     try {
-      final response = await repository.editUserAuditArea(email, fullName);
-      Get.snackbar('Berhasil', 'Profil berhasil di edit',
-                              snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.toString());
+      await repository.editUserAuditArea(email, fullName);
     } catch (error) {
       throw Exception(error);
     }
@@ -1007,9 +934,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void changePasswordAuditArea(String currentPassword, String newPassword)async{
     try {
-      final response = await repository.changePasswordAuditArea(currentPassword, newPassword);
-      Get.snackbar('Gagal', 'Kata sandi berhasil dirubah', colorText: CustomColors.white, backgroundColor: CustomColors.green);
-      message(response.toString());
+      await repository.changePasswordAuditArea(currentPassword, newPassword);
     } catch (error) {
       throw Exception(error);
     }

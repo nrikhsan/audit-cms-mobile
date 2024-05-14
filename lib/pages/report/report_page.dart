@@ -110,9 +110,9 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (startDateControllerClarification.text.isEmpty || endDateControllerClarification.text.isEmpty) {
-                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                          snackBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
                         } else if(DateTime.parse(startDateControllerClarification.text).isAfter(DateTime.parse(endDateControllerClarification.text))) {
-                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                          snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
                           downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateControllerClarification, endDateControllerClarification);
@@ -171,9 +171,9 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (startDateControllerLha.text.isEmpty || endDateControllerLha.text.isEmpty) {
-                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                          snackBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
                         } else if(DateTime.parse(startDateControllerLha.text).isAfter(DateTime.parse(endDateControllerLha.text))) {
-                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                          snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
                           downloadReportLhaAuditArea(AppConstant.downloadReportLha, startDateControllerLha, endDateControllerLha);
@@ -283,9 +283,9 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (startDateControllerClarification.text.isEmpty || endDateControllerClarification.text.isEmpty) {
-                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                          snackBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
                         } else if(DateTime.parse(startDateControllerClarification.text).isAfter(DateTime.parse(endDateControllerClarification.text))) {
-                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                          snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
                           downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateControllerClarification, endDateControllerClarification);
@@ -343,9 +343,9 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (startDateControllerLha.text.isEmpty || endDateControllerLha.text.isEmpty) {
-                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                          snackBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
                         } else if(DateTime.parse(startDateControllerLha.text).isAfter(DateTime.parse(endDateControllerLha.text))) {
-                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                          snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
                           downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateControllerLha, endDateControllerLha);

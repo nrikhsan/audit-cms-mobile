@@ -65,7 +65,7 @@ void downloadReportClarificationAuditArea(String url, int? branchId, TextEditing
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -77,7 +77,7 @@ void downloadReportClarificationAuditArea(String url, int? branchId, TextEditing
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }
@@ -108,7 +108,7 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
               }
             },
           );
-          snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+          snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
         } catch (error) {
           if (error is DioError) {
             if (error.response != null) {
@@ -120,7 +120,7 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
           } else {
             print('Error: $error');
           }
-          snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+          snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
         }
       }
 }
@@ -150,7 +150,7 @@ void downloadReportClarificationAuditRegion(String url, TextEditingController st
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -162,7 +162,7 @@ void downloadReportClarificationAuditRegion(String url, TextEditingController st
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }
@@ -193,7 +193,7 @@ void downloadReportLhaAuditRegion(String url, TextEditingController startDateCon
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
       } catch (error) {
         if (error is DioError) {
           if (error.response != null) {
@@ -205,7 +205,7 @@ void downloadReportLhaAuditRegion(String url, TextEditingController startDateCon
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
   } 

@@ -430,7 +430,7 @@ void downloadFileClarification(String url) async {
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
         
       } catch (error) {
         if (error is DioError) {
@@ -443,7 +443,7 @@ void downloadFileClarification(String url) async {
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }
@@ -470,7 +470,7 @@ void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion cont
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
         controllerAuditRegion.pagingControllerClarification.refresh();
         
       } catch (error) {
@@ -484,7 +484,7 @@ void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion cont
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }
@@ -514,7 +514,7 @@ void downloadFileClarificationAuditArea(String url, ControllerAuditArea controll
             }
           },
         );
-        snakcBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
         controllerAuditArea.pagingControllerClarificationAuditArea.refresh();
         
       } catch (error) {
@@ -528,7 +528,7 @@ void downloadFileClarificationAuditArea(String url, ControllerAuditArea controll
         } else {
           print('Error: $error');
         }
-        snakcBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
       }
     }
 }

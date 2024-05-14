@@ -1,14 +1,14 @@
 class ResponseAuth {
-  Metadata? metadata;
-  int? status;
+  Metadata? meta;
   String? message;
+  int? status;
   DataLogin? data;
 
-  ResponseAuth({this.metadata, this.status, this.message, this.data});
+  ResponseAuth({this.meta, this.message, this.status, this.data});
 
   ResponseAuth.fromJson(Map<String, dynamic> json) {
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
+    meta = json['meta'] != null
+        ? new Metadata.fromJson(json['meta'])
         : null;
     status = json['status'];
     message = json['message'];
@@ -17,11 +17,11 @@ class ResponseAuth {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
     }
-    data['status'] = this.status;
     data['message'] = this.message;
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }

@@ -32,7 +32,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
     startDateControllerMainSchedule.text = widget.startDate;
     endDateControllerMainSchedule.text = widget.endDate;
     scheduleDescControllerMainSchedule.text = widget.desc;
-    controllerAuditArea.loadBranchAuditArea(widget.user);
+    controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users = widget.user;
     _branch = widget.branch;
     super.initState();
@@ -109,7 +109,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           onChanged: (value)async{
                           setState(() {
                             _users = value;
-                            controllerAuditArea.loadBranchAuditArea(value);
+                            controllerAuditArea.loadBranchByUserIdAuditArea(value);
                             _branch = null;
                           });
                           }
@@ -168,11 +168,11 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                           onPressed: ()async{
                     
                            if (_users == null || _branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                              snackBarMessageRed('Gagal', 'Data jadwal gagal di edit');
                             }else if(DateTime.parse(startDateControllerMainSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerMainSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerMainSchedule.text).isAfter(DateTime.parse(endDateControllerMainSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editMainSchedule(widget.scheduleId, _users!, _branch!, startDateControllerMainSchedule.text, endDateControllerMainSchedule.text, scheduleDescControllerMainSchedule.text);
                               Navigator.pop(context);
@@ -218,7 +218,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
     startDateControllerSpecialSchedule.text = widget.startDate;
     endDateControllerSpecialSchedule.text = widget.endDate;
     scheduleDescControllerSpecialSchedule.text = widget.desc;
-    controllerAuditArea.loadBranchAuditArea(widget.user);
+    controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users = widget.user;
     _branch = widget.branch;
     super.initState();
@@ -295,7 +295,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           onChanged: (value)async{
                           setState(() {
                             _users = value;
-                            controllerAuditArea.loadBranchAuditArea(value);
+                            controllerAuditArea.loadBranchByUserIdAuditArea(value);
                             _branch = null;
                           });
                           }
@@ -353,11 +353,11 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                           ),
                           onPressed: ()async{
                             if (_users == null || _branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
-                              snakcBarMessageRed('Gagal', 'Data jadwal gagal di edit');
+                              snackBarMessageRed('Gagal', 'Data jadwal gagal di edit');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
-                              snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
                             controllerAuditArea.editSpecialSchedule(widget.scheduleId, _users!, _branch!, startDateControllerSpecialSchedule.text, endDateControllerSpecialSchedule.text, scheduleDescControllerSpecialSchedule.text);
                               Navigator.pop(context);

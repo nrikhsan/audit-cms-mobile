@@ -119,7 +119,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   TextButton(
                     onPressed: (){
                       if (penalty == null || explanationPenaltyController.text.isEmpty) {
-                        snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
+                        snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
                         controllerAuditArea.addPenalty(penalty?.id, penalty?.name);
                         clearFollowUp();  
@@ -173,7 +173,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     chargingCoss = chargingCoss.replaceAll('.', '');
                     double charCoss = double.parse(chargingCoss);
                     if (controllerAuditArea.penaltyIdList.isEmpty) {
-                      snakcBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
+                      snackBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
                       controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
                       explanationPenaltyController.clear();

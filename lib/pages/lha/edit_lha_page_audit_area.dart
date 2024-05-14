@@ -138,7 +138,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
                        if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || selectedSuggest == null) {
-                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                          snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                       }else{
                          controllerAuditArea.revisiLha(widget.lhaId, lhaDescriptionController.text, 
                             suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
@@ -280,7 +280,7 @@ class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
                        if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || selectedSuggest == null) {
-                          snakcBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
+                          snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                       }else{
                          controllerAuditRegion.revisiLha(widget.lhaId, lhaDescriptionController.text, 
                             suggestController.text, temporaryRecommendationController.text, permanentRecommendationController.text);
