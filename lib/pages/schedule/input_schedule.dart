@@ -161,8 +161,6 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           onPressed: ()async{
                             if (users == null || branch == null || startDateControllerMainSchedule.text.isEmpty || endDateControllerMainSchedule.text.isEmpty || scheduleDescControllerMainSchedule.text.isEmpty) {
                               snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
-                            }else if(DateTime.parse(startDateControllerMainSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerMainSchedule.text))){
-                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerMainSchedule.text).isAfter(DateTime.parse(endDateControllerMainSchedule.text))){
                               snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
@@ -393,8 +391,6 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           onPressed: ()async{
                             if (users == null || branch == null || startDateControllerSpecialSchedule.text.isEmpty || endDateControllerSpecialSchedule.text.isEmpty || scheduleDescControllerSpecialSchedule.text.isEmpty) {
                               snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
-                            }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerSpecialSchedule.text))){
-                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerSpecialSchedule.text).isAfter(DateTime.parse(endDateControllerSpecialSchedule.text))){
                               snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else{
@@ -639,8 +635,6 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                         onPressed: ()async{
                           if (_users == null || _branch == null || startDateControllerReschedule.text.isEmpty || endDateControllerReschedule.text.isEmpty || scheduleDescControllerReschedule.text.isEmpty) {
                               snackBarMessageRed('Gagal', 'Data jadwal gagal ditambahkan');
-                            }else if(DateTime.parse(startDateControllerReschedule.text).isAtSameMomentAs(DateTime.parse(endDateControllerReschedule.text))){
-                              snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh sama dengan tanggal selesai');
                             }else if(DateTime.parse(startDateControllerReschedule.text).isAfter(DateTime.parse(endDateControllerReschedule.text))){
                               snackBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                             }else if(startDateControllerReschedule.text == widget.startDate && endDateControllerReschedule.text == widget.endDate){
