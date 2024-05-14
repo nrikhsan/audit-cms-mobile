@@ -140,15 +140,15 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                               nominalLossText = nominalLossText.replaceAll('Rp', '');
                               nominalLossText = nominalLossText.replaceAll('.', '');
 
-                              double loss = double.parse(nominalLossText);
+                              double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else if(lossController.text.isNotEmpty){
+                              }else if(loss != null){
                                 controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                                 Get.to(() => const BapAuditAreaPage());
-                              }else if (lossController.text.isEmpty){
+                              }else{
                                 Get.offAll(() => BotNavePageAuditArea());
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)
@@ -294,16 +294,15 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                               String nominalLossText = lossController.text;
                               nominalLossText = nominalLossText.replaceAll('Rp', '');
                               nominalLossText = nominalLossText.replaceAll('.', '');
-
-                              double loss = double.parse(nominalLossText);
+                              double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
                               if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else if(lossController.text.isNotEmpty){
+                              }else if(loss != null){
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
                                 Get.to(() => const BapAuditRegionPage());
-                              }else if (lossController.text.isEmpty){
+                              }else{
                                 Get.offAll(() => BotNavAuditRegion());
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)

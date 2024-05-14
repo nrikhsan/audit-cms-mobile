@@ -171,11 +171,15 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     String chargingCoss = charCossController.text;
                     chargingCoss = chargingCoss.replaceAll('Rp', '');
                     chargingCoss = chargingCoss.replaceAll('.', '');
-                    double charCoss = double.parse(chargingCoss);
+                    double? charCoss = chargingCoss.isNotEmpty ? double.parse(chargingCoss) : null;
                     if (controllerAuditArea.penaltyIdList.isEmpty) {
                       snackBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
-                      controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
+                      if (charCoss != null) {
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
+                      } else {
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, 0, explanationPenaltyController.text);
+                      }
                       explanationPenaltyController.clear();
                     }
                   }, 
