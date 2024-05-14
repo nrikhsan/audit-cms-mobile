@@ -91,6 +91,7 @@ class ContentListClarificationAuditRegion {
   String? status;
   int? isFollowUp;
   int? isFlag;
+  String? createdAt;
 
   ContentListClarificationAuditRegion(
       {this.id,
@@ -105,7 +106,8 @@ class ContentListClarificationAuditRegion {
       this.description,
       this.status,
       this.isFollowUp,
-      this.isFlag});
+      this.isFlag,
+      this.createdAt});
 
   ContentListClarificationAuditRegion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -124,6 +126,7 @@ class ContentListClarificationAuditRegion {
     status = json['status'];
     isFollowUp = json['is_follow_up'];
     isFlag = json['is_flag'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -149,6 +152,7 @@ class ContentListClarificationAuditRegion {
     data['status'] = status;
     data['is_follow_up'] = isFollowUp;
     data['is_flag'] = isFlag;
+    data['created_at'] = this.createdAt;
     return data;
   }
 }

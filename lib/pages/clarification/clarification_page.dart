@@ -12,6 +12,7 @@ import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_a
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 
 //audit area
 class ClarificationPageAuditArea extends StatefulWidget {
@@ -62,11 +63,100 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
                 final statusClarificaion = clarification.status;
-                final priority = clarification.priority;
                 final level = clarification.user?.level?.name;
+                final createdAt = DateTime.parse('${clarification.createdAt}');
                 return GestureDetector(
-                      onTap: (){
-                        if (level == 'AREA') {
+                  child: Card(
+                    shape: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: CustomColors.lightGrey,
+                        width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                        if(statusClarificaion == 'INPUT')
+                                          Text('Perlu klarifikasi', style: CustomStyles.textMediumRed12Px),
+                                    
+                                        if(statusClarificaion == 'DOWNLOAD')
+                                        Text('Unduh klarifikasi', style: CustomStyles.textMediumRed12Px),
+                        
+                                        if(statusClarificaion == 'UPLOAD')
+                                        Text('Unggah klarifikasi', style: CustomStyles.textMediumRed12Px),
+
+                                        if(statusClarificaion == 'IDENTIFICATION')
+                                        Text('Input identifikasi', style: CustomStyles.textMediumRed12Px),
+                        
+                                        if(statusClarificaion == 'DONE')
+                                        Text('Selesai', style: CustomStyles.textMediumGreen12Px),
+                                      const SizedBox(height: 5,),
+                                      Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
+                                  ],
+                                ),
+
+                            SizedBox(
+                              height: 25,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  backgroundColor: CustomColors.grey
+                                ),
+                                onPressed: (){
+                                  null;
+                              }, child: Text('${clarification.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
+                            )
+
+                          ],
+                        ),
+
+                              const SizedBox(height: 10,),
+                              const Divider(color: CustomColors.lightGrey, height: 0.1),
+                              const SizedBox(height: 10,),
+
+                              Row(
+                                children: [
+                                  Text('Auditor : ', style: CustomStyles.textMedium13Px),
+                                  Text('${clarification.user?.fullname}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+                              
+                              const SizedBox(height: 5,),
+
+                              Row(
+                                children: [
+                                  Text('Dibuat pada : ', style: CustomStyles.textMedium13Px),
+                                  Text(DateFormat('dd-MM-yyyy').format(createdAt), style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+
+                              const SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Kode : ', style: CustomStyles.textMedium13Px),
+                                  Text('${clarification.code}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+                              const SizedBox(height: 5,),
+                          ],
+                        )
+                      )
+                    ),
+                  ),
+                  onTap: (){
+                    if (level == 'AREA') {
                           if (statusClarificaion == 'INPUT'){
                           Get.to(() =>  InputClarificationAuditArea(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
@@ -81,63 +171,8 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         }else{
                           Get.to(() => DetailClarificationPageAuditArea(id: clarification.id!, statusClarificaion: statusClarificaion!));
                         }
-                      },
-                      child: Card(
-                      shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: CustomColors.grey
-                        )
-                      ),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Wrap(
-                                  children: [
-                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold13Px),
-                                    const SizedBox(width: 10),
-                                    Icon(clarification.isFlag == 1 ? Icons.notifications_rounded : null, color: CustomColors.red, size: 15),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                if(statusClarificaion == 'INPUT')
-                                Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
-                      
-                                if(statusClarificaion == 'DOWNLOAD')
-                                Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'UPLOAD')
-                                Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'IDENTIFICATION')
-                                Text('Belum input identifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'DONE')
-                                Text('Selesai', style: CustomStyles.textMediumGreen13Px),
-                              ],
-                            ),
-                      
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [                                
-                                const SizedBox(height: 5),
-                                Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
-                                const SizedBox(height: 5),
-                                Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
-                               
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                  },
+                );
               }
             ),
           )
@@ -358,10 +393,99 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
             builderDelegate: PagedChildBuilderDelegate(
               itemBuilder: (_, clarification, index){
                 final statusClarificaion = clarification.status;
-                final priority = clarification.priority;
+                final createdAt = DateTime.parse('${clarification.createdAt}');
                 return GestureDetector(
-                      onTap: (){
-                        if (statusClarificaion == 'INPUT'){
+                  child: Card(
+                    shape: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: CustomColors.lightGrey,
+                        width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                        if(statusClarificaion == 'INPUT')
+                                        Text('Perlu klarifikasi', style: CustomStyles.textMediumRed12Px),
+                                    
+                                        if(statusClarificaion == 'DOWNLOAD')
+                                        Text('Unduh klarifikasi', style: CustomStyles.textMediumRed12Px),
+                        
+                                        if(statusClarificaion == 'UPLOAD')
+                                        Text('Unggah klarifikasi', style: CustomStyles.textMediumRed12Px),
+
+                                        if(statusClarificaion == 'IDENTIFICATION')
+                                        Text('Input identifikasi', style: CustomStyles.textMediumRed12Px),
+                        
+                                        if(statusClarificaion == 'DONE')
+                                        Text('Selesai', style: CustomStyles.textMediumGreen12Px),
+                                      const SizedBox(height: 5,),
+                                      Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
+                                  ],
+                                ),
+
+                            SizedBox(
+                              height: 25,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  backgroundColor: CustomColors.grey
+                                ),
+                                onPressed: (){
+                                  null;
+                              }, child: Text('${clarification.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
+                            )
+
+                          ],
+                        ),
+
+                              const SizedBox(height: 10,),
+                              const Divider(color: CustomColors.lightGrey, height: 0.1),
+                              const SizedBox(height: 10,),
+
+                              Row(
+                                children: [
+                                  Text('Auditor : ', style: CustomStyles.textMedium13Px),
+                                  Text('${clarification.user?.fullname}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+                              
+                              const SizedBox(height: 5,),
+
+                              Row(
+                                children: [
+                                  Text('Dibuat pada : ', style: CustomStyles.textMedium13Px),
+                                  Text(DateFormat('dd-MM-yyyy').format(createdAt), style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+
+                              const SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Kode : ', style: CustomStyles.textMedium13Px),
+                                  Text('${clarification.code}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+                              const SizedBox(height: 5,),
+                          ],
+                        )
+                      )
+                    ),
+                  ),
+                  onTap: (){
+                    if (statusClarificaion == 'INPUT'){
                           Get.to(() => InputClarificationPageAuditRegion(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
                             Get.to(() => DocumentClarificationPageAuditRegion(id: clarification.id!, fileName: clarification.fileName, status: clarification.status,));
@@ -372,63 +496,8 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                           }else if(statusClarificaion == 'DONE'){
                             Get.to(() => DetailClarificationAuditRegion(id: clarification.id!));
                           }
-                      },
-                      child: Card(
-                      shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: CustomColors.grey
-                        )
-                      ),
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Wrap(
-                                  children: [
-                                    
-                                    Text('${clarification.user!.fullname}', style: CustomStyles.textBold13Px),
-                                    const SizedBox(width: 10),
-                                    
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                if(statusClarificaion == 'INPUT')
-                                Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed13Px),
-                      
-                                if(statusClarificaion == 'DOWNLOAD')
-                                Text('Belum mengunduh klarifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'UPLOAD')
-                                Text('Belum mengunggah klarifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'IDENTIFICATION')
-                                Text('Belum input identifikasi', style: CustomStyles.textMediumRed13Px),
-          
-                                if(statusClarificaion == 'DONE')
-                                Text('Selesai', style: CustomStyles.textMediumGreen13Px),
-                              ],
-                            ),
-                      
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [                                
-                                const SizedBox(height: 5),
-                                Text('Prioritas temuan : ${priority ?? ''}', style: CustomStyles.textMedium13Px),
-                                const SizedBox(height: 5),
-                                Text('Cabang : ${clarification.branch!.name}', style: CustomStyles.textMedium13Px),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                  },
+                ); 
               }
             ),
           ))
