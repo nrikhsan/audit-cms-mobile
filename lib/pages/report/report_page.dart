@@ -1,6 +1,5 @@
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
-import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/report/widgetReport/widget_report.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
@@ -19,38 +18,56 @@ class ReportPageAuditArea extends StatefulWidget {
 
 class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
+  final TextEditingController startDateControllerClarification = TextEditingController();
+  final TextEditingController endDateControllerClarification = TextEditingController();
+  final TextEditingController startDateControllerLha = TextEditingController();
+  final TextEditingController endDateControllerLha = TextEditingController();
   final TextEditingController branchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: CustomColors.white,
-        appBar: AppBar(
+    return DefaultTabController(length: 2, 
+    child: Scaffold(
+      appBar: AppBar(
             backgroundColor: CustomColors.white,
-            title: const Text('Laporan'),
+            title: const Text('Download laporan'),
+            titleSpacing: 20,
             titleTextStyle: CustomStyles.textBold18Px,
-            actions: [
-              TextButton(
-                onPressed: (){
-                            controllerAuditArea.branchIdReport.value = null;
-                            controllerAuditArea.areaId.value = null;
-                            startDateController.clear();
-                            endDateController.clear();
-              }, child: Text('Reset', style: CustomStyles.textMediumRed15Px))],
+            bottom: TabBar(
+              isScrollable: false,
+              indicatorColor: CustomColors.blue,
+              splashBorderRadius: BorderRadius.circular(10),
+              unselectedLabelStyle: const TextStyle(
+                  color: CustomColors.grey,
+                  fontFamily: 'RobotoMedium',
+                  fontSize: 13),
+              labelStyle: const TextStyle(
+                  color: CustomColors.blue,
+                  fontFamily: 'RobotoMedium',
+                  fontSize: 13),
+              tabs: const [
+                Tab(text: 'klarifikasi'),
+                Tab(text: 'LHA'),
+              ],
             ),
-        body: SingleChildScrollView(
-          child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          ),
+        body: TabBarView(
+          children: [
 
-              const SizedBox(height: 15),
-              Text('Dengan cabang', style: CustomStyles.textMedium15Px),
-              const SizedBox(height: 15),
-              Obx(() => SizedBox(
+            // 1. laporan klarifikasi
+            Scaffold(
+              backgroundColor: CustomColors.white,
+              body: SingleChildScrollView(
+              child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  const SizedBox(height: 10),
+                  Text('Dengan cabang', style: CustomStyles.textMedium15Px),
+                  const SizedBox(height: 15),
+                  Obx(() => SizedBox(
                     width: double.maxFinite,
                     child: DropdownButtonHideUnderline(
                     child: Container(
@@ -80,9 +97,9 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
               const SizedBox(height: 15),
               Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputStarDateEndDate(context, 'Mulai dari', startDateController),
+              formInputStarDateEndDate(context, 'Mulai dari', startDateControllerClarification),
               const SizedBox(height: 10),
-              formInputStarDateEndDate(context, 'Sampai dengan', endDateController),
+              formInputStarDateEndDate(context, 'Sampai dengan', endDateControllerClarification),
               const SizedBox(height: 25),
 
               SizedBox(
@@ -92,13 +109,13 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
-                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                        if (startDateControllerClarification.text.isEmpty || endDateControllerClarification.text.isEmpty) {
                           snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
-                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                        } else if(DateTime.parse(startDateControllerClarification.text).isAfter(DateTime.parse(endDateControllerClarification.text))) {
                           snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
-                          downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateController, endDateController);
+                          downloadReportClarificationAuditArea(AppConstant.downloadReportClarification, controllerAuditArea.branchIdReport.value, startDateControllerClarification, endDateControllerClarification);
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -109,20 +126,57 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       )
                     ),
 
-                SizedBox(
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.red),
+                      onPressed: ()async {
+                          controllerAuditArea.branchIdReport.value = null;
+                          startDateControllerClarification.clear();
+                          endDateControllerClarification.clear();
+                        },
+                      child: Text('Reset filter',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+                  ],
+                ),
+            ),
+          ),
+        ),
+
+        // 2. laporan LHA
+        Scaffold(
+              backgroundColor: CustomColors.white,
+              body: SingleChildScrollView(
+              child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+              const SizedBox(height: 15),
+              formInputStarDateEndDate(context, 'Mulai dari', startDateControllerLha),
+              const SizedBox(height: 10),
+              formInputStarDateEndDate(context, 'Sampai dengan', endDateControllerLha),
+              const SizedBox(height: 25),
+
+              SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
-                          backgroundColor: CustomColors.green),
-                      onPressed: () async{
-                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                          backgroundColor: CustomColors.blue),
+                      onPressed: ()async {
+                        if (startDateControllerLha.text.isEmpty || endDateControllerLha.text.isEmpty) {
                           snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
-                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                        } else if(DateTime.parse(startDateControllerLha.text).isAfter(DateTime.parse(endDateControllerLha.text))) {
                           snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
-                          downloadReportLhaAuditArea(AppConstant.downloadReportLha, startDateController, endDateController);
+                          downloadReportLhaAuditArea(AppConstant.downloadReportLha, startDateControllerLha, endDateControllerLha);
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -131,12 +185,30 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       child: Text('Download laporan LHA',
                           style: CustomStyles.textMediumWhite15Px)
                       )
-                    )
+                    ),
+
+                    SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.red),
+                      onPressed: ()async {
+                          startDateControllerLha.clear();
+                          endDateControllerLha.clear();
+                        },
+                      child: Text('Reset filter',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
                   ],
                 ),
             ),
-        )
-      );
+          ),
+        ),
+
+      ]))
+    );
   }
 }
 
@@ -149,38 +221,58 @@ class ReportPageAuditRegion extends StatefulWidget {
 }
 
 class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
+  
+  final TextEditingController startDateControllerClarification = TextEditingController();
+  final TextEditingController endDateControllerClarification = TextEditingController();
+  final TextEditingController startDateControllerLha = TextEditingController();
+  final TextEditingController endDateControllerLha = TextEditingController();
+  final TextEditingController branchController = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-    
-    return Scaffold(
-        backgroundColor: CustomColors.white,
-        appBar: AppBar(
-          backgroundColor: CustomColors.white,
-          title: const Text('Laporan'),
-          titleTextStyle: CustomStyles.textBold18Px,
-          actions: [
-              TextButton(
-                onPressed: (){           
-                startDateController.clear();
-                endDateController.clear();
-              }, child: Text('Reset', style: CustomStyles.textMediumRed15Px))],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
+    return DefaultTabController(length: 2, 
+    child: Scaffold(
+      appBar: AppBar(
+            backgroundColor: CustomColors.white,
+            title: const Text('Download laporan'),
+            titleSpacing: 20,
+            titleTextStyle: CustomStyles.textBold18Px,
+            bottom: TabBar(
+              isScrollable: false,
+              indicatorColor: CustomColors.blue,
+              splashBorderRadius: BorderRadius.circular(10),
+              unselectedLabelStyle: const TextStyle(
+                  color: CustomColors.grey,
+                  fontFamily: 'RobotoMedium',
+                  fontSize: 13),
+              labelStyle: const TextStyle(
+                  color: CustomColors.blue,
+                  fontFamily: 'RobotoMedium',
+                  fontSize: 13),
+              tabs: const [
+                Tab(text: 'klarifikasi'),
+                Tab(text: 'LHA'),
+              ],
+            ),
+          ),
+        body: TabBarView(
+          children: [
+
+            // 1. laporan klarifikasi
+            Scaffold(
+              backgroundColor: CustomColors.white,
+              body: SingleChildScrollView(
+              child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  
               const SizedBox(height: 15),
-              formInputStarDateEndDate(context, 'Mulai dari', startDateController),
+              formInputStarDateEndDate(context, 'Mulai dari', startDateControllerClarification),
               const SizedBox(height: 10),
-              formInputStarDateEndDate(context, 'Sampai dengan', endDateController),
+              formInputStarDateEndDate(context, 'Sampai dengan', endDateControllerClarification),
               const SizedBox(height: 25),
 
               SizedBox(
@@ -190,51 +282,104 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
-                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
+                        if (startDateControllerClarification.text.isEmpty || endDateControllerClarification.text.isEmpty) {
                           snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
-                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
+                        } else if(DateTime.parse(startDateControllerClarification.text).isAfter(DateTime.parse(endDateControllerClarification.text))) {
                           snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
                         }else{
                           if (await requestPermission(Permission.storage) == true) {
-                          downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateController, endDateController);
+                          downloadReportClarificationAuditRegion(AppConstant.downloadReportClarification, startDateControllerClarification, endDateControllerClarification);
                         } else {
                           showSnackbarPermission(context);
                         }
-                      }   
+                        }
                       },
                       child: Text('Download laporan klarifikasi',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     ),
 
-                  SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
-                          backgroundColor: CustomColors.green),
-                      onPressed: () async{
-                        if (startDateController.text.isEmpty || endDateController.text.isEmpty) {
-                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
-                        } else if(DateTime.parse(startDateController.text).isAfter(DateTime.parse(endDateController.text))) {
-                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
-                        }else{
-                          if (await requestPermission(Permission.storage) == true) {
-                          downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateController, endDateController);
-                        } else {
-                          showSnackbarPermission(context);
-                        }
-                      }   
-                        
-                      },
-                      child: Text('Download laporan LHA',
+                          backgroundColor: CustomColors.red),
+                        onPressed: ()async {
+                          startDateControllerClarification.clear();
+                          endDateControllerClarification.clear();
+                        },
+                      child: Text('Reset filter',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     ),
                   ],
                 ),
             ),
-        )
+          ),
+        ),
+
+        // 2. laporan LHA
+        Scaffold(
+              backgroundColor: CustomColors.white,
+              body: SingleChildScrollView(
+              child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+              const SizedBox(height: 15),
+              formInputStarDateEndDate(context, 'Mulai dari', startDateControllerLha),
+              const SizedBox(height: 10),
+              formInputStarDateEndDate(context, 'Sampai dengan', endDateControllerLha),
+              const SizedBox(height: 25),
+
+              SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue),
+                      onPressed: ()async {
+                        if (startDateControllerLha.text.isEmpty || endDateControllerLha.text.isEmpty) {
+                          snakcBarMessageRed('Gagal', 'Tanggal mulai dan akhir tidak boleh kosong');
+                        } else if(DateTime.parse(startDateControllerLha.text).isAfter(DateTime.parse(endDateControllerLha.text))) {
+                          snakcBarMessageRed('Gagal', 'tanggal mulai tidak boleh lebih besar dari tanggal selesai');
+                        }else{
+                          if (await requestPermission(Permission.storage) == true) {
+                          downloadReportLhaAuditRegion(AppConstant.downloadReportLha, startDateControllerLha, endDateControllerLha);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                        }
+                      },
+                      child: Text('Download laporan LHA',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+
+                    SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.red),
+                      onPressed: ()async {
+                          startDateControllerLha.clear();
+                          endDateControllerLha.clear();
+                        },
+                      child: Text('Reset filter',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+                  ],
+                ),
+            ),
+          ),
+        ),
+
+      ]))
     );
   }
 }

@@ -1139,7 +1139,7 @@ class ApiService {
     };
     try {
       final response = await dio.patch(AppConstant.editProfileUser,
-      data: {'email': email, 'username': fullName});
+      data: {'email': email, 'fullname': fullName});
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
