@@ -364,19 +364,14 @@ class _DetailSpecialSchedulePageAuditAreaState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate)) {
+    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
       Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    } else if (today.isAfter(startDate)) {
+    } else if(today.isAtSameMomentAs(endDate)){
       Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    } else if (today.isBefore(endDate)) {
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    } else if (today.isAtSameMomentAs(endDate)) {
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    } else if (today.isBefore(startDate)) {
-      return snackBarMessageRed('Alert',
-          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    }else if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
@@ -1090,19 +1085,14 @@ class _DetailMainScheduleAuditRegionState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    } else if (today.isAfter(startDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    } else if (today.isBefore(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    } else if (today.isAtSameMomentAs(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    } else if (today.isBefore(startDate)) {
-      return snackBarMessageRed('Alert',
-          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.mainScheduleId));
+    } else if(today.isAtSameMomentAs(endDate)){
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.mainScheduleId));
+    }else if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
@@ -1500,23 +1490,14 @@ class _DetailSpecialScheduleAuditRegionState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate)) {
-      Get.to(
-          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    } else if (today.isAfter(startDate)) {
-      Get.to(
-          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    } else if (today.isBefore(endDate)) {
-      Get.to(
-          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    } else if (today.isAtSameMomentAs(endDate)) {
-      Get.to(
-          () => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    } else if (today.isBefore(startDate)) {
-      return snackBarMessageRed('Alert',
-          'Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    } else if(today.isAtSameMomentAs(endDate)){
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    }else if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
-      return snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
     }
   }
 
