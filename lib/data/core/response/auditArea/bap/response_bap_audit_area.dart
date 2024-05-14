@@ -281,7 +281,7 @@ class Level {
 class Clarification {
   int? id;
   String? code;
-  String? nominalLoss;
+  int? nominalLoss;
   String? evaluationLimitation;
 
   Clarification(

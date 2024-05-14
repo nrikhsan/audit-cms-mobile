@@ -70,7 +70,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                           if (statusClarificaion == 'INPUT'){
                           Get.to(() =>  InputClarificationAuditArea(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){
-                            Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status,));
+                            Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status));
                           }else if(statusClarificaion == 'UPLOAD'){
                             Get.to(() => DocumentClarificationAuditArea(id: clarification.id!, fileName: clarification.fileName, status: clarification.status));
                           }else if(statusClarificaion == 'IDENTIFICATION'){

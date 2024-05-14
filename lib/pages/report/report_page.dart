@@ -46,8 +46,8 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   fontFamily: 'RobotoMedium',
                   fontSize: 13),
               tabs: const [
-                Tab(text: 'klarifikasi'),
-                Tab(text: 'LHA'),
+                Tab(text: 'Laporan klarifikasi'),
+                Tab(text: 'Laporan LHA'),
               ],
             ),
           ),
@@ -251,8 +251,8 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                   fontFamily: 'RobotoMedium',
                   fontSize: 13),
               tabs: const [
-                Tab(text: 'klarifikasi'),
-                Tab(text: 'LHA'),
+                Tab(text: 'Laporan klarifikasi'),
+                Tab(text: 'Laporan LHA'),
               ],
             ),
           ),
@@ -268,7 +268,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
+
               const SizedBox(height: 15),
               formInputStarDateEndDate(context, 'Mulai dari', startDateControllerClarification),
               const SizedBox(height: 10),

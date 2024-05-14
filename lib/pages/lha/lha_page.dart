@@ -60,58 +60,106 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                 itemBuilder: (_, lha, index){
                   final startDare = DateTime.parse('${lha.schedule?.startDate}');
                   final endDate = DateTime.parse('${lha.schedule?.endDate}');
-                  final level = lha.user?.level?.name;
+                  final level = lha.user?.level;
+                  final createdAt = DateTime.parse('${lha.createdAt}');
                   return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
+                    shape: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: CustomColors.lightGrey,
+                        width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  lha.isResearch == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
+                                  Visibility(
+                                    visible: lha.isFlag == 1 ? true : false,
+                                    child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)),
+                                  const SizedBox(height: 5,),
+                                  Text('Tgl jadwal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textRegularGrey12Px),
+                              ],
+                            ),
+
+                            SizedBox(
+                              height: 25,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  backgroundColor: CustomColors.grey
+                                ),
+                                onPressed: (){
+                                  null;
+                              }, child: Text('${lha.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
+                            )
+
+                          ],
+                        ),
+
+                              const SizedBox(height: 10,),
+                              const Divider(color: CustomColors.lightGrey, height: 0.1),
+                              const SizedBox(height: 10,),
+
+                              Row(
+                                children: [
+                                  Text('Auditor : ', style: CustomStyles.textMedium13Px),
+                                  Text('${lha.user?.fullname}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
+                              
+                              const SizedBox(height: 5,),
+
+                              Row(
+                                children: [
+                                  Text('Dibuat pada : ', style: CustomStyles.textMedium13Px),
+                                  Text(DateFormat('dd-MM-yyyy').format(createdAt), style: CustomStyles.textRegular12Px),
                                 ],
                               ),
 
-                              const SizedBox(height: 15),
-                              Text('Auditor : ${lha.user!.fullname}', style: CustomStyles.textBold15Px),
-                              const SizedBox(height: 5),
-                              Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
-                              const SizedBox(height: 5),
-                              
-                              Text('Tanggal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textBold15Px),
+                              const SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Kode wilayah : ', style: CustomStyles.textMedium13Px),
+                                  Text('${level?.code}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
-                                        Get.to(() => DetailLhaPageAuditArea(id: lha.id!, level: level));
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                  SizedBox(
+                                    height: 25,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                        backgroundColor: CustomColors.green
+                                      ),
+                                      onPressed: (){
+                                        Get.to(() => DetailLhaPageAuditArea(id: lha.id!, level: level?.name));
+                                    }, child: Text('Lihat rincian', style: CustomStyles.textMediumWhite12Px)),
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                        ));
+                              ),
+
+                              const SizedBox(height: 5,),
+                          ],
+                        )
+                      )
+                    ),
+                  );
                 }
               ),
             )
@@ -172,55 +220,98 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (_, lha, index){
               final startDare = DateTime.parse('${lha.schedule?.startDate}');
-              final endDate = DateTime.parse('${lha.schedule?.endDate}');
-              return Card(
-                        elevation: 0,
-                        shape: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: CustomColors.grey,
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                
+                  final endDate = DateTime.parse('${lha.schedule?.endDate}');
+                  final level = lha.user?.level;
+                  final createdAt = DateTime.parse('${lha.createdAt}');
+                  return Card(
+                    shape: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: CustomColors.lightGrey,
+                        width: 0.5
+                      ),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  lha.isResearch == 1 ?
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                      const SizedBox(width: 5),
-                                      Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                    ],
-                                  ) :
-                                  const SizedBox()
+                                  Visibility(
+                                    visible: lha.isFlag == 1 ? true : false,
+                                    child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)),
+                                  const SizedBox(height: 5,),
+                                  Text('Tgl jadwal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textRegularGrey12Px),
+                              ],
+                            ),
+
+                            SizedBox(
+                              height: 25,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)
+                                  ),
+                                  backgroundColor: CustomColors.grey
+                                ),
+                                onPressed: (){
+                                  null;
+                              }, child: Text('${lha.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
+                            )
+
+                          ],
+                        ),
+
+                              const SizedBox(height: 10,),
+                              const Divider(color: CustomColors.lightGrey, height: 0.1),
+                              const SizedBox(height: 10,),
+
+                              Row(
+                                children: [
+                                  Text('Dibuat pada : ', style: CustomStyles.textMedium13Px),
+                                  Text(DateFormat('dd-MM-yyyy').format(createdAt), style: CustomStyles.textRegular12Px),
                                 ],
                               ),
 
-                              const SizedBox(height: 15),
-
-                              Text('Cabang : ${lha.branch!.name}', style: CustomStyles.textBold15Px),
-                              const SizedBox(height: 5),
-                              Text('Tanggal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textBold15Px),
+                              const SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Kode wilayah : ', style: CustomStyles.textMedium13Px),
+                                  Text('${level?.code}', style: CustomStyles.textRegular12Px),
+                                ],
+                              ),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                          shape: CustomStyles.customRoundedButton),
-                                      onPressed: () {
+                                  SizedBox(
+                                    height: 25,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                        backgroundColor: CustomColors.green
+                                      ),
+                                      onPressed: (){
                                         Get.to(() => DetailLhaPageAuditRegion(id: lha.id!));
-                                      },
-                                      child: Text('Lihat rincian', style: CustomStyles.textMediumGreen15Px))
+                                    }, child: Text('Lihat rincian', style: CustomStyles.textMediumWhite12Px)),
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                        ));
+                              ),
+
+                              const SizedBox(height: 5,),
+                          ],
+                        )
+                      )
+                    ),
+                  );
             }
           ))
         )
