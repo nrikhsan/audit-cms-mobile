@@ -63,7 +63,7 @@ class DataDetailClarificationAuditArea {
   String? recomendation;
   int? evaluation;
   String? status;
-  String? nominalLoss;
+  int? nominalLoss;
   String? evaluationLimitation;
   int? isFollowUp;
   int? isFlag;

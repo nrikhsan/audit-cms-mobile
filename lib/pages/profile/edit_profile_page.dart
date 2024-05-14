@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 //audit area
 class EditProfilePageAuditArea extends StatefulWidget {
   final String? email;
-  final String? username;
-  const EditProfilePageAuditArea({super.key, required this.email, required this.username});
+  final String? fullName;
+  const EditProfilePageAuditArea({super.key, required this.email, required this.fullName});
 
   @override
   State<EditProfilePageAuditArea> createState() => _EditProfilePageAuditAreaState();
@@ -19,19 +19,19 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
 
   @override
   void initState() {
     emailController.text = widget.email!;
-    usernameController.text = widget.username!;
+    fullNameController.text = widget.fullName!;
     super.initState();
   }
 
   @override
   void dispose() {
     emailController.dispose();
-    usernameController.dispose();
+    fullNameController.dispose();
     super.dispose();
   }
 
@@ -57,7 +57,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
           children: [
 
             TextField(
-              controller: usernameController,
+              controller: fullNameController,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -95,7 +95,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      showDialogEditProfileAuditArea(emailController.text, usernameController.text);
+                      showDialogEditProfileAuditArea(emailController.text, fullNameController.text);
                     },
                     child:
                         Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
@@ -107,7 +107,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
     );
   }
   
-  void showDialogEditProfileAuditArea(String email, String username) {
+  void showDialogEditProfileAuditArea(String email, String fullName) {
     showDialog(
         context: context,
         builder: (_) {
@@ -140,10 +140,10 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
                           backgroundColor: CustomColors.green
                           ),
                       onPressed: () {
-                        if(email.isEmpty || username.isEmpty){
+                        if(email.isEmpty || fullName.isEmpty){
                           Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                         }else if(email.isEmail){
-                          controllerAuditArea.editProfileUserAuditArea(email, username);
+                          controllerAuditArea.editProfileUserAuditArea(email, fullName);
                           Get.back();
                           
                         }else{
@@ -164,10 +164,9 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
 
 //audit region
 class EditProfilePageAuditRegion extends StatefulWidget {
-  final int id;
-  final String email;
-  final String username;
-  const EditProfilePageAuditRegion({super.key, required this.id, required this.email, required this.username});
+  final String? email;
+  final String? fullName;
+  const EditProfilePageAuditRegion({super.key, required this.email, required this.fullName});
 
   @override
   State<EditProfilePageAuditRegion> createState() => _EditProfilePageAuditRegionState();
@@ -177,19 +176,19 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
 
   final ControllerAuditRegion controllerAuditRegion = Get.find();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
 
   @override
   void initState() {
-    emailController.text = widget.email;
-    usernameController.text = widget.username;
+    emailController.text = widget.email!;
+    fullNameController.text = widget.fullName!;
     super.initState();
   }
 
   @override
   void dispose() {
     emailController.dispose();
-    usernameController.dispose();
+    fullNameController.dispose();
     super.dispose();
   }
 
@@ -215,7 +214,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
           children: [
 
             TextField(
-              controller: usernameController,
+              controller: fullNameController,
               cursorColor: CustomColors.blue,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -253,7 +252,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
                         backgroundColor: CustomColors.blue,
                         shape: CustomStyles.customRoundedButton),
                     onPressed: () {
-                      showDialogEditProfileAuditRegion(widget.id, emailController.text, usernameController.text);
+                      showDialogEditProfileAuditRegion(emailController.text, fullNameController.text);
                     },
                     child:
                         Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
@@ -264,7 +263,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
       ),
     );
   }
-  void showDialogEditProfileAuditRegion(int id, String email, String username) {
+  void showDialogEditProfileAuditRegion(String email, String fullName) {
     showDialog(
         context: context,
         builder: (_) {
@@ -297,10 +296,10 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
                           backgroundColor: CustomColors.green
                           ),
                       onPressed: () {
-                        if(email.isEmpty || username.isEmpty){
+                        if(email.isEmpty || fullName.isEmpty){
                           Get.snackbar('Gagal', 'field tidak boleh kosong', snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.red);
                         }else if(email.isEmail){
-                          controllerAuditRegion.editProfileUserAuditRegion(email, username);
+                          controllerAuditRegion.editProfileUserAuditRegion(email, fullName);
                           Get.back();
                          
                         }else{

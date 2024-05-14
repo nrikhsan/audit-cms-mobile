@@ -5,6 +5,7 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/helper/styles/formatter.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_and_download_clarification.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
@@ -69,7 +70,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
             final fileName = detail.fileName;
-            final nominalLoss = detail.nominalLoss;
+            final nominalLoss = CurrencyFormat.convertToIdr(detail.nominalLoss, 0);
             refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -151,7 +152,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
                           Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text(nominalLoss ?? 'Tidak ada nominal kerugian', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(nominalLoss, style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
@@ -267,7 +268,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
           } else {
             final evaluation = detail.evaluation;
             final followUp = detail.isFollowUp;
-            final nominalLoss = detail.nominalLoss;
+            final nominalLoss = CurrencyFormat.convertToIdr(detail.nominalLoss, 0);
             refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -349,7 +350,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
 
                           Text('Nominal kerugian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text(nominalLoss ?? 'Tidak ada nominal kerugian', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(nominalLoss, style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Batas evaluasi :', style: CustomStyles.textBold15Px),

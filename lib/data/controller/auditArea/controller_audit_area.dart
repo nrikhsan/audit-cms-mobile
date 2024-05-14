@@ -994,9 +994,9 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void editProfileUserAuditArea(String email, String username)async{
+  void editProfileUserAuditArea(String email, String fullName)async{
     try {
-      final response = await repository.editUserAuditArea(email, username);
+      final response = await repository.editUserAuditArea(email, fullName);
       Get.snackbar('Berhasil', 'Profil berhasil di edit',
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.toString());

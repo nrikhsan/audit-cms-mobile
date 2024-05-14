@@ -98,7 +98,7 @@ class _ProfilePageAuditAreaState extends State<ProfilePageAuditArea> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Get.to(() => EditProfilePageAuditArea(email: user.email, username: user.username));
+                        Get.to(() => EditProfilePageAuditArea(email: user.email, fullName: user.fullname));
                         },
                       child: Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
                     ),
@@ -261,7 +261,7 @@ class _ProfilePageAuditRegionState extends State<ProfilePageAuditRegion> {
                         backgroundColor: CustomColors.blue
                       ),
                       onPressed: (){
-                        Get.to(() => EditProfilePageAuditRegion(id: user.id!, email: user.email!, username: user.username!));
+                        Get.to(() => EditProfilePageAuditRegion(email: user.email, fullName: user.fullname));
                       },
                       child: Text('Edit profil', style: CustomStyles.textMediumWhite15Px)
                     ),

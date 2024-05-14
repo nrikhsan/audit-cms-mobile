@@ -120,7 +120,7 @@ abstract class Repositories {
 
   //user profile
   Future<ResponseProfileAuditArea> getDetailUserAuditArea();
-  Future<ResponseMessage>editUserAuditArea(String email, String username);
+  Future<ResponseMessage>editUserAuditArea(String email, String fullName);
   Future<ResponseMessage>changePasswordAuditArea(String oldPassword, String newPassword);
 
 
@@ -157,7 +157,7 @@ abstract class Repositories {
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
   //user profile
   Future<ResponseProfileAuditRegion> getDetailUserAuditRegion();
-  Future<ResponseMessage>editUserAuditRegion(String? email, String? username);
+  Future<ResponseMessage>editUserAuditRegion(String? email, String? fullName);
   Future<ResponseMessage>changePasswordAuditRegion(String oldPassword, String newPassword);
 
   //report
@@ -409,8 +409,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseMessage> editUserAuditArea(String email, String username){
-    return apiService.editProfileUserAuditArea(email, username);
+  Future<ResponseMessage> editUserAuditArea(String email, String fullName){
+    return apiService.editProfileUserAuditArea(email, fullName);
   }
   
   @override
@@ -460,8 +460,8 @@ class RepositoryImpl implements Repositories {
   }  
 
   @override
-  Future<ResponseMessage> editUserAuditRegion(String? email, String? username) {
-   return apiService.editProfileUserAuditRegion(email, username);
+  Future<ResponseMessage> editUserAuditRegion(String? email, String? fullName) {
+   return apiService.editProfileUserAuditRegion(email, fullName);
   }
   
   @override

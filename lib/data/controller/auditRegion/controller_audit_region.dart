@@ -516,10 +516,10 @@ void getDetailUserAuditRegion() async {
     }
   }
 
-  void editProfileUserAuditRegion(String? email, String? username) async {
+  void editProfileUserAuditRegion(String? email, String? fullName) async {
     try {
       final response =
-          await repositories.editUserAuditRegion(email, username);
+          await repositories.editUserAuditRegion(email, fullName);
            Get.snackbar('Berhasil', 'Profil berhasil di edit',
                               snackPosition: SnackPosition.TOP, colorText: CustomColors.white, backgroundColor: CustomColors.green);
       message(response.message);

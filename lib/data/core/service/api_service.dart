@@ -639,7 +639,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage> editProfileUserAuditArea(String email, String username)async{
+  Future<ResponseMessage> editProfileUserAuditArea(String email, String fullName)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -647,7 +647,7 @@ class ApiService {
     };
     try {
       final response = await dio.patch(AppConstant.editProfileUser,
-      data: {'email': email, 'username': username});
+      data: {'email': email, 'fullname': fullName});
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
@@ -1131,7 +1131,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage> editProfileUserAuditRegion(String? email, String? username)async{
+  Future<ResponseMessage> editProfileUserAuditRegion(String? email, String? fullName)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -1139,7 +1139,7 @@ class ApiService {
     };
     try {
       final response = await dio.patch(AppConstant.editProfileUser,
-      data: {'email': email, 'username': username});
+      data: {'email': email, 'username': fullName});
       return ResponseMessage.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
