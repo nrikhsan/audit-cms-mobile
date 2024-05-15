@@ -813,9 +813,13 @@ class ApiService {
     try {
       final response = await dio.post(AppConstant.inputLha,
       data: {'schedule_id': scheduleId, 'lha_detail': lhaDetail.toList()});
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -830,10 +834,13 @@ class ApiService {
       final response = await dio.post(AppConstant.inputCaseLha,
       data: {'audit_daily_report_id': lhaDetailId, 'case_id': caseId, 'case_category_id': caseCategory, 'description': desc, 'suggestion': suggestion,
       'temporary_recommendations': tempRec, 'permanent_recommendations': perRec, 'is_research': isResearch});
-      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -890,10 +897,13 @@ class ApiService {
     });
     try {
       final response = await dio.post(AppConstant.uploadKka, data: formData);
-      print(response.data); 
+     final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
-    } catch (error) {
-      throw Exception(error);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 
@@ -1215,5 +1225,4 @@ class ApiService {
       throw Exception(e);
     }
   }
-
 }
