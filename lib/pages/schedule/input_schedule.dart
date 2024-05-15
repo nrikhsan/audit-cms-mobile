@@ -474,7 +474,7 @@ class InputDataReschedulePage extends StatefulWidget {
   final String endDate;
   final int? user;
   final int? branch;
-  final String desc;
+  final String? desc;
   const InputDataReschedulePage({super.key, required this.rescheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
@@ -493,7 +493,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
   void initState() {
     startDateControllerReschedule.text = widget.startDate;
     endDateControllerReschedule.text = widget.endDate;
-    scheduleDescControllerReschedule.text = widget.desc;
+    scheduleDescControllerReschedule.text = widget.desc ?? '';
     controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users  = widget.user;
     _branch = widget.branch;

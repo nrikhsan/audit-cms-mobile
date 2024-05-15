@@ -12,7 +12,7 @@ class EditMainSchedulePage extends StatefulWidget {
   final String endDate;
   final int user;
   final int branch;
-  final String desc;
+  final String? desc;
   const EditMainSchedulePage({super.key, required this.scheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
@@ -31,7 +31,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
   void initState(){
     startDateControllerMainSchedule.text = widget.startDate;
     endDateControllerMainSchedule.text = widget.endDate;
-    scheduleDescControllerMainSchedule.text = widget.desc;
+    scheduleDescControllerMainSchedule.text = widget.desc ?? '';
     controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users = widget.user;
     _branch = widget.branch;
@@ -198,7 +198,7 @@ class EditSpecialSchedule extends StatefulWidget {
   final String endDate;
   final int user;
   final int branch;
-  final String desc;
+  final String? desc;
   const EditSpecialSchedule({super.key, required this.scheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
 
   @override
@@ -217,7 +217,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
   void initState() {
     startDateControllerSpecialSchedule.text = widget.startDate;
     endDateControllerSpecialSchedule.text = widget.endDate;
-    scheduleDescControllerSpecialSchedule.text = widget.desc;
+    scheduleDescControllerSpecialSchedule.text = widget.desc ?? '';
     controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users = widget.user;
     _branch = widget.branch;

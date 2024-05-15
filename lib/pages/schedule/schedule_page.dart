@@ -212,7 +212,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                                 String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
                                                 Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
-                                                user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description!));
+                                                user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description));
                                               }: null, 
                                               child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                             )
@@ -374,7 +374,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                                   String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
                                                     Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
-                                                    user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description!));
+                                                    user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description));
 
                                                 }: null, 
                                                 child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
@@ -479,7 +479,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
                                 if (reschedules.status == 'PENDING') {
                                   Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!, startDate: startDate, endDate: endDate, 
-                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description!));
+                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description));
                                 }else if(reschedules.status == 'REQUEST'){
                                   Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
                                 }else if(reschedules.status == 'REJECTED'){
