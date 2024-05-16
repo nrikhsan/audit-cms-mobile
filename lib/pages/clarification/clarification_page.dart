@@ -100,8 +100,8 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                         
                                         if(statusClarificaion == 'DONE')
                                         Text('Selesai', style: CustomStyles.textMediumGreen12Px),
-                                      const SizedBox(height: 5,),
-                                      Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
+                                        const SizedBox(height: 5,),
+                                        Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
                                   ],
                                 ),
 

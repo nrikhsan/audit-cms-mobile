@@ -29,7 +29,7 @@ dependencies:
   swipe_refresh: ^1.1.2
   device_info_plus: ^10.1.0
   currency_text_input_formatter: ^2.2.3
-  dropdown_search: ^5.0.6
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

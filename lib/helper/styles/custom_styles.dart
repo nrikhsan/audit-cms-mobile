@@ -221,7 +221,7 @@ class CustomStyles {
   static TextStyle textMediumGreen12Px = const TextStyle(
       fontFamily: 'RobotoRegular',
       fontSize: 13,
-      color: CustomColors.white
+      color: CustomColors.green
   );
 
   //custom rounded button

@@ -4,6 +4,7 @@ import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/report/widgetReport/widget_report.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,6 +24,8 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
   final TextEditingController startDateControllerLha = TextEditingController();
   final TextEditingController endDateControllerLha = TextEditingController();
   final TextEditingController branchController = TextEditingController();
+
+  final TextEditingController branchEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,32 +71,82 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
                   Obx(() => SizedBox(
-                    width: double.maxFinite,
-                    child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih auditor',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: controllerAuditArea.branchIdReport.value,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value){
-                            controllerAuditArea.branchIdReport.value = value;
-                          }
+                    ),
+                    items: controllerAuditArea.branchForFilterAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: controllerAuditArea.branchIdReport.value,
+                    onChanged: (value) {
+                      setState(() {
+                        controllerAuditArea.branchIdReport.value = value;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        final branchName = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
+                        return branchName.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
               const SizedBox(height: 15),
               Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),

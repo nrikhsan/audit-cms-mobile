@@ -899,7 +899,7 @@ class _DetailCasesLhaPageAuditRegionState
                               selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));
                         }
                     }: null
-                    , child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)),
+                    , child: Text('Edit LHA', style: CustomStyles.textMediumWhite15Px)),
                   )
                 ],
               ),

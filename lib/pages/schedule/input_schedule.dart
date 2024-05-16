@@ -2,6 +2,7 @@ import 'package:audit_cms/data/core/response/auditArea/master/response_branch_au
 import 'package:audit_cms/data/core/response/auditArea/master/response_users.dart';
 import 'package:audit_cms/pages/schedule/widgetScheduleAuditArea/form_input_add_schedule.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/controller/auditArea/controller_audit_area.dart';
@@ -25,9 +26,19 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  final TextEditingController usersEditingController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
+
   DataUsers? users;
   DataListBranch? branch;
-
+  
+  @override
+  void dispose() {
+    usersEditingController.dispose();
+    branchEditingController.dispose();
+    super.dispose();
+  }
+  
   void resetValue(){
     setState(() {
       users = null;
@@ -72,75 +83,170 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
               Text('Sampai dengan :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
               formInputAddScheduleEndDate(context, endDateControllerMainSchedule),
-
+            
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
+            
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey, width: 1),
-                        )
+                  child: DropdownButton2<DataUsers>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih auditor',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                        iconEnabledColor: CustomColors.blue,
-                        borderRadius: BorderRadius.circular(10),
-                        value: users,
-                          hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.usersAuditArea.map((users){
-                            return DropdownMenuItem(
-                              value: users,
-                                child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
-
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                          setState(() {
-                            users = value;
-                            controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
-                            branch = null;
-                          });
-                        }
+                    ),
+                    items: controllerAuditArea.usersAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: users,
+                    onChanged: (value) {
+                      setState(() {
+                        users = value;
+                        controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
+                        branch = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: usersEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: usersEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.fullname!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        usersEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                  child: DropdownButton2<DataListBranch>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih Cabang',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: branch,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                            setState(() {
-                              branch = value;
-                            });
-                          }
+                    ),
+                    items: controllerAuditArea.branchAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: branch,
+                    onChanged: (value) {
+                      setState(() {
+                        branch = value;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari cabang...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -254,6 +360,9 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  final TextEditingController usersEditingController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
+
   DataUsers? users;
   DataListBranch? branch;
 
@@ -305,72 +414,166 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
               const SizedBox(height: 15),
               Text('Pilih auditor :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                  child: DropdownButton2<DataUsers>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih auditor',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: users,
-                          hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.usersAuditArea.map((users){
-                            return DropdownMenuItem(
-                              value: users,
-                              child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
-
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                            setState(() {
-                              users = value;
-                              controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
-                              branch = null;
-                            });
-                          }
+                    ),
+                    items: controllerAuditArea.usersAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: users,
+                    onChanged: (value) {
+                      setState(() {
+                        users = value;
+                        controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
+                        branch = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: usersEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: usersEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.fullname!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        usersEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
-
+              ),),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                  child: DropdownButton2<DataListBranch>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih Cabang',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: branch,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                            setState(() {
-                              branch = value;
-                            });
-                          }
+                    ),
+                    items: controllerAuditArea.branchAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: branch,
+                    onChanged: (value) {
+                      setState(() {
+                        branch = value;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari cabang...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),
@@ -491,6 +694,9 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
+  final TextEditingController usersEditingController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
+
    @override
   void initState() {
     startDateControllerReschedule.text = widget.startDate;
@@ -568,68 +774,164 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih auditor',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: _users,
-                          hint: Text('Auditor', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.usersAuditArea.map((users){
-                            return DropdownMenuItem(
-                              value: users.id,
-                              child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                            setState(() {
-                              _users = value;
-                              final userId = value;
-                              controllerAuditArea.loadBranchByUserIdAuditArea(userId);
-                              _branch = null;
-                            });
-                          }
+                    ),
+                    items: controllerAuditArea.usersAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _users,
+                    onChanged: (value) {
+                      setState(() {
+                        _users = value;
+                        controllerAuditArea.loadBranchByUserIdAuditArea(value);
+                        _branch = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: usersEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: usersEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        final users = controllerAuditArea.usersAuditArea.firstWhere((element) => element.id == item.value);
+                        return users.fullname!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        usersEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Pilih cabang :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 10),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih Cabang',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: _branch,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value)async{
-                            setState(() {
-                               _branch = value;
-                            });
-                          }  
+                    ),
+                    items: controllerAuditArea.branchAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _branch,
+                    onChanged: (value) {
+                      setState(() {
+                        _branch = value;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari cabang...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        final nameBranch = controllerAuditArea.branchAuditArea.firstWhere((element) => element.id == item.value);
+                        return nameBranch.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian jadwal :', style: CustomStyles.textMedium15Px),

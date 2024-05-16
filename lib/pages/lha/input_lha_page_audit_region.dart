@@ -8,6 +8,7 @@ import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/lha/widgetLha/widget_add_or_edit_lha.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +29,9 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
   final TextEditingController temporaryRecommendationController = TextEditingController();
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
+
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
 
   int? _selectedValueResearch;
   int? _selectedSuggest;
@@ -61,71 +65,169 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
 
               Text('Kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<DataCaseAuditArea>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: _case,
-                      items: controllerAuditArea.caseAuditArea.map((cases){
-                        return DropdownMenuItem(
-                          value: cases,
-                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _case = value;
-                          controllerAuditArea.loadCaseCategory(_case?.id);
-                          _caseCategory = null;
-                        });
+                    items: controllerAuditArea.caseAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _case,
+                    onChanged: (value) {
+                      setState(() {
+                        _case = value;
+                        controllerAuditArea.loadCaseCategory(_case?.id);
+                        _caseCategory = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari kasus...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
+
+              
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<DataCaseCategory>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus kategori',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: _caseCategory,
-                      items: controllerAuditArea.caseCategory.map((caseCategory){
-                        return DropdownMenuItem(
-                          value: caseCategory,
-                          child: SizedBox(width: 280, child: Text('${caseCategory.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _caseCategory = value;
-                          
-                        });
+                    items: controllerAuditArea.caseCategory
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _caseCategory,
+                    onChanged: (value) {
+                      setState(() {
+                        _caseCategory = value;
+                        controllerAuditArea.selectCaseCategory(_caseCategory?.id);
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseCategoryEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseCategoryEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseCategoryEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
@@ -317,6 +419,9 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
 
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
+
   int? _selectedValueResearch;
   int? _selectedSuggest;
   DataCaseAuditRegion? _case;
@@ -353,68 +458,165 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<DataCaseAuditRegion>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: _case,
-                      items: controllerAuditRegion.caseAuditRegion.map((cases){
-                        return DropdownMenuItem(
-                          value: cases,
-                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _case = value;
-                          controllerAuditRegion.loadCaseCategoryAuditRegion(_case?.id);
-                          _caseCategory = null;
-                        });
+                    items: controllerAuditRegion.caseAuditRegion
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _case,
+                    onChanged: (value) {
+                      setState(() {
+                        _case = value;
+                        controllerAuditRegion.loadCaseCategoryAuditRegion(_case?.id);
+                        _caseCategory = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari kasus...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
+
+              
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<DataCaseCategoryAuditRegion>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus kategori',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: _caseCategory,
-                      items: controllerAuditRegion.caseCategory.map((caseCategory){
-                        return DropdownMenuItem(
-                          value: caseCategory,
-                          child: SizedBox(width: 280, child: Text('${caseCategory.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          _caseCategory = value;
-                          
-                        });
+                    items: controllerAuditRegion.caseCategory
+                        .map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: _caseCategory,
+                    onChanged: (value) {
+                      setState(() {
+                        _caseCategory = value;
+                        controllerAuditRegion.selectCaseCategory(_caseCategory?.id);
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseCategoryEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseCategoryEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseCategoryEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
@@ -607,6 +809,10 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
 
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
+
+
   int? _selectedSuggest;
   int? selectValueResearch;
 
@@ -641,67 +847,167 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditArea.caseId.value,
-                      items: controllerAuditArea.caseAuditArea.map((cases){
-                        return DropdownMenuItem(
-                          value: cases.id,
-                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          controllerAuditArea.selectCase(value);
-                          controllerAuditArea.loadCaseCategory(value);
-                          controllerAuditArea.caseCategoryId.value = null;
-                        });
+                    items: controllerAuditArea.caseAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: controllerAuditArea.caseId.value,
+                    onChanged: (value) {
+                      setState(() {
+                        controllerAuditArea.selectCase(value);
+                        controllerAuditArea.loadCaseCategory(value);
+                        controllerAuditArea.caseCategoryId.value = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari kasus...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        final caseName = controllerAuditArea.caseAuditArea.firstWhere((element) => element.id == item.value);
+                        return caseName.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
+
+              
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus kategori',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditArea.caseCategoryId.value,
-                      items: controllerAuditArea.caseCategory.map((caseCategory){
-                        return DropdownMenuItem(
-                          value: caseCategory.id,
-                          child: SizedBox(width: 250, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          controllerAuditArea.selectCaseCategory(value);
-                        });
+                    items: controllerAuditArea.caseCategory
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: controllerAuditArea.caseCategoryId.value,
+                    onChanged: (value) {
+                      setState(() {
+                        controllerAuditArea.selectCaseCategory(value);
+                        controllerAuditArea.selectCaseCategory(value);
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseCategoryEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseCategoryEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        final caseCategoryName = controllerAuditArea.caseCategory.firstWhere((element) => element.id == item.value);
+                        return caseCategoryName.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseCategoryEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
@@ -818,6 +1124,10 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
   final TextEditingController permanentRecommendationController = TextEditingController();
   final TextEditingController suggestController = TextEditingController();
 
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
+
+
   int? _selectedSuggest;
   int? selectValueResearch;
 
@@ -852,67 +1162,167 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditRegion.caseId.value,
-                      items: controllerAuditRegion.caseAuditRegion.map((cases){
-                        return DropdownMenuItem(
-                          value: cases.id,
-                          child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          controllerAuditRegion.selectCase(value);
-                          controllerAuditRegion.loadCaseCategoryAuditRegion(value);
-                          controllerAuditRegion.caseCategoryId.value = null;
-                        });
+                    items: controllerAuditRegion.caseAuditRegion
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: controllerAuditRegion.caseId.value,
+                    onChanged: (value) {
+                      setState(() {
+                        controllerAuditRegion.selectCase(value);
+                        controllerAuditRegion.loadCaseCategoryAuditRegion(value);
+                        controllerAuditRegion.caseCategoryId.value = null;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari kasus...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        final caseName = controllerAuditRegion.caseAuditRegion.firstWhere((element) => element.id == item.value);
+                        return caseName.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
+
+              
 
               const SizedBox(height: 20),
               Text('Kategori kasus :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
+
               Obx(() => SizedBox(
                 width: double.maxFinite,
                 child: DropdownButtonHideUnderline(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: CustomColors.grey, width: 1),
-                        
-                      )
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih kasus kategori',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
                     ),
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditRegion.caseCategoryId.value,
-                      items: controllerAuditRegion.caseCategory.map((caseCategory){
-                        return DropdownMenuItem(
-                          value: caseCategory.id,
-                          child: SizedBox(width: 250, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                      }).toList(), 
-                      onChanged: (value)async{
-                        setState(() {
-                          controllerAuditRegion.selectCaseCategory(value);
-                        });
+                    items: controllerAuditRegion.caseCategory
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                    value: controllerAuditRegion.caseCategoryId.value,
+                    onChanged: (value) {
+                      setState(() {
+                        controllerAuditRegion.selectCaseCategory(value);
+                        controllerAuditRegion.selectCaseCategory(value);
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 500,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 500,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: caseCategoryEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: caseCategoryEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari auditor...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        final caseCategoryName = controllerAuditRegion.caseCategory.firstWhere((element) => element.id == item.value);
+                        return caseCategoryName.name!.contains(searchValue);
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        caseCategoryEditingController.clear();
                       }
-                    ),
-                  )
+                    },
+                  ),
                 ),
-              )),
+              ),),
 
               const SizedBox(height: 15),
               Text('Uraian temuan :', style: CustomStyles.textBold15Px),
