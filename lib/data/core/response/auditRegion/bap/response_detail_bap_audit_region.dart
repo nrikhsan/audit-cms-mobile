@@ -117,7 +117,7 @@ class User {
 class Clarification {
   int? id;
   String? code;
-  String? nominalLoss;
+  int? nominalLoss;
   String? evaluationLimitation;
 
   Clarification({this.id, this.code, this.nominalLoss, this.evaluationLimitation});

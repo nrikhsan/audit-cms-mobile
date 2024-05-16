@@ -93,7 +93,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
                               value: users,
-                                child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
+                                child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
 
                             );
                           }).toList(),
@@ -322,7 +322,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
                               value: users,
-                              child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
+                              child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
 
                             );
                           }).toList(),
@@ -566,7 +566,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                           items: controllerAuditArea.usersAuditArea.map((users){
                             return DropdownMenuItem(
                               value: users.id,
-                              child: Text('${users.fullname}', style: CustomStyles.textMedium15Px),
+                              child: Text('${users.fullname}\n${users.office!.map((e) => e.name)}', style: CustomStyles.textMedium13Px),
                             );
                           }).toList(),
                           onChanged: (value)async{
