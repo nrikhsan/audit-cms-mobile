@@ -20,7 +20,6 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   int? _evaluation;
-  int? _loss;
   final TextEditingController lossController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   int? _followUp;
@@ -58,11 +57,14 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                 children: List.generate(
                   2, (index){
                     return ChoiceChip( 
-                      label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium15Px), 
+                      label: Text(index == 0 ? 'Ditolak' : 'Diterima', style: CustomStyles.textMedium15Px), 
                       selected: _evaluation == index,
                       onSelected: (bool selected){
                         setState(() {
                           _evaluation = selected ? index: null;
+                          if (_evaluation == 0 || _evaluation == null) {
+                            lossController.clear();
+                          }
                           
                         });
                       },
@@ -72,32 +74,7 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
               ),
 
               const SizedBox(height: 15),
-              Text('Kerugian : ', style: CustomStyles.textBold15Px),
-              const SizedBox(height: 15),
-              
-              Wrap(
-                spacing: 5,
-                runSpacing: 5,
-                children: List.generate(
-                  2, (index){
-                    return ChoiceChip(
-                      label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium15Px), 
-                      selected: _loss == index,
-                      onSelected: (bool selected){
-                        setState(() {
-                          _loss = selected ? index : null;
-                          if (_loss == 0 || _loss == null) {
-                            lossController.clear();
-                          }
-                        });
-                      },
-                    );
-                  }
-                ).toList(),
-              ),
-
-              const SizedBox(height: 15),
-              if(_loss == 1)
+              if(_evaluation == 0)
               formInputLoss(lossController),
 
               const SizedBox(height: 15),
@@ -141,7 +118,7 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                               nominalLossText = nominalLossText.replaceAll('.', '');
 
                               double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
-                              if (_evaluation == null || _loss == null || descController.text.isEmpty || _followUp == null) {
+                              if (_evaluation == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else if(loss != null){
                                 controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
