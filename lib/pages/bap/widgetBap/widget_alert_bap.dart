@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
@@ -205,6 +206,54 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
                             controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, idBap);
+                            Get.back();
+                         }
+                      : null,
+                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    )),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: Text("Close", style: CustomStyles.textMediumRed15Px),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        }
+      );
+  }
+
+void uploadBapAuditArea(BuildContext context, ControllerAuditArea controllerAuditArea, int? idBap) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            elevation: 0,
+            title: const Text("Upload PDF File"),
+            titleTextStyle: CustomStyles.textBold18Px,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                const SizedBox(height: 10),
+
+                Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
+
+                const SizedBox(height: 10),
+
+                TextButton(
+                  onPressed: () =>
+                      controllerAuditArea.pickFileBapAuditRegion(),
+                  child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
+                ),
+
+                const SizedBox(height: 10),
+
+                Obx(() => TextButton(
+                      onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
+                      ? () {
+                            controllerAuditArea.uploadBapAuditRegion(controllerAuditArea.selectedFileName.value, idBap);
                             Get.back();
                          }
                       : null,

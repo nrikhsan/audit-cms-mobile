@@ -29,6 +29,20 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
   final ControllerAuditArea controllerAuditArea =
       Get.put(ControllerAuditArea(Get.find()));
 
+      bool isUploadButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateButtonState(widget.status!);
+  }
+
+  void _updateButtonState(String status) {
+    setState(() {
+      isUploadButtonEnabled = (status == 'UPLOAD');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +83,11 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
                       onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
                           downloadFileClarificationAuditArea('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditArea);
+
+                           setState(() {
+                              isUploadButtonEnabled = true;
+                           });
+                          
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -80,7 +99,7 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
                           style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
-                      onPressed: widget.status == 'UPLOAD' ? () {
+                      onPressed: isUploadButtonEnabled ? () {
                         uploadClarificationAuditArea(context, widget.id, controllerAuditArea);
                       }: null,
                       child: Text(widget.status == 'UPLOAD' ? 'Upload': 'Upload',
@@ -113,6 +132,19 @@ class _DocumentClarificationPageAuditRegionState
     extends State<DocumentClarificationPageAuditRegion> {
   final ControllerAuditRegion controllerAuditRegion =
       Get.put(ControllerAuditRegion(Get.find()));
+
+  bool isUploadButtonEnabled = false;
+  @override
+  void initState() {
+    super.initState();
+    _updateButtonState(widget.status!);
+  }
+
+  void _updateButtonState(String status) {
+    setState(() {
+      isUploadButtonEnabled = (status == 'UPLOAD');
+    });
+  }
       
   @override
   Widget build(BuildContext context) {
@@ -123,9 +155,10 @@ class _DocumentClarificationPageAuditRegionState
           child: SingleChildScrollView(
             child: Column(
                   children: [
+                  const SizedBox(height: 25,),
                   SizedBox(
                   width: double.maxFinite,
-                  height: 600,
+                  height: 670,
                   child: FutureBuilder(
                   future: getToken(),
                   builder: (_, snapshot){
@@ -153,6 +186,9 @@ class _DocumentClarificationPageAuditRegionState
                       onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
                           downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
+                          setState(() {
+                            isUploadButtonEnabled = true;
+                          });
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -164,7 +200,7 @@ class _DocumentClarificationPageAuditRegionState
                           style: ElevatedButton.styleFrom(
                           shape: CustomStyles.customRoundedButton,
                           backgroundColor: CustomColors.green),
-                      onPressed: widget.status == 'UPLOAD' ? () {
+                      onPressed: isUploadButtonEnabled ? () {
                         uploadClarificationAuditRegion(context, widget.id, controllerAuditRegion);
                       }: null,
                       child: Text(widget.status == 'UPLOAD' ? 'Upload': 'Upload',

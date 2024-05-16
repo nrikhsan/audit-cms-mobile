@@ -499,9 +499,22 @@ void getDetailRescheduleAuditArea(int id)async{
     try {
       await repository.inputLhaAuditArea(scheduleId, dataListLocalLhaAuditArea.toList());
       pagingControllerClarificationAuditArea.refresh();
+      getDetailSpecialScheduleAuditArea(scheduleId);
+      getDetailMainScheduleAuditArea(scheduleId);
       dataListLocalLhaAuditArea.clear();
     } catch (error) {
       dataListLocalLhaAuditArea.clear();
+      throw Exception(error);
+    }
+  }
+
+  void inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
+    String suggestion, String tempRec, String perRec, int isResearch)async{
+    try {
+      await repository.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
+      getDetailLhaAuditArea(lhaDetailId);
+      pagingControllerClarificationAuditArea.refresh();
+    } catch (error) {
       throw Exception(error);
     }
   }
@@ -521,6 +534,8 @@ void getDetailRescheduleAuditArea(int id)async{
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
       await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
+      loadRevisiLha(lhaId);
+      getDetailCaseLhaAuditArea(lhaId);
     } catch (e) {
       throw Exception(e);
     }
@@ -529,6 +544,7 @@ void getDetailRescheduleAuditArea(int id)async{
   void sendCaseLha(int? lhaDetailId)async{
     try {
       await repository.sendCaseLha(lhaDetailId);
+      getDetailCaseLhaAuditArea(lhaDetailId);
     } catch (e) {
       throw Exception(e);
     }
@@ -543,7 +559,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void getDetailCaseLhaAuditArea(int caseId)async{
+  void getDetailCaseLhaAuditArea(int? caseId)async{
     try {
       final detailCases = await repository.getDetailCaseLhaAuditArea(caseId);
       detailCase.value = detailCases.data;
@@ -743,6 +759,36 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
+  void uploadKkaAuditArea(String filePath, int id) async {
+    try {
+      await repository.uploadKkaAuditRegion(filePath, id);
+      pagingControllerKkaAuditArea.refresh();
+      pagingControllerMainSchedule.refresh();
+      pagingControllerSpecialSchedule.refresh();
+      getDetailMainScheduleAuditArea(id);
+      getDetailSpecialScheduleAuditArea(id);
+      selectedFileName.value = '';
+    } catch (error) {
+      selectedFileName.value = '';
+      throw Exception(error);
+    }
+  }
+
+  void pickFileKkaAuditRegion() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx', 'xls'],
+    );
+
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      selectedFileName.value = result.files.single.name;
+      selectedFileName.value = filePath;
+      } else {
+      selectedFileName.value = '';
+    }
+  }
+
   void getDetailKkaAuditArea(int id)async{
     try {
       final detailKka = await repository.getDetailKkaAuditArea(id);
@@ -769,6 +815,33 @@ void getDetailRescheduleAuditArea(int id)async{
   }
   
   //BAP
+  void uploadBapAuditRegion(String filePath, int? bapId)async{
+    try {
+      await repository.uploadBapAuditRegion(filePath, bapId);
+      pagingControllerBapAuditArea.refresh();
+      getDetailBapAuditArea(bapId);
+      selectedFileName.value = '';
+    } catch (error) {
+      selectedFileName.value = '';
+      throw Exception(error);
+    }
+  }
+
+  void pickFileBapAuditRegion() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      selectedFileName.value = result.files.single.name;
+      selectedFileName.value = filePath;
+      } else {
+      selectedFileName.value = '';
+    }
+  }
+
   void loadBapAuditArea(int page) async{
     try {
       final bapAuditArea = await repository.getBapAuditArea(page, nameBap.value, branchBap.value, startDateBap.value, endDateBap.value);
@@ -790,7 +863,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void getDetailBapAuditArea(int id)async{
+  void getDetailBapAuditArea(int? id)async{
     try {
       final responseDetail = await repository.getDetailBapAuditArea(id);
       detailBapAuditArea.value = responseDetail.data;
@@ -927,6 +1000,7 @@ void getDetailRescheduleAuditArea(int id)async{
   void editProfileUserAuditArea(String email, String fullName)async{
     try {
       await repository.editUserAuditArea(email, fullName);
+      getDetailUserAuditArea();
     } catch (error) {
       throw Exception(error);
     }
@@ -935,6 +1009,7 @@ void getDetailRescheduleAuditArea(int id)async{
   void changePasswordAuditArea(String currentPassword, String newPassword)async{
     try {
       await repository.changePasswordAuditArea(currentPassword, newPassword);
+      getDetailUserAuditArea();
     } catch (error) {
       throw Exception(error);
     }

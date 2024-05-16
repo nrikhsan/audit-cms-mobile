@@ -93,7 +93,7 @@ abstract class Repositories {
   Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail);
   Future<ResponseMessage>sendCaseLha(int? lhaDEtailId);
   Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
-  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId);
+  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int? caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
   Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id);
@@ -108,7 +108,7 @@ abstract class Repositories {
 
   //BAP
   Future<ResponseBapAuditArea>getBapAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseDetailBapAuditArea>getDetailBapAuditArea(int id);
+  Future<ResponseDetailBapAuditArea>getDetailBapAuditArea(int? id);
 
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
@@ -173,7 +173,7 @@ abstract class Repositories {
   //BAP
   Future<ResponseMessage>uploadBapAuditRegion(String filePath, int? bapId);
   Future<ResponseBapAuditRegion>getBapAuditRegion(int page, String startDate, String endDate);
-  Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int id);
+  Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int? id);
 }
 
 class RepositoryImpl implements Repositories {
@@ -318,7 +318,7 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId){
+  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int? caseId){
     return apiService.getDetailCaseLhaAuditArea(caseId);
   }
   
@@ -363,7 +363,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int id) {
+  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int? id) {
     return apiService.getDetailBapAuditArea(id);
   }
 
@@ -573,7 +573,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseDetailBapAuditRegion> getDetailBapAuditRegion(int id) {
+  Future<ResponseDetailBapAuditRegion> getDetailBapAuditRegion(int? id) {
     return apiService.getDetailBapAuditRegion(id);
   }
 }

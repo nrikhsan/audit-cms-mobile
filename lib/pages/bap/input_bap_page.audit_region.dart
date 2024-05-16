@@ -1,3 +1,4 @@
+import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
@@ -14,7 +15,7 @@ class InputBapAuditArea extends StatefulWidget {
 }
 
 class _InputBapAuditAreaState extends State<InputBapAuditArea> {
- final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+ final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +43,7 @@ class _InputBapAuditAreaState extends State<InputBapAuditArea> {
 
             Text('File BAP', style: CustomStyles.textMedium15Px),
 
-            Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
+            Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
 
             const SizedBox(height: 10),
 
@@ -55,7 +56,7 @@ class _InputBapAuditAreaState extends State<InputBapAuditArea> {
                   backgroundColor: CustomColors.blue
                 ),
                 onPressed: (){
-                  uploadBapAuditRegion(context, controllerAuditRegion, widget.bapId);
+                  uploadBapAuditArea(context, controllerAuditArea, widget.bapId);
                   
                 }, 
                 child: Text('Upload BAP', style: CustomStyles.textMediumWhite15Px)

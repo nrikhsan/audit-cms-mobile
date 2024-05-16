@@ -469,7 +469,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int caseId)async{
+  Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int? caseId)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
@@ -581,7 +581,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int id)async{
+  Future<ResponseDetailBapAuditArea> getDetailBapAuditArea(int? id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -1161,7 +1161,7 @@ class ApiService {
     }
   }
   
-  Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int id)async{
+  Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int? id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'

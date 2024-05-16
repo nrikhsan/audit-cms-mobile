@@ -276,6 +276,8 @@ class ControllerAuditRegion extends GetxController {
       await repositories.inputLhaAuditRegion(scheduleId, dataListLocalLhaAuditRegion.toList());
       pagingControllerClarification.refresh();
       dataListLocalLhaAuditRegion.clear();
+      getDetailMainScheduleAuditRegion(scheduleId);
+      getDetailSpecialScheduleAuditRegion(scheduleId);
     } catch (error) {
       dataListLocalLhaAuditRegion.clear();
       throw Exception(error);
@@ -286,6 +288,7 @@ class ControllerAuditRegion extends GetxController {
     String suggestion, String tempRec, String perRec, int isResearch)async{
     try {
       await repositories.inputCaseLhaAuditRegion(lhaDetailId, caseId, caseCategory, desc, suggestion, tempRec, perRec, isResearch);
+      getDetailLhaAuditRegion(lhaDetailId);
       pagingControllerClarification.refresh();
     } catch (error) {
       throw Exception(error);
@@ -295,6 +298,7 @@ class ControllerAuditRegion extends GetxController {
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
       await repositories.revisiLha(lhaId, desc, suggest, tempRec, perRec);
+      getDetailCasesLhaAuditRegion(lhaId);
     } catch (e) {
       throw Exception(e);
     }
@@ -415,6 +419,8 @@ void uploadKkaAuditRegion(String filePath, int id) async {
       pagingControllerKka.refresh();
       pagingControllerMainSchedule.refresh();
       pagingControllerSpecialSchedule.refresh();
+      getDetailMainScheduleAuditRegion(id);
+      getDetailSpecialScheduleAuditRegion(id);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -496,6 +502,7 @@ void getDetailUserAuditRegion() async {
   void editProfileUserAuditRegion(String? email, String? fullName) async {
     try {
       await repositories.editUserAuditRegion(email, fullName);
+      getDetailUserAuditRegion();
     } catch (error) {
       throw Exception(error);
     }
@@ -505,6 +512,7 @@ void getDetailUserAuditRegion() async {
     try {
       await repositories.changePasswordAuditRegion(
           oldPassword, newPassword);
+          getDetailUserAuditRegion();
     } catch (error) {
       throw Exception(error);
     }
@@ -630,6 +638,7 @@ void getDetailUserAuditRegion() async {
     try {
       await repositories.uploadBapAuditRegion(filePath, bapId);
       pagingControllerBap.refresh();
+      getDetailBapAuditRegion(bapId);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -694,7 +703,7 @@ void getDetailUserAuditRegion() async {
     pagingControllerBap.refresh();
   }
 
-  void getDetailBapAuditRegion(int id)async{
+  void getDetailBapAuditRegion(int? id)async{
     try {
       final response = await repositories.getDetailBapAuditRegion(id);
       detailBapAuditRegion.value = response.data;

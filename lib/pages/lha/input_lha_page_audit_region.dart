@@ -560,8 +560,10 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                       if(controllerAuditRegion.dataListLocalLhaAuditRegion.isEmpty){
                         snackBarMessageRed('Gagal', 'Data list kasus LHA tidak boleh kosong');
                       }else{
-                        controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
+                        setState(() {
+                          controllerAuditRegion.inputLhaAuditRegion(widget.scheduleId);
                           controllerAuditRegion.pagingControllerLha.refresh();
+                        });
                           Get.back();
                       }
                   },
@@ -598,7 +600,7 @@ class InputCaseLhaAuditArea extends StatefulWidget {
 
 class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
   
-  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   
   final TextEditingController lhaDescriptionController = TextEditingController();
   final TextEditingController temporaryRecommendationController = TextEditingController();
@@ -649,8 +651,8 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih kasus', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditRegion.caseId.value,
-                      items: controllerAuditRegion.caseAuditRegion.map((cases){
+                      value: controllerAuditArea.caseId.value,
+                      items: controllerAuditArea.caseAuditArea.map((cases){
                         return DropdownMenuItem(
                           value: cases.id,
                           child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
@@ -658,9 +660,9 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          controllerAuditRegion.selectCase(value);
-                          controllerAuditRegion.loadCaseCategoryAuditRegion(value);
-                          controllerAuditRegion.caseCategoryId.value = null;
+                          controllerAuditArea.selectCase(value);
+                          controllerAuditArea.loadCaseCategory(value);
+                          controllerAuditArea.caseCategoryId.value = null;
                         });
                       }
                     ),
@@ -684,8 +686,8 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       hint: Text('Pilih kasus kategori', style: CustomStyles.textRegular13Px),
-                      value: controllerAuditRegion.caseCategoryId.value,
-                      items: controllerAuditRegion.caseCategory.map((caseCategory){
+                      value: controllerAuditArea.caseCategoryId.value,
+                      items: controllerAuditArea.caseCategory.map((caseCategory){
                         return DropdownMenuItem(
                           value: caseCategory.id,
                           child: SizedBox(width: 250, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
@@ -693,7 +695,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                       }).toList(), 
                       onChanged: (value)async{
                         setState(() {
-                          controllerAuditRegion.selectCaseCategory(value);
+                          controllerAuditArea.selectCaseCategory(value);
                         });
                       }
                     ),
@@ -778,11 +780,11 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                     if (lhaDescriptionController.text.isEmpty || temporaryRecommendationController.text.isEmpty || permanentRecommendationController.text.isEmpty || _selectedSuggest == null || selectValueResearch == null) {
                           snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong');
                         }else if(selectValueResearch == 1){
-                          controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
+                          controllerAuditArea.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditArea.caseId.value, controllerAuditArea.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
                           Get.to(() => const ClarificationPageAuditArea());
                       }else{
-                        controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
+                        controllerAuditArea.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditArea.caseId.value, controllerAuditArea.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
                           Get.back();
                       } 

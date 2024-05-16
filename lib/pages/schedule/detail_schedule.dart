@@ -61,7 +61,8 @@ class _DetailMainSchedulePageAuditAreaState
                   .getDetailMainScheduleAuditArea(widget.mainScheduleId);
             },
             children: [
-              SingleChildScrollView(child: Obx(() {
+              SingleChildScrollView(
+                child: Obx(() {
                 final schedule =
                     controllerAuditArea.detailMainScheduleAuditArea.value;
                 if (schedule == null) {
@@ -354,8 +355,6 @@ class _DetailSpecialSchedulePageAuditAreaState
     extends State<DetailSpecialSchedulePageAuditArea> {
   final ControllerAuditArea controllerAuditArea =
       Get.put(ControllerAuditArea(Get.find()));
-  final ControllerAuditRegion controllerAuditRegion =
-      Get.put(ControllerAuditRegion(Get.find()));
 
   StreamController<SwipeRefreshState> refreshController = StreamController();
 
@@ -726,22 +725,22 @@ class _DetailSpecialSchedulePageAuditAreaState
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 10),
-                Obx(() => Text(controllerAuditRegion.selectedFileName.value,
+                Obx(() => Text(controllerAuditArea.selectedFileName.value,
                     style: CustomStyles.textRegularGrey13Px)),
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () =>
-                      controllerAuditRegion.pickFileKkaAuditRegion(),
+                      controllerAuditArea.pickFileKkaAuditRegion(),
                   child: Text('Choose File',
                       style: CustomStyles.textMediumGreen15Px),
                 ),
                 const SizedBox(height: 10),
                 Obx(() => TextButton(
-                      onPressed: controllerAuditRegion
+                      onPressed: controllerAuditArea
                               .selectedFileName.value.isNotEmpty
                           ? () {
-                              controllerAuditRegion.uploadKkaAuditRegion(
-                                  controllerAuditRegion.selectedFileName.value,
+                              controllerAuditArea.uploadKkaAuditArea(
+                                  controllerAuditArea.selectedFileName.value,
                                   id);
                               Get.back();
                             }
@@ -1116,6 +1115,7 @@ class _DetailMainScheduleAuditRegionState
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
+    controllerAuditRegion.getDetailMainScheduleAuditRegion(widget.mainScheduleId);
     super.initState();
   }
 
@@ -1171,7 +1171,9 @@ class _DetailMainScheduleAuditRegionState
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: () {
-                checkScheduleInputLhaAndKka();
+                setState(() {
+                  checkScheduleInputLhaAndKka();
+                });
               }),
           SpeedDialChild(
               backgroundColor: CustomColors.green,
@@ -1186,7 +1188,9 @@ class _DetailMainScheduleAuditRegionState
                   if (widget.kka != null) {
                     snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
-                    showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                    setState(() {
+                      showDialogUploadKkaAuditRegion(widget.mainScheduleId);
+                    });
                   }
                 } else {
                   snackBarMessageRed(
@@ -1471,9 +1475,12 @@ class _DetailMainScheduleAuditRegionState
                       onPressed: controllerAuditRegion
                               .selectedFileName.value.isNotEmpty
                           ? () {
-                              controllerAuditRegion.uploadKkaAuditRegion(
+                              setState(() {
+                                controllerAuditRegion.uploadKkaAuditRegion(
                                   controllerAuditRegion.selectedFileName.value,
                                   id);
+                                
+                              });
                               Get.back();
                             }
                           : null,
@@ -1521,6 +1528,8 @@ class _DetailSpecialScheduleAuditRegionState
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
+    controllerAuditRegion
+        .getDetailSpecialScheduleAuditRegion(widget.specialScheduleId);
     super.initState();
   }
 
@@ -1576,7 +1585,9 @@ class _DetailSpecialScheduleAuditRegionState
               labelStyle: CustomStyles.textMediumWhite15Px,
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: () {
-                checkScheduleInputLhaAndKka();
+                setState(() {
+                  checkScheduleInputLhaAndKka();
+                });
               }),
           SpeedDialChild(
               backgroundColor: CustomColors.green,
@@ -1592,7 +1603,9 @@ class _DetailSpecialScheduleAuditRegionState
                   if (widget.kka != null) {
                     snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
-                    showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                    setState(() {
+                      showDialogUploadKkaAuditRegion(widget.specialScheduleId);
+                    });
                   }
                 } else {
                   snackBarMessageRed(
@@ -1869,9 +1882,11 @@ class _DetailSpecialScheduleAuditRegionState
                       onPressed: controllerAuditRegion
                               .selectedFileName.value.isNotEmpty
                           ? () {
-                              controllerAuditRegion.uploadKkaAuditRegion(
+                              setState(() {
+                                controllerAuditRegion.uploadKkaAuditRegion(
                                   controllerAuditRegion.selectedFileName.value,
                                   id);
+                              });
                               Get.back();
                             }
                           : null,
