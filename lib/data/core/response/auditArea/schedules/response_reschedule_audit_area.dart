@@ -183,6 +183,7 @@ class ContentListRescheduleAuditArea {
   User? user;
   Branch? branch;
   String? description;
+  String? suggestion;
   String? status;
   String? category;
   String? newStartDate;
@@ -200,6 +201,7 @@ class ContentListRescheduleAuditArea {
       this.user,
       this.branch,
       this.description,
+      this.suggestion,
       this.status,
       this.category,
       this.newStartDate,
@@ -218,6 +220,7 @@ class ContentListRescheduleAuditArea {
     branch =
         json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
     description = json['description'];
+    suggestion = json['suggestion'];
     status = json['status'];
     category = json['category'];
     newStartDate = json['new_start_date'];
@@ -243,6 +246,7 @@ class ContentListRescheduleAuditArea {
       data['branch'] = this.branch!.toJson();
     }
     data['description'] = this.description;
+    data['suggestion'] = this.suggestion;
     data['status'] = this.status;
     data['category'] = this.category;
     data['new_start_date'] = this.newStartDate;

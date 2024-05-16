@@ -183,6 +183,7 @@ class ContentSpecialScheduleAuditArea {
   User? user;
   Branch? branch;
   String? description;
+  String? suggestion;
   String? status;
   String? category;
   String? startDate;
@@ -198,6 +199,7 @@ class ContentSpecialScheduleAuditArea {
       this.user,
       this.branch,
       this.description,
+      this.suggestion,
       this.status,
       this.category,
       this.startDate,
@@ -214,6 +216,7 @@ class ContentSpecialScheduleAuditArea {
     branch =
         json['branch'] != null ? new Branch.fromJson(json['branch']) : null;
     description = json['description'];
+    suggestion = json['suggestion'];
     status = json['status'];
     category = json['category'];
     startDate = json['start_date'];
@@ -237,6 +240,7 @@ class ContentSpecialScheduleAuditArea {
       data['branch'] = this.branch!.toJson();
     }
     data['description'] = this.description;
+    data['suggestion'] = this.suggestion;
     data['status'] = this.status;
     data['category'] = this.category;
     data['start_date'] = this.startDate;

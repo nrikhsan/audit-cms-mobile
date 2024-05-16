@@ -72,6 +72,7 @@ class _DetailMainSchedulePageAuditAreaState
                   final kka = schedule.kka;
                   final lha = schedule.lha;
                   final status = detail?.status;
+                  final suggestion = detail?.suggestion;
                   final startDate = DateTime.parse('${detail?.startDate}');
                   final endDateDate = DateTime.parse('${detail?.endDate}');
                   final outputStartDate =
@@ -113,6 +114,20 @@ class _DetailMainSchedulePageAuditAreaState
                       Text(detail.description ?? '-',
                           style: CustomStyles.textRegular13Px,
                           textAlign: TextAlign.justify),
+
+                      Visibility(
+                        visible: suggestion != null ? true : false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          ],
+                        ),
+                      ),
+
                       const SizedBox(height: 20),
                       Text('Status :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
@@ -134,6 +149,9 @@ class _DetailMainSchedulePageAuditAreaState
                                 style: CustomStyles.textMedium13Px),
                           if (status == 'APPROVE')
                             Text('Disetujui',
+                                style: CustomStyles.textMedium13Px),
+                          if (status == 'REVISION')
+                            Text('Revisi',
                                 style: CustomStyles.textMedium13Px),
                           if (status == 'REJECTED')
                             Text('Ditolak', style: CustomStyles.textMedium13Px),
@@ -452,6 +470,7 @@ class _DetailSpecialSchedulePageAuditAreaState
                   final lha = controllerAuditArea
                       .detailSpecialScheduleAuditArea.value?.lha;
                   final status = detail?.status;
+                  final suggestion = detail?.suggestion;
 
                   final startDate = DateTime.parse('${detail?.startDate}');
                   final endDateDate = DateTime.parse('${detail?.endDate}');
@@ -494,6 +513,20 @@ class _DetailSpecialSchedulePageAuditAreaState
                       Text(detail.description ?? '-',
                           style: CustomStyles.textRegular13Px,
                           textAlign: TextAlign.justify),
+
+                        Visibility(
+                        visible: suggestion != null ? true : false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          ],
+                        ),
+                      ),
+
                       const SizedBox(height: 20),
                       Text('Status :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
@@ -784,6 +817,7 @@ class _DetailReschedulePageAuditAreaState
                   final lha =
                       controllerAuditArea.detailRescheduleAuditArea.value!.lha;
                   final statusReschedules = detail?.status;
+                  final suggestion = detail?.suggestion;
 
                   final startDate = DateTime.parse('${detail?.startDate}');
                   final endDateDate = DateTime.parse('${detail?.endDate}');
@@ -842,6 +876,20 @@ class _DetailReschedulePageAuditAreaState
                       Text(detail.description ?? '-',
                           style: CustomStyles.textRegular13Px,
                           textAlign: TextAlign.justify),
+                      
+                      Visibility(
+                        visible: suggestion != null ? true : false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            const SizedBox(height: 5),
+                            Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          ],
+                        ),
+                      ),
+                      
                       const SizedBox(height: 20),
                       Text('Kategori :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
@@ -859,6 +907,9 @@ class _DetailReschedulePageAuditAreaState
                                 style: CustomStyles.textMedium13Px),
                           if (statusReschedules == 'APPROVE')
                             Text('Disetujui',
+                                style: CustomStyles.textMedium13Px),
+                          if (statusReschedules == 'REVISION')
+                            Text('Revisi',
                                 style: CustomStyles.textMedium13Px),
                           if (statusReschedules == 'REJECTED')
                             Text('Ditolak', style: CustomStyles.textMedium13Px),
@@ -1086,9 +1137,9 @@ class _DetailMainScheduleAuditRegionState
     today = DateTime.parse(formattedCurrentTime);
 
     if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.mainScheduleId));
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
     } else if(today.isAtSameMomentAs(endDate)){
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.mainScheduleId));
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
     }else if (today.isBefore(startDate)) {
       snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
@@ -1491,9 +1542,9 @@ class _DetailSpecialScheduleAuditRegionState
     today = DateTime.parse(formattedCurrentTime);
 
     if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
     } else if(today.isAtSameMomentAs(endDate)){
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
     }else if (today.isBefore(startDate)) {
       snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {

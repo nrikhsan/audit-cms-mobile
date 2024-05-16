@@ -475,7 +475,8 @@ class InputDataReschedulePage extends StatefulWidget {
   final int? user;
   final int? branch;
   final String? desc;
-  const InputDataReschedulePage({super.key, required this.rescheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc});
+  final String? suggestion;
+  const InputDataReschedulePage({super.key, required this.rescheduleId, required this.startDate, required this.endDate, required this.user, required this.branch, required this.desc, this.suggestion});
 
   @override
   State<InputDataReschedulePage> createState() => _InputDataReschedulePageState();
@@ -486,6 +487,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
   final TextEditingController startDateControllerReschedule = TextEditingController();
   final TextEditingController endDateControllerReschedule = TextEditingController();
   final TextEditingController scheduleDescControllerReschedule = TextEditingController();
+  final TextEditingController scheduleDescControllerSuggestionReschedule = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
@@ -494,6 +496,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
     startDateControllerReschedule.text = widget.startDate;
     endDateControllerReschedule.text = widget.endDate;
     scheduleDescControllerReschedule.text = widget.desc ?? '';
+    scheduleDescControllerSuggestionReschedule.text = widget.suggestion ?? '';
     controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users  = widget.user;
     _branch = widget.branch;
@@ -536,6 +539,19 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
+              Visibility(
+                visible: widget.suggestion != null ? true : false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    Text('Saran revisi :', style: CustomStyles.textMedium15Px),
+                    const SizedBox(height: 15),
+                    formSuggestionSchedule(scheduleDescControllerSuggestionReschedule),
+                  ],
+                )
+              ),
+              
               const SizedBox(height: 15),
               Text('Mulai dari :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),

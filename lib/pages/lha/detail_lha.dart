@@ -250,6 +250,7 @@ class _DetailCasesLhaPageAuditAreaState
                       final cases = detailLha.cases;
                       final lhaId = detailLha.id;
                       final statusFlow = detailLha.statusFlow;
+                      final isRevision = detailLha.isRevision;
                       
                       return Padding(
                         padding: const EdgeInsets.all(15),
@@ -342,7 +343,7 @@ class _DetailCasesLhaPageAuditAreaState
                                   shape: CustomStyles.customRoundedButton,
                                   backgroundColor: CustomColors.blue
                                 ),
-                                onPressed: statusFlow == 0 ? (){
+                                onPressed: isRevision == 1 ? (){
                                   if (lhaId != null) {
                                       Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
                                         selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));

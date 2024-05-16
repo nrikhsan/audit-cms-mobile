@@ -186,6 +186,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                             Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
                                             if(status == 'APPROVE')
                                             Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                            if(status == 'REVISION')
+                                            Text('Revisi', style: CustomStyles.textMedium13Px),
                                             if(status == 'REJECTED')
                                             Text('Ditolak', style: CustomStyles.textMedium13Px),
                                           ],
@@ -458,6 +460,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                               Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
                                               if(statusReschedules == 'APPROVE')
                                               Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                              if(statusReschedules == 'REVISION')
+                                              Text('Revisi', style: CustomStyles.textMedium13Px),
                                               if(statusReschedules == 'REJECTED')
                                               Text('Ditolak', style: CustomStyles.textMedium13Px),
                                             ],
@@ -479,13 +483,16 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
                                 if (reschedules.status == 'PENDING') {
                                   Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!, startDate: startDate, endDate: endDate, 
-                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description));
+                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description, suggestion: reschedules.suggestion));
                                 }else if(reschedules.status == 'REQUEST'){
                                   Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
                                 }else if(reschedules.status == 'REJECTED'){
                                   Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
                                 }else if(reschedules.status == 'APPROVE'){
                                   Get.to(() => DetailReschedulePageAuditArea(rescheduleId: reschedules.id!));
+                                }else if(reschedules.status == 'REVISION'){
+                                  Get.to(() => InputDataReschedulePage(rescheduleId: reschedules.id!, startDate: startDate, endDate: endDate, 
+                                    user: reschedules.user!.id!, branch: reschedules.branch!.id!, desc: reschedules.description, suggestion: reschedules.suggestion));
                                 }
                               });
                             }
@@ -586,7 +593,6 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, mainSchedule, index){
                               final status = mainSchedule.status;
-                              // final isActive = mainSchedule.isActive;
                               final kka = mainSchedule.kka?.filename;
                               final startDate = DateTime.parse(mainSchedule.startDate!);
                               final endDate = DateTime.parse(mainSchedule.endDate!);
@@ -626,6 +632,8 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                               Text('Menunggu persetujuan', style: CustomStyles.textMedium13Px),
                                               if(status == 'APPROVE')
                                               Text('Disetujui', style: CustomStyles.textMedium13Px),
+                                              if(status == 'REVISION')
+                                              Text('Revisi', style: CustomStyles.textMedium13Px),
                                               if(status == 'REJECTED')
                                               Text('Ditolak', style: CustomStyles.textMedium13Px),
                                             ],
