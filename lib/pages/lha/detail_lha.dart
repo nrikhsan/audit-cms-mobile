@@ -54,6 +54,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                     } else {
                       final research = detailLha.isResearch;
                       final lha = detailLha.lhaDetails;
+                      final createdBy = detailLha.user?.level?.name;
                       refreshConroller.add(SwipeRefreshState.hidden);
                         return Padding(
                           padding: const EdgeInsets.all(15),
@@ -155,7 +156,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                                 onPressed: () {
                                                   final lhaId = lha[index].id;
                                                   if (lhaId != null) {
-                                                    Get.to(() => DetailCasesLhaPageAuditArea(caseId: lhaId));
+                                                    Get.to(() => DetailCasesLhaPageAuditArea(caseId: lhaId, level: createdBy));
                                                   }
                                                 },
                                                 child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)
@@ -181,7 +182,8 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
 //audit area
 class DetailCasesLhaPageAuditArea extends StatefulWidget {
   final int caseId;
-  const DetailCasesLhaPageAuditArea({super.key, required this.caseId});
+  final String? level;
+  const DetailCasesLhaPageAuditArea({super.key, required this.caseId, required this.level});
 
   @override
   State<DetailCasesLhaPageAuditArea> createState() =>
@@ -343,7 +345,7 @@ class _DetailCasesLhaPageAuditAreaState
                                   shape: CustomStyles.customRoundedButton,
                                   backgroundColor: CustomColors.blue
                                 ),
-                                onPressed: isRevision == 1 ? (){
+                                onPressed: isRevision == 0 ?(){
                                   if (lhaId != null) {
                                       Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
                                         selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));

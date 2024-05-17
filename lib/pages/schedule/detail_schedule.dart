@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/kka/widgetKka/widket_kka.dart';
 import 'package:audit_cms/pages/lha/detail_lha.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
@@ -338,13 +340,14 @@ class DetailSpecialSchedulePageAuditArea extends StatefulWidget {
   final String? endDate;
   final String? kka;
   final String? createdBy;
+  final int? userId;
   const DetailSpecialSchedulePageAuditArea(
       {super.key,
       required this.specialScheduleId,
       required this.startDate,
       required this.endDate,
       required this.kka,
-      this.createdBy});
+      this.createdBy, this.userId});
 
   @override
   State<DetailSpecialSchedulePageAuditArea> createState() =>
@@ -392,6 +395,11 @@ class _DetailSpecialSchedulePageAuditAreaState
     }
   }
 
+  Future<String?>getToken()async{
+    return await TokenManager.getToken();
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     controllerAuditArea
@@ -413,8 +421,15 @@ class _DetailSpecialSchedulePageAuditAreaState
                     labelStyle: CustomStyles.textMediumWhite15Px,
                     child: const Icon(Icons.add_rounded,
                         color: CustomColors.white),
-                    onTap: () {
-                      checkScheduleInputLhaAndKka();
+                    onTap: ()async {
+                      final tokenArea = await TokenManager.getToken();
+                      Map<String, dynamic>decodedToken = Jwt.parseJwt(tokenArea!);
+                      int? id = decodedToken['user']['id'];
+                      if (widget.userId == id) {
+                        checkScheduleInputLhaAndKka();
+                      } else {
+                        snackBarMessageRed('Alert', 'Jadwal ini bukan untuk anda');
+                      }
                     }),
                 SpeedDialChild(
                     backgroundColor: CustomColors.green,
@@ -423,20 +438,26 @@ class _DetailSpecialSchedulePageAuditAreaState
                     labelStyle: CustomStyles.textMediumWhite15Px,
                     child: const Icon(Icons.upload_file_rounded,
                         color: CustomColors.white),
-                    onTap: () {
-                      final lha = controllerAuditArea
-                          .detailSpecialScheduleAuditArea.value?.lha;
-                      if (lha != null) {
+                    onTap: () async {
+                      
+                      final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
+
+                      final tokenArea = await TokenManager.getToken();
+                      Map<String, dynamic>decodedToken = Jwt.parseJwt(tokenArea!);
+                      int? id = decodedToken['user']['id'];
+
+                      if (widget.userId == id) {
+                        if (lha != null) {
                         if (widget.kka != null) {
-                          snackBarMessageGreen(
-                              'Alert', 'Anda sudah mengunggah KKA');
+                          snackBarMessageGreen( 'Alert', 'Anda sudah mengunggah KKA');
                         } else {
-                          showDialogUploadKkaAuditArea(
-                              widget.specialScheduleId);
+                          showDialogUploadKkaAuditArea(widget.specialScheduleId);
+                        }
+                        } else {
+                          snackBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
                         }
                       } else {
-                        snackBarMessageRed(
-                            'Alert', 'Anda harus membuat LHA terlebih dahulu');
+                        snackBarMessageRed('Alert', 'Jadwal ini bukan untuk anda');
                       }
                     }),
               ],

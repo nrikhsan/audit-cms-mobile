@@ -124,12 +124,16 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               final endDate = DateTime.parse(mainSchedule.endDate!);
                               final outputStartDate = DateFormat('dd-MM-yyyy').format(startDate);
                               final outputEndDate = DateFormat('dd-MM-yyyy').format(endDate);
+                              final createdBy = mainSchedule.createdBy?.level?.name;
                               return GestureDetector(
                               onTap: (){
                               Get.to(() => DetailMainSchedulePageAuditArea(mainScheduleId: mainSchedule.id!));
                             },
                             onLongPress: mainSchedule.status == 'TODO' ? (){
-                              alertDeleteWidget(
+                              if (createdBy == 'PUSAT' || createdBy == 'LEAD') {
+                                null;
+                              }else{
+                                alertDeleteWidget(
                                 context, 
                                 'Hapus jadwal', 
                                 'Apakah anda yakin untuk menghapus jadwal ini?',
@@ -152,6 +156,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                   ],
                                 )
                               );
+                              }
                             }: null,
                               child: Card(
                               elevation: 0,
@@ -202,7 +207,10 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     const SizedBox(height: 5),
                                     Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
 
-                                    Row(
+                                    Wrap(
+                                      children: [
+                                        createdBy == 'PUSAT' || createdBy == 'LEAD' ? const SizedBox()
+                                        : Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                             TextButton(
@@ -218,6 +226,8 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                               }: null, 
                                               child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                             )
+                                      ],
+                                    )
                                       ],
                                     )
                                   ],
@@ -275,6 +285,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (_, schedule, index){
                               final createdBy = schedule.createdBy!.level?.name;
+                              final userId = schedule.user?.id;
                               final status = schedule.status;
                               final startDate = DateTime.parse(schedule.startDate!);
                               final endDate = DateTime.parse(schedule.endDate!);
@@ -283,7 +294,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                return GestureDetector(
                                 onTap: (){
                                 Get.to(() => DetailSpecialSchedulePageAuditArea(specialScheduleId: schedule.id!, startDate: outputStartDate, 
-                                endDate:  outputEndDate, kka: schedule.kka?.filename, createdBy: createdBy));
+                                endDate:  outputEndDate, kka: schedule.kka?.filename, createdBy: createdBy, userId: userId));
                               },
                               onLongPress: schedule.status == 'TODO' ? ()async{
                               if (createdBy == 'PUSAT' || createdBy == 'LEAD') {

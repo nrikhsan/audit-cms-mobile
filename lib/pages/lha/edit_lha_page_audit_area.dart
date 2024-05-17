@@ -37,8 +37,10 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
     lhaDescriptionController.text = widget.lhaDescription ?? '';
     temporaryRecommendationController.text = widget.temRec ?? '';
     permanentRecommendationController.text = widget.perRec ?? '';
+
     suggestController.text = widget.suggest ?? '';
     selectedSuggest = widget.suggest != null && widget.suggest!.isNotEmpty ? 1 : 0;
+    
     super.initState();
   }
 
