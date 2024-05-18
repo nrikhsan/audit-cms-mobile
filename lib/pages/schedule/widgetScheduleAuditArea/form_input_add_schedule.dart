@@ -85,22 +85,6 @@ Widget formInputDescriptionSchedule(TextEditingController scheduleController) {
   );
 }
 
-Widget formSuggestionSchedule(TextEditingController scheduleController) {
-  return TextField(
-    controller: scheduleController,
-    cursorColor: CustomColors.blue,
-    maxLines: 5,
-    readOnly: true,
-    decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: CustomColors.grey)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: CustomColors.grey))),
-  );
-}
-
 Widget formInputEditScheduleStartDate(
     BuildContext context, TextEditingController startDateController, String date) {
   return TextField(

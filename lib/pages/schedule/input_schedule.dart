@@ -690,7 +690,6 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
   final TextEditingController startDateControllerReschedule = TextEditingController();
   final TextEditingController endDateControllerReschedule = TextEditingController();
   final TextEditingController scheduleDescControllerReschedule = TextEditingController();
-  final TextEditingController scheduleDescControllerSuggestionReschedule = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
@@ -702,7 +701,6 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
     startDateControllerReschedule.text = widget.startDate;
     endDateControllerReschedule.text = widget.endDate;
     scheduleDescControllerReschedule.text = widget.desc ?? '';
-    scheduleDescControllerSuggestionReschedule.text = widget.suggestion ?? '';
     controllerAuditArea.loadBranchByUserIdAuditArea(widget.user);
     _users  = widget.user;
     _branch = widget.branch;
@@ -750,10 +748,27 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 15),
-                    Text('Saran revisi :', style: CustomStyles.textMedium15Px),
-                    const SizedBox(height: 15),
-                    formSuggestionSchedule(scheduleDescControllerSuggestionReschedule),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: Card(
+                        elevation: 0,
+                        color: CustomColors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Saran revisi :', style: CustomStyles.textMediumWhite15Px),
+                              const SizedBox(height: 5),
+                              Text('${widget.suggestion}', style: CustomStyles.textRegularWhite13Px),
+                            ],
+                          )
+                        ),
+                      ),
+                    )
                   ],
                 )
               ),

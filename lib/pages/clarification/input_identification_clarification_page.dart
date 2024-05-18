@@ -195,7 +195,7 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                       onSelected: (bool selected){
                         setState(() {
                           _evaluation = selected ? index: null;
-                          if (_evaluation == 0 || _evaluation == null) {
+                          if (_evaluation == 1 || _evaluation == null) {
                             lossController.clear();
                           }
                           
