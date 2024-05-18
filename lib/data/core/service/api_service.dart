@@ -419,7 +419,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>revisiLhaAuditArea(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
+  Future<ResponseMessage>revisiLhaAuditArea(int? lhaId, String desc, String suggest, String tempRec, String perRec)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',

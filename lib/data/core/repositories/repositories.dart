@@ -92,7 +92,7 @@ abstract class Repositories {
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
   Future<ResponseMessage>inputLhaAuditArea(int scheduleId, List<LhaDetailArea>lhaDetail);
   Future<ResponseMessage>sendCaseLha(int? lhaDEtailId);
-  Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec);
+  Future<ResponseMessage> revisiLha(int? lhaId, String desc, String suggest, String tempRec, String perRec);
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int? caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
   Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate);
@@ -308,7 +308,7 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec) {
+  Future<ResponseMessage> revisiLha(int? lhaId, String desc, String suggest, String tempRec, String perRec) {
     return apiService.revisiLhaAuditArea(lhaId, desc, suggest, tempRec, perRec);
   }
 

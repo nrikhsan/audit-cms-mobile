@@ -816,6 +816,17 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
   int? _selectedSuggest;
   int? selectValueResearch;
 
+  void resetValue(){
+    setState(() {
+      controllerAuditArea.caseId.value = null;
+      controllerAuditArea.caseCategoryId.value = null;
+      lhaDescriptionController.clear();
+      temporaryRecommendationController.clear();
+      permanentRecommendationController.clear();
+      _selectedSuggest = null;
+      selectValueResearch = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1087,10 +1098,12 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                         }else if(selectValueResearch == 1){
                           controllerAuditArea.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditArea.caseId.value, controllerAuditArea.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          resetValue();
                           Get.to(() => const ClarificationPageAuditArea());
                       }else{
                         controllerAuditArea.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditArea.caseId.value, controllerAuditArea.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          resetValue();
                           Get.back();
                       } 
                     
@@ -1129,6 +1142,18 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
 
   int? _selectedSuggest;
   int? selectValueResearch;
+
+  void resetValue(){
+    setState(() {
+      controllerAuditRegion.caseId.value = null;
+      controllerAuditRegion.caseCategoryId.value = null;
+      lhaDescriptionController.clear();
+      temporaryRecommendationController.clear();
+      permanentRecommendationController.clear();
+      _selectedSuggest = null;
+      selectValueResearch = null;
+    });
+  }
 
 
   @override
@@ -1402,10 +1427,12 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                         }else if(selectValueResearch == 1){
                           controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          resetValue();
                           Get.to(() => const ClarificationPageAuditRegion());
                       }else{
                         controllerAuditRegion.inputCaseLhaAuditRegion(widget.lhaDetailId, controllerAuditRegion.caseId.value, controllerAuditRegion.caseCategoryId.value, lhaDescriptionController.text, suggestController.text, 
                           temporaryRecommendationController.text, permanentRecommendationController.text, selectValueResearch!);
+                          resetValue();
                           Get.back();
                       } 
                     

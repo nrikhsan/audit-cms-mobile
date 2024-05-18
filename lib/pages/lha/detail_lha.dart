@@ -156,7 +156,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                                 onPressed: () {
                                                   final lhaId = lha[index].id;
                                                   if (lhaId != null) {
-                                                    Get.to(() => DetailCasesLhaPageAuditArea(caseId: lhaId, level: createdBy));
+                                                    Get.to(() => TabBarViewCasesLhaPageAuditArea(caseId: lhaId, level: createdBy));
                                                   }
                                                 },
                                                 child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)
@@ -180,26 +180,20 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
 }
 
 //audit area
-class DetailCasesLhaPageAuditArea extends StatefulWidget {
+class TabBarViewCasesLhaPageAuditArea extends StatefulWidget {
   final int caseId;
   final String? level;
-  const DetailCasesLhaPageAuditArea({super.key, required this.caseId, required this.level});
+  const TabBarViewCasesLhaPageAuditArea({super.key, required this.caseId, required this.level});
 
   @override
-  State<DetailCasesLhaPageAuditArea> createState() =>
-      _DetailCasesLhaPageAuditAreaState();
+  State<TabBarViewCasesLhaPageAuditArea> createState() =>  _TabBarViewCasesLhaPageAuditAreaState();
 }
 
-class _DetailCasesLhaPageAuditAreaState
-    extends State<DetailCasesLhaPageAuditArea> {
-  final ControllerAuditArea controllerAuditArea =
-      Get.put(ControllerAuditArea(Get.find()));
-
+class _TabBarViewCasesLhaPageAuditAreaState extends State<TabBarViewCasesLhaPageAuditArea> {
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailCaseLhaAuditArea(widget.caseId);
-    controllerAuditArea.loadRevisiLha(widget.caseId);
     return DefaultTabController(
       length: 2, 
       child: Scaffold(
@@ -234,13 +228,51 @@ class _DetailCasesLhaPageAuditAreaState
             children: [
 
               //1. detail kasus LHA
-              Scaffold(
+              DetailLhaCaseAuditArea(lhaDetailid: widget.caseId, level: widget.level),
+
+              //2. list revision LHA audit area
+              ListRevisionPageAuditArea(lhaDetailid: widget.caseId)
+            ]
+          ),
+      )
+    );
+  }
+}
+
+//audit area
+class DetailLhaCaseAuditArea extends StatefulWidget {
+  final int lhaDetailid;
+  final String? level;
+  const DetailLhaCaseAuditArea({super.key, required this.lhaDetailid, required this.level});
+
+  @override
+  State<DetailLhaCaseAuditArea> createState() => _DetailLhaCaseAuditAreaState();
+}
+
+class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
+
+  final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+
+  StreamController<SwipeRefreshState> refreshController = StreamController();
+
+  @override
+  void initState() {
+    refreshController.add(SwipeRefreshState.loading);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    controllerAuditArea.getDetailCaseLhaAuditArea(widget.lhaDetailid);
+    return Scaffold(
                 backgroundColor: CustomColors.white,
-                body: RefreshIndicator(
-                  onRefresh: ()async{
-                    controllerAuditArea.getDetailCaseLhaAuditArea(widget.caseId);
+                body: SwipeRefresh.material(
+                  stateStream: refreshController.stream,
+                  onRefresh: (){
+                    controllerAuditArea.getDetailCaseLhaAuditArea(widget.lhaDetailid);
                   },
-                  child: SingleChildScrollView(
+                  children: [
+                    SingleChildScrollView(
                   child: Obx(() {
                     final detailLha = controllerAuditArea.detailCase.value;
                     if (detailLha == null) {
@@ -253,7 +285,7 @@ class _DetailCasesLhaPageAuditAreaState
                       final lhaId = detailLha.id;
                       final statusFlow = detailLha.statusFlow;
                       final isRevision = detailLha.isRevision;
-                      
+                      refreshController.add(SwipeRefreshState.hidden);
                       return Padding(
                         padding: const EdgeInsets.all(15),
                         child: Column(
@@ -345,12 +377,11 @@ class _DetailCasesLhaPageAuditAreaState
                                   shape: CustomStyles.customRoundedButton,
                                   backgroundColor: CustomColors.blue
                                 ),
-                                onPressed: isRevision == 0 ?(){
-                                  if (lhaId != null) {
-                                      Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
-                                        selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, perRec: detailLha.permanentRecommendation, suggest: suggestion));
-                                  }
-                                }: null, 
+                                onPressed: isRevision == 2 ? null : (){
+                                  Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
+                                        selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, 
+                                        perRec: detailLha.permanentRecommendation, suggest: suggestion));
+                                }, 
                                 child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)
                               ),
                             ),
@@ -359,23 +390,40 @@ class _DetailCasesLhaPageAuditAreaState
                       );
                     }
                   }),
-                ))
-              ),
+                )
+                  ]
+                )
+              );
+  }
+}
 
-              //2. list revision LHA audit area
-              Scaffold(
+//audit area
+class ListRevisionPageAuditArea extends StatefulWidget {
+  final int lhaDetailid;
+  const ListRevisionPageAuditArea({super.key, required this.lhaDetailid});
+
+  @override
+  State<ListRevisionPageAuditArea> createState() => _ListRevisionPageAuditAreaState();
+}
+
+class _ListRevisionPageAuditAreaState extends State<ListRevisionPageAuditArea> {
+
+  final ControllerAuditArea controllerAuditArea =
+      Get.put(ControllerAuditArea(Get.find()));
+
+  @override
+  Widget build(BuildContext context) {
+    controllerAuditArea.loadRevisiLha(widget.lhaDetailid);
+    return Scaffold(
                   backgroundColor: CustomColors.white,
-                    body: RefreshIndicator(
-                      onRefresh: ()async{
-                         controllerAuditArea.loadRevisiLha(widget.caseId);
-                      },
-                      child: Padding(
+                    body: Padding(
                       padding: const EdgeInsets.all(15),
-                      child: Obx((){
-                        if (controllerAuditArea.isLoading.value) {
-                          return  const Center(child: SpinKitCircle(color: CustomColors.blue,));
-                        } else {
-                          return ListView.builder(
+                      child: RefreshIndicator(
+                        onRefresh: ()async{
+                          controllerAuditArea.loadRevisiLha(widget.lhaDetailid);
+                        },
+                        child: Obx((){
+                      return ListView.builder(
                         itemCount: controllerAuditArea.lhaRevision.length,
                         itemBuilder: (_, index){
                         final lha = controllerAuditArea.lhaRevision[index];
@@ -443,15 +491,10 @@ class _DetailCasesLhaPageAuditAreaState
                                     );
                       }
                     );
-                    }
-                  })
+                  }),
+                      )
                 ),
-                    )
-              )
-            ]
-          ),
-      )
-    );
+              );
   }
 }
 

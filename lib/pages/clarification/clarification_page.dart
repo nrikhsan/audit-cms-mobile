@@ -44,7 +44,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
           titleSpacing: 5,
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Get.offAll(() => BotNavePageAuditArea());
               },
               icon: const Icon(Icons.arrow_back_rounded, size: 25, color: CustomColors.black)),
           actions: [
@@ -149,7 +149,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                               Row(
                                 children: [
                                   Text('Kode : ', style: CustomStyles.textMedium13Px),
-                                  Text('${clarification.code}', style: CustomStyles.textRegular12Px),
+                                  SizedBox(
+                                    width: 250,
+                                    child: Text('${clarification.code}', style: CustomStyles.textRegular12Px, overflow: TextOverflow.ellipsis, maxLines: 1)),
                                 ],
                               ),
                               const SizedBox(height: 5,),
@@ -326,7 +328,9 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                               Row(
                                 children: [
                                   Text('Kode : ', style: CustomStyles.textMedium13Px),
-                                  Text('${clarification.code}', style: CustomStyles.textRegular12Px),
+                                  SizedBox(
+                                    width: 250,
+                                    child: Text('${clarification.code}', style: CustomStyles.textRegular12Px, overflow: TextOverflow.ellipsis, maxLines: 1)),
                                 ],
                               ),
                               const SizedBox(height: 5,),

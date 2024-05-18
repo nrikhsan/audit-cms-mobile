@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EditLhaPageAuditArea extends StatefulWidget {
-  final int lhaId;
+  final int? lhaId;
   final String? cases;
   final String? caseCategory;
   final int? selectedValueResearch;

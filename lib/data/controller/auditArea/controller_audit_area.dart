@@ -520,21 +520,19 @@ void getDetailRescheduleAuditArea(int id)async{
   }
 
   void loadRevisiLha(int? lhaDetailId)async{
-    isLoading.value = true;
     try {
       final revisiLha = await repository.getRevisiLhaAuditArea(lhaDetailId);
       lhaRevision.assignAll(revisiLha.data ?? []);
     } catch (e) {
       throw Exception(e);
-    }finally{
-      isLoading.value = false;
     }
   }
 
-  void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
+  void revisiLha(int? lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
       await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
       loadRevisiLha(lhaId);
+      lhaRevision.refresh();
       getDetailCaseLhaAuditArea(lhaId);
     } catch (e) {
       throw Exception(e);
