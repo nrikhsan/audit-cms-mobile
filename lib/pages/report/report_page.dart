@@ -76,7 +76,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih auditor',
+                      'Pilih cabang',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -136,7 +136,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final branchName = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
-                        return branchName.name!.contains(searchValue);
+                        return branchName.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {

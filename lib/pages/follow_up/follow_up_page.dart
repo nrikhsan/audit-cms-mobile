@@ -1,6 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
 import 'package:audit_cms/pages/follow_up/document_follow_up_page.dart';
 import 'package:audit_cms/pages/follow_up/input_follow_up.dart';
@@ -23,6 +24,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
 
@@ -36,12 +38,12 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
           titleSpacing: 5,
           titleTextStyle: CustomStyles.textBold18Px,
           leading: IconButton(onPressed: (){
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BotNavePageAuditArea()), (route) => false);
           },
           icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
           actions: [
             IconButton(onPressed: (){
-            showFilterFollowUp(context, startDateController, endDateController, auditorController, controllerAuditArea);
+            showFilterFollowUp(context, startDateController, endDateController, auditorController, controllerAuditArea, branchEditingController);
           },
           icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)),
           ],

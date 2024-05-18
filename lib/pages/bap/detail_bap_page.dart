@@ -5,7 +5,6 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/helper/styles/formatter.dart';
-import 'package:audit_cms/pages/bap/input_bap_page.audit_region.dart';
 import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -147,7 +146,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  Get.to(() => InputBapAuditArea(bapId: bap.id));
+                                  uploadBapAuditArea(context, controllerAuditArea, bap.id);
                                 },
                                 child: Text('Upload', style: CustomStyles.textMediumWhite15Px))
                           ],
@@ -295,7 +294,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  Get.to(() => InputBapPageAuditRegion(bapId: bap.id));
+                                  uploadBapAuditRegion(context, controllerAuditRegion, bap.id);
                                 },
                                 child: Text('Upload', style: CustomStyles.textMediumWhite15Px))
                           ],

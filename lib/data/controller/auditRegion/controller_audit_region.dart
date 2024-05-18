@@ -489,35 +489,6 @@ void selectCaseCategory(int? value)async{
   caseCategoryId.value = value;
 }
 
-//profile
-void getDetailUserAuditRegion() async {
-    try {
-      final response = await repositories.getDetailUserAuditRegion();
-      detailUserAuditRegion.value = response.data;
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void editProfileUserAuditRegion(String? email, String? fullName) async {
-    try {
-      await repositories.editUserAuditRegion(email, fullName);
-      getDetailUserAuditRegion();
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  void changePasswordAuditRegions(String oldPassword, String newPassword) async {
-    try {
-      await repositories.changePasswordAuditRegion(
-          oldPassword, newPassword);
-          getDetailUserAuditRegion();
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-  
   //report
   void getReportAuditRegion(String startDate, String endDate)async {
     isLoading(true);
@@ -707,6 +678,35 @@ void getDetailUserAuditRegion() async {
     try {
       final response = await repositories.getDetailBapAuditRegion(id);
       detailBapAuditRegion.value = response.data;
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  //profile
+void getDetailUserAuditRegion() async {
+    try {
+      final response = await repositories.getDetailUserAuditRegion();
+      detailUserAuditRegion.value = response.data;
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  void editProfileUserAuditRegion(String? email, String? fullName) async {
+    try {
+      await repositories.editUserAuditRegion(email, fullName);
+      getDetailUserAuditRegion();
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  void changePasswordAuditRegions(String oldPassword, String newPassword) async {
+    try {
+      await repositories.changePasswordAuditRegion(
+          oldPassword, newPassword);
+          getDetailUserAuditRegion();
     } catch (error) {
       throw Exception(error);
     }

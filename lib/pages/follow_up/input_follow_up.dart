@@ -177,8 +177,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                     } else {
                       if (charCoss != null) {
                         controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
+                        Get.back();
                       } else {
                         controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, 0, explanationPenaltyController.text);
+                        Get.back();
                       }
                       explanationPenaltyController.clear();
                     }

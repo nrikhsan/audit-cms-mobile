@@ -30,6 +30,8 @@ class SchedulePageAuditArea extends StatefulWidget {
 class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
+  
+  final TextEditingController branchEditingController = TextEditingController();
 
   final TextEditingController startDateControllerMainSchedule = TextEditingController();
   final TextEditingController endDateControllerMainSchedule = TextEditingController();
@@ -93,7 +95,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                           onTap: (){
                            bottomSheetFilterMainSchedule(context, auditorControllerMainSchedule,
-                           startDateControllerMainSchedule, endDateControllerMainSchedule, controllerAuditArea);
+                           startDateControllerMainSchedule, endDateControllerMainSchedule, controllerAuditArea, branchEditingController);
                           }
                       ),
 
@@ -258,7 +260,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                         labelStyle: CustomStyles.textMediumWhite15Px,
                         child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                         onTap: (){
-                          bottomSheetFilterSpecialSchedule(context, auditorControllerSpecialSchedule, startDateControllerSpecialSchedule, endDateControllerSpecialSchedule, controllerAuditArea);
+                          bottomSheetFilterSpecialSchedule(context, auditorControllerSpecialSchedule, startDateControllerSpecialSchedule, endDateControllerSpecialSchedule, controllerAuditArea, branchEditingController);
                         }
                     ),
 
@@ -423,7 +425,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                           child: const Icon(Icons.tune_rounded, color: CustomColors.white),
                           onTap: (){
                             bottomSheetFilterReschedule(context, auditorControllerReschedule, 
-                            startDateControllerReschedule, endDateControllerReschedule, controllerAuditArea);
+                            startDateControllerReschedule, endDateControllerReschedule, controllerAuditArea, branchEditingController);
                           }
                       )
                     ],

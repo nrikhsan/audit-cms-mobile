@@ -815,7 +815,7 @@ void getDetailRescheduleAuditArea(int id)async{
   }
   
   //BAP
-  void uploadBapAuditRegion(String filePath, int? bapId)async{
+  void uploadBapAuditArea(String filePath, int? bapId)async{
     try {
       await repository.uploadBapAuditRegion(filePath, bapId);
       pagingControllerBapAuditArea.refresh();
@@ -827,7 +827,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void pickFileBapAuditRegion() async {
+  void pickFileBapAuditArea() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],

@@ -1,13 +1,15 @@
 
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 void bottomSheetFilterMainSchedule(BuildContext context, 
 TextEditingController auditorControllerMainSchedule, 
-TextEditingController startDateControllerMainSchedule, TextEditingController endDateControllerMainSchedule, ControllerAuditArea controllerAuditArea){
+TextEditingController startDateControllerMainSchedule, TextEditingController endDateControllerMainSchedule, ControllerAuditArea controllerAuditArea, 
+TextEditingController branchEditingController){
   showModalBottomSheet(
     elevation: 0,
     isScrollControlled: true,
@@ -72,34 +74,85 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
                   const SizedBox(height: 15),
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
-                  Obx(() => SizedBox(
-                    width: double.maxFinite,
-                    child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+              
+
+              Obx(() => SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih Cabang',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: controllerAuditArea.branchIdMainSchedule.value,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value){
-                            controllerAuditArea.branchIdMainSchedule.value = value;
-                            print(controllerAuditArea.branchIdMainSchedule.value);
-                          }
+                    ),
+                    items: controllerAuditArea.branchForFilterAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                      value: controllerAuditArea.branchIdMainSchedule.value,
+                      onChanged: (value) {
+                        controllerAuditArea.branchIdMainSchedule.value = value;
+                        
+                      },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari cabang...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        final nameBranch = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
+                        return nameBranch.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
+
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -201,7 +254,7 @@ TextEditingController startDateControllerMainSchedule, TextEditingController end
 
 void bottomSheetFilterSpecialSchedule(BuildContext context, 
 TextEditingController auditorControllerSpecialSchedule, 
-TextEditingController startDateControllerSpecialSchedule, TextEditingController endDateControllerSpecialSchedule, ControllerAuditArea controllerAuditArea){
+TextEditingController startDateControllerSpecialSchedule, TextEditingController endDateControllerSpecialSchedule, ControllerAuditArea controllerAuditArea, TextEditingController branchEditingController){
   showModalBottomSheet(
         isScrollControlled: true,
         elevation: 0,
@@ -267,33 +320,81 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
                   Text('Dengan cabang', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
                   Obx(() => SizedBox(
-                    width: double.maxFinite,
-                    child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<int>(
+                    isExpanded: true,
+                    hint: Text(
+                      'Pilih Cabang',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
                       ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                          value: controllerAuditArea.branchSpecialSchedule.value,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value){
-                            controllerAuditArea.branchSpecialSchedule.value = value;
-                            print(controllerAuditArea.branchSpecialSchedule.value);
-                          }
+                    ),
+                    items: controllerAuditArea.branchForFilterAuditArea
+                        .map((item) => DropdownMenuItem(
+                              value: item.id,
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                            ))
+                        .toList(),
+                      value: controllerAuditArea.branchSpecialSchedule.value,
+                      onChanged: (value) {
+                        controllerAuditArea.branchSpecialSchedule.value = value;
+                        
+                      },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      height: 50,
+                      width: 400,
+                    ),
+                    dropdownStyleData: const DropdownStyleData(
+                      maxHeight: 400,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: branchEditingController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          bottom: 5,
+                          left: 5,
+                          right: 5
+                        ),
+                        child: TextFormField(
+                          expands: true,
+                          maxLines: null,
+                          controller: branchEditingController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            hintText: 'Cari cabang...',
+                            hintStyle: const TextStyle(fontSize: 12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
-                    )
+                      searchMatchFn: (item, searchValue) {
+                        final nameBranch = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
+                        return nameBranch.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
+                      },
+                    ),
+                    onMenuStateChange: (isOpen) {
+                      if (!isOpen) {
+                        branchEditingController.clear();
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),),
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),
@@ -396,7 +497,7 @@ TextEditingController startDateControllerSpecialSchedule, TextEditingController 
 
 void bottomSheetFilterReschedule(BuildContext context, 
 TextEditingController auditorControllerReschedule, 
-TextEditingController startDateControllerReschedule, TextEditingController endDateControllerReschedule, ControllerAuditArea controllerAuditArea){
+TextEditingController startDateControllerReschedule, TextEditingController endDateControllerReschedule, ControllerAuditArea controllerAuditArea, TextEditingController branchEditingController){
 
   showModalBottomSheet(
         isScrollControlled: true,
@@ -465,31 +566,79 @@ TextEditingController startDateControllerReschedule, TextEditingController endDa
                   Obx(() => SizedBox(
                     width: double.maxFinite,
                     child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
-                      ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
+                      child: DropdownButton2<int>(
+                        isExpanded: true,
+                        hint: Text(
+                          'Pilih Cabang',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        items: controllerAuditArea.branchForFilterAuditArea
+                            .map((item) => DropdownMenuItem(
+                                  value: item.id,
+                                  child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                                ))
+                            .toList(),
                           value: controllerAuditArea.branchReschedule.value,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value){
+                          onChanged: (value) {
                             controllerAuditArea.branchReschedule.value = value;
                             
+                          },
+                        buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          height: 50,
+                          width: 400,
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 400,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 50,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: branchEditingController,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              top: 5,
+                              bottom: 5,
+                              left: 5,
+                              right: 5
+                            ),
+                            child: TextFormField(
+                              expands: true,
+                              maxLines: null,
+                              controller: branchEditingController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 8,
+                                ),
+                                hintText: 'Cari cabang...',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          searchMatchFn: (item, searchValue) {
+                            final nameBranch = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
+                            return nameBranch.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
+                          },
+                        ),
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            branchEditingController.clear();
                           }
+                        },
                       ),
-                    )
-                ),
-              )),
+                    ),
+                  ),),
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
                   const SizedBox(height: 15),

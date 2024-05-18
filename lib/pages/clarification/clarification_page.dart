@@ -9,6 +9,7 @@ import 'package:audit_cms/pages/clarification/document_clarification_page_audit_
 import 'package:audit_cms/pages/clarification/input_clarification_page_audit_region.dart';
 import 'package:audit_cms/pages/clarification/input_identification_clarification_page.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_alert_and_download_clarification.dart';
+import 'package:audit_cms/pages/clarification/widgetClarification/widget_generate_clarification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -29,7 +30,9 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
 
   @override
@@ -47,7 +50,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
           actions: [
             IconButton(
                 onPressed: () {
-                  filterClarificationAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
+                  filterClarificationAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea, branchEditingController);
                 },
                 icon: const Icon(Icons.tune_rounded,size: 25, color: CustomColors.grey)),
           ],
@@ -101,7 +104,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                                         if(statusClarificaion == 'DONE')
                                         Text('Selesai', style: CustomStyles.textMediumGreen12Px),
                                         const SizedBox(height: 5,),
-                                        Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
+                                        Text('Divisi : ${clarification.cases?.code}', style: CustomStyles.textRegularGrey12Px),
                                   ],
                                 ),
 
@@ -181,166 +184,11 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blue,
           onPressed: (){
-            generateClarificationAuditArea();
+              generateClarificationAuditArea(context, controllerAuditArea, branchEditingController, caseEditingController, caseCategoryEditingController);
           },
           child: const Icon(Icons.add_box_rounded, color: CustomColors.white, size: 25),
         ),
     );
-  }
-
-  void generateClarificationAuditArea() {
-    
-    showDialog(
-      context: context, 
-      builder: (_){
-        return AlertDialog(
-          elevation: 0,
-          title: const Text('Generate klarifikasi', textAlign: TextAlign.center),
-          titleTextStyle: CustomStyles.textBold18Px,
-          actions: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-
-                SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: Obx(() => DropdownButton(
-                        value: controllerAuditArea.branchId.value,
-                        hint: Text('Pilih cabang', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                          return DropdownMenuItem(
-                            value: branch.id,
-                            child: Text('${branch.name}', style: CustomStyles.textMedium15Px)
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                             controllerAuditArea.selectBranch(value);
-                          });
-                        }
-                      ))
-                    ),
-                  )
-                ),
-
-                const SizedBox(height: 20),
-
-                Obx(() => SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: DropdownButton(
-                        value: controllerAuditArea.caseId.value,
-                        hint: Text('Pilih kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditArea.caseAuditArea.map((cases){
-                          return DropdownMenuItem(
-                            value: cases.id,
-                            child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                            controllerAuditArea.selectCase(value);
-                            controllerAuditArea.loadCaseCategory(value);
-                            controllerAuditArea.caseCategoryId.value = null;
-                          });
-                        }
-                      )
-                    ),
-                  )
-                )),
-
-                const SizedBox(height: 20),
-
-                Obx(() => SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: DropdownButton(
-                        value: controllerAuditArea.caseCategoryId.value,
-                        hint: Text('Pilih kategori kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditArea.caseCategory.map((caseCategory){
-                          return DropdownMenuItem(
-                            value: caseCategory.id,
-                            child: SizedBox(width: 200, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                            controllerAuditArea.selectCaseCategory(value);
-                          });
-                        }
-                      )
-                    ),
-                  )
-                )),
-
-                const SizedBox(height: 30),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton
-                      ),
-                      onPressed: (){
-                        controllerAuditArea.generateClarification();
-                        resetValueGenerate();
-                        Get.back();
-                      }, 
-                      child: Text('Generate', style: CustomStyles.textMediumGreen15Px)
-                    ),
-
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton
-                      ),
-                      onPressed: (){
-                       resetValueGenerate();
-                      }, 
-                      child: Text('Reset', style: CustomStyles.textMediumRed15Px)
-                    )
-                  ],
-                )
-              ],
-            )
-          ],
-        );
-      }
-    );
-  }
-
-  void resetValueGenerate(){
-    controllerAuditArea.branchId.value = null;
-    controllerAuditArea.caseId.value = null;
-    controllerAuditArea.caseCategoryId.value = null;
   }
 }
 
@@ -358,6 +206,9 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
   final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
+  final TextEditingController caseEditingController = TextEditingController();
+  final TextEditingController caseCategoryEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -430,7 +281,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                                         if(statusClarificaion == 'DONE')
                                         Text('Selesai', style: CustomStyles.textMediumGreen12Px),
                                       const SizedBox(height: 5,),
-                                      Text('Divisi : ${clarification.cases?.name}', style: CustomStyles.textRegularGrey12Px),
+                                      Text('Divisi : ${clarification.cases?.code}', style: CustomStyles.textRegularGrey12Px),
                                   ],
                                 ),
 
@@ -505,165 +356,10 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blue,
           onPressed: (){
-            generateClarificationAuditRegion();
+           generateClarificationAuditRegion(context, controllerAuditRegion, branchEditingController, caseEditingController, caseCategoryEditingController);
           },
           child: const Icon(Icons.add_box_rounded, color: CustomColors.white, size: 25),
         ),
     );
-  }
-  
-  void generateClarificationAuditRegion() {
-    
-    showDialog(
-      context: context, 
-      builder: (_){
-        return AlertDialog(
-          elevation: 0,
-          title: const Text('Generate klarifikasi', textAlign: TextAlign.center),
-          titleTextStyle: CustomStyles.textBold18Px,
-          actions: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-
-                SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: Obx(() => DropdownButton(
-                        value: controllerAuditRegion.branchId.value,
-                        hint: Text('Pilih cabang', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.branchAuditRegion.map((branch){
-                          return DropdownMenuItem(
-                            value: branch.id,
-                            child: Text('${branch.name}', style: CustomStyles.textMedium15Px)
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                             controllerAuditRegion.selectBranch(value);
-                          });
-                        }
-                      ))
-                    ),
-                  )
-                ),
-
-                const SizedBox(height: 20),
-
-                Obx(() => SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: DropdownButton(
-                        value: controllerAuditRegion.caseId.value,
-                        hint: Text('Pilih kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.caseAuditRegion.map((cases){
-                          return DropdownMenuItem(
-                            value: cases.id,
-                            child: Text('${cases.code}', style: CustomStyles.textMedium15Px)
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                            controllerAuditRegion.selectCase(value);
-                            controllerAuditRegion.loadCaseCategoryAuditRegion(value);
-                            controllerAuditRegion.caseCategoryId.value = null;
-                          });
-                        }
-                      )
-                    ),
-                  )
-                )),
-
-                const SizedBox(height: 20),
-
-                Obx(() => SizedBox(
-                  width: double.maxFinite,
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: CustomColors.grey,
-                            width: 1
-                          )
-                        )
-                      ),
-                      child: DropdownButton(
-                        value: controllerAuditRegion.caseCategoryId.value,
-                        hint: Text('Pilih kategori kasus', style: CustomStyles.textMedium15Px),
-                        items: controllerAuditRegion.caseCategory.map((caseCategory){
-                          return DropdownMenuItem(
-                            value: caseCategory.id,
-                            child: SizedBox(width: 200, child: Text('${caseCategory.name}', style: CustomStyles.textMedium15Px, overflow: TextOverflow.ellipsis, maxLines: 1))
-                          );
-                        }).toList(),
-                        onChanged: (value){
-                          setState(() {
-                            controllerAuditRegion.selectCaseCategory(value!);
-                          });
-                        }
-                      )
-                    ),
-                  )
-                )),
-
-                const SizedBox(height: 30),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton
-                      ),
-                      onPressed: (){
-                        controllerAuditRegion.generateClarification();
-                        resetValueGenerate();
-                        Get.back();
-                      }, 
-                      child: Text('Generate', style: CustomStyles.textMediumGreen15Px)
-                    ),
-
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: CustomStyles.customRoundedButton
-                      ),
-                      onPressed: (){
-                       resetValueGenerate();
-                      }, 
-                      child: Text('Reset', style: CustomStyles.textMediumRed15Px)
-                    )
-                  ],
-                )
-              ],
-            )
-          ],
-        );
-      }
-    );
-  }
-
-  void resetValueGenerate(){
-    controllerAuditRegion.branchId.value = null;
-    controllerAuditRegion.caseId.value = null;
-    controllerAuditRegion.caseCategoryId.value = null;
   }
 }

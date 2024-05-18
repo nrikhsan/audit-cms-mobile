@@ -318,9 +318,9 @@ class _DetailCasesLhaPageAuditAreaState
                             Text(research == 1 ? 'Ada' : 'Tidak ada'),
 
                             const SizedBox(height: 20),
-                            Text('Status terkirim :', style: CustomStyles.textBold15Px),
+                            Text('Status :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
-                            Text(statusFlow == 1 ? 'Terkirim' : 'Belum terkirim'),
+                            Text(statusFlow == 1 ? 'Terkirim ke pusat' : 'Belum terkirim'),
 
                             const SizedBox(height: 30),
                             SizedBox(
@@ -334,7 +334,7 @@ class _DetailCasesLhaPageAuditAreaState
                                 onPressed: statusFlow == 0 ?  (){
                                   controllerAuditArea.sendCaseLha(detailLha.id);
                                 } : null,
-                                child: Text(statusFlow == 1 ? 'Terkirim' : 'Kirim', style: CustomStyles.textMediumWhite15Px)
+                                child: Text(statusFlow == 1 ? 'Terkirim ke pusat' : 'Kirim ke pusat', style: CustomStyles.textMediumWhite15Px)
                               )
                             ),
 

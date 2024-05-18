@@ -155,7 +155,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.fullname!.contains(searchValue);
+                        return item.value!.fullname!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -236,7 +236,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -482,7 +482,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.fullname!.contains(searchValue);
+                        return item.value!.fullname!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -563,7 +563,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -854,7 +854,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final users = controllerAuditArea.usersAuditArea.firstWhere((element) => element.id == item.value);
-                        return users.fullname!.contains(searchValue);
+                        return users.fullname!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -936,7 +936,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final nameBranch = controllerAuditArea.branchAuditArea.firstWhere((element) => element.id == item.value);
-                        return nameBranch.name!.contains(searchValue);
+                        return nameBranch.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {

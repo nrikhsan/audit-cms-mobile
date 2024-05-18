@@ -133,7 +133,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -217,7 +217,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -522,7 +522,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -606,7 +606,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name!.contains(searchValue);
+                        return item.value!.name!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -912,7 +912,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final caseName = controllerAuditArea.caseAuditArea.firstWhere((element) => element.id == item.value);
-                        return caseName.name!.contains(searchValue);
+                        return caseName.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -951,7 +951,6 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                     value: controllerAuditArea.caseCategoryId.value,
                     onChanged: (value) {
                       setState(() {
-                        controllerAuditArea.selectCaseCategory(value);
                         controllerAuditArea.selectCaseCategory(value);
                       });
                     },
@@ -997,7 +996,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final caseCategoryName = controllerAuditArea.caseCategory.firstWhere((element) => element.id == item.value);
-                        return caseCategoryName.name!.contains(searchValue);
+                        return caseCategoryName.name!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -1227,7 +1226,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final caseName = controllerAuditRegion.caseAuditRegion.firstWhere((element) => element.id == item.value);
-                        return caseName.name!.contains(searchValue);
+                        return caseName.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
                       },
                     ),
                     onMenuStateChange: (isOpen) {
@@ -1312,7 +1311,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                       ),
                       searchMatchFn: (item, searchValue) {
                         final caseCategoryName = controllerAuditRegion.caseCategory.firstWhere((element) => element.id == item.value);
-                        return caseCategoryName.name!.contains(searchValue);
+                        return caseCategoryName.name!.isCaseInsensitiveContains(searchValue.capitalizeFirst!);
                       },
                     ),
                     onMenuStateChange: (isOpen) {

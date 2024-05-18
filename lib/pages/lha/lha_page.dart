@@ -23,6 +23,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
           actions: [
             IconButton(
             onPressed: (){
-                dialogFilterLhaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
+                dialogFilterLhaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea, branchEditingController);
             },
             icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)
           )

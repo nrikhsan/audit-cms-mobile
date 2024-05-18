@@ -244,7 +244,7 @@ void uploadBapAuditArea(BuildContext context, ControllerAuditArea controllerAudi
 
                 TextButton(
                   onPressed: () =>
-                      controllerAuditArea.pickFileBapAuditRegion(),
+                      controllerAuditArea.pickFileBapAuditArea(),
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 
@@ -253,7 +253,7 @@ void uploadBapAuditArea(BuildContext context, ControllerAuditArea controllerAudi
                 Obx(() => TextButton(
                       onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                       ? () {
-                            controllerAuditArea.uploadBapAuditRegion(controllerAuditArea.selectedFileName.value, idBap);
+                            controllerAuditArea.uploadBapAuditArea(controllerAuditArea.selectedFileName.value, idBap);
                             Get.back();
                          }
                       : null,

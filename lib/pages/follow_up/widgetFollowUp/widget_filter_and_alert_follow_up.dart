@@ -3,10 +3,12 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
+import 'package:audit_cms/pages/follow_up/follow_up_page.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -15,7 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 void showFilterFollowUp(BuildContext context, TextEditingController startDateController, TextEditingController endDateController, 
-TextEditingController auditorController, ControllerAuditArea controllerAuditArea){
+TextEditingController auditorController, ControllerAuditArea controllerAuditArea, TextEditingController branchEditingController ){
   showModalBottomSheet(
       isScrollControlled: true,
       elevation: 0,
@@ -86,31 +88,79 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
                   Obx(() => SizedBox(
                     width: double.maxFinite,
                     child: DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          )
-                      ),
-                      child: DropdownButton(
-                          iconEnabledColor: CustomColors.blue,
-                          borderRadius: BorderRadius.circular(10),
+                      child: DropdownButton2<int>(
+                        isExpanded: true,
+                        hint: Text(
+                          'Pilih Cabang',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                        items: controllerAuditArea.branchForFilterAuditArea
+                            .map((branch) => DropdownMenuItem(
+                                  value: branch.id,
+                                  child: Text('${branch.name}', style: CustomStyles.textMedium13Px)
+                                ))
+                            .toList(),
                           value: controllerAuditArea.branchFollowUp.value,
-                          hint: Text('Cabang', style: CustomStyles.textRegularGrey13Px),
-                          items: controllerAuditArea.branchForFilterAuditArea.map((branch){
-                            return DropdownMenuItem(
-                              value: branch.id,
-                              child: Text('${branch.name}', style: CustomStyles.textMedium15Px),
-                            );
-                          }).toList(),
-                          onChanged: (value){
+                          onChanged: (value) {
                             controllerAuditArea.branchFollowUp.value = value;
-                            print(controllerAuditArea.branchFollowUp.value);
+                            
+                          },
+                        buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          height: 50,
+                          width: 400,
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 400,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 50,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: branchEditingController,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              top: 5,
+                              bottom: 5,
+                              left: 5,
+                              right: 5
+                            ),
+                            child: TextFormField(
+                              expands: true,
+                              maxLines: null,
+                              controller: branchEditingController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 8,
+                                ),
+                                hintText: 'Cari cabang...',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          searchMatchFn: (item, searchValue) {
+                            final nameBranch = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
+                            return nameBranch.name!.isCaseInsensitiveContains(searchValue.toUpperCase());
+                          },
+                        ),
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            branchEditingController.clear();
                           }
+                        },
                       ),
-                    )
-                ),
-              )),
+                    ),
+                  ),),
 
                   const SizedBox(height: 15),
                   Text('Dengan tanggal', style: CustomStyles.textMedium15Px),
@@ -325,7 +375,7 @@ void uploadFollowUpAuditArea(BuildContext context, int id, ControllerAuditArea c
                     onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                     ? () {
                         controllerAuditArea.uploadFollowUp(controllerAuditArea.selectedFileName.value, id);
-                          Get.back();
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditArea()));
                         }
                     : null,
                     child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

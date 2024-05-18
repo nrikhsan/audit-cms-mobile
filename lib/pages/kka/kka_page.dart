@@ -26,7 +26,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   final TextEditingController auditorController = TextEditingController();
-  final TextEditingController branchController = TextEditingController();
+  final TextEditingController branchEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
         }, icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
         actions: [
           IconButton(onPressed: (){
-                showFilterKkaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea);
+                showFilterKkaAuditArea(context, startDateController, endDateController, auditorController, controllerAuditArea, branchEditingController);
               }, 
             icon: const Icon(Icons.tune_rounded, color: CustomColors.grey, size: 25)
           )
