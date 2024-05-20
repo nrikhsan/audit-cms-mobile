@@ -295,6 +295,16 @@ class ControllerAuditRegion extends GetxController {
     }
   }
 
+  var lhaId = RxnInt();
+  void deletCaseLha(int? lhaDetailId)async{
+    try {
+      await repositories.deletCaseLha(lhaDetailId);
+      getDetailLhaAuditRegion(lhaId.value);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   void revisiLha(int lhaId, String desc, String suggest, String tempRec, String perRec)async{
     try {
       await repositories.revisiLha(lhaId, desc, suggest, tempRec, perRec);
@@ -352,7 +362,7 @@ class ControllerAuditRegion extends GetxController {
     pagingControllerLha.refresh();
   }
 
-   void getDetailLhaAuditRegion(int id)async{
+   void getDetailLhaAuditRegion(int? id)async{
     try {
       final detailLha = await repositories.getDetailLhaAuditRegion(id);
       detailLhaAuditRegion.value = detailLha.data;

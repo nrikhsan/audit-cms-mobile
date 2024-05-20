@@ -528,12 +528,22 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void revisiLha(int? lhaId, String desc, String suggest, String tempRec, String perRec)async{
+  void deletCaseLha(int? lhaDetailId)async{
     try {
-      await repository.revisiLha(lhaId, desc, suggest, tempRec, perRec);
-      loadRevisiLha(lhaId);
+      await repository.deletCaseLha(lhaDetailId);
+      getDetailLhaAuditArea(lhaId.value);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void revisiLha(int? lhaDetailId, String desc, String suggest, String tempRec, String perRec)async{
+    try {
+      await repository.revisiLha(lhaDetailId, desc, suggest, tempRec, perRec);
+      loadRevisiLha(lhaDetailId);
       lhaRevision.refresh();
-      getDetailCaseLhaAuditArea(lhaId);
+      getDetailCaseLhaAuditArea(lhaDetailId);
+      getDetailLhaAuditArea(lhaId.value);
     } catch (e) {
       throw Exception(e);
     }
@@ -543,6 +553,7 @@ void getDetailRescheduleAuditArea(int id)async{
     try {
       await repository.sendCaseLha(lhaDetailId);
       getDetailCaseLhaAuditArea(lhaDetailId);
+      getDetailLhaAuditArea(lhaId.value);
     } catch (e) {
       throw Exception(e);
     }
@@ -566,7 +577,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void getDetailLhaAuditArea(int id)async{
+  void getDetailLhaAuditArea(int? id)async{
     try{
       final lha = await repository.getDetailLhaAuditArea(id);
       detailLhaAuditArea.value = lha.data;

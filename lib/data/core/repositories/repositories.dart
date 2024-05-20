@@ -96,7 +96,7 @@ abstract class Repositories {
   Future<ResponseDetailLhaCasesLhaAuditArea>getDetailCaseLhaAuditArea(int? caseId);
   Future<ResponseDetailRevision>getDetailRevisionLhaAuditArea(int caseId);
   Future<ResponseLhaAuditArea> getLhaAuditArea(int page, String name, int? branchId, String startDate, String endDate);
-  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id);
+  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int? id);
 
   //clarification
   Future<ResponseClarificationAuditArea> getClarificationAuditArea(int page, String name, int? branchId, String startDate, String endDate);
@@ -137,10 +137,11 @@ abstract class Repositories {
 
   //LHA
   Future<ResponseMessage>inputLhaAuditRegion(int scheduleId, List<LhaDetail>lhaDetail);
+  Future<ResponseMessage>deletCaseLha(int? lhaDetailId);
   Future<ResponseMessage>inputCaseLhaAuditRegion(int lhaDetailId, int? caseId, int? caseCategory, String desc,
     String suggestion, String tempRec, String perRec, int isResearch);
   Future<ResponseDetailLhaCasesLhaAuditRegion>getDetailCasesLha(int lhaId);
-  Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int id);
+  Future<ResponseDetailLhaAuditRegion>getDetailLhaAuditRegion(int? id);
   Future<ResponseLhaAuditRegion>getListLhaAuditRegion(int page, String startDate, String endDate);
 
   //KKA
@@ -328,7 +329,7 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id) {
+  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int? id) {
     return apiService.getDetailLhaAuditArea(id);
   }
  
@@ -503,7 +504,7 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int id) {
+  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int? id) {
     return apiService.getDetailLhaAuditRegion(id);
   }
 
@@ -575,5 +576,10 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseDetailBapAuditRegion> getDetailBapAuditRegion(int? id) {
     return apiService.getDetailBapAuditRegion(id);
+  }
+  
+  @override
+  Future<ResponseMessage> deletCaseLha(int? lhaDetailId) {
+    return apiService.deleteCaseLha(lhaDetailId);
   }
 }

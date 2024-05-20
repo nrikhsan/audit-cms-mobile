@@ -497,7 +497,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int id) async {
+  Future<ResponseDetailLhaAuditArea> getDetailLhaAuditArea(int? id) async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
@@ -857,7 +857,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int id)async{
+  Future<ResponseDetailLhaAuditRegion> getDetailLhaAuditRegion(int? id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
@@ -881,6 +881,24 @@ class ApiService {
       return ResponseLhaAuditRegion.fromJson(response.data);
     } catch (error) {
       throw Exception(error);
+    }
+  }
+
+  Future<ResponseMessage>deleteCaseLha(int? lhaDetailId)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await dio.delete('${AppConstant.deleteCaseLha}$lhaDetailId');
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
+      return ResponseMessage.fromJson(response.data);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
     }
   }
 

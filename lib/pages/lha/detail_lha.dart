@@ -5,6 +5,7 @@ import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.da
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/lha/edit_lha_page_audit_area.dart';
 import 'package:audit_cms/pages/lha/input_lha_page_audit_region.dart';
+import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -27,12 +28,13 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
   @override
   void initState() {
     refreshConroller.add(SwipeRefreshState.loading);
+    controllerAuditArea.lhaId.value = widget.id;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailLhaAuditArea(widget.id);
+    controllerAuditArea.getDetailLhaAuditArea(controllerAuditArea.lhaId.value);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -149,6 +151,44 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
+
+                                            Wrap(
+                                              children: [
+                                                widget.level == 'AREA' && lha[index].statusFlow == 0 ?
+                                                TextButton(
+                                                style: TextButton.styleFrom(
+                                                    shape:
+                                                        CustomStyles.customRoundedButton),
+                                                onPressed: () {
+                                                  alertDeleteWidget(
+                                                    context, 
+                                                    'Hapus kasus', 
+                                                    'Apakah anda yakin untuk menghapus kasus ini?',
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                          children: [
+                                                            TextButton(
+                                                              onPressed: (){
+                                                                controllerAuditArea.deletCaseLha(lha[index].id);
+                                                                Get.back();
+                                                              }, 
+                                                              child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: (){
+                                                                Get.back();
+                                                              }, 
+                                                              child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
+                                                            )
+                                                          ],
+                                                        )
+                                                      );
+                                                },
+                                                child: Text('Hapus LHA',style: CustomStyles.textMediumRed15Px)
+                                            ): const SizedBox(),
+                                              ],
+                                            ),
+
                                             TextButton(
                                                 style: TextButton.styleFrom(
                                                     shape:
@@ -284,7 +324,6 @@ class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
                       final cases = detailLha.cases;
                       final lhaId = detailLha.id;
                       final statusFlow = detailLha.statusFlow;
-                      final isRevision = detailLha.isRevision;
                       refreshController.add(SwipeRefreshState.hidden);
                       return Padding(
                         padding: const EdgeInsets.all(15),
@@ -377,11 +416,11 @@ class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
                                   shape: CustomStyles.customRoundedButton,
                                   backgroundColor: CustomColors.blue
                                 ),
-                                onPressed: isRevision == 2 ? null : (){
+                                onPressed: statusFlow == 0 ?(){
                                   Get.to(() => EditLhaPageAuditArea(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
                                         selectedValueResearch: research, lhaDescription: detailLha.description, temRec: detailLha.temporaryRecommendation, 
                                         perRec: detailLha.permanentRecommendation, suggest: suggestion));
-                                }, 
+                                }: null, 
                                 child: Text('Revisi', style: CustomStyles.textMediumWhite15Px)
                               ),
                             ),
@@ -649,12 +688,13 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
       @override
   void initState() {
     refreshConroller.add(SwipeRefreshState.loading);
+    controllerAuditRegion.lhaId.value = widget.id;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailLhaAuditRegion(widget.id);
+    controllerAuditRegion.getDetailLhaAuditRegion(controllerAuditRegion.lhaId.value);
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
@@ -774,7 +814,44 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      
+
+                                      Wrap(
+                                        children: [
+                                          isRevision == 1 ? const SizedBox()
+                                          : TextButton(
+                                          style: TextButton.styleFrom(
+                                              shape: CustomStyles
+                                                  .customRoundedButton),
+                                          onPressed: () {
+                                            alertDeleteWidget(
+                                              context, 
+                                              'Hapus kasus', 
+                                              'Apakah anda yakin untuk menghapus kasus ini?',
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: (){
+                                                      controllerAuditRegion.deletCaseLha(lha[index].id);
+                                                      Get.back();
+                                                    }, 
+                                                    child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: (){
+                                                      Get.back();
+                                                    }, 
+                                                    child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
+                                                  )
+                                                ],
+                                              )
+                                            );
+                                          },
+                                          child: Text('Hapus LHA',
+                                              style: CustomStyles
+                                                  .textMediumRed15Px)),
+                                        ],
+                                      ),
                                     
                                       TextButton(
                                           style: TextButton.styleFrom(
