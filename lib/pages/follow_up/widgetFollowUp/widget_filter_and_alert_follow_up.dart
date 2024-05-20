@@ -2,8 +2,8 @@ import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
+import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
-import 'package:audit_cms/pages/follow_up/follow_up_page.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dio/dio.dart';
@@ -375,7 +375,7 @@ void uploadFollowUpAuditArea(BuildContext context, int id, ControllerAuditArea c
                     onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                     ? () {
                         controllerAuditArea.uploadFollowUp(controllerAuditArea.selectedFileName.value, id);
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditArea()));
+                          Get.offAll(() => BotNavePageAuditArea());
                         }
                     : null,
                     child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

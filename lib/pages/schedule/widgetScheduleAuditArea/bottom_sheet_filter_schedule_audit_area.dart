@@ -56,6 +56,7 @@ TextEditingController branchEditingController){
                   TextField(
                     controller: auditorControllerMainSchedule,
                     cursorColor: CustomColors.blue,
+                    
                     decoration: InputDecoration(
                         labelStyle: CustomStyles.textMediumGrey15Px,
                         labelText: 'Auditor...',

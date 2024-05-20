@@ -16,7 +16,7 @@
 
 
     <application
-        android:label="audit_cms"
+        android:label="KKA AUDIT CMS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

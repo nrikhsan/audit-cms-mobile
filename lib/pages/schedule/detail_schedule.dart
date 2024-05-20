@@ -119,12 +119,12 @@ class _DetailMainSchedulePageAuditAreaState
                           textAlign: TextAlign.justify),
 
                       Visibility(
-                        visible: suggestion != null ? true : false,
+                        visible: suggestion == null || status == 'APPROVE' ? false : true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
-                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            Text('Saran reschedule :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
                             Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           ],
@@ -535,12 +535,12 @@ class _DetailSpecialSchedulePageAuditAreaState
                           textAlign: TextAlign.justify),
 
                         Visibility(
-                        visible: suggestion != null ? true : false,
+                        visible: suggestion == null || status == 'APPROVE' ? false : true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
-                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            Text('Saran reschedule :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
                             Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           ],
@@ -898,12 +898,12 @@ class _DetailReschedulePageAuditAreaState
                           textAlign: TextAlign.justify),
                       
                       Visibility(
-                        visible: suggestion != null ? true : false,
+                        visible: suggestion == null || statusReschedules == 'APPROVE' ? false : true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
-                            Text('Saran revisi reschedule :', style: CustomStyles.textBold15Px),
+                            Text('Saran reschedule :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
                             Text(suggestion ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           ],

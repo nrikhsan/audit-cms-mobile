@@ -59,7 +59,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
             titleSpacing: 5,
             titleTextStyle: CustomStyles.textBold18Px,
             leading: IconButton(onPressed: (){
-              Navigator.pop(context);
+              Navigator.pop(context, MaterialPageRoute(builder: (_) => BotNavePageAuditArea()));
             },
                 icon: const Icon(Icons.arrow_back_rounded, color: CustomColors.black, size: 25)),
             bottom: TabBar(
@@ -212,24 +212,29 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                     Wrap(
                                       children: [
                                         createdBy == 'PUSAT' || createdBy == 'LEAD' ? const SizedBox()
-                                        : Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        : Wrap(
                                           children: [
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-                                              ),
-                                              onPressed: mainSchedule.status == 'TODO' ? () {
-                                                String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
-                                                String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
+                                            status == 'TODO' 
+                                            ? Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    TextButton(
+                                                      style: TextButton.styleFrom(
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                      ),
+                                                      onPressed:() {
+                                                        String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                        String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
-                                                Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
-                                                user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description));
-                                              }: null, 
-                                              child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
-                                            )
-                                      ],
-                                    )
+                                                        Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
+                                                        user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description));
+                                                      }, 
+                                                      child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
+                                                    )
+                                              ],
+                                            ) : const SizedBox()
+                                          ],
+                                        )
                                       ],
                                     )
                                   ],
@@ -377,25 +382,29 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                      Wrap(
                                       children: [
                                         createdBy == 'PUSAT' || createdBy == 'LEAD' ? const SizedBox()
-                                        : Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                        : Wrap(
                                           children: [
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-                                                ),
-                                                onPressed: schedule.status == 'TODO' ? (){
-                                                  String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
-                                                  String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
+                                            status == 'TODO' 
+                                            ? Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    TextButton(
+                                                      style: TextButton.styleFrom(
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                      ),
+                                                      onPressed:() {
+                                                        String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                        String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
 
-                                                    Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
-                                                    user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description));
-
-                                                }: null, 
-                                                child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
-                                              ),
-                                            ],
-                                          )
+                                                        Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
+                                                        user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description));
+                                                      }, 
+                                                      child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
+                                                    )
+                                              ],
+                                            ) : const SizedBox()
+                                          ],
+                                        )
                                       ],
                                      )
                                     ],
