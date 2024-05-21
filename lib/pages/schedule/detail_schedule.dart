@@ -384,14 +384,12 @@ class _DetailSpecialSchedulePageAuditAreaState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    } else if(today.isAtSameMomentAs(endDate)){
-      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-    }else if (today.isBefore(startDate)) {
+    if (today.isBefore(startDate)) {
       snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
       snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
     }
   }
 
@@ -1161,14 +1159,12 @@ class _DetailMainScheduleAuditRegionState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    } else if(today.isAtSameMomentAs(endDate)){
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-    }else if (today.isBefore(startDate)) {
+    if (today.isBefore(startDate)) {
       snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
       snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
     }
   }
 
@@ -1576,14 +1572,12 @@ class _DetailSpecialScheduleAuditRegionState
     endDate = DateTime.parse(formattedEndDate);
     today = DateTime.parse(formattedCurrentTime);
 
-    if (today.isAtSameMomentAs(startDate) && today.isBefore(endDate)) {
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    } else if(today.isAtSameMomentAs(endDate)){
-      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-    }else if (today.isBefore(startDate)) {
+    if (today.isBefore(startDate)) {
       snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
     } else if (today.isAfter(endDate)) {
       snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
     }
   }
 
