@@ -636,7 +636,7 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditA
       );
   }
 
-void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAuditRegion controllerAuditRegion) {
+void uploadClarificationAuditRegion(BuildContext context, int? id, ControllerAuditRegion controllerAuditRegion) {
     showDialog(
         context: context,
         builder: (_) {
@@ -667,9 +667,7 @@ void uploadClarificationAuditRegion(BuildContext context, int id, ControllerAudi
                       ? () {
                             controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
                             id);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => InputIdentificationClarificationAuditRegionPage(clarificationId: id)),
-                            );
+                            Get.off(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
                          }
                       : null,
                       child: Text('Upload', style: CustomStyles.textMediumBlue15Px),

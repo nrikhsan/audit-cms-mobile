@@ -119,7 +119,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('CMS MAJU SEJAHTERA',
+                    Text('CMS MAJU SEJAHTRA',
                         style: CustomStyles.textBold15Px),
                     const SizedBox(height: 10),
                     Card(
@@ -395,7 +395,7 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('CMS MAJU SEJAHTERA',
+                    Text('CMS MAJU SEJAHTRA',
                         style: CustomStyles.textBold15Px),
                     const SizedBox(height: 10),
                     Card(

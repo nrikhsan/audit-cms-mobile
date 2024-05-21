@@ -1,7 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
-import 'package:audit_cms/pages/bap/bap_page.dart';
+import 'package:audit_cms/pages/bap/detail_bap_page.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/widgetClarification/widget_form_input_clarification.dart';
 import 'package:flutter/material.dart';
@@ -113,12 +113,13 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
                               nominalLossText = nominalLossText.replaceAll('.', '');
 
                               double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
+                              final bapId = controllerAuditArea.dataInputIdentification.value?.bap?.id;
                               if (_evaluation == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else {
                                 if(loss != null){
                                 controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
-                                Get.to(() => const BapAuditAreaPage());
+                                Get.off(() => DetailBapPageAuditArea(id: bapId, level: 'AREA'));
                               }else{
                                 Get.offAll(() => BotNavePageAuditArea());
                                 controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);
@@ -138,7 +139,7 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
 
 //audit region
 class InputIdentificationClarificationAuditRegionPage extends StatefulWidget {
- final int clarificationId;
+ final int? clarificationId;
   const InputIdentificationClarificationAuditRegionPage({super.key, required this.clarificationId});
 
   @override
@@ -242,12 +243,13 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                               nominalLossText = nominalLossText.replaceAll('Rp', '');
                               nominalLossText = nominalLossText.replaceAll('.', '');
                               double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
+                              final bapId = controllerAuditRegion.dataInputIdentification.value?.bap?.id;
                               if (_evaluation == null || descController.text.isEmpty || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
                               }else {
                                 if(loss != null){
                                 controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
-                                Get.to(() => const BapAuditRegionPage());
+                                Get.off(() => DetailBapAuditRegion(id: bapId));
                                 }else{
                                   Get.offAll(() => BotNavAuditRegion());
                                   controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);

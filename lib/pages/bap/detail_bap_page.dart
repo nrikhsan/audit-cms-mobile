@@ -14,7 +14,7 @@ import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
 class DetailBapPageAuditArea extends StatefulWidget {
-  final int id;
+  final int? id;
   final String? level;
   const DetailBapPageAuditArea({super.key, required this.id, required this.level});
 
@@ -31,12 +31,13 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
+    controllerAuditArea.bapId.value = widget.id;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailBapAuditArea(widget.id);
+    controllerAuditArea.getDetailBapAuditArea(controllerAuditArea.bapId.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail BAP'),
@@ -170,7 +171,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
 
 //audit region
 class DetailBapAuditRegion extends StatefulWidget {
-  final int id;
+  final int? id;
   const DetailBapAuditRegion({super.key, required this.id});
 
   @override
@@ -183,11 +184,12 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
+    controllerAuditRegion.bapId.value = widget.id;
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    controllerAuditRegion.getDetailBapAuditRegion(widget.id);
+    controllerAuditRegion.getDetailBapAuditRegion(controllerAuditRegion.bapId.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail BAP'),

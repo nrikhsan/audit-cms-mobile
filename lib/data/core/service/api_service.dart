@@ -539,6 +539,29 @@ class ApiService {
   }
 
   //KKA
+  Future<ResponseMessage>uploadKkaAuditArea(String filePath, int id)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'multipart/form-data'
+    };
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(filePath),
+      'schedule_id': id
+    });
+    try {
+      final response = await dio.post(AppConstant.uploadKka, data: formData);
+      print(response.data);
+      final messageSucces = response.data['message'];
+      snackBarMessageGreen('Berhasil', messageSucces);
+      return ResponseMessage.fromJson(response.data);
+    } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
+
   Future<ResponseKkaAuditArea> getKkaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -629,7 +652,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>uploadFollowUp(String filePath, int followUpId)async{
+  Future<ResponseMessage>uploadFollowUp(String filePath, int? followUpId)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -651,7 +674,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id)async{
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int? id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
@@ -1070,6 +1093,7 @@ class ApiService {
       final response = await dio.post(AppConstant.inputClarification,
           data: {'clarification_id': clarificationId, 'evaluation_limitation': evaluationLimitation, 'location': location, 
           'auditee': auditee, 'auditee_leader': auditeeLeader, 'description': description, 'priority': priority});
+      print(response.data);
       final messageSucces = response.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseInputClarification.fromJson(response.data);
@@ -1080,7 +1104,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int id)async{
+  Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int? id)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -1103,7 +1127,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification,
+  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification,
       num loss, String description, int followUp)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -1118,6 +1142,7 @@ class ApiService {
         'recommendation': description,
         'is_followup': followUp
       });
+      print(response.data);
       final messageSucces = response.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseIdentification.fromJson(response.data);

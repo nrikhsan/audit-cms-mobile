@@ -104,6 +104,7 @@ abstract class Repositories {
 
   //KKA
   Future<ResponseKkaAuditArea> getKkaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate);
+  Future<ResponseMessage>uploadKkaAuditArea(String filePath, int id);
   Future<ResponseDetailKkaAuditArea> getDetailKkaAuditArea(int id);
 
   //BAP
@@ -113,8 +114,8 @@ abstract class Repositories {
   //follow up
   Future<ResponseFollowUp> getFollowUpAuditArea(int page, String name, int? branchId, String startDate, String endDate);
   Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, num charCoss, String desc);
-  Future<ResponseMessage>uploadFollowUpAuditArea(String filePath, int followupId);
-  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id);
+  Future<ResponseMessage>uploadFollowUpAuditArea(String filePath, int? followupId);
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int? id);
 
   //user profile
   Future<ResponseProfileAuditArea> getDetailUserAuditArea();
@@ -167,8 +168,8 @@ abstract class Repositories {
   Future<ResponseInputClarification>inputClarificationAuditRegion(int? clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
   String description, String priority);
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate);
-  Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int id);
-  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp);
+  Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int? id);
+  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp);
   Future<ResponseDetailClarificationAuditRegion>getDetailClarificationAuditRegion(int id);
 
   //BAP
@@ -346,6 +347,13 @@ class RepositoryImpl implements Repositories {
 
 
   //KKA
+
+  @override
+  Future<ResponseMessage> uploadKkaAuditArea(String filePath, int id){
+    return apiService.uploadKkaAuditArea(filePath, id);
+  }
+
+
   @override
   Future<ResponseKkaAuditArea> getKkaAuditArea(int page, int? scheduleId, String name, int? branchId, String startDate, String endDate) {
     return apiService.getKkaAuditArea(page, scheduleId, name, branchId, startDate, endDate);
@@ -381,12 +389,12 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseMessage> uploadFollowUpAuditArea(String filePath, int followupId) {
+  Future<ResponseMessage> uploadFollowUpAuditArea(String filePath, int?followupId) {
     return apiService.uploadFollowUp(filePath, followupId);
   }
   
   @override
-  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int id) {
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditArea(int? id) {
     return apiService.getDetailFollowUpAuditArea(id);
   }
 
@@ -547,12 +555,12 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp) {
+  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp) {
     return apiService.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
   }
 
   @override
-  Future<ResponseMessage> uploadClarificationAuditRegion(String filePath, int id) {
+  Future<ResponseMessage> uploadClarificationAuditRegion(String filePath, int? id) {
     return apiService.uploadClarificationAuditRegion(filePath, id);
   }
 

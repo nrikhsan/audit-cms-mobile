@@ -136,8 +136,8 @@ class _DocumentClarificationPageAuditRegionState
   bool isUploadButtonEnabled = false;
   @override
   void initState() {
-    super.initState();
     _updateButtonState(widget.status!);
+    super.initState();
   }
 
   void _updateButtonState(String status) {

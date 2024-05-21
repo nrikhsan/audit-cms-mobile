@@ -216,7 +216,10 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
             actions: [
               TextButton(
                 child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: (){
+                  controllerAuditRegion.selectedFileName.value = '';
+                  Navigator.of(context).pop();
+                }
               ),
             ],
           );

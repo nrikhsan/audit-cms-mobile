@@ -25,6 +25,7 @@ import 'package:audit_cms/data/core/response/auditArea/schedules/response_specia
 import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_detail_user_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -677,21 +678,27 @@ void getDetailRescheduleAuditArea(int id)async{
       selectedFileName.value = '';
     }
   }
-
+  
   void inputClarificationAuditArea(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
     String description, String priority)async {
     try {
       await repository.inputClarificationAuditRegion(clarificationId, evaluationLimitation, location, auditee, auditeeLeader,
        description, priority);
        pagingControllerClarificationAuditArea.refresh();
+       
     } catch (error) {
       throw Exception(error);
     }
   }
 
+  var dataInputIdentification = Rxn<DataIdentification>();
+  var bapId = RxnInt();
    void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
     try {
-      repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      dataInputIdentification.value = response.data;
+      bapId.value = dataInputIdentification.value?.bap?.id;
+      getDetailBapAuditArea(bapId.value);
       pagingControllerClarificationAuditArea.refresh();
       pagingControllerBapAuditArea.refresh();
       pagingControllerFollowUp.refresh();
@@ -770,7 +777,7 @@ void getDetailRescheduleAuditArea(int id)async{
 
   void uploadKkaAuditArea(String filePath, int id) async {
     try {
-      await repository.uploadKkaAuditRegion(filePath, id);
+      await repository.uploadKkaAuditArea(filePath, id);
       pagingControllerKkaAuditArea.refresh();
       pagingControllerMainSchedule.refresh();
       pagingControllerSpecialSchedule.refresh();
@@ -783,7 +790,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void pickFileKkaAuditRegion() async {
+  void pickFileKkaAuditArea() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['xlsx', 'xls'],
@@ -950,10 +957,12 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void uploadFollowUp(String filePath, int followUpId)async{
+  var followUpDetailId = RxnInt();
+  void uploadFollowUp(String filePath, int? followUpId)async{
     try {
       await repository.uploadFollowUpAuditArea(filePath, followUpId);
       pagingControllerFollowUp.refresh();
+      getDetailFollowUpAuditArea(followUpDetailId.value);
       selectedFileName.value = '';
     } catch (error) {
       selectedFileName.value = '';
@@ -988,7 +997,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void getDetailFollowUpAuditArea(int id)async{
+  void getDetailFollowUpAuditArea(int? id)async{
     try {
       final followUp = await repository.getDetailFollowUpAuditArea(id);
       detailFollowUpAuditArea.value = followUp.data;

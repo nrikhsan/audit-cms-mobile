@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
 class DetailFollowUpPageAuditArea extends StatefulWidget {
-  final int id;
+  final int? id;
 
   const DetailFollowUpPageAuditArea({super.key, required this.id});
 
@@ -28,12 +28,13 @@ class _DetailFollowUpPageAuditAreaState
   @override
   void initState() {
     refreshController.add(SwipeRefreshState.loading);
+    controllerAuditArea.followUpDetailId.value = widget.id;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    controllerAuditArea.getDetailFollowUpAuditArea(widget.id);
+    controllerAuditArea.getDetailFollowUpAuditArea(controllerAuditArea.followUpDetailId.value);
     return Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(

@@ -564,21 +564,23 @@ void selectCaseCategory(int? value)async{
     }
   }
 
-  var clarficationId = RxnInt();
-
+  var fileName = RxnString();
+  var claId = RxnInt();
   void inputClarificationAuditRegion(int clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
   String description, String priority)async {
     try {
       final inputClarificationAuditRegion = await repositories.inputClarificationAuditRegion(clarificationId, evaluationLimitation, location, auditee, auditeeLeader,
        description, priority);
-       dataInputClarification.value = inputClarificationAuditRegion.data;
+       final clarification = dataInputClarification.value = inputClarificationAuditRegion.data;
+       fileName.value = clarification?.clarification?.fileName;
+       claId.value = clarification?.clarification?.id;
        pagingControllerClarification.refresh();
     } catch (error) {
       throw Exception(error);
     }
   }
 
-  void uploadClarificationAuditRegion(String filePath, int id)async{
+  void uploadClarificationAuditRegion(String filePath, int? id)async{
     try {
       await repositories.uploadClarificationAuditRegion(filePath, id);
       pagingControllerClarification.refresh();
@@ -604,10 +606,13 @@ void selectCaseCategory(int? value)async{
     }
   }
 
-  void inputIdentificatinClarificationAuditRegion(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
+  var bapId = RxnInt();
+  void inputIdentificatinClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
     try {
       final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
       dataInputIdentification.value = response.data;
+      bapId.value = dataInputIdentification.value?.bap?.id;
+      getDetailBapAuditRegion(bapId.value);
       pagingControllerClarification.refresh();
       pagingControllerBap.refresh();
     } catch (error) {
@@ -683,7 +688,7 @@ void selectCaseCategory(int? value)async{
     endDateBap.value = '';
     pagingControllerBap.refresh();
   }
-
+  
   void getDetailBapAuditRegion(int? id)async{
     try {
       final response = await repositories.getDetailBapAuditRegion(id);

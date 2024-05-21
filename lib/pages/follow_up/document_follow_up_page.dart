@@ -122,7 +122,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                           backgroundColor: CustomColors.green
                                         ),
                                         onPressed: () async{
-                                          uploadFollowUpAuditArea(context, widget.followUpId!, controllerAuditArea);
+                                          uploadFollowUpAuditArea(context, widget.followUpId, controllerAuditArea);
                                         }, 
                                         child: Text('Upload', style: CustomStyles.textMediumWhite15Px)
                                       ),

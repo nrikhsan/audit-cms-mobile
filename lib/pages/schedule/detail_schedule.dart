@@ -751,7 +751,7 @@ class _DetailSpecialSchedulePageAuditAreaState
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () =>
-                      controllerAuditArea.pickFileKkaAuditRegion(),
+                      controllerAuditArea.pickFileKkaAuditArea(),
                   child: Text('Choose File',
                       style: CustomStyles.textMediumGreen15Px),
                 ),
@@ -774,7 +774,11 @@ class _DetailSpecialSchedulePageAuditAreaState
             actions: <Widget>[
               TextButton(
                 child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  controllerAuditArea.selectedFileName.value = '';
+                  Navigator.of(context).pop();
+
+                },
               ),
             ],
           );
@@ -1209,9 +1213,7 @@ class _DetailMainScheduleAuditRegionState
                   if (widget.kka != null) {
                     snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
-                    setState(() {
                       showDialogUploadKkaAuditRegion(widget.mainScheduleId);
-                    });
                   }
                 } else {
                   snackBarMessageRed(
@@ -1513,7 +1515,10 @@ class _DetailMainScheduleAuditRegionState
             actions: <Widget>[
               TextButton(
                 child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  controllerAuditRegion.selectedFileName.value = '';
+                   Navigator.of(context).pop();
+                }
               ),
             ],
           );
@@ -1919,7 +1924,11 @@ class _DetailSpecialScheduleAuditRegionState
             actions: <Widget>[
               TextButton(
                 child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  controllerAuditRegion.selectedFileName.value = '';
+                  Navigator.of(context).pop();
+
+                },
               ),
             ],
           );
