@@ -61,9 +61,9 @@ class _InputClarificationAuditAreaState extends State<InputClarificationAuditAre
               formInputAllClarification('Masukan lokasi pemeriksaan yang diaudit...', auditLocationController),
 
               const SizedBox(height: 15),
-              Text('Divisi yang diperiksa :', style: CustomStyles.textMedium15Px),
+              Text('Auditee yang diperiksa :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAllClarification('Masukan divisi yang diperiksa...', divisionInspectionController),
+              formInputAllClarification('Masukan auditee yang diperiksa...', divisionInspectionController),
 
               const SizedBox(height: 15),
               Text('Atasan langsung :', style: CustomStyles.textMedium15Px),
@@ -197,9 +197,9 @@ class _InputClarificationPageAuditRegionState extends State<InputClarificationPa
               formInputAllClarification('Masukan lokasi pemeriksaan yang diaudit...', auditLocationController),
 
               const SizedBox(height: 15),
-              Text('Divisi yang diperiksa :', style: CustomStyles.textMedium15Px),
+              Text('Auditee yang diperiksa :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAllClarification('Masukan divisi yang diperiksa...', divisionInspectionController),
+              formInputAllClarification('Masukan auditee yang diperiksa...', divisionInspectionController),
 
               const SizedBox(height: 15),
               Text('Atasan langsung :', style: CustomStyles.textMedium15Px),

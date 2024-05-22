@@ -1,6 +1,6 @@
 class AppConstant{
 
-  static const String baseUrl = 'https://api-kka.cmsmaju.co.id/';
+  static const String baseUrl = 'http://api-kka.cmsmaju.co.id/';
 
   //auth
   static const String auth = 'api/auth/login';

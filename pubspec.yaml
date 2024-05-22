@@ -43,7 +43,6 @@ flutter:
 
   assets:
      - assets/images/
-     - assets/env/env_pro.env
 
   fonts:
     - family: RobotoBold
