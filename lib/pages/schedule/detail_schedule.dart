@@ -437,22 +437,15 @@ class _DetailSpecialSchedulePageAuditAreaState
                     child: const Icon(Icons.upload_file_rounded,
                         color: CustomColors.white),
                     onTap: () async {
-                      
-                      final lha = controllerAuditArea.detailSpecialScheduleAuditArea.value?.lha;
-
                       final tokenArea = await TokenManager.getToken();
                       Map<String, dynamic>decodedToken = Jwt.parseJwt(tokenArea!);
                       int? id = decodedToken['user']['id'];
 
                       if (widget.userId == id) {
-                        if (lha != null) {
                         if (widget.kka != null) {
-                          snackBarMessageGreen( 'Alert', 'Anda sudah mengunggah KKA');
+                          snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                         } else {
                           showDialogUploadKkaAuditArea(widget.specialScheduleId);
-                        }
-                        } else {
-                          snackBarMessageRed('Alert', 'Anda harus membuat LHA terlebih dahulu');
                         }
                       } else {
                         snackBarMessageRed('Alert', 'Jadwal ini bukan untuk anda');
@@ -1204,17 +1197,11 @@ class _DetailMainScheduleAuditRegionState
               child: const Icon(Icons.upload_file_rounded,
                   color: CustomColors.white),
               onTap: () {
-                final lha = controllerAuditRegion.detailMainSchedule.value?.lha;
-                if (lha != null) {
-                  if (widget.kka != null) {
+                if (widget.kka != null) {
                     snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
                       showDialogUploadKkaAuditRegion(widget.mainScheduleId);
                   }
-                } else {
-                  snackBarMessageRed(
-                      'Alert', 'Anda harus membuat LHA terlebih dahulu');
-                }
               }),
         ],
       ),
@@ -1616,20 +1603,11 @@ class _DetailSpecialScheduleAuditRegionState
               child: const Icon(Icons.upload_file_rounded,
                   color: CustomColors.white),
               onTap: () {
-                final lha =
-                    controllerAuditRegion.detailSpecialSchedule.value?.lha;
-                if (lha != null) {
-                  if (widget.kka != null) {
+                if (widget.kka != null) {
                     snackBarMessageGreen('Alert', 'Anda sudah mengunggah KKA');
                   } else {
-                    setState(() {
-                      showDialogUploadKkaAuditRegion(widget.specialScheduleId);
-                    });
+                    showDialogUploadKkaAuditRegion(widget.specialScheduleId);
                   }
-                } else {
-                  snackBarMessageRed(
-                      'Alert', 'Anda harus membuat LHA terlebih dahulu');
-                }
               }),
         ],
       ),
