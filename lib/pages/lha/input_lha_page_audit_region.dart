@@ -1291,7 +1291,6 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                     onChanged: (value) {
                       setState(() {
                         controllerAuditRegion.selectCaseCategory(value);
-                        controllerAuditRegion.selectCaseCategory(value);
                       });
                     },
                     buttonStyleData: const ButtonStyleData(

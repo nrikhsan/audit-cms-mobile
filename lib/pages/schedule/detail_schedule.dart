@@ -367,31 +367,31 @@ class _DetailSpecialSchedulePageAuditAreaState
     super.initState();
   }
 
-  // void checkScheduleInputLhaAndKka() {
-  //   DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  //   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  //   DateTime startDate = inputFormat.parse(widget.startDate!);
-  //   DateTime endDate = inputFormat.parse(widget.endDate!);
+    DateTime startDate = inputFormat.parse(widget.startDate!);
+    DateTime endDate = inputFormat.parse(widget.endDate!);
 
-  //   String formattedStartDate = outputFormat.format(startDate);
-  //   String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  //   DateTime today = DateTime.now();
-  //   String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  //   startDate = DateTime.parse(formattedStartDate);
-  //   endDate = DateTime.parse(formattedEndDate);
-  //   today = DateTime.parse(formattedCurrentTime);
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
 
-  //   if (today.isBefore(startDate)) {
-  //     snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  //   } else if (today.isAfter(endDate)) {
-  //     snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
-  //   }else{
-  //     Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
-  //   }
-  // }
+    if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+    }
+  }
 
   Future<String?>getToken()async{
     return await TokenManager.getToken();
@@ -424,7 +424,7 @@ class _DetailSpecialSchedulePageAuditAreaState
                       Map<String, dynamic>decodedToken = Jwt.parseJwt(tokenArea!);
                       int? id = decodedToken['user']['id'];
                       if (widget.userId == id) {
-                       Get.to(() => InputLhaAuditArea(scheduleId: widget.specialScheduleId));
+                       checkScheduleInputLhaAndKka();
                       } else {
                         snackBarMessageRed('Alert', 'Jadwal ini bukan untuk anda');
                       }
@@ -1142,31 +1142,31 @@ class _DetailMainScheduleAuditRegionState
     super.initState();
   }
 
-  // void checkScheduleInputLhaAndKka() {
-  //   DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  //   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  //   DateTime startDate = inputFormat.parse(widget.startDate);
-  //   DateTime endDate = inputFormat.parse(widget.endDate);
+    DateTime startDate = inputFormat.parse(widget.startDate);
+    DateTime endDate = inputFormat.parse(widget.endDate);
 
-  //   String formattedStartDate = outputFormat.format(startDate);
-  //   String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  //   DateTime today = DateTime.now();
-  //   String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  //   startDate = DateTime.parse(formattedStartDate);
-  //   endDate = DateTime.parse(formattedEndDate);
-  //   today = DateTime.parse(formattedCurrentTime);
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
 
-  //   if (today.isBefore(startDate)) {
-  //     snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  //   } else if (today.isAfter(endDate)) {
-  //     snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
-  //   }else{
-  //     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
-  //   }
-  // }
+    if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1193,7 +1193,7 @@ class _DetailMainScheduleAuditRegionState
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: () {
                 setState(() {
-                  Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.mainScheduleId));
+                  checkScheduleInputLhaAndKka();
                 });
               }),
           SpeedDialChild(
@@ -1555,31 +1555,31 @@ class _DetailSpecialScheduleAuditRegionState
     super.initState();
   }
 
-  // void checkScheduleInputLhaAndKka() {
-  //   DateFormat inputFormat = DateFormat('dd-MM-yyyy');
-  //   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+  void checkScheduleInputLhaAndKka() {
+    DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-  //   DateTime startDate = inputFormat.parse(widget.startDate);
-  //   DateTime endDate = inputFormat.parse(widget.endDate);
+    DateTime startDate = inputFormat.parse(widget.startDate);
+    DateTime endDate = inputFormat.parse(widget.endDate);
 
-  //   String formattedStartDate = outputFormat.format(startDate);
-  //   String formattedEndDate = outputFormat.format(endDate);
+    String formattedStartDate = outputFormat.format(startDate);
+    String formattedEndDate = outputFormat.format(endDate);
 
-  //   DateTime today = DateTime.now();
-  //   String formattedCurrentTime = outputFormat.format(today);
+    DateTime today = DateTime.now();
+    String formattedCurrentTime = outputFormat.format(today);
 
-  //   startDate = DateTime.parse(formattedStartDate);
-  //   endDate = DateTime.parse(formattedEndDate);
-  //   today = DateTime.parse(formattedCurrentTime);
+    startDate = DateTime.parse(formattedStartDate);
+    endDate = DateTime.parse(formattedEndDate);
+    today = DateTime.parse(formattedCurrentTime);
 
-  //   if (today.isBefore(startDate)) {
-  //     snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
-  //   } else if (today.isAfter(endDate)) {
-  //     snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
-  //   }else{
-  //     Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
-  //   }
-  // }
+    if (today.isBefore(startDate)) {
+      snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+    } else if (today.isAfter(endDate)) {
+      snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+    }else{
+      Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1606,7 +1606,7 @@ class _DetailSpecialScheduleAuditRegionState
               child: const Icon(Icons.add_rounded, color: CustomColors.white),
               onTap: () {
                 setState(() {
-                  Get.to(() => InputLhaPageAuditRegion(scheduleId: widget.specialScheduleId));
+                  checkScheduleInputLhaAndKka();
                 });
               }),
           SpeedDialChild(
