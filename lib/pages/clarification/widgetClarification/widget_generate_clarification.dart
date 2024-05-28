@@ -196,7 +196,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                     items: controllerAuditArea.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: SizedBox(child: Text('${item.name}', style: CustomStyles.textMedium13Px))
+                              child: Text('${item.name}', style: CustomStyles.textMedium13Px, maxLines: 1, overflow: TextOverflow.ellipsis)
                             ))
                         .toList(),
                     value: controllerAuditArea.caseCategoryId.value,
@@ -497,7 +497,9 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                     items: controllerAuditRegion.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: SizedBox(child: Text('${item.name}', style: CustomStyles.textMedium13Px))
+                              child: SizedBox(
+                                width: double.maxFinite,
+                                child: Text('${item.name}', style: CustomStyles.textMedium13Px, maxLines: 1, overflow: TextOverflow.ellipsis,))
                             ))
                         .toList(),
                     value: controllerAuditRegion.caseCategoryId.value,

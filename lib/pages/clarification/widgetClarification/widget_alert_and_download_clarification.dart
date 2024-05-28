@@ -590,17 +590,22 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditA
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload PDF File"),
+            title: AppBar(
+              title: Text('Upload klarifikasi', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditArea.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
 
-                const SizedBox(height: 10),
-
                 Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
@@ -608,9 +613,13 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditA
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
 
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                     onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                     ? () {
                         controllerAuditArea.uploadClarificationAuditArea(controllerAuditArea.selectedFileName.value,
@@ -621,16 +630,13 @@ void uploadClarificationAuditArea(BuildContext context, int id, ControllerAuditA
                             );
                          }
                     : null,
-                    child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    child: Text('Upload', style: CustomStyles.textMediumWhite13Px),
                     )),
+
+                    const SizedBox(height: 15),
               ],
             ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+            
           );
         }
       );
@@ -642,17 +648,22 @@ void uploadClarificationAuditRegion(BuildContext context, int? id, ControllerAud
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload PDF File"),
+            title: AppBar(
+              title: Text('Upload klarifikasi', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditRegion.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
 
-                const SizedBox(height: 10),
-
                 Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
@@ -660,26 +671,28 @@ void uploadClarificationAuditRegion(BuildContext context, int? id, ControllerAud
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
 
-                Obx(() => TextButton(
-                      onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
-                      ? () {
-                            controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
-                            id);
-                            Get.off(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
-                         }
-                      : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
-                    )),
+                Obx(() => SizedBox(
+                  height: 30,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
+                        onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
+                        ? () {
+                              controllerAuditRegion.uploadClarificationAuditRegion(controllerAuditRegion.selectedFileName.value,
+                              id);
+                              Get.off(() => InputIdentificationClarificationAuditRegionPage(clarificationId: id));
+                           }
+                        : null,
+                        child: Text('Upload', style: CustomStyles.textMediumWhite13Px),
+                      ),
+                )),
+                const SizedBox(height: 15)
               ],
             ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
           );
         }
       );

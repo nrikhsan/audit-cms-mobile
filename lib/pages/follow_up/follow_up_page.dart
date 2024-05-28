@@ -66,7 +66,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
-                              color: CustomColors.grey
+                              color: CustomColors.lightGrey
                           )
                       ),
                       child: Padding(
@@ -97,7 +97,17 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                                   
                                 ],
                               ),
-                              Text('${followUp.code}', style: CustomStyles.textMedium13Px,),
+                              const SizedBox(height: 5),
+                              const Divider(
+                                color: CustomColors.lightGrey,
+                                height: 10,
+                              ),
+                              const SizedBox(height: 5),
+                              Text('${followUp.code}', style: CustomStyles.textRegular13Px,),
+                              const SizedBox(height: 5),
+                              SizedBox(
+                                width: double.maxFinite,
+                                child: Text(followUp.description != null ? 'Deskripsi : ${followUp.description}': '-', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
                             ],
                           )
                       ),

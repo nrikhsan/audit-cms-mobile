@@ -151,7 +151,7 @@ abstract class Repositories {
   Future<ResponseDetailKkaAuditRegion>getDetailKkaAuditRegion(int id);
 
   //master
-  Future<ResponseBranchAuditRegion>getBranchAuditRegion(int? userId);
+  Future<ResponseBranchAuditRegion>getBranchAuditRegion();
   Future<ResponseCaseAuditRegion>getCasesAuditRegion();
   Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion(int? caseId);
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
@@ -474,8 +474,8 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
-  Future<ResponseBranchAuditRegion>getBranchAuditRegion(int? userId){
-    return apiService.getBranchAuditRegion(userId);
+  Future<ResponseBranchAuditRegion>getBranchAuditRegion(){
+    return apiService.getBranchAuditRegion();
   }
 
   @override

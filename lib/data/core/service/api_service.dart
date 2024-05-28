@@ -993,13 +993,13 @@ class ApiService {
   }
 
   //master
-  Future<ResponseBranchAuditRegion> getBranchAuditRegion(int? userId) async {
+  Future<ResponseBranchAuditRegion> getBranchAuditRegion() async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token'
     };
     try {
-      final response = await dio.get(AppConstant.getDropdownBranch, queryParameters: {'user_id': userId});
+      final response = await dio.get(AppConstant.getDropdownBranch);
       return ResponseBranchAuditRegion.fromJson(response.data);
     } catch (error) {
       throw Exception(error);

@@ -105,7 +105,7 @@ class _EditMainSchedulePageState extends State<EditMainSchedulePage> {
                     items: controllerAuditArea.usersAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                              child: Text('${item.fullname} ${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis,)
                             ))
                         .toList(),
                     value: _users,
@@ -390,7 +390,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                     items: controllerAuditArea.usersAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                              child: Text('${item.fullname} ${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis)
                             ))
                         .toList(),
                     value: _users,

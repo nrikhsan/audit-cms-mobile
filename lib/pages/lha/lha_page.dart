@@ -59,8 +59,6 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
               pagingController: controllerAuditArea.pagingControllerLhaAuditArea,
               builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (_, lha, index){
-                  final startDare = DateTime.parse('${lha.schedule?.startDate}');
-                  final endDate = DateTime.parse('${lha.schedule?.endDate}');
                   final level = lha.user?.level;
                   final createdAt = DateTime.parse('${lha.createdAt}');
                   return Card(
@@ -72,6 +70,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                       borderRadius: BorderRadius.circular(10)
                     ),
                     elevation: 0,
+                    color: CustomColors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
@@ -87,23 +86,11 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                     visible: lha.isFlag == 1 ? true : false,
                                     child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)),
                                   const SizedBox(height: 5,),
-                                  Text('Tgl jadwal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textRegularGrey12Px),
+                                  Text('${lha.user?.fullname}', style: CustomStyles.textMedium15Px),
                               ],
                             ),
 
-                            SizedBox(
-                              height: 25,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)
-                                  ),
-                                  backgroundColor: CustomColors.grey
-                                ),
-                                onPressed: (){
-                                  null;
-                              }, child: Text('${lha.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
-                            )
+                            Text('${lha.branch?.name}', style: CustomStyles.textMediumBlack5412Px)
 
                           ],
                         ),
@@ -111,15 +98,6 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                               const SizedBox(height: 10,),
                               const Divider(color: CustomColors.lightGrey, height: 0.1),
                               const SizedBox(height: 10,),
-
-                              Row(
-                                children: [
-                                  Text('Auditor : ', style: CustomStyles.textMedium13Px),
-                                  Text('${lha.user?.fullname}', style: CustomStyles.textRegular12Px),
-                                ],
-                              ),
-                              
-                              const SizedBox(height: 5,),
 
                               Row(
                                 children: [
@@ -146,7 +124,7 @@ class _LhaPageAuditAreaState extends State<LhaPageAuditArea> {
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(5)
                                         ),
-                                        backgroundColor: CustomColors.green
+                                        backgroundColor: CustomColors.blue
                                       ),
                                       onPressed: (){
                                         Get.to(() => DetailLhaPageAuditArea(id: lha.id!, level: level?.name));
@@ -220,8 +198,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
           pagingController: controllerAuditRegion.pagingControllerLha,
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (_, lha, index){
-              final startDare = DateTime.parse('${lha.schedule?.startDate}');
-                  final endDate = DateTime.parse('${lha.schedule?.endDate}');
+              
                   final level = lha.user?.level;
                   final createdAt = DateTime.parse('${lha.createdAt}');
                   return Card(
@@ -233,6 +210,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
                       borderRadius: BorderRadius.circular(10)
                     ),
                     elevation: 0,
+                    color: CustomColors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
@@ -248,23 +226,11 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
                                     visible: lha.isFlag == 1 ? true : false,
                                     child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)),
                                   const SizedBox(height: 5,),
-                                  Text('Tgl jadwal : ${DateFormat('dd-MM-yyyy').format(startDare)} s/d ${DateFormat('dd-MM-yyyy').format(endDate)}', style: CustomStyles.textRegularGrey12Px),
+                                  Text('${lha.user?.fullname}', style: CustomStyles.textMedium15Px),
                               ],
                             ),
 
-                            SizedBox(
-                              height: 25,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)
-                                  ),
-                                  backgroundColor: CustomColors.grey
-                                ),
-                                onPressed: (){
-                                  null;
-                              }, child: Text('${lha.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
-                            )
+                            Text('${lha.branch?.name}', style: CustomStyles.textMediumBlack5412Px)
 
                           ],
                         ),
@@ -298,7 +264,7 @@ class _LhaPageAuditRegionState extends State<LhaPageAuditRegion> {
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(5)
                                         ),
-                                        backgroundColor: CustomColors.green
+                                        backgroundColor: CustomColors.blue
                                       ),
                                       onPressed: (){
                                         Get.to(() => DetailLhaPageAuditRegion(id: lha.id!));

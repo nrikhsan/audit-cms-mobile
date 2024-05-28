@@ -350,17 +350,22 @@ void uploadFollowUpAuditArea(BuildContext context, int? id, ControllerAuditArea 
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload PDF File"),
+            title: AppBar(
+              title: Text('Upload tdk lanjut', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditArea.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
 
-                const SizedBox(height: 10),
-
                 Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
@@ -368,17 +373,25 @@ void uploadFollowUpAuditArea(BuildContext context, int? id, ControllerAuditArea 
                   child: Text('Choose File', style: CustomStyles.textMediumGreen15Px),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
 
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                     onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                     ? () {
-                        controllerAuditArea.uploadFollowUp(controllerAuditArea.selectedFileName.value, id);
-                          Get.off(() => DetailFollowUpPageAuditArea(id: id));
-                        }
+                        controllerAuditArea.uploadFollowUp(controllerAuditArea.selectedFileName.value,
+                        id);
+                          
+                          Get.to(() => DetailFollowUpPageAuditArea(id: id));
+                         }
                     : null,
-                    child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                    child: Text('Upload', style: CustomStyles.textMediumWhite13Px),
                     )),
+
+                    const SizedBox(height: 15),
               ],
             ),
             actions: [

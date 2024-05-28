@@ -68,10 +68,11 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                   shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: const BorderSide(
-                      color: CustomColors.grey
+                      color: CustomColors.lightGrey
                     )
                   ),
                   elevation: 0,
+                  color: CustomColors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Column(
@@ -81,19 +82,21 @@ class _KkaPageAuditAreaState extends State<KkaPageAuditArea> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${kka.user!.fullname}', style: CustomStyles.textBold15Px),
-                            Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
+                            Text('${kka.user!.fullname}', style: CustomStyles.textMedium15Px),
+                            Text('${kka.branch!.name}', style: CustomStyles.textMedium15Px)
                           ],
                         ),
-
+                        const SizedBox(height: 5),
+                        const Divider(
+                          color: CustomColors.lightGrey,
+                          height: 10,
+                        ),
                         const SizedBox(height: 10),
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Tanggal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMedium13Px),
-                             const SizedBox(height: 5,),
-                            Text('${kka.filename}', style: CustomStyles.textMediumGrey13Px),
+                            Text('Tanggal jadwal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMediumBlack5412Px),
+                            
                           ],
                         ),
                       ],
@@ -176,23 +179,23 @@ class _KkaPageAuditRegionState extends State<KkaPageAuditRegion> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        const SizedBox(height: 10),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${kka.user!.fullname}', style: CustomStyles.textBold15Px),
-                            Text('${kka.branch!.name}', style: CustomStyles.textBold13Px)
+                            Text('${kka.user!.fullname}', style: CustomStyles.textMedium15Px),
+                            Text('${kka.branch!.name}', style: CustomStyles.textMedium15Px)
                           ],
                         ),
-
+                        const SizedBox(height: 5),
+                        const Divider(
+                          color: CustomColors.lightGrey,
+                          height: 10,
+                        ),
+                        const SizedBox(height: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                           
-                            Text('Tanggal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMedium13Px),
-                             const SizedBox(height: 5,),
-                            Text('${kka.filename}', style: CustomStyles.textMediumGrey13Px),
+                            Text('Tanggal jadwal : ${kka.startDate} s/d ${kka.endDate}', style: CustomStyles.textMediumBlack5412Px),
                             
                           ],
                         ),

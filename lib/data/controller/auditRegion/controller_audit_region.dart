@@ -21,12 +21,10 @@ import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lh
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
-import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 
 class ControllerAuditRegion extends GetxController {
   final Repositories repositories;
@@ -454,16 +452,16 @@ void uploadKkaAuditRegion(String filePath, int id) async {
   }
 
  void loadBranchAuditRegion() async {
-  final tokenBranch = await TokenManager.getToken();
+  // final tokenBranch = await TokenManager.getToken();
   try {
-    Map<String, dynamic> decodedToken = Jwt.parseJwt(tokenBranch.toString());
+    // Map<String, dynamic> decodedToken = Jwt.parseJwt(tokenBranch.toString());
 
-    int? userId = decodedToken['user']['id'];
+    // int? userId = decodedToken['user']['id'];
 
-    if (userId != null) {
-      final branch = await repositories.getBranchAuditRegion(userId);
+      final branch = await repositories.getBranchAuditRegion();
       branchAuditRegion.assignAll(branch.data ?? []);
-    }
+    // if (userId != null) {
+    // }
   } catch (e) {
     throw Exception(e);
   }

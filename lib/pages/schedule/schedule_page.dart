@@ -142,19 +142,32 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    TextButton(
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: CustomColors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      ),
                                       onPressed: (){
                                         controllerAuditArea.deleteMainSchedule(mainSchedule.id!);
                                         Get.back();
                                       }, 
-                                      child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                      child: Text('Ya', style: CustomStyles.textMediumWhite15Px)
                                     ),
-                                    TextButton(
+                                    const SizedBox(width: 5),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: CustomColors.red,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      ),
                                       onPressed: (){
                                         Get.back();
                                       }, 
-                                      child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
-                                    )
+                                      child: Text('Tidak', style: CustomStyles.textMediumWhite15Px)
+                                    ),
                                   ],
                                 )
                               );
@@ -164,7 +177,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                               elevation: 0,
                               shape: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: CustomColors.grey
+                                    color: CustomColors.lightGrey
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -201,14 +214,17 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         )
                                       ],
                                     ),
+                                    const SizedBox(height: 5),
+                                    const Divider(
+                                      height: 10,
+                                      color: CustomColors.lightGrey,
+                                    ),
                     
                                     const SizedBox(height: 10),
-                                    Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
-                                    const SizedBox(height: 5),
-                                    Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
-                                    const SizedBox(height: 5),
-                                    Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
-
+                                    Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMediumBlack5412Px),
+                                    const SizedBox(height: 7),
+                                    Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMediumBlack5412Px),
+                                    const SizedBox(height: 10),
                                     Wrap(
                                       children: [
                                         createdBy == 'PUSAT' || createdBy == 'LEAD' ? const SizedBox()
@@ -218,18 +234,22 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                             ? Row(
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
-                                                    TextButton(
-                                                      style: TextButton.styleFrom(
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                    SizedBox(
+                                                      height: 30,
+                                                      child: ElevatedButton(
+                                                        style: TextButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                        ),
+                                                        onPressed:() {
+                                                          String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                          String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
+                                                      
+                                                          Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
+                                                          user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description));
+                                                        }, 
+                                                        child: Text('Edit jadwal', style: CustomStyles.textMediumWhite13Px)
                                                       ),
-                                                      onPressed:() {
-                                                        String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
-                                                        String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
-
-                                                        Get.to(() => EditMainSchedulePage(scheduleId: mainSchedule.id!, startDate: startDate, endDate: endDate, 
-                                                        user: mainSchedule.user!.id!, branch: mainSchedule.branch!.id!, desc: mainSchedule.description));
-                                                      }, 
-                                                      child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                                     )
                                               ],
                                             ) : const SizedBox()
@@ -314,19 +334,32 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    TextButton(
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: CustomColors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      ),
                                       onPressed: (){
                                         controllerAuditArea.deleteSpecialSchedule(schedule.id!);
                                         Get.back();
                                       }, 
-                                      child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
+                                      child: Text('Ya', style: CustomStyles.textMediumWhite15Px)
                                     ),
-                                    TextButton(
+                                    const SizedBox(width: 5),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: CustomColors.red,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        )
+                                      ),
                                       onPressed: (){
                                         Get.back();
                                       }, 
-                                      child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
-                                    )
+                                      child: Text('Tidak', style: CustomStyles.textMediumWhite15Px)
+                                    ),
                                   ],
                                 )
                               );
@@ -336,7 +369,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 elevation: 0,
                                 shape: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: CustomColors.grey
+                                      color: CustomColors.lightGrey
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -371,13 +404,19 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                         )
                                         ],
                                       ),
+
+                                      const SizedBox(height: 5),
+                                      const Divider(
+                                        height: 10,
+                                        color: CustomColors.lightGrey,
+                                      ),
                     
                                       const SizedBox(height: 10),
-                                      Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
-                                      const SizedBox(height: 5),
-                                      Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
-                                      const SizedBox(height: 5),
-                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
+                                      Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMediumBlack5412Px),
+                                      const SizedBox(height: 7),
+                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMediumBlack5412Px),
+
+                                      const SizedBox(height: 10),
 
                                      Wrap(
                                       children: [
@@ -388,18 +427,22 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                             ? Row(
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
-                                                    TextButton(
-                                                      style: TextButton.styleFrom(
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                    SizedBox(
+                                                      height: 30,
+                                                      child: ElevatedButton(
+                                                          style: TextButton.styleFrom(
+                                                            backgroundColor: CustomColors.blue,
+                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                                          ),
+                                                        onPressed:() {
+                                                          String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
+                                                          String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
+                                                      
+                                                          Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
+                                                          user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description));
+                                                        }, 
+                                                        child: Text('Edit jadwal', style: CustomStyles.textMediumWhite13Px)
                                                       ),
-                                                      onPressed:() {
-                                                        String startDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputStartDate));
-                                                        String endDate = DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(outputEndDate));
-
-                                                        Get.to(() => EditSpecialSchedule(scheduleId: schedule.id!, startDate: startDate, endDate: endDate, 
-                                                        user: schedule.user!.id!, branch: schedule.branch!.id!, desc: schedule.description));
-                                                      }, 
-                                                      child: Text('Edit jadwal', style: CustomStyles.textMediumGreen13Px)
                                                     )
                                               ],
                                             ) : const SizedBox()
@@ -459,7 +502,7 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                 elevation: 0,
                                 shape: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: CustomColors.grey
+                                      color: CustomColors.lightGrey
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -490,12 +533,15 @@ class _SchedulePageAuditAreaState extends State<SchedulePageAuditArea> {
                                           )
                                         ],
                                       ),
+                                      const SizedBox(height: 5),
+                                      const Divider(
+                                        color: CustomColors.lightGrey,
+                                        height: 10,
+                                      ),
                                       const SizedBox(height: 10),
-                                      Text('Cabang : ${reschedules.branch!.name}', style: CustomStyles.textMedium13Px),
-                                      const SizedBox(height: 5),
-                                      Text('Kategori : ${reschedules.category}', style: CustomStyles.textMedium13Px),
-                                      const SizedBox(height: 5),
-                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
+                                      Text('Cabang : ${reschedules.branch!.name}', style: CustomStyles.textMediumBlack5412Px),
+                                      const SizedBox(height: 7),
+                                      Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMediumBlack5412Px),
                                     ],
                                   ),
                                 ),
@@ -625,7 +671,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                 elevation: 0,
                                 shape: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: CustomColors.grey
+                                      color: CustomColors.lightGrey
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -663,10 +709,16 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         ],
                                       ),
                       
-                                      const SizedBox(height: 10),
-                                        Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMedium13Px),
-                                        Text('Kategori : ${mainSchedule.category}', style: CustomStyles.textMedium13Px),
-                                        Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
+                                     const SizedBox(height: 5),
+                                    const Divider(
+                                      height: 10,
+                                      color: CustomColors.lightGrey,
+                                    ),
+                    
+                                    const SizedBox(height: 10),
+                                    Text('Cabang : ${mainSchedule.branch!.name}', style: CustomStyles.textMediumBlack5412Px),
+                                    const SizedBox(height: 7),
+                                    Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMediumBlack5412Px),
                                     ],
                                   ),
                                 ),
@@ -734,7 +786,7 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                 elevation: 0,
                                 shape: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: CustomColors.grey
+                                      color: CustomColors.lightGrey
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -770,10 +822,16 @@ class _SchedulePageAuditRegionState extends State<SchedulePageAuditRegion> {
                                         ],
                                       ),
                       
-                                      const SizedBox(height: 10),
-                                        Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMedium13Px),
-                                        Text('Kategori : ${schedule.category}', style: CustomStyles.textMedium13Px),
-                                        Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMedium13Px),
+                                      const SizedBox(height: 5),
+                                    const Divider(
+                                      height: 10,
+                                      color: CustomColors.lightGrey,
+                                    ),
+                    
+                                    const SizedBox(height: 10),
+                                    Text('Cabang : ${schedule.branch!.name}', style: CustomStyles.textMediumBlack5412Px),
+                                    const SizedBox(height: 7),
+                                    Text('Tanggal : $outputStartDate s/d $outputEndDate', style: CustomStyles.textMediumBlack5412Px),
                                     ],
                                   ),
                                 ),

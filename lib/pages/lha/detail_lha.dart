@@ -144,96 +144,114 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                 itemBuilder: (_, index){
 
                                   return Card(
-                                  elevation: 0,
-                                  shape: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: CustomColors.grey,
-                                      )),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Wrap(
-                                          
-                                          children: [
-                                            lha[index].isResearch == 1 ?
-                                            Row(
-                                              children: [
-                                                const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                                const SizedBox(width: 5),
-                                                Text('Belum melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
-                                              ],
-                                            ) :
-                                            const SizedBox()
-                                          ],
-                                        ),
+                                elevation: 0,
+                                color: CustomColors.white,
+                                shape: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: CustomColors.lightGrey,
+                                    )),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('${lha[index].cases}',
+                                          style: CustomStyles.textMedium13Px),
+                                          Visibility(
+                                            visible: lha[index].isResearch == 1 ? true : false,
+                                            child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px,),
+                                          ),
+                                        ],
+                                      ),
+                                  const SizedBox(height: 5),
+                                  const Divider(
+                                    color: CustomColors.lightGrey,
+                                    height: 10,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  SizedBox(width: double.maxFinite, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                                  const SizedBox(height: 30),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
 
-                                        const SizedBox(height: 15),
-                                        Text('Kasus : ${lha[index].cases}', style: CustomStyles.textBold15Px),
-                                        const SizedBox(height: 5),
-                                        SizedBox(width: 250, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
-
-                                        const SizedBox(height: 15),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-
-                                            Wrap(
-                                              children: [
-                                                widget.level == 'AREA' && lha[index].statusFlow == 0 ?
-                                                TextButton(
-                                                style: TextButton.styleFrom(
-                                                    shape:
-                                                        CustomStyles.customRoundedButton),
-                                                onPressed: () {
-                                                  alertDeleteWidget(
-                                                    context, 
-                                                    'Hapus kasus', 
-                                                    'Apakah anda yakin untuk menghapus kasus ini?',
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: [
-                                                            TextButton(
-                                                              onPressed: (){
-                                                                controllerAuditArea.deletCaseLha(lha[index].id);
-                                                                Get.back();
-                                                              }, 
-                                                              child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: (){
-                                                                Get.back();
-                                                              }, 
-                                                              child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
-                                                            )
-                                                          ],
-                                                        )
-                                                      );
-                                                },
-                                                child: Text('Hapus LHA',style: CustomStyles.textMediumRed15Px)
-                                            ): const SizedBox(),
-                                              ],
-                                            ),
-
-                                            TextButton(
-                                                style: TextButton.styleFrom(
-                                                    shape:
-                                                        CustomStyles.customRoundedButton),
-                                                onPressed: () {
-                                                  final lhaId = lha[index].id;
-                                                  if (lhaId != null) {
-                                                    Get.to(() => TabBarViewCasesLhaPageAuditArea(caseId: lhaId, level: createdBy));
-                                                  }
-                                                },
-                                                child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ));
+                                      Wrap(
+                                        children: [
+                                          widget.level == 'AREA' && lha[index].statusFlow == 0 ?
+                                          SizedBox(
+                                            height: 33,
+                                            child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: CustomColors.red,
+                                                shape: CustomStyles
+                                                    .customRoundedButton),
+                                            onPressed: () {
+                                              alertDeleteWidget(
+                                                context, 
+                                                'Hapus kasus', 
+                                                'Apakah anda yakin untuk menghapus kasus ini?',
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: CustomColors.green,
+                                                        shape: CustomStyles.customRoundedButton
+                                                      ),
+                                                      onPressed: (){
+                                                        controllerAuditArea.deletCaseLha(lha[index].id);
+                                                        Get.back();
+                                                      }, 
+                                                      child: Text('Ya', style: CustomStyles.textMediumWhite15Px)
+                                                    ),
+                                                    const SizedBox(width: 5),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: CustomColors.red,
+                                                        shape: CustomStyles.customRoundedButton
+                                                      ),
+                                                      onPressed: (){
+                                                        Get.back();
+                                                      }, 
+                                                      child: Text('Tidak', style: CustomStyles.textMediumWhite15Px)
+                                                    )
+                                                  ],
+                                                )
+                                              );
+                                            },
+                                            child: Text('Hapus',
+                                                style: CustomStyles
+                                                    .textMediumWhite13Px)),
+                                          ): const SizedBox(),
+                                        ],
+                                      ),
+                                      const SizedBox(width: 5),
+                                      SizedBox(
+                                        height: 33,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: CustomColors.blue,
+                                                shape: CustomStyles
+                                                    .customRoundedButton),
+                                            onPressed: () {
+                                             final lhaId = lha[index].id;
+                                              if (lhaId != null) {
+                                                Get.to(() => TabBarViewCasesLhaPageAuditArea(caseId: lhaId, level: createdBy));
+                                              }
+                                            },
+                                            child: Text('Lihat rincian',
+                                                style: CustomStyles
+                                                    .textMediumWhite13Px)),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ));
                                 }
                               )
                             ],
@@ -371,13 +389,16 @@ class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
                                     const SizedBox(height: 20),
                                   ],
                                 ),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: CustomStyles.customRoundedButton,
-                                        backgroundColor: CustomColors.green),
-                                    onPressed: () {},
-                                    child: Text(cases?.code ?? '-',
-                                        style: CustomStyles.textMediumWhite15Px))
+                                SizedBox(
+                                  height: 35,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton,
+                                          backgroundColor: CustomColors.grey),
+                                      onPressed: () {},
+                                      child: Text(cases?.code ?? '-',
+                                          style: CustomStyles.textMediumWhite15Px)),
+                                )
                               ],
                             ),
                             const SizedBox(height: 5),
@@ -497,29 +518,33 @@ class _ListRevisionPageAuditAreaState extends State<ListRevisionPageAuditArea> {
                         final numberRevision = lha.revisionNumber;
                         return Card(
                               elevation: 0,
+                              color: CustomColors.white,
                                 shape: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                           borderSide: const BorderSide(
-                                            color: CustomColors.grey,
+                                            color: CustomColors.lightGrey,
                                           )),
                                       child: Padding(
                                         padding: const EdgeInsets.all(15),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Wrap(
-                                              
-                                              children: [
-                                                lha.isResearch == 1 ?
-                                                Row(
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    const Icon(Icons.notifications_rounded, color: CustomColors.red, size: 20),
-                                                    const SizedBox(width: 5),
-                                                    Text('Perlu melakukan klarifikasi', style: CustomStyles.textMediumRed15Px)
+                                                   
+                                                    Visibility(
+                                                      visible: lha.isResearch == 1 ? true : false,
+                                                      child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px),
+                                                    ),
+                                                    Text('${lha.cases!.name}', style: CustomStyles.textMedium13Px),
                                                   ],
-                                                ) :
-                                                const SizedBox()
-                                              ],
+                                                ),
+                                            
+                                            const SizedBox(height: 5),
+                                            const Divider(
+                                              color: CustomColors.lightGrey,
+                                              height: 10
                                             ),
                     
                                             const SizedBox(height: 15),
@@ -527,29 +552,33 @@ class _ListRevisionPageAuditAreaState extends State<ListRevisionPageAuditArea> {
                                               children: [
                                                 numberRevision == 0 ? 
                                                 Text('Original', style: CustomStyles.textBold15Px) :
-                                                Text('No. Revisi : $numberRevision', style: CustomStyles.textBold15Px),
+                                                Text('No Revisi : $numberRevision', style: CustomStyles.textBold15Px),
                                               ],
                                             ),
                                             const SizedBox(height: 5),
-                                            Text('Kasus : ${lha.cases!.name}', style: CustomStyles.textBold15Px),
-                                            const SizedBox(height: 5),
-                                            Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textBold15Px, overflow: TextOverflow.ellipsis, maxLines: 1),
                                             
                                             const SizedBox(height: 5),
+                                            Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2),
+                                            
+                                            const SizedBox(height: 15),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.end,
                                               children: [
-                                                    TextButton(
-                                                    style: TextButton.styleFrom(
-                                                        shape:
-                                                            CustomStyles.customRoundedButton),
-                                                    onPressed: () {
-                                                      final caseId = lha.id;
-                                                      if(caseId != null){
-                                                        Get.to(() => DetailRevisionLhaAuditArea(caseId: caseId));
-                                                      }
-                                                    },
-                                                    child: Text('Lihat rincian',style: CustomStyles.textMediumGreen15Px)),
+                                                    SizedBox(
+                                                      height: 33,
+                                                      child: ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: CustomColors.blue,
+                                                          shape:
+                                                              CustomStyles.customRoundedButton),
+                                                      onPressed: () {
+                                                        final caseId = lha.id;
+                                                        if(caseId != null){
+                                                          Get.to(() => DetailRevisionLhaAuditArea(caseId: caseId));
+                                                        }
+                                                      },
+                                                      child: Text('Lihat rincian',style: CustomStyles.textMediumWhite13Px)),
+                                                    ),
                                               ],
                                             )
                                           ],
@@ -640,13 +669,16 @@ class _DetailRevisionLhaAuditAreaState
                                     const SizedBox(height: 20),
                                   ],
                                 ),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: CustomStyles.customRoundedButton,
-                                        backgroundColor: CustomColors.green),
-                                    onPressed: () {},
-                                    child: Text(cases?.code ?? '-',
-                                        style: CustomStyles.textMediumWhite15Px))
+                                SizedBox(
+                                  height: 35,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton,
+                                          backgroundColor: CustomColors.grey),
+                                      onPressed: () {},
+                                      child: Text(cases?.code ?? '-',
+                                          style: CustomStyles.textMediumWhite15Px)),
+                                )
                               ],
                             ),
 
@@ -830,41 +862,36 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                         final statusFlow = lha[index].statusFlow;
                         return Card(
                             elevation: 0,
+                            color: CustomColors.white,
                             shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
-                                  color: CustomColors.grey,
+                                  color: CustomColors.lightGrey,
                                 )),
                             child: Padding(
                               padding: const EdgeInsets.all(15),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Wrap(
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      lha[index].isResearch == 1
-                                          ? Row(
-                                              children: [
-                                                const Icon(
-                                                    Icons.notifications_rounded,
-                                                    color: CustomColors.red,
-                                                    size: 20),
-                                                const SizedBox(width: 5),
-                                                Text(
-                                                    'Belum melakukan klarifikasi',
-                                                    style: CustomStyles
-                                                        .textMediumRed15Px)
-                                              ],
-                                            )
-                                          : const SizedBox()
+                                      Text('${lha[index].cases}',
+                                      style: CustomStyles.textMedium13Px),
+                                      Visibility(
+                                        visible: lha[index].isResearch == 1 ? true : false,
+                                        child: Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px,),
+                                      ),
                                     ],
                                   ),
-                                  const SizedBox(height: 15),
-                                  Text('Kasus : ${lha[index].cases}',
-                                      style: CustomStyles.textBold15Px),
                                   const SizedBox(height: 5),
-                                  SizedBox(width: 250, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                                  const Divider(
+                                    color: CustomColors.lightGrey,
+                                    height: 10,
+                                  ),
                                   const SizedBox(height: 15),
+                                  SizedBox(width: double.maxFinite, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                                  const SizedBox(height: 30),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -872,52 +899,69 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                       Wrap(
                                         children: [
                                           statusFlow == 1 ? const SizedBox()
-                                          : TextButton(
-                                          style: TextButton.styleFrom(
-                                              shape: CustomStyles
-                                                  .customRoundedButton),
-                                          onPressed: () {
-                                            alertDeleteWidget(
-                                              context, 
-                                              'Hapus kasus', 
-                                              'Apakah anda yakin untuk menghapus kasus ini?',
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: (){
-                                                      controllerAuditRegion.deletCaseLha(lha[index].id);
-                                                      Get.back();
-                                                    }, 
-                                                    child: Text('Ya', style: CustomStyles.textMediumGreen15Px)
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: (){
-                                                      Get.back();
-                                                    }, 
-                                                    child: Text('Tidak', style: CustomStyles.textMediumRed15Px)
-                                                  )
-                                                ],
-                                              )
-                                            );
-                                          },
-                                          child: Text('Hapus LHA',
-                                              style: CustomStyles
-                                                  .textMediumRed15Px)),
+                                          : SizedBox(
+                                            height: 33,
+                                            child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: CustomColors.red,
+                                                shape: CustomStyles
+                                                    .customRoundedButton),
+                                            onPressed: () {
+                                              alertDeleteWidget(
+                                                context, 
+                                                'Hapus kasus', 
+                                                'Apakah anda yakin untuk menghapus kasus ini?',
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: CustomColors.green,
+                                                        shape: CustomStyles.customRoundedButton
+                                                      ),
+                                                      onPressed: (){
+                                                        controllerAuditRegion.deletCaseLha(lha[index].id);
+                                                        Get.back();
+                                                      }, 
+                                                      child: Text('Ya', style: CustomStyles.textMediumWhite15Px)
+                                                    ),
+                                                    const SizedBox(width: 5),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: CustomColors.red,
+                                                        shape: CustomStyles.customRoundedButton
+                                                      ),
+                                                      onPressed: (){
+                                                        Get.back();
+                                                      }, 
+                                                      child: Text('Tidak', style: CustomStyles.textMediumWhite15Px)
+                                                    )
+                                                  ],
+                                                )
+                                              );
+                                            },
+                                            child: Text('Hapus',
+                                                style: CustomStyles
+                                                    .textMediumWhite13Px)),
+                                          ),
                                         ],
                                       ),
-                                    
-                                      TextButton(
-                                          style: TextButton.styleFrom(
-                                              shape: CustomStyles
-                                                  .customRoundedButton),
-                                          onPressed: () {
-                                            Get.to(() =>
-                                                DetaiCasesLhaPageAuditRegion(lhaId: lha[index].id!));
-                                          },
-                                          child: Text('Lihat rincian',
-                                              style: CustomStyles
-                                                  .textMediumGreen15Px)),
+                                      const SizedBox(width: 5),
+                                      SizedBox(
+                                        height: 33,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: CustomColors.blue,
+                                                shape: CustomStyles
+                                                    .customRoundedButton),
+                                            onPressed: () {
+                                              Get.to(() =>
+                                                  DetaiCasesLhaPageAuditRegion(lhaId: lha[index].id!));
+                                            },
+                                            child: Text('Lihat rincian',
+                                                style: CustomStyles
+                                                    .textMediumWhite13Px)),
+                                      ),
                                     ],
                                   )
                                 ],
@@ -1010,13 +1054,16 @@ class _DetailCasesLhaPageAuditRegionState
                               style: CustomStyles.textRegular13Px),
                         ],
                       ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: CustomStyles.customRoundedButton,
-                              backgroundColor: CustomColors.green),
-                          onPressed: () {},
-                          child: Text(cases?.code ?? '-',
-                              style: CustomStyles.textMediumWhite15Px))
+                      SizedBox(
+                                  height: 35,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: CustomStyles.customRoundedButton,
+                                          backgroundColor: CustomColors.grey),
+                                      onPressed: () {},
+                                      child: Text(cases?.code ?? '-',
+                                          style: CustomStyles.textMediumWhite15Px)),
+                                )
                     ],
                   ),
                   const SizedBox(height: 20),

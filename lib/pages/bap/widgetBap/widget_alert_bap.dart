@@ -182,17 +182,23 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload PDF File"),
+            title: AppBar(
+              title: Text('Upload BAP', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditRegion.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
 
-                const SizedBox(height: 10),
 
                 Obx(() => Text(controllerAuditRegion.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
@@ -202,26 +208,23 @@ void uploadBapAuditRegion(BuildContext context, ControllerAuditRegion controller
 
                 const SizedBox(height: 10),
 
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                       onPressed: controllerAuditRegion.selectedFileName.value.isNotEmpty
                       ? () {
                             controllerAuditRegion.uploadBapAuditRegion(controllerAuditRegion.selectedFileName.value, idBap);
                             Get.back();
                          }
                       : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                      child: Text('Upload', style: CustomStyles.textMediumWhite15Px),
                     )),
+                  const SizedBox(height: 15),
               ],
             ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: (){
-                  controllerAuditRegion.selectedFileName.value = '';
-                  Navigator.of(context).pop();
-                }
-              ),
-            ],
+            
           );
         }
       );
@@ -233,17 +236,23 @@ void uploadBapAuditArea(BuildContext context, ControllerAuditArea controllerAudi
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload PDF File"),
+            title: AppBar(
+              title: Text('Upload BAP', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditArea.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
 
-                const SizedBox(height: 10),
 
                 Obx(() => Text(controllerAuditArea.selectedFileName.value, style: CustomStyles.textRegularGrey13Px)),
-
-                const SizedBox(height: 10),
 
                 TextButton(
                   onPressed: () =>
@@ -253,23 +262,23 @@ void uploadBapAuditArea(BuildContext context, ControllerAuditArea controllerAudi
 
                 const SizedBox(height: 10),
 
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                       onPressed: controllerAuditArea.selectedFileName.value.isNotEmpty
                       ? () {
                             controllerAuditArea.uploadBapAuditArea(controllerAuditArea.selectedFileName.value, idBap);
                             Get.back();
                          }
                       : null,
-                      child: Text('Upload', style: CustomStyles.textMediumBlue15Px),
+                      child: Text('Upload', style: CustomStyles.textMediumWhite15Px),
                     )),
+                  const SizedBox(height: 15),
               ],
             ),
-            actions: [
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+            
           );
         }
       );

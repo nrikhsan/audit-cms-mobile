@@ -103,7 +103,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                     items: controllerAuditArea.usersAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item,
-                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                              child: Text('${item.fullname} ${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis)
                             ))
                         .toList(),
                     value: users,
@@ -279,16 +279,7 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
                   ),
-
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Auditor', style: CustomStyles.textMedium13Px),
-                      Text('Cabang', style: CustomStyles.textMedium13Px),
-                      Text('Action', style: CustomStyles.textMedium13Px),
-                    ],
-                  ),
+                  
                   const SizedBox(height: 15),
                   Obx(() => ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -299,8 +290,15 @@ class _InputDataSchedulesPageMainScheduleState extends State<InputDataSchedulesP
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.user?.fullname}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branch?.name}', style: CustomStyles.textRegular13Px),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${data.user?.fullname} - ${data.branch?.name}', style: CustomStyles.textMedium15Px),
+                                const SizedBox(height: 5),
+                                Text('Tanggal jadwal : ${data.startDate} s/d ${data.endDate}', style: CustomStyles.textRegularBlack5413Px),
+                                const SizedBox(height: 15)
+                              ],
+                            ),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),
@@ -430,15 +428,13 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                     items: controllerAuditArea.usersAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item,
-                              child: Text('${item.fullname}\n${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px)
+                              child: Text('${item.fullname} ${item.office?.map((e) => e.name)}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis,)
                             ))
                         .toList(),
                     value: users,
                     onChanged: (value) {
                       setState(() {
                         users = value;
-                        controllerAuditArea.loadBranchByUserIdAuditArea(value?.id);
-                        branch = null;
                       });
                     },
                     buttonStyleData: const ButtonStyleData(
@@ -510,7 +506,7 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         color: Theme.of(context).hintColor,
                       ),
                     ),
-                    items: controllerAuditArea.branchAuditArea
+                    items: controllerAuditArea.branchForFilterAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item,
                               child: Text('${item.name}', style: CustomStyles.textMedium13Px)
@@ -606,16 +602,6 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                           child: Text('Tambah jadwal', style: CustomStyles.textBoldGreen13Px))
                     ],
                   ),
-
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Auditor', style: CustomStyles.textMedium13Px),
-                      Text('Cabang', style: CustomStyles.textMedium13Px),
-                      Text('Action', style: CustomStyles.textMedium13Px),
-                    ],
-                  ),
                   const SizedBox(height: 15),
                   Obx(() => ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -626,8 +612,15 @@ class _InputDataSchedulePageSpecialScheduleState extends State<InputDataSchedule
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('${data.user?.fullname}', style: CustomStyles.textRegular13Px),
-                            Text('${data.branch?.name}', style: CustomStyles.textRegular13Px),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${data.user?.fullname} - ${data.branch?.name}', style: CustomStyles.textMedium15Px),
+                                const SizedBox(height: 5),
+                                Text('Tanggal jadwal : ${data.startDate} s/d ${data.endDate}', style: CustomStyles.textRegularBlack5413Px),
+                                const SizedBox(height: 15),
+                              ],
+                            ),
 
                             GestureDetector(
                               child: const Icon(Icons.delete, color: CustomColors.red, size: 25),

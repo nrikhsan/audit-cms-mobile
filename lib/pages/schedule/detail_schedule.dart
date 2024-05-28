@@ -245,14 +245,14 @@ class _DetailMainSchedulePageAuditAreaState
                                   itemCount: lha.length,
                                   shrinkWrap: true,
                                   itemBuilder: (_, index) {
-                                    final isFlag = lha[index].isFlag;
                                     return Card(
                                         elevation: 0,
+                                        color: CustomColors.white,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             borderSide: const BorderSide(
-                                              color: CustomColors.grey,
+                                              color: CustomColors.lightGrey,
                                             )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -262,57 +262,40 @@ class _DetailMainSchedulePageAuditAreaState
                                             children: [
                                               Wrap(
                                                 children: [
-                                                  isFlag == 1
+                                                  lha[index].isFlag == 1
                                                       ? Row(
                                                           children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .notifications_rounded,
-                                                                color:
-                                                                    CustomColors
-                                                                        .red,
-                                                                size: 20),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Text(
-                                                                'Belum melakukan klarifikasi',
-                                                                style: CustomStyles
-                                                                    .textMediumRed15Px)
+                                                            Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)
                                                           ],
                                                         )
                                                       : const SizedBox()
                                                 ],
                                               ),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                  'Cabang : ${lha[index].branch!.name}',
-                                                  style: CustomStyles
-                                                      .textBold15Px),
+                                              const SizedBox(height: 10),
+                                              Text('Cabang : ${lha[index].branch!.name}',style: CustomStyles.textMediumBlack5412Px),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  TextButton(
-                                                      style: TextButton.styleFrom(
-                                                          shape: CustomStyles
-                                                              .customRoundedButton),
-                                                      onPressed: () {
-                                                        final lhaId =
-                                                            lha[index].id;
-                                                        final level = detail
-                                                            .user?.level?.name;
+                                                  SizedBox(
+                                                    height: 35,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                            shape: CustomStyles
+                                                                .customRoundedButton),
+                                                        onPressed: () {
+                                                        final lhaId = lha[index].id;
+                                                        final level = detail.user?.level?.name;
                                                         if (lhaId != null) {
-                                                          Get.to(() =>
-                                                              DetailLhaPageAuditArea(
-                                                                  id: lhaId,
-                                                                  level:
-                                                                      level));
+                                                          Get.to(() =>  DetailLhaPageAuditArea(id: lhaId, level: level));
                                                         }
-                                                      },
-                                                      child: Text(
-                                                          'Lihat rincian',
-                                                          style: CustomStyles
-                                                              .textMediumGreen15Px))
+                                                        },
+                                                        child: Text(
+                                                            'Lihat rincian',
+                                                            style: CustomStyles
+                                                                .textMediumWhite13Px)),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -641,11 +624,12 @@ class _DetailSpecialSchedulePageAuditAreaState
                                   itemBuilder: (_, index) {
                                     return Card(
                                         elevation: 0,
+                                        color: CustomColors.white,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             borderSide: const BorderSide(
-                                              color: CustomColors.grey,
+                                              color: CustomColors.lightGrey,
                                             )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -658,59 +642,43 @@ class _DetailSpecialSchedulePageAuditAreaState
                                                   lha[index].isFlag == 1
                                                       ? Row(
                                                           children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .notifications_rounded,
-                                                                color:
-                                                                    CustomColors
-                                                                        .red,
-                                                                size: 20),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Text(
-                                                                'Belum melakukan klarifikasi',
-                                                                style: CustomStyles
-                                                                    .textMediumRed15Px)
+                                                            Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)
                                                           ],
                                                         )
                                                       : const SizedBox()
                                                 ],
                                               ),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                  'Cabang : ${lha[index].branch!.name}',
-                                                  style: CustomStyles
-                                                      .textBold15Px),
+                                              const SizedBox(height: 10),
+                                              Text('Cabang : ${lha[index].branch!.name}',style: CustomStyles.textMediumBlack5412Px),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  TextButton(
-                                                      style: TextButton.styleFrom(
-                                                          shape: CustomStyles
-                                                              .customRoundedButton),
-                                                      onPressed: () {
-                                                        final lhaId =
-                                                            lha[index].id;
-                                                        final level = detail
-                                                            .user?.level?.name;
+                                                  SizedBox(
+                                                    height: 35,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                            shape: CustomStyles
+                                                                .customRoundedButton),
+                                                        onPressed: () {
+                                                        final lhaId = lha[index].id;
+                                                        final level = detail.user?.level?.name;
                                                         if (lhaId != null) {
-                                                          Get.to(() =>
-                                                              DetailLhaPageAuditArea(
-                                                                  id: lhaId,
-                                                                  level:
-                                                                      level));
+                                                          Get.to(() =>  DetailLhaPageAuditArea(id: lhaId, level: level));
                                                         }
-                                                      },
-                                                      child: Text(
-                                                          'Lihat rincian',
-                                                          style: CustomStyles
-                                                              .textMediumGreen15Px))
+                                                        },
+                                                        child: Text(
+                                                            'Lihat rincian',
+                                                            style: CustomStyles
+                                                                .textMediumWhite13Px)),
+                                                  )
                                                 ],
                                               )
                                             ],
                                           ),
                                         ));
+
                                   })
                               : Text('Auditor belum Membuat LHA',
                                   style: CustomStyles.textRegular13Px)
@@ -731,15 +699,23 @@ class _DetailSpecialSchedulePageAuditAreaState
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload Excel File"),
+            title: AppBar(
+              title: Text('Upload KKA', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditArea.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 10),
                 Obx(() => Text(controllerAuditArea.selectedFileName.value,
                     style: CustomStyles.textRegularGrey13Px)),
-                const SizedBox(height: 10),
+
                 TextButton(
                   onPressed: () =>
                       controllerAuditArea.pickFileKkaAuditArea(),
@@ -747,7 +723,11 @@ class _DetailSpecialSchedulePageAuditAreaState
                       style: CustomStyles.textMediumGreen15Px),
                 ),
                 const SizedBox(height: 10),
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                       onPressed: controllerAuditArea
                               .selectedFileName.value.isNotEmpty
                           ? () {
@@ -758,20 +738,12 @@ class _DetailSpecialSchedulePageAuditAreaState
                             }
                           : null,
                       child: Text('Upload',
-                          style: CustomStyles.textMediumBlue15Px),
+                          style: CustomStyles.textMediumWhite13Px),
                     )),
+                    const SizedBox(height: 20)
               ],
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () {
-                  controllerAuditArea.selectedFileName.value = '';
-                  Navigator.of(context).pop();
-
-                },
-              ),
-            ],
+            
           );
         });
   }
@@ -1017,11 +989,12 @@ class _DetailReschedulePageAuditAreaState
                                   itemBuilder: (_, index) {
                                     return Card(
                                         elevation: 0,
+                                        color: CustomColors.white,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             borderSide: const BorderSide(
-                                              color: CustomColors.grey,
+                                              color: CustomColors.lightGrey,
                                             )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -1034,54 +1007,37 @@ class _DetailReschedulePageAuditAreaState
                                                   lha[index].isFlag == 1
                                                       ? Row(
                                                           children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .notifications_rounded,
-                                                                color:
-                                                                    CustomColors
-                                                                        .red,
-                                                                size: 20),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Text(
-                                                                'Perlu melakukan klarifikasi',
-                                                                style: CustomStyles
-                                                                    .textMediumRed15Px)
+                                                            Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)
                                                           ],
                                                         )
                                                       : const SizedBox()
                                                 ],
                                               ),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                  'Cabang : ${lha[index].branch!.name}',
-                                                  style: CustomStyles
-                                                      .textBold15Px),
+                                              const SizedBox(height: 10),
+                                              Text('Cabang : ${lha[index].branch!.name}',style: CustomStyles.textMediumBlack5412Px),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  TextButton(
-                                                      style: TextButton.styleFrom(
-                                                          shape: CustomStyles
-                                                              .customRoundedButton),
-                                                      onPressed: () {
-                                                        final lhaId =
-                                                            lha[index].id;
-                                                        final level = detail
-                                                            .user?.level?.name;
+                                                  SizedBox(
+                                                    height: 35,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                            shape: CustomStyles
+                                                                .customRoundedButton),
+                                                        onPressed: () {
+                                                        final lhaId = lha[index].id;
+                                                        final level = detail.user?.level?.name;
                                                         if (lhaId != null) {
-                                                          Get.to(() =>
-                                                              DetailLhaPageAuditArea(
-                                                                  id: lhaId,
-                                                                  level:
-                                                                      level));
+                                                          Get.to(() =>  DetailLhaPageAuditArea(id: lhaId, level: level));
                                                         }
-                                                      },
-                                                      child: Text(
-                                                          'Lihat rincian',
-                                                          style: CustomStyles
-                                                              .textMediumGreen15Px))
+                                                        },
+                                                        child: Text(
+                                                            'Lihat rincian',
+                                                            style: CustomStyles
+                                                                .textMediumWhite13Px)),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -1374,11 +1330,12 @@ class _DetailMainScheduleAuditRegionState
                                   itemBuilder: (_, index) {
                                     return Card(
                                         elevation: 0,
+                                        color: CustomColors.white,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             borderSide: const BorderSide(
-                                              color: CustomColors.grey,
+                                              color: CustomColors.lightGrey,
                                             )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -1391,50 +1348,39 @@ class _DetailMainScheduleAuditRegionState
                                                   lha[index].isFlag == 1
                                                       ? Row(
                                                           children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .notifications_rounded,
-                                                                color:
-                                                                    CustomColors
-                                                                        .red,
-                                                                size: 20),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Text(
-                                                                'Belum melakukan klarifikasi',
-                                                                style: CustomStyles
-                                                                    .textMediumRed15Px)
+                                                            Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)
                                                           ],
                                                         )
                                                       : const SizedBox()
                                                 ],
                                               ),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                  'Cabang : ${lha[index].branch!.name}',
-                                                  style: CustomStyles
-                                                      .textBold15Px),
+                                              const SizedBox(height: 10),
+                                              Text('Cabang : ${lha[index].branch!.name}',style: CustomStyles.textMediumBlack5412Px),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  TextButton(
-                                                      style: TextButton.styleFrom(
-                                                          shape: CustomStyles
-                                                              .customRoundedButton),
-                                                      onPressed: () {
-                                                        final lhaId =
-                                                            lha[index].id;
-                                                        if (lhaId != null) {
-                                                          Get.to(() =>
-                                                              DetailLhaPageAuditRegion(
-                                                                  id: lhaId));
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                          'Lihat rincian',
-                                                          style: CustomStyles
-                                                              .textMediumGreen15Px))
+                                                  SizedBox(
+                                                    height: 35,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                            shape: CustomStyles
+                                                                .customRoundedButton),
+                                                        onPressed: () {
+                                                          final lhaId =
+                                                              lha[index].id;
+                                                          if (lhaId != null) {
+                                                            Get.to(() =>
+                                                                DetailLhaPageAuditRegion(
+                                                                    id: lhaId));
+                                                          }
+                                                        },
+                                                        child: Text(
+                                                            'Lihat rincian',
+                                                            style: CustomStyles
+                                                                .textMediumWhite13Px)),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -1460,15 +1406,24 @@ class _DetailMainScheduleAuditRegionState
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload Excel File"),
+            title: AppBar(
+              title: Text('Upload KKA', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditRegion.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 10),
+
                 Obx(() => Text(controllerAuditRegion.selectedFileName.value,
                     style: CustomStyles.textRegularGrey13Px)),
-                const SizedBox(height: 10),
+
                 TextButton(
                   onPressed: () =>
                       controllerAuditRegion.pickFileKkaAuditRegion(),
@@ -1476,7 +1431,11 @@ class _DetailMainScheduleAuditRegionState
                       style: CustomStyles.textMediumGreen15Px),
                 ),
                 const SizedBox(height: 10),
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                       onPressed: controllerAuditRegion
                               .selectedFileName.value.isNotEmpty
                           ? () {
@@ -1490,19 +1449,12 @@ class _DetailMainScheduleAuditRegionState
                             }
                           : null,
                       child: Text('Upload',
-                          style: CustomStyles.textMediumBlue15Px),
+                          style: CustomStyles.textMediumWhite13Px),
                     )),
+                  const SizedBox(height: 20)
               ],
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () {
-                  controllerAuditRegion.selectedFileName.value = '';
-                   Navigator.of(context).pop();
-                }
-              ),
-            ],
+            
           );
         });
   }
@@ -1773,11 +1725,12 @@ class _DetailSpecialScheduleAuditRegionState
                                   itemBuilder: (_, index) {
                                     return Card(
                                         elevation: 0,
+                                        color: CustomColors.white,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             borderSide: const BorderSide(
-                                              color: CustomColors.grey,
+                                              color: CustomColors.lightGrey,
                                             )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -1790,50 +1743,39 @@ class _DetailSpecialScheduleAuditRegionState
                                                   lha[index].isFlag == 1
                                                       ? Row(
                                                           children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .notifications_rounded,
-                                                                color:
-                                                                    CustomColors
-                                                                        .red,
-                                                                size: 20),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Text(
-                                                                'Belum melakukan klarifikasi',
-                                                                style: CustomStyles
-                                                                    .textMediumRed15Px)
+                                                            Text('Perlu klarifikasi', style: CustomStyles.textMediumRed13Px)
                                                           ],
                                                         )
                                                       : const SizedBox()
                                                 ],
                                               ),
-                                              const SizedBox(height: 15),
-                                              Text(
-                                                  'Cabang : ${lha[index].branch!.name}',
-                                                  style: CustomStyles
-                                                      .textBold15Px),
+                                              const SizedBox(height: 10),
+                                              Text('Cabang : ${lha[index].branch!.name}',style: CustomStyles.textMediumBlack5412Px),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  TextButton(
-                                                      style: TextButton.styleFrom(
-                                                          shape: CustomStyles
-                                                              .customRoundedButton),
-                                                      onPressed: () {
-                                                        final lhaId =
-                                                            lha[index].id;
-                                                        if (lhaId != null) {
-                                                          Get.to(() =>
-                                                              DetailLhaPageAuditRegion(
-                                                                  id: lhaId));
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                          'Lihat rincian',
-                                                          style: CustomStyles
-                                                              .textMediumGreen15Px))
+                                                  SizedBox(
+                                                    height: 35,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: CustomColors.blue,
+                                                            shape: CustomStyles
+                                                                .customRoundedButton),
+                                                        onPressed: () {
+                                                          final lhaId =
+                                                              lha[index].id;
+                                                          if (lhaId != null) {
+                                                            Get.to(() =>
+                                                                DetailLhaPageAuditRegion(
+                                                                    id: lhaId));
+                                                          }
+                                                        },
+                                                        child: Text(
+                                                            'Lihat rincian',
+                                                            style: CustomStyles
+                                                                .textMediumWhite13Px)),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -1859,7 +1801,16 @@ class _DetailSpecialScheduleAuditRegionState
         builder: (_) {
           return AlertDialog(
             elevation: 0,
-            title: const Text("Upload Excel File"),
+            title: AppBar(
+              title: Text('Upload KKA', style: CustomStyles.textBold18Px),
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.pop(context);
+                  controllerAuditRegion.selectedFileName.value = '';
+                }, icon: const Icon(Icons.close, color: CustomColors.grey, size: 25))
+              ],
+            ),
             titleTextStyle: CustomStyles.textBold18Px,
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -1875,7 +1826,11 @@ class _DetailSpecialScheduleAuditRegionState
                       style: CustomStyles.textMediumGreen15Px),
                 ),
                 const SizedBox(height: 10),
-                Obx(() => TextButton(
+                Obx(() => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.blue,
+                      shape: CustomStyles.customRoundedButton
+                    ),
                       onPressed: controllerAuditRegion
                               .selectedFileName.value.isNotEmpty
                           ? () {
@@ -1888,20 +1843,12 @@ class _DetailSpecialScheduleAuditRegionState
                             }
                           : null,
                       child: Text('Upload',
-                          style: CustomStyles.textMediumBlue15Px),
+                          style: CustomStyles.textMediumWhite13Px),
                     )),
+                  const SizedBox(height: 20)
               ],
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Close", style: CustomStyles.textMediumRed15Px),
-                onPressed: () {
-                  controllerAuditRegion.selectedFileName.value = '';
-                  Navigator.of(context).pop();
-
-                },
-              ),
-            ],
+            
           );
         });
   }

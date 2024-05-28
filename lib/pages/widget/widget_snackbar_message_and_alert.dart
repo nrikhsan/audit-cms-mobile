@@ -17,6 +17,7 @@ void alertDeleteWidget(BuildContext context, String title, String message, Widge
     context: context, 
     builder: (_){
       return AlertDialog(
+        elevation: 0,
         title: Text(title),
         titleTextStyle: CustomStyles.textBold18Px,
         content: Text(message),

@@ -66,7 +66,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
                     shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: CustomColors.grey
+                        color: CustomColors.lightGrey
                       )
                     ),
                     child: Padding(
@@ -77,15 +77,19 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Auditor : ${bap.user!.fullname}', style: CustomStyles.textBold15Px),
+                              Text('${bap.user!.fullname}', style: CustomStyles.textMedium15Px),
+                              Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
-                          Text('Kode BAP : ${bap.code}', style: CustomStyles.textMedium13Px),
+                          const Divider(
+                                color: CustomColors.lightGrey,
+                                height: 10,
+                              ),
+                              const SizedBox(height: 10),
+                          Text('Kode BAP : ${bap.code}', style: CustomStyles.textRegular12Px),
                           const SizedBox(height: 5),
-                          Text('Kode klarifikasi : ${bap.clarification!.code}', style: CustomStyles.textMedium13Px),
+                          Text('Kode klarifikasi : ${bap.clarification!.code}', style: CustomStyles.textRegular12Px),
                           
                         ],
                       ),
@@ -161,7 +165,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                     shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: CustomColors.grey
+                        color: CustomColors.lightGrey
                       )
                     ),
                     child: Padding(
@@ -172,16 +176,19 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Auditor : ${bap.user!.fullname}', style: CustomStyles.textBold15Px),
+                              Text('${bap.user!.fullname}', style: CustomStyles.textMedium15Px),
+                              Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                             ],
                           ),
-                          const SizedBox(height: 15),
-
-                          Text('Batas evaluasi : ${DateFormat('dd-MM-yyyy').format(limitEvaluation)}', style: CustomStyles.textMedium13Px),
                           const SizedBox(height: 5),
-                          Text('Kode BAP : ${bap.code}', style: CustomStyles.textMedium13Px),
+                          const Divider(
+                                color: CustomColors.lightGrey,
+                                height: 10,
+                              ),
+                              const SizedBox(height: 10),
+                          Text('Kode BAP : ${bap.code}', style: CustomStyles.textRegular12Px),
                           const SizedBox(height: 5),
-                          Text('Kode klarifikasi : ${bap.clarification!.code}', style: CustomStyles.textMedium13Px),
+                          Text('Kode klarifikasi : ${bap.clarification!.code}', style: CustomStyles.textRegular12Px),
                           
                         ],
                       ),

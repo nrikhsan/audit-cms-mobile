@@ -78,6 +78,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                       borderRadius: BorderRadius.circular(10)
                     ),
                     elevation: 0,
+                    color: CustomColors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
@@ -108,19 +109,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                                   ],
                                 ),
 
-                            SizedBox(
-                              height: 25,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)
-                                  ),
-                                  backgroundColor: CustomColors.grey
-                                ),
-                                onPressed: (){
-                                  null;
-                              }, child: Text('${clarification.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
-                            )
+                            Text('${clarification.branch?.name}', style: CustomStyles.textMediumGrey13Px)
 
                           ],
                         ),
@@ -257,6 +246,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                       borderRadius: BorderRadius.circular(10)
                     ),
                     elevation: 0,
+                    color: CustomColors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
@@ -287,19 +277,7 @@ class _ClarificationPageAuditRegionState extends State<ClarificationPageAuditReg
                                   ],
                                 ),
 
-                            SizedBox(
-                              height: 25,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)
-                                  ),
-                                  backgroundColor: CustomColors.grey
-                                ),
-                                onPressed: (){
-                                  null;
-                              }, child: Text('${clarification.branch?.name}', style: CustomStyles.textMediumWhite12Px)),
-                            )
+                            Text('${clarification.branch?.name}', style: CustomStyles.textMediumGrey13Px)
 
                           ],
                         ),

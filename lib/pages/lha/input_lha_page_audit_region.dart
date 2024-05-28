@@ -166,7 +166,9 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                     items: controllerAuditArea.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item,
-                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                              child: SizedBox(
+                                width: double.maxFinite,
+                                child: Text('${item.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                             ))
                         .toList(),
                     value: _caseCategory,
@@ -328,9 +330,10 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                         final data = controllerAuditArea.dataListLocalLhaAuditArea[index];
                         return Card(
                               elevation: 0,
+                              color: CustomColors.white,
                               shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(color: CustomColors.grey)
+                                borderSide: const BorderSide(color: CustomColors.lightGrey)
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
@@ -555,7 +558,9 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                     items: controllerAuditRegion.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item,
-                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                              child: SizedBox(
+                                width: double.maxFinite,
+                                child: Text('${item.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                             ))
                         .toList(),
                     value: _caseCategory,
@@ -717,9 +722,10 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                         final data = controllerAuditRegion.dataListLocalLhaAuditRegion[index];
                         return Card(
                               elevation: 0,
+                              color: CustomColors.white,
                               shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(color: CustomColors.grey)
+                                borderSide: const BorderSide(color: CustomColors.lightGrey)
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
@@ -956,7 +962,9 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                     items: controllerAuditArea.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                              child: SizedBox(
+                                width: double.maxFinite,
+                                child: Text('${item.name}', style: CustomStyles.textMedium13Px, overflow: TextOverflow.ellipsis, maxLines: 1))
                             ))
                         .toList(),
                     value: controllerAuditArea.caseCategoryId.value,
@@ -1284,7 +1292,9 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                     items: controllerAuditRegion.caseCategory
                         .map((item) => DropdownMenuItem(
                               value: item.id,
-                              child: Text('${item.name}', style: CustomStyles.textMedium13Px)
+                              child: SizedBox(
+                                width: double.maxFinite,
+                                child: Text('${item.name}', style: CustomStyles.textMedium13Px, maxLines: 1, overflow: TextOverflow.ellipsis))
                             ))
                         .toList(),
                     value: controllerAuditRegion.caseCategoryId.value,

@@ -130,7 +130,7 @@ class _DetailFollowUpPageAuditAreaState
                                 ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         shape: CustomStyles.customRoundedButton,
-                                        backgroundColor: CustomColors.orange),
+                                        backgroundColor: CustomColors.green),
                                     onPressed: () async {
                                       showDialogPdfFileDetailFollowUp(
                                           context,
