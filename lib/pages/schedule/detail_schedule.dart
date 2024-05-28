@@ -1237,8 +1237,7 @@ class _DetailMainScheduleAuditRegionState
                   final kka = schedule.kka;
                   final lha = schedule.lha;
                   final status = detail?.status;
-                  final startDateSchedule =
-                      DateTime.parse('${detail?.startDate}');
+                  final startDateSchedule =DateTime.parse('${detail?.startDate}');
                   final endDateSchedule = DateTime.parse('${detail?.endDate}');
 
                   final startDateRealization =

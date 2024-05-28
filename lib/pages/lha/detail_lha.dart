@@ -60,11 +60,13 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                       final lha = detailLha.lhaDetails;
                       final createdBy = detailLha.user?.level?.name;
 
-                      DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+                      final startDateSchedule = DateTime.parse('${detailLha.schedule?.startDate}');
+                      final endDateSchedule = DateTime.parse('${detailLha.schedule?.endDate}');
+
                       DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-                      DateTime startDate = inputFormat.parse(detailLha.schedule!.startDate!);
-                      DateTime endDate = inputFormat.parse(detailLha.schedule!.endDate!);
+                      DateTime startDate = outputFormat.parse(detailLha.schedule!.startDate!);
+                      DateTime endDate = outputFormat.parse(detailLha.schedule!.endDate!);
 
                       String formattedStartDate = outputFormat.format(startDate);
                       String formattedEndDate = outputFormat.format(endDate);
@@ -91,14 +93,16 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               Text('${detailLha.branch!.name}',
                                   style: CustomStyles.textRegular13Px),
                               const SizedBox(height: 20),
-                              Text('Tanggal mulai LHA sesuai jadwal :', style: CustomStyles.textBold15Px),
+                              Text('Tanggal mulai LHA sesuai jadwal :',
+                                  style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
-                              Text('${detailLha.schedule!.startDate}',
+                              Text(DateFormat('dd-MM-yyyy').format(startDateSchedule),
                                   style: CustomStyles.textRegular13Px),
                               const SizedBox(height: 20),
-                              Text('Tanggal selesai LHA sesuai jadwal :', style: CustomStyles.textBold15Px),
+                              Text('Tanggal selesai LHA sesuai jadwal :',
+                                  style: CustomStyles.textBold15Px),
                               const SizedBox(height: 5),
-                              Text('${detailLha.schedule!.endDate}',
+                              Text(DateFormat('dd-MM-yyyy').format(endDateSchedule),
                                   style: CustomStyles.textRegular13Px),
                               const SizedBox(height: 20),
                               Text('Penelusuran :', style: CustomStyles.textBold15Px),
@@ -743,15 +747,16 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
           if (detailLha == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
-            refreshConroller.add(SwipeRefreshState.hidden);
             final research = detailLha.isResearch;
             final lha = detailLha.lhaDetails;
 
-            DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+            final startDateSchedule = DateTime.parse('${detailLha.schedule?.startDate}');
+            final endDateSchedule = DateTime.parse('${detailLha.schedule?.endDate}');
+
             DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
-            DateTime startDate = inputFormat.parse(detailLha.schedule!.startDate!);
-            DateTime endDate = inputFormat.parse(detailLha.schedule!.endDate!);
+            DateTime startDate = outputFormat.parse(detailLha.schedule!.startDate!);
+            DateTime endDate = outputFormat.parse(detailLha.schedule!.endDate!);
 
             String formattedStartDate = outputFormat.format(startDate);
             String formattedEndDate = outputFormat.format(endDate);
@@ -762,6 +767,8 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
             startDate = DateTime.parse(formattedStartDate);
             endDate = DateTime.parse(formattedEndDate);
             today = DateTime.parse(formattedCurrentTime);
+
+            refreshConroller.add(SwipeRefreshState.hidden);
 
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -781,13 +788,13 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                   Text('Tanggal mulai LHA sesuai jadwal :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailLha.schedule!.startDate}',
+                  Text(DateFormat('dd-MM-yyyy').format(startDateSchedule),
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 20),
                   Text('Tanggal selesai LHA sesuai jadwal :',
                       style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${detailLha.schedule!.endDate}',
+                  Text(DateFormat('dd-MM-yyyy').format(endDateSchedule),
                       style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 20),
                   Text('Penelusuran :', style: CustomStyles.textBold15Px),
