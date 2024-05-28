@@ -9,6 +9,7 @@ import 'package:audit_cms/pages/bap/widgetBap/widget_alert_bap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
 
@@ -61,6 +62,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
         }else{
           final fileBap = bap.filename;
           final nominalLoss = bap.clarification?.nominalLoss != null ? CurrencyFormat.convertToIdr(bap.clarification?.nominalLoss, 0) : null;
+          final evaluationLimitation = DateTime.parse('${bap.clarification?.evaluationLimitation}');
           refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -91,7 +93,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
 
                   Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.clarification!.evaluationLimitation}', style: CustomStyles.textRegular13Px),
+                  Text(DateFormat('dd-MM-yyyy').format(evaluationLimitation), style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
                   Text('File BAP :', style: CustomStyles.textBold15Px),
@@ -213,6 +215,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
         }else{
           final fileBap = bap.filename;
           final nominalLoss = bap.clarification?.nominalLoss != null ? CurrencyFormat.convertToIdr(bap.clarification?.nominalLoss, 0) : null;
+          final evaluationLimitation = DateTime.parse('${bap.clarification?.evaluationLimitation}');
           refreshController.add(SwipeRefreshState.hidden);
           return Padding(
             padding: const EdgeInsets.all(15),
@@ -243,7 +246,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
 
                   Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text('${bap.clarification!.evaluationLimitation}', style: CustomStyles.textRegular13Px),
+                  Text(DateFormat('dd-MM-yyyy').format(evaluationLimitation), style: CustomStyles.textRegular13Px),
                   const SizedBox(height: 15),
 
                   Text('File BAP :', style: CustomStyles.textBold15Px),
