@@ -9,6 +9,7 @@ import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
 //audit area
@@ -54,10 +55,27 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                     if (detailLha == null) {
                       return const Center(child: SpinKitCircle(color: CustomColors.blue));
                     } else {
+                      refreshConroller.add(SwipeRefreshState.hidden);
                       final research = detailLha.isResearch;
                       final lha = detailLha.lhaDetails;
                       final createdBy = detailLha.user?.level?.name;
-                      refreshConroller.add(SwipeRefreshState.hidden);
+
+                      DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+                      DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+                      DateTime startDate = inputFormat.parse(detailLha.schedule!.startDate!);
+                      DateTime endDate = inputFormat.parse(detailLha.schedule!.endDate!);
+
+                      String formattedStartDate = outputFormat.format(startDate);
+                      String formattedEndDate = outputFormat.format(endDate);
+
+                      DateTime today = DateTime.now();
+                      String formattedCurrentTime = outputFormat.format(today);
+
+                      startDate = DateTime.parse(formattedStartDate);
+                      endDate = DateTime.parse(formattedEndDate);
+                      today = DateTime.parse(formattedCurrentTime);
+
                         return Padding(
                           padding: const EdgeInsets.all(15),
                           child: Column(
@@ -99,7 +117,13 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                       onPressed: (){
                                         final lhaDetailId = detailLha.id;
                                         if (lhaDetailId != null) {
-                                          Get.to(() => InputCaseLhaAuditArea(lhaDetailId: lhaDetailId));
+                                          if (today.isBefore(startDate)) {
+                                            snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+                                          } else if(today.isAfter(endDate)) {
+                                            snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+                                          }else{
+                                            Get.to(() => InputCaseLhaAuditArea(lhaDetailId: lhaDetailId));
+                                          }
                                         }
                                       }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
                                     ): const SizedBox()
@@ -719,9 +743,26 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
           if (detailLha == null) {
             return const Center(child: SpinKitCircle(color: CustomColors.blue));
           } else {
+            refreshConroller.add(SwipeRefreshState.hidden);
             final research = detailLha.isResearch;
             final lha = detailLha.lhaDetails;
-            refreshConroller.add(SwipeRefreshState.hidden);
+
+            DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+            DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+            DateTime startDate = inputFormat.parse(detailLha.schedule!.startDate!);
+            DateTime endDate = inputFormat.parse(detailLha.schedule!.endDate!);
+
+            String formattedStartDate = outputFormat.format(startDate);
+            String formattedEndDate = outputFormat.format(endDate);
+
+            DateTime today = DateTime.now();
+            String formattedCurrentTime = outputFormat.format(today);
+
+            startDate = DateTime.parse(formattedStartDate);
+            endDate = DateTime.parse(formattedEndDate);
+            today = DateTime.parse(formattedCurrentTime);
+
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
@@ -761,7 +802,13 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                         onPressed: (){
                           final lhaDetailId = detailLha.id;
                           if (lhaDetailId != null) {
-                            Get.to(() => InputCaseLhaAuditRegion(lhaDetailId: lhaDetailId));
+                            if (today.isBefore(startDate)) {
+                                snackBarMessageRed('Alert','Jadwal hanya dapat diproses ketika sudah sesuai dengan tanggal jadwal');
+                              } else if(today.isAfter(endDate)) {
+                                snackBarMessageRed('Alert', 'Jadwal sudah berakhir');
+                              }else{
+                                Get.to(() => InputCaseLhaAuditRegion(lhaDetailId: lhaDetailId));
+                            }
                           }
                         }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
                       )
