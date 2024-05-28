@@ -827,7 +827,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: lha!.length,
                       itemBuilder: (_, index) {
-                        final isRevision = lha[index].isRevision;
+                        final statusFlow = lha[index].statusFlow;
                         return Card(
                             elevation: 0,
                             shape: OutlineInputBorder(
@@ -871,7 +871,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
 
                                       Wrap(
                                         children: [
-                                          isRevision == 1 ? const SizedBox()
+                                          statusFlow == 1 ? const SizedBox()
                                           : TextButton(
                                           style: TextButton.styleFrom(
                                               shape: CustomStyles
