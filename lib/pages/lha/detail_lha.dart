@@ -913,7 +913,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                                   .customRoundedButton),
                                           onPressed: () {
                                             Get.to(() =>
-                                                DetaiCasesLhaPageAuditRegion(lhaId: lha[index].id!, isRevision: isRevision));
+                                                DetaiCasesLhaPageAuditRegion(lhaId: lha[index].id!));
                                           },
                                           child: Text('Lihat rincian',
                                               style: CustomStyles
@@ -938,8 +938,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
 //audit region
 class DetaiCasesLhaPageAuditRegion extends StatefulWidget {
   final int lhaId;
-  final int? isRevision;
-  const DetaiCasesLhaPageAuditRegion({super.key, required this.lhaId, this.isRevision});
+  const DetaiCasesLhaPageAuditRegion({super.key, required this.lhaId});
 
   @override
   State<DetaiCasesLhaPageAuditRegion> createState() =>
@@ -992,6 +991,7 @@ class _DetailCasesLhaPageAuditRegionState
             final casesCategory = detailLha.caseCategory?.name;
             final suggestion = detailLha.suggestion;
             final cases = detailLha.cases;
+            final statusFlow = detailLha.statusFlow;
             refreshConroller.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -1058,7 +1058,7 @@ class _DetailCasesLhaPageAuditRegionState
                   const SizedBox(height: 20),
                   Text('Status :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
-                  Text(widget.isRevision == 1 ? 'Sudah diproses' : 'Belum diproses'),
+                  Text(statusFlow == 1 ? 'Sudah diproses' : 'Belum diproses'),
 
                   const SizedBox(height: 30),
                   SizedBox(
@@ -1068,7 +1068,7 @@ class _DetailCasesLhaPageAuditRegionState
                         shape: CustomStyles.customRoundedButton,
                         backgroundColor: CustomColors.blue
                       ),
-                      onPressed: widget.isRevision == 0 ? (){
+                      onPressed: statusFlow == 0 ? (){
                         final lhaId = detailLha.id;
                         if (lhaId != null) {
                               Get.to(() => EditLhaPageAuditRegion(lhaId: lhaId, cases: cases?.name, caseCategory: detailLha.caseCategory?.name, 
