@@ -471,7 +471,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                         color: Theme.of(context).hintColor,
                       ),
                     ),
-                    items: controllerAuditArea.branchAuditArea
+                    items: controllerAuditArea.branchForFilterAuditArea
                         .map((item) => DropdownMenuItem(
                               value: item.id,
                               child: Text('${item.name}', style: CustomStyles.textMedium13Px)
@@ -524,7 +524,7 @@ class _EditSpecialScheduleState extends State<EditSpecialSchedule> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        final branchName = controllerAuditArea.branchAuditArea.firstWhere((element) => element.id == item.value);
+                        final branchName = controllerAuditArea.branchForFilterAuditArea.firstWhere((element) => element.id == item.value);
                         return branchName.name!.contains(searchValue);
                       },
                     ),
