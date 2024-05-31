@@ -40,6 +40,7 @@ import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_recommendation.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/userProfile/response_detail_user_audit_region.dart';
@@ -57,7 +58,7 @@ import '../../constant/app_constants.dart';
 import '../response/auth/response_auth.dart';
 
 class ApiService {
-  Dio dio = Dio(BaseOptions(baseUrl: AppConstant.baseUrl, connectTimeout: const Duration(seconds: 5000), receiveTimeout: const Duration(seconds: 5000)));
+  Dio dio = Dio(BaseOptions(baseUrl: AppConstant.baseUrlProd, connectTimeout: const Duration(seconds: 5000), receiveTimeout: const Duration(seconds: 5000)));
 
   // auth login
   Future<ResponseAuth> login(String username, String password) async {
@@ -519,6 +520,7 @@ class ApiService {
     try{
       final response = await dio.get(AppConstant.getClarification, queryParameters: {'page': page,
       'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
+      print(response.data);
       return ResponseClarificationAuditArea.fromJson(response.data);
     }catch(error){
       throw Exception(error);
@@ -993,6 +995,19 @@ class ApiService {
   }
 
   //master
+  Future<ResponseRecommendationAuditRegion>getRecommendation()async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await dio.get(AppConstant.getDropdownPenalty);
+      return ResponseRecommendationAuditRegion.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
   Future<ResponseBranchAuditRegion> getBranchAuditRegion() async {
     final token = await TokenManager.getToken();
     dio.options.headers = {
@@ -1128,7 +1143,7 @@ class ApiService {
   }
 
   Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification,
-      num loss, String description, int followUp)async{
+      num loss, List<int> recommendation, int followUp)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -1139,7 +1154,7 @@ class ApiService {
         'clarification_id': clarificationId,
         'evaluation': evaluationClarification,
         'nominal_loss': loss,
-        'recommendation': description,
+        'recommendation': recommendation,
         'is_followup': followUp
       });
       print(response.data);

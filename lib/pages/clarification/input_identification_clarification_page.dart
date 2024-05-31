@@ -1,5 +1,7 @@
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditArea/master/response_penalty_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_recommendation.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bap/detail_bap_page.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
@@ -21,8 +23,8 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
 
   int? _evaluation;
   final TextEditingController lossController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
   int? _followUp;
+  DataListPenaltyAuditArea? recommendation;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +75,85 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
               formInputLoss(lossController),
 
               const SizedBox(height: 15),
-              Text('Deskripsi atau rekomendasi : ', style: CustomStyles.textBold15Px),
+              Text('Rekomendasi : ', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              formInputDesc(descController),
+              SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1, color: CustomColors.grey
+                        )
+                      )
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      hint: Text('Pilih rekomendasi', style: CustomStyles.textRegular13Px),
+                      value: recommendation,
+                      items: controllerAuditArea.recommendationListAuditArea.map((recommendation){
+                        return DropdownMenuItem(
+                          value: recommendation,
+                          child: Text('${recommendation.name}', style: CustomStyles.textMedium15Px)
+                        );
+                      }).toList(),
+                      onChanged: (value)async{
+                        setState(() {
+                         recommendation = value;
+
+                        });
+                      }
+                    ),
+                  )
+                ),
+              ),
+
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('List rekomendasi', style: CustomStyles.textMedium15Px),
+                  TextButton(
+                    onPressed: (){
+                        if (recommendation == null) {
+                          Get.snackbar('Alert', 'Rekomendasi tidak boleh kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
+                        } else {
+                          controllerAuditArea.addRecommendation(recommendation?.id, recommendation?.name);
+                          clearRecommendation();
+                        }
+                      
+                  }, child: Text('Tambah rekomendasi', style: CustomStyles.textMediumGreen13Px),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              Obx(() => ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controllerAuditArea.recommendation.length,
+                itemBuilder: (_, index){
+                  final recommendationId = controllerAuditArea.recommendation[index];
+                  final recommendationName = controllerAuditArea.recommendationListAuditArea.firstWhere((element) => element.id == recommendationId);
+                  return ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${recommendationName.name}', style: CustomStyles.textMedium15Px),
+                        IconButton(
+                          onPressed: (){
+                            controllerAuditArea.recommendation.removeAt(index);
+                        }, icon: const Icon(Icons.delete, color: CustomColors.red))
+                      ],
+                    )
+                  );
+                }
+              )),
+
+
+              const SizedBox(height: 30),
 
               const SizedBox(height: 15),
               Text('Tindak lanjut : ', style: CustomStyles.textBold15Px),
@@ -114,15 +192,17 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
 
                               double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
                               final bapId = controllerAuditArea.dataInputIdentification.value?.bap?.id;
-                              if (_evaluation == null || descController.text.isEmpty || _followUp == null) {
+                              if (_evaluation == null || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else {
+                              }else if(controllerAuditArea.recommendation.isEmpty){
+                                Get.snackbar('Alert', 'List rekomendasi tidak boleh kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
+                              }else{
                                 if(loss != null){
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, loss, _followUp!);
                                 Get.off(() => DetailBapPageAuditArea(id: bapId, level: 'AREA'));
                               }else{
                                 Get.offAll(() => BotNavePageAuditArea());
-                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);
+                                controllerAuditArea.inputIdentificatinClarificationAuditArea(widget.clarificationId, _evaluation!, 0, _followUp!);
                               }
                               }
                             },
@@ -134,6 +214,12 @@ class _InputIdentifcationClarificationAuditAreaState extends State<InputIdentifc
         ),
       ),
     );
+  }
+
+  void clearRecommendation(){
+    setState(() {
+      recommendation = null;
+    });
   }
 }
 
@@ -152,8 +238,8 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
 
   int? _evaluation;
   final TextEditingController lossController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
   int? _followUp;
+  DataListRecommendation? recommendation;
 
   @override
   Widget build(BuildContext context) {
@@ -205,9 +291,82 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
               formInputLoss(lossController),
 
               const SizedBox(height: 15),
-              Text('Deskripsi atau rekomendasi : ', style: CustomStyles.textBold15Px),
+              Text('Rekomendasi : ', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              formInputDesc(descController),
+              SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1, color: CustomColors.grey
+                        )
+                      )
+                    ),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      hint: Text('Pilih rekomendasi', style: CustomStyles.textRegular13Px),
+                      value: recommendation,
+                      items: controllerAuditRegion.recommendationListAudit.map((recommendation){
+                        return DropdownMenuItem(
+                          value: recommendation,
+                          child: Text('${recommendation.name}', style: CustomStyles.textMedium15Px)
+                        );
+                      }).toList(),
+                      onChanged: (value)async{
+                        setState(() {
+                         recommendation = value;
+
+                        });
+                      }
+                    ),
+                  )
+                ),
+              ),
+
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('List rekomendasi', style: CustomStyles.textMedium15Px),
+                  TextButton(
+                    onPressed: (){
+                        if (recommendation == null) {
+                          Get.snackbar('Alert', 'Rekomendasi tidak boleh kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
+                        } else {
+                          controllerAuditRegion.addRecommendation(recommendation?.id, recommendation?.name);
+                          clearRecommendation();
+                        }
+                      
+                  }, child: Text('Tambah rekomendasi', style: CustomStyles.textMediumGreen13Px),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              Obx(() => ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controllerAuditRegion.recommendation.length,
+                itemBuilder: (_, index){
+                  final recommendationId = controllerAuditRegion.recommendation[index];
+                  final recommendationName = controllerAuditRegion.recommendationListAudit.firstWhere((element) => element.id == recommendationId);
+                  return ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${recommendationName.name}', style: CustomStyles.textMedium15Px),
+                        IconButton(
+                          onPressed: (){
+                            controllerAuditRegion.recommendation.removeAt(index);
+                        }, icon: const Icon(Icons.delete, color: CustomColors.red))
+                      ],
+                    )
+                  );
+                }
+              )),
 
               const SizedBox(height: 15),
               Text('Tindak lanjut : ', style: CustomStyles.textBold15Px),
@@ -244,16 +403,18 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
                               nominalLossText = nominalLossText.replaceAll('.', '');
                               double? loss = nominalLossText.isNotEmpty ? double.parse(nominalLossText) : null;
                               final bapId = controllerAuditRegion.dataInputIdentification.value?.bap?.id;
-                              if (_evaluation == null || descController.text.isEmpty || _followUp == null) {
+                              if (_evaluation == null || _followUp == null) {
                                 Get.snackbar('Alert', 'Tidak boleh ada field yang kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
-                              }else {
+                              }else if(controllerAuditRegion.recommendation.isEmpty){
+                                Get.snackbar('Alert', 'List rekomendasi tidak boleh kosong', snackPosition: SnackPosition.TOP, backgroundColor: CustomColors.red, colorText: CustomColors.white);
+                              }else{
                                 if(loss != null){
-                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, descController.text, _followUp!);
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, loss, _followUp!);
                                 Get.off(() => DetailBapAuditRegion(id: bapId));
-                                }else{
-                                  Get.offAll(() => BotNavAuditRegion());
-                                  controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, 0, descController.text, _followUp!);
-                                }
+                              }else{
+                                Get.offAll(() => BotNavAuditRegion());
+                                controllerAuditRegion.inputIdentificatinClarificationAuditRegion(widget.clarificationId, _evaluation!, 0, _followUp!);
+                              }
                               }
                             },
                           child: Text('Simpan identifikasi', style: CustomStyles.textMediumWhite15Px)
@@ -264,5 +425,10 @@ class _InputIdentificationClarificationAuditRegionPageState extends State<InputI
         ),
       ),
     );
+  }
+  void clearRecommendation(){
+    setState(() {
+      recommendation = null;
+    });
   }
 }

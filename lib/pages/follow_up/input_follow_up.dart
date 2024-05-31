@@ -21,9 +21,12 @@ class _InputFollowUpState extends State<InputFollowUp> {
 
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController realizationController = TextEditingController();
+  final TextEditingController regardingController = TextEditingController();
   final TextEditingController explanationPenaltyController = TextEditingController();
+  final TextEditingController explanationNoPenaltyController = TextEditingController();
   final TextEditingController charCossController = TextEditingController();
   DataListPenaltyAuditArea? penalty;
+  int? givePenalty;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +59,9 @@ class _InputFollowUpState extends State<InputFollowUp> {
               Text('${widget.auditor} :', style: CustomStyles.textMedium13Px),
               
               const SizedBox(height: 15),
-              Text('Alasan sanksi :', style: CustomStyles.textMedium15Px),
+              Text('Perihal :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputExplanationPenalty(explanationPenaltyController),
+              formInputRegarding(regardingController),
 
               const SizedBox(height: 15),
               Text('Lampiran :', style: CustomStyles.textMedium15Px),
@@ -118,13 +121,13 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   Text('List penalty', style: CustomStyles.textMedium15Px),
                   TextButton(
                     onPressed: (){
-                      if (penalty == null || explanationPenaltyController.text.isEmpty) {
+                      if (penalty == null || regardingController.text.isEmpty) {
                         snackBarMessageRed('Gagal', 'Field tidak boleh ada yang kosong atau belum diisi');
                     }else{
                         controllerAuditArea.addPenalty(penalty?.id, penalty?.name);
                         clearFollowUp();  
                     }
-                  }, child: Text('Tambah penalty', style: CustomStyles.textMediumGreen15Px),
+                  }, child: Text('Tambah penalty', style: CustomStyles.textMediumGreen13Px),
                   )
                 ],
               ),
@@ -176,13 +179,13 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       snackBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
                       if (charCoss != null) {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, explanationPenaltyController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, regardingController.text);
                         Get.back();
                       } else {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, 0, explanationPenaltyController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, 0, regardingController.text);
                         Get.back();
                       }
-                      explanationPenaltyController.clear();
+                      regardingController.clear();
                     }
                   }, 
                   child: Text('Simpan', style: CustomStyles.textMediumWhite15Px)

@@ -949,8 +949,7 @@ class _InputDataReschedulePageState extends State<InputDataReschedulePage> {
               const SizedBox(height: 25),
               Column(
                 children: [
-                  
-                  const SizedBox(height: 40),
+                
                   SizedBox(
                     width: double.maxFinite,
                     child: TextButton(

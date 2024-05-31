@@ -12,6 +12,7 @@ import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_recommendation.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
@@ -59,6 +60,7 @@ class ControllerAuditRegion extends GetxController {
   final RxList<DataCaseAuditRegion> caseAuditRegion = <DataCaseAuditRegion>[].obs;
   final RxList<DataCaseCategoryAuditRegion>caseCategory = <DataCaseCategoryAuditRegion>[].obs;
   final RxList<String> priorityFindingClarificationAuditRegion = <String>[].obs;
+  final RxList<DataListRecommendation> recommendationListAudit = <DataListRecommendation>[].obs;
 
   //lha
   var detailLhaAuditRegion = Rxn<DataDetailLhaAuditRegion>();
@@ -110,6 +112,7 @@ class ControllerAuditRegion extends GetxController {
     loadcaseAuditRegion();
     loadPriorityFindingAuditRegion();
     loadBranchAuditRegion();
+    loadRecommendation();
     super.onInit();
   }
 
@@ -604,15 +607,31 @@ void selectCaseCategory(int? value)async{
     }
   }
 
+  RxList<int> recommendation = RxList<int>();
   var bapId = RxnInt();
-  void inputIdentificatinClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
+  void inputIdentificatinClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, int followUp)async{
     try {
-      final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      final response = await repositories.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, recommendation, followUp);
       dataInputIdentification.value = response.data;
       bapId.value = dataInputIdentification.value?.bap?.id;
       getDetailBapAuditRegion(bapId.value);
       pagingControllerClarification.refresh();
       pagingControllerBap.refresh();
+      recommendation.clear();
+    } catch (error) {
+      recommendation.clear();
+      throw Exception(error);
+    }
+  }
+
+  void addRecommendation(int? recommendationId, String? name)async{
+    recommendation.add(recommendationId!);
+  }
+
+  void loadRecommendation()async{
+    try {
+      final recommendation = await repositories.getRecommendation();
+      recommendationListAudit.assignAll(recommendation.data ?? []);
     } catch (error) {
       throw Exception(error);
     }

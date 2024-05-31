@@ -90,6 +90,8 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                                       Text('Buat', style: CustomStyles.textMedium13Px),
                                       if(status == 'PROGRESS')
                                       Text('Sedang dibuat', style: CustomStyles.textMedium13Px),
+                                      if(status == 'REALIZE')
+                                      Text('Menunggu realisasi', style: CustomStyles.textMedium13Px),
                                       if(status == 'CLOSE')
                                       Text('Selesai', style: CustomStyles.textMedium13Px),
                                     ],
@@ -105,9 +107,9 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                               const SizedBox(height: 5),
                               Text('${followUp.code}', style: CustomStyles.textRegular13Px,),
                               const SizedBox(height: 5),
-                              SizedBox(
-                                width: double.maxFinite,
-                                child: Text(followUp.description != null ? 'Deskripsi : ${followUp.description}': '-', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                              Text('Batasan evaluasi : ${followUp.clarification?.evaluationLimitation ?? '-'}', style: CustomStyles.textRegular13Px),
+                              const SizedBox(height: 5),
+                              
                             ],
                           )
                       ),
@@ -118,6 +120,8 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                         Get.to(() => InputFollowUp(auditor: followUp.user!.fullname!, noFollowUp: followUp.code!, followUpId: followUp.id!));
                       }else if(status == 'PROGRESS') {
                         Get.to(() => DocumentFollowUpPage(fileName: followUp.filename, followUpId: followUp.id));
+                      }else if(status == 'REALIZE'){
+                        Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                       }else if(status == 'CLOSE'){
                         Get.to(() => DetailFollowUpPageAuditArea(id: followUp.id!));
                       }

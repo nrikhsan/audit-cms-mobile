@@ -20,7 +20,7 @@ Widget formInputRealizationFollowUp(
   );
 }
 
-Widget formInputExplanationPenalty(
+Widget formInputRegarding(
     TextEditingController explanationPenaltyController) {
   return TextField(
     controller: explanationPenaltyController,
@@ -28,7 +28,43 @@ Widget formInputExplanationPenalty(
     maxLines: 5,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
-        labelText: 'Masukan alasan sanksi...',
+        labelText: 'Masukan perihal...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+  );
+}
+
+Widget formInputExplanationPenalty(
+    TextEditingController explanationPenaltyController) {
+  return TextField(
+    controller: explanationPenaltyController,
+    cursorColor: CustomColors.blue,
+    maxLines: 3,
+    decoration: InputDecoration(
+        labelStyle: CustomStyles.textMediumGrey15Px,
+        labelText: 'Masukan alasan...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+  );
+}
+
+Widget formInputExplanationNoPenalty(
+    TextEditingController explanationNoPenaltyController) {
+  return TextField(
+    controller: explanationNoPenaltyController,
+    cursorColor: CustomColors.blue,
+    maxLines: 3,
+    decoration: InputDecoration(
+        labelStyle: CustomStyles.textMediumGrey15Px,
+        labelText: 'Masukan alasan...',
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey)),

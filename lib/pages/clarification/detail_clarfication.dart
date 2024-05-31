@@ -128,10 +128,25 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           const SizedBox(height: 5),
                           Text(detail.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
-
-                          Text('Rekomendasi :', style: CustomStyles.textBold15Px),
-                          const SizedBox(height: 5),
-                          Text(detail.recomendation ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          
+                          Visibility(
+                            visible: detail.recomendation!.isEmpty ? false : true,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Rekomendasi :', style: CustomStyles.textBold15Px),
+                                const SizedBox(height: 5),
+                                ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: detail.recomendation?.length,
+                                itemBuilder: (_, index){
+                                    final name = detail.recomendation?[index].name;
+                                    return Text('\u2022  ${name ?? 'Belum ada rekomendasi sanksi'}', style: CustomStyles.textRegular13Px);
+                                  }
+                                ),
+                              ],
+                            )
+                          ),
                           const SizedBox(height: 20),
                           
                           Text('Evaluasi :', style: CustomStyles.textBold15Px),
@@ -327,9 +342,24 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Text('${detail.auditeeLeader}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Rekomendasi :', style: CustomStyles.textBold15Px),
-                          const SizedBox(height: 5),
-                          Text('${detail.recomendation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Visibility(
+                            visible: detail.recomendation!.isEmpty ? false : true,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Rekomendasi :', style: CustomStyles.textBold15Px),
+                                const SizedBox(height: 5),
+                                ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: detail.recomendation?.length,
+                                itemBuilder: (_, index){
+                                    final name = detail.recomendation?[index].name;
+                                    return Text('\u2022  ${name ?? 'Belum ada rekomendasi sanksi'}', style: CustomStyles.textRegular13Px);
+                                  }
+                                ),
+                              ],
+                            )
+                          ),
                           const SizedBox(height: 20),
                           
                           Text('Evaluasi :', style: CustomStyles.textBold15Px),

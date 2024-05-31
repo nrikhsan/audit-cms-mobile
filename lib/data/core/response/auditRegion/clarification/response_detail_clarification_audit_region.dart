@@ -1,3 +1,5 @@
+import 'package:audit_cms/data/core/response/auditRegion/master/response_recommendation.dart';
+
 class ResponseDetailClarificationAuditRegion {
   Meta? meta;
   String? message;
@@ -60,7 +62,7 @@ class DataDetailClarificationAuditRegion {
   String? location;
   String? auditee;
   String? auditeeLeader;
-  String? recomendation;
+  List<DataListRecommendation>? recomendation;
   int? evaluation;
   String? status;
   int? nominalLoss;
@@ -105,7 +107,12 @@ class DataDetailClarificationAuditRegion {
     location = json['location'];
     auditee = json['auditee'];
     auditeeLeader = json['auditee_leader'];
-    recomendation = json['recomendation'];
+    if (json['recomendation'] != null) {
+      recomendation = <DataListRecommendation>[];
+      json['recomendation'].forEach((v) {
+        recomendation!.add(DataListRecommendation.fromJson(v));
+      });
+    }
     evaluation = json['evaluation'];
     status = json['status'];
     nominalLoss = json['nominal_loss'];
@@ -136,7 +143,10 @@ class DataDetailClarificationAuditRegion {
     data['location'] = location;
     data['auditee'] = auditee;
     data['auditee_leader'] = auditeeLeader;
-    data['recomendation'] = recomendation;
+    if (recomendation != null) {
+      data['recomendation'] =
+          recomendation!.map((v) => v.toJson()).toList();
+    }
     data['evaluation'] = evaluation;
     data['status'] = status;
     data['nominal_loss'] = nominalLoss;

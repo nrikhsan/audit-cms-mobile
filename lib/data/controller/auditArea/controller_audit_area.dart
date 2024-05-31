@@ -86,6 +86,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<DataCaseAuditArea> caseAuditArea = <DataCaseAuditArea>[].obs;
   final RxList<DataCaseCategory>caseCategory = <DataCaseCategory>[].obs;
   final RxList<DataListPenaltyAuditArea> penaltyAuditArea = <DataListPenaltyAuditArea>[].obs;
+  final RxList<DataListPenaltyAuditArea> recommendationListAuditArea = <DataListPenaltyAuditArea>[].obs;
 
   //kka
   var scheduleIdKka = Rxn<int>();
@@ -144,6 +145,7 @@ class ControllerAuditArea extends GetxController{
     loadCaseAuditArea();
     loadPenalty();
     loadBranchForFilterDataAuditArea();
+    loadRecommendation();
     super.onInit();
   }
 
@@ -693,15 +695,31 @@ void getDetailRescheduleAuditArea(int id)async{
 
   var dataInputIdentification = Rxn<DataIdentification>();
   var bapId = RxnInt();
-   void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, num loss, String description, int followUp)async{
+  RxList<int>recommendation = RxList<int>();
+   void inputIdentificatinClarificationAuditArea(int clarificationId, int evaluationClarification, num loss, int followUp)async{
     try {
-      final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+      final response = await repository.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, recommendation, followUp);
       dataInputIdentification.value = response.data;
       bapId.value = dataInputIdentification.value?.bap?.id;
       getDetailBapAuditArea(bapId.value);
       pagingControllerClarificationAuditArea.refresh();
       pagingControllerBapAuditArea.refresh();
       pagingControllerFollowUp.refresh();
+      recommendation.clear();
+    } catch (error) {
+      recommendation.clear();
+      throw Exception(error);
+    }
+  }
+
+  void addRecommendation(int? recommendationId, String? name)async{
+    recommendation.add(recommendationId!);
+  }
+
+  void loadRecommendation()async{
+    try {
+      final recommendation = await repository.getPenaltyAuditArea();
+      recommendationListAuditArea.assignAll(recommendation.data ?? []);
     } catch (error) {
       throw Exception(error);
     }
@@ -957,6 +975,10 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
+  void addPenalty(int? penaltyId, String? name)async{
+    penaltyIdList.add(penaltyId!);
+  }
+
   var followUpDetailId = RxnInt();
   void uploadFollowUp(String filePath, int? followUpId)async{
     try {
@@ -984,9 +1006,6 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
-  void addPenalty(int? penaltyId, String? name)async{
-    penaltyIdList.add(penaltyId!);
-  }
   
   void loadPenalty()async{
     try {

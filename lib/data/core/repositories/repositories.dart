@@ -39,6 +39,7 @@ import 'package:audit_cms/data/core/response/auditRegion/bap/response_detail_bap
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_detail_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_detail_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/lha/response_detail_lha_audit_region.dart';
+import 'package:audit_cms/data/core/response/auditRegion/master/response_recommendation.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_detail_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
@@ -87,6 +88,7 @@ abstract class Repositories {
   Future<ResponseCaseAuditArea> getCaseAuditArea();
   Future<ResponseCaseCategoryAuditArea> getCaseCategoryAuditArea(int? caseId);
   Future<ResponsePenaltyAuditArea> getPenaltyAuditArea();
+  
 
   //LHA
   Future<ResponseRevisionLhaAuditArea>getRevisiLhaAuditArea(int? lhaDetailId);
@@ -155,6 +157,8 @@ abstract class Repositories {
   Future<ResponseCaseAuditRegion>getCasesAuditRegion();
   Future<ResponseCaseCategoryAuditRegion>getCaseCategoryAuditRegion(int? caseId);
   Future<ResponsePriorityFindingAuditRegion>getPriorityFindingAuditRegion();
+  Future<ResponseRecommendationAuditRegion> getRecommendation();
+
   //user profile
   Future<ResponseProfileAuditRegion> getDetailUserAuditRegion();
   Future<ResponseMessage>editUserAuditRegion(String? email, String? fullName);
@@ -169,7 +173,7 @@ abstract class Repositories {
   String description, String priority);
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate);
   Future<ResponseMessage>uploadClarificationAuditRegion(String filePath, int? id);
-  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp);
+  Future<ResponseIdentification>inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, List<int> recommendation, int followUp);
   Future<ResponseDetailClarificationAuditRegion>getDetailClarificationAuditRegion(int id);
 
   //BAP
@@ -474,6 +478,11 @@ class RepositoryImpl implements Repositories {
 
   //master
   @override
+  Future<ResponseRecommendationAuditRegion> getRecommendation() {
+    return apiService.getRecommendation();
+  }
+
+  @override
   Future<ResponseBranchAuditRegion>getBranchAuditRegion(){
     return apiService.getBranchAuditRegion();
   }
@@ -555,8 +564,8 @@ class RepositoryImpl implements Repositories {
   }
 
   @override
-  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, String description, int followUp) {
-    return apiService.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, description, followUp);
+  Future<ResponseIdentification> inputIdentificationClarificationAuditRegion(int? clarificationId, int evaluationClarification, num loss, List<int> recommendation, int followUp) {
+    return apiService.inputIdentificationClarificationAuditRegion(clarificationId, evaluationClarification, loss, recommendation, followUp);
   }
 
   @override
