@@ -2,6 +2,7 @@ import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
 import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditArea/clarification/response_clarification_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
+import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/bottom_navigasi/bott_nav.dart';
 import 'package:audit_cms/pages/clarification/detail_clarfication.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 //audit area
 class ClarificationPageAuditArea extends StatefulWidget {
@@ -91,7 +93,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                         if(statusClarificaion == 'INPUT')
-                                          Text('Perlu klarifikasi', style: CustomStyles.textMediumRed12Px),
+                                        Text('Perlu klarifikasi', style: CustomStyles.textMediumRed12Px),
                                     
                                         if(statusClarificaion == 'DOWNLOAD')
                                         Text('Unduh klarifikasi', style: CustomStyles.textMediumRed12Px),
@@ -149,8 +151,11 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
                       )
                     ),
                   ),
-                  onTap: (){
-                    if (level == 'AREA') {
+                  onTap: ()async{
+                    final token = await TokenManager.getToken();
+                    Map<String, dynamic>decodeToken = Jwt.parseJwt(token!);
+                    final id = decodeToken['user']['id'];
+                    if (level == 'AREA' && clarification.user!.id == id) {
                           if (statusClarificaion == 'INPUT'){
                           Get.to(() =>  InputClarificationAuditArea(id: clarification.id!));
                           } else if(statusClarificaion == 'DOWNLOAD'){

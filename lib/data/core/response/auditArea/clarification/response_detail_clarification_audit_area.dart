@@ -65,6 +65,7 @@ class DataDetailClarificationAuditArea {
   String? auditeeLeader;
   String? startDateRealization;
   String? endDateRealization;
+  String? finish;
   String? gap;
   List<DataListRecommendation>? recomendation;
   int? evaluation;
@@ -90,6 +91,7 @@ class DataDetailClarificationAuditArea {
       this.auditeeLeader,
       this.startDateRealization,
       this.endDateRealization,
+      this.finish,
       this.gap,
       this.recomendation,
       this.evaluation,
@@ -118,6 +120,7 @@ class DataDetailClarificationAuditArea {
     auditeeLeader = json['auditee_leader'];
     startDateRealization = json['start_date_realization'];
     endDateRealization = json['end_date_realization'];
+    finish = json['finish'];
     gap = json['gap'];
     if (json['recomendation'] != null) {
       recomendation = <DataListRecommendation>[];
@@ -158,6 +161,7 @@ class DataDetailClarificationAuditArea {
     data['auditee_leader'] = auditeeLeader;
     data['start_date_realization'] = startDateRealization;
     data['end_date_realization'] = endDateRealization;
+    data['finish'] = finish;
     data['gap'] = gap;
     if (recomendation != null) {
       data['recomendation'] =

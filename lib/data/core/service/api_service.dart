@@ -58,7 +58,7 @@ import '../../constant/app_constants.dart';
 import '../response/auth/response_auth.dart';
 
 class ApiService {
-  Dio dio = Dio(BaseOptions(baseUrl: AppConstant.baseUrlProd, connectTimeout: const Duration(seconds: 5000), receiveTimeout: const Duration(seconds: 5000)));
+  Dio dio = Dio(BaseOptions(baseUrl: AppConstant.baseUrlDev, connectTimeout: const Duration(seconds: 5000), receiveTimeout: const Duration(seconds: 5000)));
 
   // auth login
   Future<ResponseAuth> login(String username, String password) async {

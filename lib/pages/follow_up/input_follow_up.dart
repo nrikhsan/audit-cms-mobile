@@ -22,8 +22,6 @@ class _InputFollowUpState extends State<InputFollowUp> {
   final ControllerAuditArea controllerAuditArea = Get.put(ControllerAuditArea(Get.find()));
   final TextEditingController realizationController = TextEditingController();
   final TextEditingController regardingController = TextEditingController();
-  final TextEditingController explanationPenaltyController = TextEditingController();
-  final TextEditingController explanationNoPenaltyController = TextEditingController();
   final TextEditingController charCossController = TextEditingController();
   DataListPenaltyAuditArea? penalty;
   int? givePenalty;

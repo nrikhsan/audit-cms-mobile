@@ -76,8 +76,7 @@ class _DetailFollowUpPageAuditAreaState
                       const SizedBox(height: 5),
                       Text('${followUp.user!.fullname}',
                           style: CustomStyles.textRegular13Px),
-                      const SizedBox(height: 15),
-                      Text('Klarifikasi :', style: CustomStyles.textBold15Px),
+                      
                       const SizedBox(height: 15),
                       Text('Tanggal klarifikasi :',
                           style: CustomStyles.textBold15Px),
@@ -91,23 +90,54 @@ class _DetailFollowUpPageAuditAreaState
                       Text('${followUp.clarification!.code}',
                           style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
-                      Text('Sanksi :', style: CustomStyles.textBold15Px),
-                      const SizedBox(height: 5),
-                      Wrap(
-                        children: [
-                          followUp.isPenalty == 1
-                              ? Text('Memberi sanksi',
-                                  style: CustomStyles.textRegular13Px)
-                              : Text('Tidak memberi sanksi',
-                                  style: CustomStyles.textRegular13Px),
-                        ],
-                      ),
+                       Visibility(
+                            visible: followUp.penalty!.isEmpty ? false : true,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Sanksi :', style: CustomStyles.textBold15Px),
+                                const SizedBox(height: 5),
+                                ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: followUp.penalty?.length,
+                                itemBuilder: (_, index){
+                                    final name = followUp.penalty?[index].name;
+                                    return Text('\u2022  ${name ?? 'Belum ada sanksi'}', style: CustomStyles.textRegular13Px);
+                                  }
+                                ),
+                              ],
+                            )
+                          ),
+                      const SizedBox(height: 15),
+                      Visibility(
+                            visible: followUp.penaltyRelization!.isEmpty ? false : true,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Relaisasi sanksi :', style: CustomStyles.textBold15Px),
+                                const SizedBox(height: 5),
+                                ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: followUp.penaltyRelization?.length,
+                                itemBuilder: (_, index){
+                                    final name = followUp.penaltyRelization?[index].name;
+                                    return Text('\u2022  ${name ?? 'Belum ada realisasi sanksi'}', style: CustomStyles.textRegular13Px);
+                                  }
+                                ),
+                              ],
+                            )
+                          ),
+                      
                       const SizedBox(height: 15),
                       Text('Alasan :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
-                      Text('${followUp.description}',
-                          style: CustomStyles.textRegular13Px,
-                          textAlign: TextAlign.justify),
+                      Text('${followUp.note}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+
+                      const SizedBox(height: 15),
+                      Text('Perihal :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${followUp.description}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                    
                       const SizedBox(height: 15),
                       Text('File tindak lanjut :',
                           style: CustomStyles.textBold15Px),

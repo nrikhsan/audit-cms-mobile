@@ -12,6 +12,7 @@ import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -71,6 +72,9 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
             final followUp = detail.isFollowUp;
             final fileName = detail.fileName;
             final nominalLoss = detail.nominalLoss != null ?  CurrencyFormat.convertToIdr(detail.nominalLoss, 0) : null;
+            final startDateRealization = detail.startDateRealization != null ? DateTime.parse('${detail.startDateRealization}') : null;
+            final endDateRealization = detail.endDateRealization != null ? DateTime.parse('${detail.endDateRealization}') : null;
+            final evaluationLimitation = detail.evaluationLimitation != null ? DateTime.parse('${detail.evaluationLimitation}') : null;
             refreshController.add(SwipeRefreshState.hidden);
             return Padding(
               padding: const EdgeInsets.all(15),
@@ -78,7 +82,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  Text('Auditor :', style: CustomStyles.textBold15Px),
+                          Text('Auditor :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.user!.fullname}',
                               style: CustomStyles.textRegular13Px),
@@ -87,6 +91,16 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           Text('Kode :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Awal realisasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(startDateRealization != null ? DateFormat('yyyy-MM-dd').format(startDateRealization): '-', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Akhir realisasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(endDateRealization != null ? DateFormat('yyyy-MM-dd').format(endDateRealization): '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Cabang :', style: CustomStyles.textBold15Px),
@@ -154,8 +168,8 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           Wrap(
                             children: [
                               evaluation == 0 ? 
-                              Text('Tidak ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
-                              : Text('Ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              Text('Ditolak', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Diterima', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -172,7 +186,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
 
                           Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text(detail.evaluationLimitation ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(evaluationLimitation != null ? DateFormat('yyyy-MM-dd').format(evaluationLimitation) : '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
@@ -285,13 +299,16 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
             final followUp = detail.isFollowUp;
             final nominalLoss = CurrencyFormat.convertToIdr(detail.nominalLoss, 0);
             refreshController.add(SwipeRefreshState.hidden);
+            final startDateRealization = detail.startDateRealization != null ? DateTime.parse('${detail.startDateRealization}') : null;
+            final endDateRealization = detail.endDateRealization != null ? DateTime.parse('${detail.endDateRealization}') : null;
+            final evaluationLimitation = detail.evaluationLimitation != null ? DateTime.parse('${detail.evaluationLimitation}') : null;
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   
-                  Text('Auditor :', style: CustomStyles.textBold15Px),
+                          Text('Auditor :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.user!.fullname}',
                               style: CustomStyles.textRegular13Px),
@@ -300,6 +317,16 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Text('Kode :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.code}', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Awal realisasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(startDateRealization != null ? DateFormat('yyyy-MM-dd').format(startDateRealization): '-', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 20),
+
+                          Text('Akhir realisasi :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(endDateRealization != null ? DateFormat('yyyy-MM-dd').format(endDateRealization): '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
                           Text('Cabang :', style: CustomStyles.textBold15Px),
@@ -367,8 +394,8 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Wrap(
                             children: [
                               evaluation == 0 ? 
-                              Text('Tidak ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
-                              : Text('Ada', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              Text('Ditolak', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
+                              : Text('Diterima', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify)
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -385,7 +412,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
 
                           Text('Batas evaluasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.evaluationLimitation}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(evaluationLimitation != null ? DateFormat('yyyy-MM-dd').format(evaluationLimitation) : '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Tindak lanjut :', style: CustomStyles.textBold15Px),

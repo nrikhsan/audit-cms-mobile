@@ -1,7 +1,7 @@
 class AppConstant{
 
   static const String baseUrlProd = 'https://api-kka.cmsmaju.co.id/';
-  static const String baseUrlDev = 'http://apidev-kka.cmsmaju.co.id/';
+  static const String baseUrlDev = 'https://apidev-kka.cmsmaju.co.id/';
 
   //auth
   static const String auth = 'api/auth/login';
