@@ -9,6 +9,7 @@ import 'package:audit_cms/pages/follow_up/widgetFollowUp/widget_filter_and_alert
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 
 
 //audit area
@@ -59,6 +60,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (_, followUp, index){
                   final status = followUp.status;
+                  final evaluationLimitation = followUp.clarification?.evaluationLimitation != null ? DateTime.parse('${followUp.clarification?.evaluationLimitation}') : null;
                   return GestureDetector(
                     child: Card(
                       elevation: 0,
@@ -107,7 +109,7 @@ class _FollowUpPageAuditAreaState extends State<FollowUpPageAuditArea> {
                               const SizedBox(height: 5),
                               Text('${followUp.code}', style: CustomStyles.textRegular13Px,),
                               const SizedBox(height: 5),
-                              Text('Batasan evaluasi : ${followUp.clarification?.evaluationLimitation ?? '-'}', style: CustomStyles.textRegular13Px),
+                              Text('Batasan evaluasi : ${evaluationLimitation != null ? DateFormat('yyyy-MM-dd').format(evaluationLimitation) : '-' }', style: CustomStyles.textRegular13Px),
                               const SizedBox(height: 5),
                               
                             ],
