@@ -292,7 +292,7 @@ class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
                      
                     },
                     child:
-                        Text('Revisi LHA', style: CustomStyles.textMediumWhite15Px)),
+                        Text('Edit LHA', style: CustomStyles.textMediumWhite15Px)),
               )
             ],
           ),
