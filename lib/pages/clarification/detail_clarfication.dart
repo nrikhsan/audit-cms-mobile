@@ -189,14 +189,14 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           Text(evaluationLimitation != null ? DateFormat('yyyy-MM-dd').format(evaluationLimitation) : '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Selesai :', style: CustomStyles.textBold15Px),
+                         Text('Waktu penyelesaian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.finish}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.finish ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Gap :', style: CustomStyles.textBold15Px),
+                          Text('Estimasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.gap}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.gap ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
@@ -424,14 +424,14 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Text(evaluationLimitation != null ? DateFormat('yyyy-MM-dd').format(evaluationLimitation) : '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Selesai :', style: CustomStyles.textBold15Px),
+                          Text('Waktu penyelesaian :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.finish}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.finish ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
-                          Text('Gap :', style: CustomStyles.textBold15Px),
+                          Text('Estimasi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
-                          Text('${detail.gap}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                          Text(detail.gap ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                           const SizedBox(height: 20),
 
                           Text('Tindak lanjut :', style: CustomStyles.textBold15Px),
