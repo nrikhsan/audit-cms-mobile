@@ -283,6 +283,7 @@ class _TabBarViewCasesLhaPageAuditAreaState extends State<TabBarViewCasesLhaPage
     return DefaultTabController(
       length: 2, 
       child: Scaffold(
+        backgroundColor: CustomColors.white,
         appBar: AppBar(
             backgroundColor: CustomColors.white,
             title: const Text('Detail Kasus LHA'),
@@ -1007,6 +1008,7 @@ class _DetailCasesLhaPageAuditRegionState
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailCasesLhaAuditRegion(widget.lhaId);
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Detail kasus laporan harian audit'),

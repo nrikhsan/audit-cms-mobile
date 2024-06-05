@@ -38,6 +38,7 @@ class _EditProfilePageAuditAreaState extends State<EditProfilePageAuditArea> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
         appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Edit profil'),
@@ -195,6 +196,7 @@ class _EditProfilePageAuditRegionState extends State<EditProfilePageAuditRegion>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
         appBar: AppBar(
         backgroundColor: CustomColors.white,
         title: const Text('Edit profil'),
