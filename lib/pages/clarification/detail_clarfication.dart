@@ -108,12 +108,12 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Kasus :', style: CustomStyles.textBold15Px),
+                          Text('Divisi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.cases!.code}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                          Text('Kategori SOP :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.caseCategory!.name}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
@@ -344,12 +344,12 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Text('${detail.branch!.name}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Kasus :', style: CustomStyles.textBold15Px),
+                          Text('Divisi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.cases!.code}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                          Text('Kategori SOP :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.caseCategory!.name}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
