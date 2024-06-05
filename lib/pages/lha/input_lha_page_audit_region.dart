@@ -63,7 +63,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Kasus :', style: CustomStyles.textBold15Px),
+              Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
 
               Obx(() => SizedBox(
@@ -72,7 +72,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                   child: DropdownButton2<DataCaseAuditArea>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -124,7 +124,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -148,7 +148,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
               
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
 
               Obx(() => SizedBox(
@@ -157,7 +157,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                   child: DropdownButton2<DataCaseCategory>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -210,7 +210,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -381,7 +381,7 @@ class _InputLhaAuditAreaState extends State<InputLhaAuditArea> {
                           Get.back();
                       }
                   },
-                  child: Text('Simpan Lha', style: CustomStyles.textMediumWhite15Px)
+                  child: Text('Simpan LHA', style: CustomStyles.textMediumWhite15Px)
                 ),
               )
             ],
@@ -456,7 +456,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Kasus :', style: CustomStyles.textBold15Px),
+              Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               Obx(() => SizedBox(
                 width: double.maxFinite,
@@ -464,7 +464,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                   child: DropdownButton2<DataCaseAuditRegion>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -516,7 +516,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -540,7 +540,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
 
               Obx(() => SizedBox(
@@ -549,7 +549,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                   child: DropdownButton2<DataCaseCategoryAuditRegion>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -602,7 +602,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -634,9 +634,9 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
               fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Perbaikan permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanen :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanen...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
@@ -775,7 +775,7 @@ class _InputLhaPageAuditRegionState extends State<InputLhaPageAuditRegion> {
                           Get.back();
                       }
                   },
-                  child: Text('Simpan Lha', style: CustomStyles.textMediumWhite15Px)
+                  child: Text('Simpan LHA', style: CustomStyles.textMediumWhite15Px)
                 ),
               )
             ],
@@ -839,7 +839,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
-        title: const Text('Tambah kasus LHA'),
+        title: const Text('Tambah temuan LHA'),
         titleTextStyle: CustomStyles.textBold18Px,
         titleSpacing: 5,
         backgroundColor: CustomColors.white,
@@ -859,7 +859,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Kasus :', style: CustomStyles.textBold15Px),
+              Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               Obx(() => SizedBox(
                 width: double.maxFinite,
@@ -867,7 +867,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -919,7 +919,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -944,7 +944,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
               
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
 
               Obx(() => SizedBox(
@@ -953,7 +953,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -1005,7 +1005,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -1116,7 +1116,7 @@ class _InputCaseLhaAuditAreaState extends State<InputCaseLhaAuditArea> {
                       } 
                     
                   },
-                  child: Text('Tambah kasus', style: CustomStyles.textMediumWhite15Px)
+                  child: Text('Simpan temuan', style: CustomStyles.textMediumWhite15Px)
                 ),
               )
             ]
@@ -1169,7 +1169,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
-        title: const Text('Tambah kasus LHA'),
+        title: const Text('Tambah temuan LHA'),
         titleTextStyle: CustomStyles.textBold18Px,
         titleSpacing: 5,
         backgroundColor: CustomColors.white,
@@ -1189,7 +1189,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text('Kasus :', style: CustomStyles.textBold15Px),
+              Text('Divisi :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               Obx(() => SizedBox(
                 width: double.maxFinite,
@@ -1197,7 +1197,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -1249,7 +1249,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -1274,7 +1274,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
               
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
 
               Obx(() => SizedBox(
@@ -1283,7 +1283,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -1335,7 +1335,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -1363,14 +1363,14 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
               fomrInputRecommendationOrSuggest(lhaDescriptionController, 'Masukan uraian temuan...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan sementara :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanen :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanen...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
@@ -1446,7 +1446,7 @@ class _InputCaseLhaAuditRegionState extends State<InputCaseLhaAuditRegion> {
                       } 
                     
                   },
-                  child: Text('Tambah kasus', style: CustomStyles.textMediumWhite15Px)
+                  child: Text('Simpan temuan', style: CustomStyles.textMediumWhite15Px)
                 ),
               )
             ]
