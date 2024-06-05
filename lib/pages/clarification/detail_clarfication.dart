@@ -283,6 +283,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailClarificationAuditRegion(widget.id);
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         title: const Text('Detail klarifikasi'),
         titleTextStyle: CustomStyles.textBold18Px,

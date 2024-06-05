@@ -93,14 +93,14 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               formEditLha(lhaDescriptionController, 'Masukan uraian temuan...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan sementara :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan rekomendasi sementara...'),
+              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanent :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan rekomendasi permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
@@ -235,14 +235,14 @@ class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
               formEditLha(lhaDescriptionController, 'Masukan uraian temuan...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi sementara :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan sementara :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan rekomendasi sementara...'),
+              fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Rekomendasi permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanent :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan rekomendasi permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),

@@ -40,6 +40,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
   Widget build(BuildContext context) {
     controllerAuditArea.getDetailBapAuditArea(controllerAuditArea.bapId.value);
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         title: const Text('Detail BAP'),
         titleTextStyle: CustomStyles.textBold18Px,
@@ -193,6 +194,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
   Widget build(BuildContext context) {
     controllerAuditRegion.getDetailBapAuditRegion(controllerAuditRegion.bapId.value);
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         title: const Text('Detail BAP'),
         titleTextStyle: CustomStyles.textBold18Px,

@@ -40,6 +40,7 @@ class _ClarificationPageAuditAreaState extends State<ClarificationPageAuditArea>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
         appBar: AppBar(
           title: const Text('Klarifikasi'),
           titleTextStyle: CustomStyles.textBold18Px,

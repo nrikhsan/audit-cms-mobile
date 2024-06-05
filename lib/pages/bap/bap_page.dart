@@ -30,6 +30,7 @@ class _BapAuditAreaPageState extends State<BapAuditAreaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         title: const Text('BAP'),
         titleTextStyle: CustomStyles.textBold18Px,
@@ -129,6 +130,7 @@ class _BapAuditRegionPageState extends State<BapAuditRegionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.white,
       appBar: AppBar(
         title: const Text('BAP'),
         titleTextStyle: CustomStyles.textBold18Px,
