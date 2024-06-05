@@ -60,7 +60,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
     return Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
-          title: const Text('Edit laporan harian audit'),
+          title: const Text('Revisi laporan harian audit'),
           backgroundColor: CustomColors.white,
           titleTextStyle: CustomStyles.textBold18Px,
           titleSpacing: 5,
@@ -83,7 +83,7 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               Text(widget.cases!, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               Text(widget.caseCategory!, style: CustomStyles.textRegular13Px),
 
@@ -98,9 +98,9 @@ class _EditLhaPageAuditAreaState extends State<EditLhaPageAuditArea> {
               fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Perbaikan permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanen :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanen...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),
@@ -225,7 +225,7 @@ class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
               Text(widget.cases!, style: CustomStyles.textRegular13Px),
 
               const SizedBox(height: 20),
-              Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+              Text('Kategori SOP :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
               Text(widget.caseCategory!, style: CustomStyles.textRegular13Px),
 
@@ -240,9 +240,9 @@ class _EditLhaPageAuditRegionState extends State<EditLhaPageAuditRegion> {
               fomrInputRecommendationOrSuggest(temporaryRecommendationController, 'Masukan perbaikan sementara...'),
 
               const SizedBox(height: 15),
-              Text('Perbaikan permanent :', style: CustomStyles.textBold15Px),
+              Text('Perbaikan permanen :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 15),
-              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanent...'),
+              fomrInputRecommendationOrSuggest(permanentRecommendationController, 'Masukan perbaikan permanen...'),
               
               const SizedBox(height: 15),
               Text('Rekomendasi atau saran :', style: CustomStyles.textBold15Px),

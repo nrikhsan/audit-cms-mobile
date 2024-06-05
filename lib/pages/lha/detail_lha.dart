@@ -173,7 +173,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                     height: 10,
                                   ),
                                   const SizedBox(height: 15),
-                                  SizedBox(width: double.maxFinite, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                                  SizedBox(width: double.maxFinite, child: Text('Kategori SOP : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
                                   const SizedBox(height: 30),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -192,8 +192,8 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                             onPressed: () {
                                               alertDeleteWidget(
                                                 context, 
-                                                'Hapus kasus', 
-                                                'Apakah anda yakin untuk menghapus kasus ini?',
+                                                'Hapus temuan', 
+                                                'Apakah anda yakin untuk menghapus temuan ini?',
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
@@ -286,7 +286,7 @@ class _TabBarViewCasesLhaPageAuditAreaState extends State<TabBarViewCasesLhaPage
         backgroundColor: CustomColors.white,
         appBar: AppBar(
             backgroundColor: CustomColors.white,
-            title: const Text('Detail Kasus LHA'),
+            title: const Text('Detail temuan LHA'),
             titleSpacing: 5,
             titleTextStyle: CustomStyles.textBold18Px,
             leading: IconButton(onPressed: (){
@@ -306,8 +306,8 @@ class _TabBarViewCasesLhaPageAuditAreaState extends State<TabBarViewCasesLhaPage
                   fontFamily: 'RobotoMedium',
                   fontSize: 13),
               tabs: const [
-                Tab(text: 'Detail LHA'),
-                Tab(text: 'Hasil Revisi LHA'),
+                Tab(text: 'Detail'),
+                Tab(text: 'Hasil Revisi'),
               ],
             ),
           ),
@@ -384,7 +384,7 @@ class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(height: 20),
-                                    Text('Kasus :', style: CustomStyles.textBold15Px),
+                                    Text('Divisi :', style: CustomStyles.textBold15Px),
                                     const SizedBox(height: 5),
                                     Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
                                     const SizedBox(height: 20),
@@ -403,7 +403,7 @@ class _DetailLhaCaseAuditAreaState extends State<DetailLhaCaseAuditArea> {
                               ],
                             ),
                             const SizedBox(height: 5),
-                            Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                            Text('Kategori SOP :', style: CustomStyles.textBold15Px),
                             const SizedBox(height: 5),
                             Text(casesCategory ?? '-', style: CustomStyles.textRegular13Px),
                             
@@ -559,7 +559,7 @@ class _ListRevisionPageAuditAreaState extends State<ListRevisionPageAuditArea> {
                                             const SizedBox(height: 5),
                                             
                                             const SizedBox(height: 5),
-                                            Text('Kategori Kasus : ${lha.caseCategory!.name}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2),
+                                            Text('Kategori SOP : ${lha.caseCategory!.name}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2),
                                             
                                             const SizedBox(height: 15),
                                             Row(
@@ -627,7 +627,7 @@ class _DetailRevisionLhaAuditAreaState
         backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: const Text('Detail revisi kasus LHA'),
+        title: const Text('Detail revisi temuan LHA'),
         titleTextStyle: CustomStyles.textBold18Px,
         leading: IconButton(
             onPressed: () {
@@ -665,7 +665,7 @@ class _DetailRevisionLhaAuditAreaState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(height: 20),
-                                    Text('Kasus :', style: CustomStyles.textBold15Px),
+                                    Text('Divisi :', style: CustomStyles.textBold15Px),
                                     Text(cases?.name ?? '-', style: CustomStyles.textRegular13Px),
                                     const SizedBox(height: 20),
                                   ],
@@ -684,7 +684,7 @@ class _DetailRevisionLhaAuditAreaState
                             ),
 
                   const SizedBox(height: 5),
-                  Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                  Text('Kategori SOP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
 
                   Text(casesCategory ?? '-', style: CustomStyles.textRegular13Px),
@@ -891,7 +891,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                     height: 10,
                                   ),
                                   const SizedBox(height: 15),
-                                  SizedBox(width: double.maxFinite, child: Text('Kategori kasus : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
+                                  SizedBox(width: double.maxFinite, child: Text('Kategori SOP : ${lha[index].caseCategory}', style: CustomStyles.textRegular13Px, overflow: TextOverflow.ellipsis, maxLines: 2)),
                                   const SizedBox(height: 30),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -910,8 +910,8 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                             onPressed: () {
                                               alertDeleteWidget(
                                                 context, 
-                                                'Hapus kasus', 
-                                                'Apakah anda yakin untuk menghapus kasus ini?',
+                                                'Hapus temuan', 
+                                                'Apakah anda yakin untuk menghapus temuan ini?',
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
@@ -1011,7 +1011,7 @@ class _DetailCasesLhaPageAuditRegionState
       backgroundColor: CustomColors.white,
       appBar: AppBar(
         backgroundColor: CustomColors.white,
-        title: const Text('Detail kasus laporan harian audit'),
+        title: const Text('Detail temuan LHA'),
         titleTextStyle: CustomStyles.textBold18Px,
         leading: IconButton(
             onPressed: () {
@@ -1050,7 +1050,7 @@ class _DetailCasesLhaPageAuditRegionState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Kasus :', style: CustomStyles.textBold15Px),
+                          Text('Divisi :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text(cases?.name ?? '-',
                               style: CustomStyles.textRegular13Px),
@@ -1069,7 +1069,7 @@ class _DetailCasesLhaPageAuditRegionState
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text('Kategori kasus :', style: CustomStyles.textBold15Px),
+                  Text('Kategori SOP :', style: CustomStyles.textBold15Px),
                   const SizedBox(height: 5),
                   Text(casesCategory ?? '-',
                       style: CustomStyles.textRegular13Px),
