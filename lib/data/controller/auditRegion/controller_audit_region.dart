@@ -1,4 +1,6 @@
 import 'package:audit_cms/data/core/repositories/repositories.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/reponse_follow_up_audit_area.dart';
+import 'package:audit_cms/data/core/response/auditArea/followUp/response_detail_follow_up_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/bap/response_bap_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_clarification_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_clarification.dart';
@@ -86,6 +88,9 @@ class ControllerAuditRegion extends GetxController {
   var startDateCla = ''.obs;
   var endDateCla = ''.obs;
 
+  //follow up
+  final PagingController<int, ContentListFollowUp> pagingControllerFollowUp = PagingController(firstPageKey: 0);
+
   //bap
   final PagingController<int, ContentListBapAuditRegion> pagingControllerBap = PagingController(firstPageKey: 0);
   var detailBapAuditRegion = Rxn<DataDetailBapAuditRegion>();
@@ -109,6 +114,7 @@ class ControllerAuditRegion extends GetxController {
     pagingControllerKka.addPageRequestListener(loadKkaAuditRegion);
     pagingControllerClarification.addPageRequestListener(loadClarificationAuditRegion);
     pagingControllerBap.addPageRequestListener(loadBapAuditRegion);
+    pagingControllerFollowUp.addPageRequestListener(loadFollowUpAuditRegion);
     loadcaseAuditRegion();
     loadPriorityFindingAuditRegion();
     loadBranchAuditRegion();
@@ -510,6 +516,52 @@ void selectCaseCategory(int? value)async{
       throw Exception(error);
     }finally{
       isLoading(false);
+    }
+  }
+
+  //follow up
+  var startDateFollowUp = ''.obs;
+  var endDateFollowUp= ''.obs;
+  void loadFollowUpAuditRegion(int page)async {
+    try {
+      final followUpAuditRegion = await repositories.getFollowUpAuditRegion(page, startDateFollowUp.value, endDateFollowUp.value);
+      final followUp = followUpAuditRegion.data!.content;
+      final isLastPage = followUp!.length < 10; 
+      if (isLastPage) {
+        pagingControllerFollowUp.appendLastPage(followUp);
+      } else {
+        final nextPage = page + 1;
+        pagingControllerFollowUp.appendPage(followUp, nextPage);
+      }
+    } catch (e) {
+      if (e is Error) {
+        pagingControllerFollowUp.appendPage([], null);
+      }else {
+        pagingControllerFollowUp.error = e;
+        throw Exception(e);
+      }
+    }
+  }
+
+   void filterDataFollowUpAuditRegion(String startDate, String endDate)async{
+    startDateFollowUp.value = startDate;
+    endDateFollowUp.value = endDate;
+    pagingControllerFollowUp.refresh();
+  }
+
+  void resetFilterFollowUpAuditRegion()async{
+    startDateFollowUp.value = '';
+    endDateFollowUp.value = '';
+    pagingControllerFollowUp.refresh();
+  }
+
+  var detailFollowUpAuditRegion = Rxn<DataDetailFollowUp>();
+  void getDetailFollowUpAuditRegion(int? id)async{
+    try {
+      final followUp = await repositories.getDetailFollowUpAuditRegion(id);
+      detailFollowUpAuditRegion.value = followUp.data;
+    } catch (error) {
+      throw Exception(error);
     }
   }
 

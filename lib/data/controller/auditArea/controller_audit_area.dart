@@ -1025,6 +1025,7 @@ void getDetailRescheduleAuditArea(int id)async{
     }
   }
 
+  //profile user
   void getDetailUserAuditArea()async{
     try {
       final profileArea = await repository.getDetailUserAuditArea();

@@ -327,6 +327,11 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
         icon: const Icon(Icons.class_rounded,
             size: 30, color: CustomColors.orange)),
     ItemsListHomeAuditRegion(
+        id: 6,
+        nameMenu: 'Tdk lanjut',
+        icon: const Icon(Icons.follow_the_signs_rounded,
+            size: 30, color: CustomColors.orange)),
+    ItemsListHomeAuditRegion(
         id: 4,
         nameMenu: 'BAP',
         icon: const Icon(Icons.book_rounded,
@@ -486,6 +491,8 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const BapAuditRegionPage()));
                                       }else if(id == 5){
                                         Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditRegion()));
+                                      }else if(id == 6){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditRegion()));
                                       }
                                     },
                                     icon: listHome[index].icon,
@@ -554,6 +561,8 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const BapAuditRegionPage()));
                         }else if(id == 5){
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const LhaPageAuditRegion()));
+                        }else if(id == 6){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowUpPageAuditRegion()));
                         }
                       },
                     );

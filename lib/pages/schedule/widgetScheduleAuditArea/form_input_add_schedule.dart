@@ -107,8 +107,8 @@ Widget formInputEditScheduleStartDate(
           cancelText: 'Tidak',
           confirmText: 'ya',
           context: context,
-          initialDate: DateTime.parse(date),
-          firstDate: DateTime.parse(date),
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100));
       if (picked != null) {
         startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
@@ -139,8 +139,8 @@ Widget formInputEditScheduleEndDate(
           cancelText: 'Tidak',
           confirmText: 'ya',
           context: context,
-          initialDate: DateTime.parse(date),
-          firstDate: DateTime.parse(date),
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100));
       if (picked != null) {
         startDateController.text = DateFormat('yyyy-MM-dd').format(picked);

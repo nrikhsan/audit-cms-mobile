@@ -520,7 +520,6 @@ class ApiService {
     try{
       final response = await dio.get(AppConstant.getClarification, queryParameters: {'page': page,
       'name': name, 'branch_id': branchId, 'start_date': startDate, 'end_date': endDate});
-      print(response.data);
       return ResponseClarificationAuditArea.fromJson(response.data);
     }catch(error){
       throw Exception(error);
@@ -553,7 +552,6 @@ class ApiService {
     });
     try {
       final response = await dio.post(AppConstant.uploadKka, data: formData);
-      print(response.data);
       final messageSucces = response.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
@@ -1061,6 +1059,34 @@ class ApiService {
     }
   }
 
+  //follow up
+  Future<ResponseFollowUp> getFollowUpAuditRegion(int page, String startDate, String endDate)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final responseFollowUp = await dio.get(AppConstant.getFollowUp, queryParameters: {'page': page,
+     'start_date': startDate, 'end_date': endDate});
+      return ResponseFollowUp.fromJson(responseFollowUp.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditRegion(int? id)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      final response = await dio.get('${AppConstant.detailFollowUp}$id');
+      return ResponseDetailFollowUp.fromJson(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
 
   //clarification
   Future<ResponseClarificationAuditRegion>getClarificationAuditRegion(int page, String startDate, String endDate)async{
@@ -1108,7 +1134,6 @@ class ApiService {
       final response = await dio.post(AppConstant.inputClarification,
           data: {'clarification_id': clarificationId, 'evaluation_limitation': evaluationLimitation, 'location': location, 
           'auditee': auditee, 'auditee_leader': auditeeLeader, 'description': description, 'priority': priority});
-      print(response.data);
       final messageSucces = response.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseInputClarification.fromJson(response.data);
@@ -1157,7 +1182,6 @@ class ApiService {
         'recommendation': recommendation,
         'is_followup': followUp
       });
-      print(response.data);
       final messageSucces = response.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseIdentification.fromJson(response.data);

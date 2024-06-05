@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/prefs/token_manager.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/follow_up/detail_follow_up.dart';
@@ -254,6 +255,141 @@ TextEditingController auditorController, ControllerAuditArea controllerAuditArea
         );
       }
     );
+}
+
+
+void showBottomSheetFilterFollowUpAuditRegion(
+    BuildContext context,
+    TextEditingController startDateController,
+    TextEditingController endDateController,
+    ControllerAuditRegion controllerAuditRegion) {
+  showModalBottomSheet(
+      elevation: 0,
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return Container(
+          padding: EdgeInsets.only(
+              top: 15,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 50,
+              left: 15,
+              right: 15),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AppBar(
+                  title: const Text('Filter data jadwal'),
+                  titleTextStyle: CustomStyles.textBold18Px,
+                  leading: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(Icons.close_rounded,
+                          color: CustomColors.black, size: 25)),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  readOnly: true,
+                  controller: startDateController,
+                  cursorColor: CustomColors.blue,
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.date_range_rounded,
+                          color: CustomColors.grey, size: 20),
+                      hintStyle: CustomStyles.textMediumGrey15Px,
+                      hintText: 'Mulai dari...',
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: CustomColors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: CustomColors.grey))),
+                  onTap: () async {
+                    DateTime? picked = await showDatePicker(
+                        cancelText: 'Tidak',
+                        confirmText: 'ya',
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(2100));
+                    if (picked != null) {
+                      startDateController.text =
+                          DateFormat('yyyy-MM-dd').format(picked);
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  readOnly: true,
+                  controller: endDateController,
+                  cursorColor: CustomColors.blue,
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.date_range_rounded,
+                          color: CustomColors.grey, size: 20),
+                      hintStyle: CustomStyles.textMediumGrey15Px,
+                      hintText: 'Sampai dengan...',
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: CustomColors.grey)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: CustomColors.grey))),
+                  onTap: () async {
+                    DateTime? picked = await showDatePicker(
+                        cancelText: 'Tidak',
+                        confirmText: 'ya',
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(2100));
+                    if (picked != null) {
+                      endDateController.text =
+                          DateFormat('yyyy-MM-dd').format(picked);
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                Wrap(
+                  children: [
+                    startDateController.text.isNotEmpty ||
+                            endDateController.text.isNotEmpty
+                        ? SizedBox(
+                            width: double.maxFinite,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: CustomStyles.customRoundedButton,
+                                    backgroundColor: CustomColors.red),
+                                onPressed: () {
+                                  startDateController.clear();
+                                  endDateController.clear();
+                                  controllerAuditRegion.resetFilterFollowUpAuditRegion();
+                                  Get.back();
+                                },
+                                child: Text('Reset data filter',
+                                    style: CustomStyles.textMediumWhite15Px)))
+                        : SizedBox(
+                            width: double.maxFinite,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: CustomStyles.customRoundedButton,
+                                    backgroundColor: CustomColors.blue),
+                                onPressed: () {
+                                  controllerAuditRegion.filterDataFollowUpAuditRegion(startDateController.text, endDateController.text);
+                                  Get.back();
+                                },
+                                child: Text('Simpan data filter',
+                                    style: CustomStyles.textMediumWhite15Px)),
+                          )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
 }
 
 void showAlertFollowUpAuditArea(BuildContext context, int? id) {

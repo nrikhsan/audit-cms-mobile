@@ -167,6 +167,10 @@ abstract class Repositories {
   //report
   Future<ResponseReportAuditRegion>getReportAuditRegion(String stratDate, String endDate);
 
+  //follow up
+  Future<ResponseFollowUp> getFollowUpAuditRegion(int page, String startDate, String endDate);
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditRegion(int? id);
+
   //clarification
   Future<ResponseMessage>generateClarification(int? caseId, int? caseCategoryId, int? branchId);
   Future<ResponseInputClarification>inputClarificationAuditRegion(int? clarificationId, String evaluationLimitation, String location, String auditee, String auditeeLeader,
@@ -351,7 +355,6 @@ class RepositoryImpl implements Repositories {
 
 
   //KKA
-
   @override
   Future<ResponseMessage> uploadKkaAuditArea(String filePath, int id){
     return apiService.uploadKkaAuditArea(filePath, id);
@@ -544,6 +547,17 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseDetailKkaAuditRegion> getDetailKkaAuditRegion(int id) {
     return apiService.getDetailKkaAuditRegion(id);
+  }
+
+  //follow up
+  @override
+  Future<ResponseFollowUp> getFollowUpAuditRegion(int page, String startDate, String endDate){
+    return apiService.getFollowUpAuditRegion(page, startDate, endDate);
+  }
+
+  @override
+  Future<ResponseDetailFollowUp> getDetailFollowUpAuditRegion(int? id) {
+    return apiService.getDetailFollowUpAuditArea(id);
   }
 
   //clarification

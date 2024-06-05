@@ -113,7 +113,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                               Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Kasus :', style: CustomStyles.textBold15Px),
+                                  Text('List temuan :', style: CustomStyles.textBold15Px),
                                   Wrap(
                                     children: [
                                       widget.level == 'AREA' ?
@@ -129,7 +129,7 @@ class _DetailLhaPageAuditAreaState extends State<DetailLhaPageAuditArea> {
                                             Get.to(() => InputCaseLhaAuditArea(lhaDetailId: lhaDetailId));
                                           }
                                         }
-                                      }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
+                                      }, child: Text('Tambah temuan', style: CustomStyles.textMediumGreen15Px)
                                     ): const SizedBox()
                                     ],
                                   )
@@ -836,7 +836,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Kasus :', style: CustomStyles.textBold15Px),
+                      Text('List temuan :', style: CustomStyles.textBold15Px),
                       TextButton(
                         onPressed: (){
                           final lhaDetailId = detailLha.id;
@@ -849,7 +849,7 @@ class _DetailLhaPageAuditRegionState extends State<DetailLhaPageAuditRegion> {
                                 Get.to(() => InputCaseLhaAuditRegion(lhaDetailId: lhaDetailId));
                             }
                           }
-                        }, child: Text('Tambah kasus', style: CustomStyles.textMediumGreen15Px)
+                        }, child: Text('Tambah temuan', style: CustomStyles.textMediumGreen15Px)
                       )
                     ],
                   ),
