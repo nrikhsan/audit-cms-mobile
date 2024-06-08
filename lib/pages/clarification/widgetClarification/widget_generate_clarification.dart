@@ -106,7 +106,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -157,7 +157,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -187,7 +187,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -236,7 +236,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -407,7 +407,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus',
+                      'Pilih divisi',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -458,7 +458,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari kasus...',
+                            hintText: 'Cari divisi...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -488,7 +488,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                   child: DropdownButton2<int>(
                     isExpanded: true,
                     hint: Text(
-                      'Pilih kasus kategori',
+                      'Pilih kategori SOP',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).hintColor,
@@ -539,7 +539,7 @@ TextEditingController caseEditingController, TextEditingController caseCategoryE
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            hintText: 'Cari auditor...',
+                            hintText: 'Cari kategori SOP...',
                             hintStyle: const TextStyle(fontSize: 12),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),

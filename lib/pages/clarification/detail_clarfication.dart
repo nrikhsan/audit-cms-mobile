@@ -138,7 +138,7 @@ class _DetailClarificationPageAuditAreaState extends State<DetailClarificationPa
                           Text(detail.auditee ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Audit leader :', style: CustomStyles.textBold15Px),
+                          Text('Atasan auditee :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text(detail.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
@@ -374,7 +374,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                           Text('${detail.auditee}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
 
-                          Text('Audit leader :', style: CustomStyles.textBold15Px),
+                          Text('Atasan auditee :', style: CustomStyles.textBold15Px),
                           const SizedBox(height: 5),
                           Text('${detail.auditeeLeader}', style: CustomStyles.textRegular13Px),
                           const SizedBox(height: 20),
