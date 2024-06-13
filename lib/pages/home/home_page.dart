@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/formatter.dart';
 import 'package:audit_cms/pages/bap/bap_page.dart';
 import 'package:audit_cms/pages/clarification/clarification_page.dart';
@@ -107,6 +108,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
       onRefresh: ()async{
         controllerAuditArea.getFollowUpDashboard();
         controllerAuditArea.getFindingDashboard();
+        controllerAuditArea.getNominalDashboard();
       },
       child: Scaffold(
         backgroundColor: CustomColors.white,
@@ -242,13 +244,11 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
               ),
             ),
 
+          //dashboard finding status
           const SizedBox(height: 20),
-
-          //dashboard finsing status
           Container(
             margin: const EdgeInsets.only(left: 15),
-            child:Text('Status temuan audit', style: CustomStyles.textBold18Px)),
-
+            child:Text('Tindak lanjut', style: CustomStyles.textBold18Px)),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -312,13 +312,17 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
             
             const SizedBox(height: 30),
             AspectRatio(
-              aspectRatio: 15/10,
+              aspectRatio: 1.2,
               child: Obx((){
-                return PieChart(
+                if (controllerAuditArea.followUpDashboard.isEmpty) {
+                  return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                } else {
+                  return PieChart(
                 PieChartData(
                   sections: controllerAuditArea.followUpDataDashboard,
                 ),
               );
+                }
               })
             ),
 
@@ -342,7 +346,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text('Temuan dengan status OPEN', style: CustomStyles.textRegular13Px),
+                      Text('Tindak lanjut dengan status OPEN', style: CustomStyles.textRegular13Px),
                     ],
                   ),
 
@@ -358,7 +362,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text('Temuan dengan status CLOSE', style: CustomStyles.textRegular13Px),
+                      Text('Tindak lanjut dengan status CLOSE', style: CustomStyles.textRegular13Px),
                     ],
                   ),
                 ],
@@ -366,19 +370,66 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
             ),
 
 
+            // // dashboard findings
             const SizedBox(height: 30),
-            //dashboard findings
             Container(
             margin: const EdgeInsets.only(left: 15),
             child:Text('Jumlah temuan audit', style: CustomStyles.textBold18Px)),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditArea.selectedYearFindings.value,
+                        items: controllerAuditArea.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditArea.selectedYearFindings.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditArea.getFindingDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditArea.resetFilterDashboarFindings();
+                        controllerAuditArea.getFindingDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
             
             const SizedBox(height: 30),
             AspectRatio(
-              aspectRatio: 20/13,
+              aspectRatio: 1.2,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 20),
                 child: Obx(() {
-                  return LineChart(
+                  if (controllerAuditArea.findingsDashboard.isEmpty) {
+                    return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                  } else {
+                    return LineChart(
                     LineChartData(
                       titlesData: FlTitlesData(
                         rightTitles: const AxisTitles(
@@ -427,11 +478,25 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                             }
                           ),
                         ),
-                        leftTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false)
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (value, meta) {
+                              if (value % 10 == 0) {
+                                return Text('${value.toInt()}', style: CustomStyles.textRegular12Px);
+                              }
+                              return Container();
+                            },
+                          ),
                         )
                       ),
-                      borderData: FlBorderData(show: true),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                        color: const Color(0xff37434d),
+                        width: 1,
+                      )),
                       lineBarsData: [
                         LineChartBarData(
                           spots: [
@@ -439,7 +504,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                                 FlSpot(
                                   i.toDouble(),
                                   controllerAuditArea.findingsDashboard[i].total!.toDouble(),
-                                )
+                                ),
                             ],
                           barWidth: 2,
                           color: CustomColors.blue,
@@ -451,6 +516,16 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                             showingIndicators: List.generate(controllerAuditArea.findingsDashboard.length, (index) => index),
                           ),
                       ],
+                      gridData: const FlGridData(show: true),
+                      minX: 0,
+                      maxX: controllerAuditArea.findingsDashboard.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: (controllerAuditArea.findingsDashboard.isNotEmpty
+                        ? controllerAuditArea.findingsDashboard
+                            .map((e) => e.total)
+                            .reduce((a, b) => a! > b! ? a : b)!
+                            .toDouble() + 10
+                        : 10),
                       lineTouchData: LineTouchData(
                           touchTooltipData: LineTouchTooltipData(
                             getTooltipItems: (touchedSpots) {
@@ -465,25 +540,74 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                           ),
                           handleBuiltInTouches: true,
                         ),
-                    ),
+                    )
                   );
+                  } 
                 }),
               ),
             ),
 
-            const SizedBox(height: 30),
             // dashboard nominal
+            const SizedBox(height: 30),
             Container(
             margin: const EdgeInsets.only(left: 15),
             child:Text('Nominal temuan audit', style: CustomStyles.textBold18Px)),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditArea.selectedYearNominal.value,
+                        items: controllerAuditArea.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditArea.selectedYearNominal.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditArea.getNominalDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditArea.resetFilterDashboarNominal();
+                        controllerAuditArea.getNominalDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
             
             const SizedBox(height: 30),
             AspectRatio(
-              aspectRatio: 20/13,
+              aspectRatio: 1.2,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 20),
                 child: Obx(() {
-                  return LineChart(
+                  if (controllerAuditArea.nominalDashboard.isEmpty) {
+                    return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                  } else {
+                    
+                    return LineChart(
                     LineChartData(
                       titlesData: FlTitlesData(
                         rightTitles: const AxisTitles(
@@ -532,11 +656,27 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                             }
                           ),
                         ),
-                        leftTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false)
-                        )
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 70,
+                            getTitlesWidget: (value, meta) {
+                            if (value % 100000000 == 0) {
+                              return Text(
+                                CurrencyFormat.convertToIdr(value ~/ 1, 0).toString(),
+                                style: CustomStyles.textRegular8Px);
+                            }
+                            return Container();
+                          }),
+                        ),
                       ),
-                      borderData: FlBorderData(show: true),
+                      gridData: const FlGridData(show: true),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                        color: const Color(0xff37434d),
+                        width: 1,
+                      )),
                       lineBarsData: [
                         LineChartBarData(
                           spots: [
@@ -556,9 +696,18 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                             showingIndicators: List.generate(controllerAuditArea.nominalDashboard.length, (index) => index),
                           ),
                       ],
+                      
+                      minX: 0,
+                      maxX: controllerAuditArea.nominalDashboard.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: (controllerAuditArea.nominalDashboard.isNotEmpty
+                          ? controllerAuditArea.nominalDashboard
+                              .map((e) => e.total)
+                              .reduce((a, b) => a! > b! ? a : b)!
+                              .toDouble() + 100000000
+                          : 10),
                       lineTouchData: LineTouchData(
                           touchTooltipData: LineTouchTooltipData(
-                            
                             getTooltipItems: (touchedSpots) {
                               return touchedSpots.map((touchedSpot) {
                                 final textStyle = CustomStyles.textMediumWhite13Px;
@@ -573,12 +722,10 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
                         ),
                     ),
                   );
+                  }
                 }),
               ),
             ),
-
-            
-
             const SizedBox(height: 30),
           ],
         )
@@ -660,6 +807,8 @@ class HomePageAuditRegion extends StatefulWidget {
 
 class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
 
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
+
   final List<ItemsListHomeAuditRegion> listHome = [
     ItemsListHomeAuditRegion(
         id: 1,
@@ -728,7 +877,13 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
   Widget build(BuildContext context) {
     currentDate = DateFormat('dd, MMMM yyyy').format(DateTime.now());
     currentTime = DateFormat.Hm().format(DateTime.now());
-    return Scaffold(
+    return RefreshIndicator(
+      onRefresh: ()async{
+        controllerAuditRegion.getFollowUpDashboard();
+        controllerAuditRegion.getFindingDashboard();
+        controllerAuditRegion.getNominalDashboard();
+      },
+      child: Scaffold(
        backgroundColor: CustomColors.white,
         appBar: AppBar(
           backgroundColor: CustomColors.white,
@@ -861,9 +1016,494 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
                     }),
               ),
             ),
+
+             //dashboard finding status
+          const SizedBox(height: 20),
+          Container(
+            margin: const EdgeInsets.only(left: 15),
+            child:Text('Tindak lanjut', style: CustomStyles.textBold18Px)),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditRegion.selectedMonthFollowUp.value,
+                        items: controllerAuditRegion.months.map((int month) {
+                          return DropdownMenuItem<int>(
+                            value: month,
+                            child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedMonthFollowUp.value = newValue!;
+                        },
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditRegion.selectedYearFollowUp.value,
+                        items: controllerAuditRegion.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedYearFollowUp.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.getFollowUpDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditRegion.resetFilterDashboarFollowUp();
+                        controllerAuditRegion.getFollowUpDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+            
+            const SizedBox(height: 30),
+            AspectRatio(
+              aspectRatio: 1.2,
+              child: Obx((){
+                if (controllerAuditRegion.followUpDashboard.isEmpty) {
+                  return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                } else {
+                  return PieChart(
+                PieChartData(
+                  sections: controllerAuditRegion.followUpDataDashboard,
+                ),
+              );
+                }
+              })
+            ),
+
+            const SizedBox(height: 30),
+            Container(
+            margin: const EdgeInsets.only(left: 15),
+            child:Text('Keterangan :', style: CustomStyles.textMedium15Px)),
+
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Scaffold(
+                          backgroundColor: CustomColors.blue,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text('Tindak lanjut dengan status OPEN', style: CustomStyles.textRegular13Px),
+                    ],
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Scaffold(
+                          backgroundColor: CustomColors.red,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text('Tindak lanjut dengan status CLOSE', style: CustomStyles.textRegular13Px),
+                    ],
+                  ),
+                ],
+              )
+            ),
+
+
+            // // dashboard findings
+            const SizedBox(height: 30),
+            Container(
+            margin: const EdgeInsets.only(left: 15),
+            child:Text('Jumlah temuan audit', style: CustomStyles.textBold18Px)),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditRegion.selectedYearFindings.value,
+                        items: controllerAuditRegion.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedYearFindings.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.getFindingDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditRegion.resetFilterDashboarFindings();
+                        controllerAuditRegion.getFindingDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+            
+            const SizedBox(height: 30),
+            AspectRatio(
+              aspectRatio: 1.2,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 20),
+                child: Obx(() {
+                  if (controllerAuditRegion.findingsDashboard.isEmpty) {
+                    return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                  } else {
+                    return LineChart(
+                    LineChartData(
+                      titlesData: FlTitlesData(
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta){
+                              switch (value.toInt()) {
+                              case 0:
+                                return const Text('1');
+                              case 1:
+                                return const Text('2');
+                              case 2:
+                                return const Text('3');
+                              case 3:
+                                return const Text('4');
+                              case 4:
+                                return const Text('5');
+                              case 5:
+                                return const Text('6');
+                              case 6:
+                                return const Text('7');
+                              case 7:
+                                return const Text('8');
+                              case 8:
+                                return const Text('9');
+                              case 9:
+                                return const Text('10');
+                              case 10:
+                                return const Text('11');
+                              case 11:
+                                return const Text('12');
+                              default:
+                                return const Text('');
+                              }
+                            }
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (value, meta) {
+                              if (value % 10 == 0) {
+                                return Text('${value.toInt()}', style: CustomStyles.textRegular12Px);
+                              }
+                              return Container();
+                            },
+                          ),
+                        )
+                      ),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                        color: const Color(0xff37434d),
+                        width: 1,
+                      )),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                              for (var i = 0; i < controllerAuditRegion.findingsDashboard.length; i++)
+                                FlSpot(
+                                  i.toDouble(),
+                                  controllerAuditRegion.findingsDashboard[i].total!.toDouble(),
+                                ),
+                            ],
+                          barWidth: 2,
+                          color: CustomColors.blue,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: CustomColors.blue.withOpacity(0.5),
+                          ),
+                          
+                            showingIndicators: List.generate(controllerAuditRegion.findingsDashboard.length, (index) => index),
+                          ),
+                      ],
+                      gridData: const FlGridData(show: true),
+                      minX: 0,
+                      maxX: controllerAuditRegion.findingsDashboard.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: (controllerAuditRegion.findingsDashboard.isNotEmpty
+                        ? controllerAuditRegion.findingsDashboard
+                            .map((e) => e.total)
+                            .reduce((a, b) => a! > b! ? a : b)!
+                            .toDouble() + 10
+                        : 10),
+                      lineTouchData: LineTouchData(
+                          touchTooltipData: LineTouchTooltipData(
+                            getTooltipItems: (touchedSpots) {
+                              return touchedSpots.map((touchedSpot) {
+                                final textStyle = CustomStyles.textMediumWhite15Px;
+                                return LineTooltipItem(
+                                  '${controllerAuditRegion.findingsDashboard[touchedSpot.spotIndex].total} temuan dibulan ${controllerAuditRegion.findingsDashboard[touchedSpot.spotIndex].month}',
+                                  textStyle,
+                                );
+                              }).toList();
+                            },
+                          ),
+                          handleBuiltInTouches: true,
+                        ),
+                    )
+                  );
+                  } 
+                }),
+              ),
+            ),
+
+            // dashboard nominal
+            const SizedBox(height: 30),
+            Container(
+            margin: const EdgeInsets.only(left: 15),
+            child:Text('Nominal temuan audit', style: CustomStyles.textBold18Px)),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditRegion.selectedYearNominal.value,
+                        items: controllerAuditRegion.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedYearNominal.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.getNominalDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditRegion.resetFilterDashboarNominal();
+                        controllerAuditRegion.getNominalDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+            
+            const SizedBox(height: 30),
+            AspectRatio(
+              aspectRatio: 1.2,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 20),
+                child: Obx(() {
+                  if (controllerAuditRegion.nominalDashboard.isEmpty) {
+                    return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                  } else {
+                    
+                    return LineChart(
+                    LineChartData(
+                      titlesData: FlTitlesData(
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta){
+                              switch (value.toInt()) {
+                              case 0:
+                                return const Text('1');
+                              case 1:
+                                return const Text('2');
+                              case 2:
+                                return const Text('3');
+                              case 3:
+                                return const Text('4');
+                              case 4:
+                                return const Text('5');
+                              case 5:
+                                return const Text('6');
+                              case 6:
+                                return const Text('7');
+                              case 7:
+                                return const Text('8');
+                              case 8:
+                                return const Text('9');
+                              case 9:
+                                return const Text('10');
+                              case 10:
+                                return const Text('11');
+                              case 11:
+                                return const Text('12');
+                              default:
+                                return const Text('');
+                              }
+                            }
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 70,
+                            getTitlesWidget: (value, meta) {
+                            if (value % 100000000 == 0) {
+                              return Text(
+                                CurrencyFormat.convertToIdr(value ~/ 1, 0).toString(),
+                                style: CustomStyles.textRegular8Px);
+                            }
+                            return Container();
+                          }),
+                        ),
+                      ),
+                      gridData: const FlGridData(show: true),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                        color: const Color(0xff37434d),
+                        width: 1,
+                      )),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                              for (var i = 0; i < controllerAuditRegion.nominalDashboard.length; i++)
+                                FlSpot(
+                                  i.toDouble(),
+                                  controllerAuditRegion.nominalDashboard[i].total!.toDouble(),
+                                )
+                            ],
+                          barWidth: 2,
+                          color: CustomColors.orange,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: CustomColors.orange.withOpacity(0.5),
+                          ),
+                          
+                            showingIndicators: List.generate(controllerAuditRegion.nominalDashboard.length, (index) => index),
+                          ),
+                      ],
+                      
+                      minX: 0,
+                      maxX: controllerAuditRegion.nominalDashboard.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: (controllerAuditRegion.nominalDashboard.isNotEmpty
+                          ? controllerAuditRegion.nominalDashboard
+                              .map((e) => e.total)
+                              .reduce((a, b) => a! > b! ? a : b)!
+                              .toDouble() + 100000000
+                          : 10),
+                      lineTouchData: LineTouchData(
+                          touchTooltipData: LineTouchTooltipData(
+                            getTooltipItems: (touchedSpots) {
+                              return touchedSpots.map((touchedSpot) {
+                                final textStyle = CustomStyles.textMediumWhite13Px;
+                                return LineTooltipItem(
+                                  'Nominal temuan di bulan ${controllerAuditRegion.nominalDashboard[touchedSpot.spotIndex].month} sebanyak\n${CurrencyFormat.convertToIdr(controllerAuditRegion.nominalDashboard[touchedSpot.spotIndex].total, 0)}',
+                                  textStyle,
+                                );
+                              }).toList();
+                            },
+                          ),
+                          handleBuiltInTouches: true,
+                        ),
+                    ),
+                  );
+                  }
+                }),
+              ),
+            ),
+            const SizedBox(height: 30),
           ],
         )
       )
+    )
     );
   }
 

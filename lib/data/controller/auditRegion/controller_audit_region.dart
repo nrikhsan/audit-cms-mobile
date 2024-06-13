@@ -24,7 +24,12 @@ import 'package:audit_cms/data/core/response/auditRegion/lha/model_body_input_lh
 import 'package:audit_cms/data/core/response/auditRegion/kka/response_kka_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
+import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
@@ -103,6 +108,11 @@ class ControllerAuditRegion extends GetxController {
   //user
   var detailUserAuditRegion = Rxn<DataProfile>();
 
+  //dashboard
+  final RxList<ChartFollowUp>followUpDashboard = <ChartFollowUp>[].obs;
+  final RxList<ChartFindings>findingsDashboard = <ChartFindings>[].obs;
+  final RxList<ChartNominal>nominalDashboard = <ChartNominal>[].obs;
+
   ControllerAuditRegion(this.repositories);
 
   @override
@@ -119,6 +129,9 @@ class ControllerAuditRegion extends GetxController {
     loadPriorityFindingAuditRegion();
     loadBranchAuditRegion();
     loadRecommendation();
+    getFollowUpDashboard();
+    getFindingDashboard();
+    getNominalDashboard();
     super.onInit();
   }
 
@@ -794,5 +807,75 @@ void getDetailUserAuditRegion() async {
     } catch (error) {
       throw Exception(error);
     }
+  }
+  
+  //dashboard
+  var months = List<int>.generate(12, (index) => index + 1);
+  var years = List<int>.generate(20, (index) => DateTime.now().year - 10 + index);
+  var selectedMonthFollowUp = DateTime.now().month.obs;
+  var selectedYearFollowUp = DateTime.now().year.obs;
+  void getFollowUpDashboard()async{
+    try {
+      final followUp = await repositories.getFollowUpDashboard(selectedMonthFollowUp.value, selectedYearFollowUp.value);
+      followUpDashboard.assignAll(followUp.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  List<PieChartSectionData> get followUpDataDashboard => followUpDashboard.map((item) {
+    switch (item.status) {
+          case 'OPEN':
+            return PieChartSectionData(
+              color: CustomColors.blue,
+              value: item.total?.toDouble(),
+              title: '${item.total} tdk lanjut',
+              radius: 80,
+              titleStyle: CustomStyles.textMediumWhite10Px
+            );
+          case 'CLOSE':
+            return PieChartSectionData(
+              color: CustomColors.red,
+              value: item.total?.toDouble(),
+              title: '${item.total} tdk lanjut',
+              radius: 80,
+              titleStyle: CustomStyles.textMediumWhite10Px
+            );
+          default:
+            throw Error();
+        }
+  }).toList();
+
+  void resetFilterDashboarFollowUp()async{
+    selectedMonthFollowUp.value = DateTime.now().month;
+    selectedYearFollowUp.value = DateTime.now().year;
+  }
+  
+  var selectedYearFindings = DateTime.now().year.obs;
+  void getFindingDashboard()async {
+    try {
+      final findings = await repositories.getfindingsDashboard(selectedYearFindings.value);
+      findingsDashboard.assignAll(findings.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void resetFilterDashboarFindings()async{
+    selectedYearFindings.value = DateTime.now().year;
+  }
+  
+  var selectedYearNominal = DateTime.now().year.obs;
+  void getNominalDashboard()async {
+    try {
+      final nominal = await repositories.getNominalsDashboard(selectedYearNominal.value);
+      nominalDashboard.assignAll(nominal.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void resetFilterDashboarNominal()async{
+    selectedYearNominal.value = DateTime.now().year;
   }
 }

@@ -760,14 +760,14 @@ class ApiService {
   }
 
   //dashboard finding
-  Future<ResponseFindingsDashboard>getFindingsDashboard()async{
+  Future<ResponseFindingsDashboard>getFindingsDashboard(int? year)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
       'Content-type': 'application/json'
     };
     try {
-      final response = await dio.get(AppConstant.findingDashboard);
+      final response = await dio.get(AppConstant.findingDashboard, queryParameters: {'year': year});
       return ResponseFindingsDashboard.fromJson(response.data);
     } on DioException catch (e) {
       final messageError = e.response?.data['message'];
@@ -777,14 +777,14 @@ class ApiService {
   }
 
   //dashboard nominal
-  Future<ResponseNominalDashboard>getNominalDashboard()async{
+  Future<ResponseNominalDashboard>getNominalDashboard(int? year)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
       'Content-type': 'application/json'
     };
     try {
-      final response = await dio.get(AppConstant.nominalDashboard);
+      final response = await dio.get(AppConstant.nominalDashboard, queryParameters: {'year': year});
       return ResponseNominalDashboard.fromJson(response.data);
     } on DioException catch (e) {
       final messageError = e.response?.data['message'];

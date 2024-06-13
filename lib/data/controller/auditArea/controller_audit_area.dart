@@ -150,7 +150,6 @@ class ControllerAuditArea extends GetxController{
     pagingControllerClarificationAuditArea.addPageRequestListener(loadClarificationAuditArea);
     pagingControllerFollowUp.addPageRequestListener(loadFollowUpAuditArea);
     pagingControllerBapAuditArea.addPageRequestListener(loadBapAuditArea);
-    // pagingControllerListCase.addPageRequestListener(loadListCaseLha);
     loadUsersAuditArea();
     loadCaseAuditArea();
     loadPenalty();
@@ -1067,10 +1066,10 @@ void getDetailRescheduleAuditArea(int id)async{
   }
 
   //dashboard
-  var selectedMonthFollowUp = DateTime.now().month.obs;
-  var selectedYearFollowUp = DateTime.now().year.obs;
   var months = List<int>.generate(12, (index) => index + 1);
   var years = List<int>.generate(20, (index) => DateTime.now().year - 10 + index);
+  var selectedMonthFollowUp = DateTime.now().month.obs;
+  var selectedYearFollowUp = DateTime.now().year.obs;
   void getFollowUpDashboard()async{
     try {
       final followUp = await repository.getFollowUpDashboard(selectedMonthFollowUp.value, selectedYearFollowUp.value);
@@ -1086,7 +1085,7 @@ void getDetailRescheduleAuditArea(int id)async{
             return PieChartSectionData(
               color: CustomColors.blue,
               value: item.total?.toDouble(),
-              title: '${item.total} temuan',
+              title: '${item.total} tdk lanjut',
               radius: 80,
               titleStyle: CustomStyles.textMediumWhite10Px
             );
@@ -1094,7 +1093,7 @@ void getDetailRescheduleAuditArea(int id)async{
             return PieChartSectionData(
               color: CustomColors.red,
               value: item.total?.toDouble(),
-              title: '${item.total} temuan',
+              title: '${item.total} tdk lanjut',
               radius: 80,
               titleStyle: CustomStyles.textMediumWhite10Px
             );
@@ -1108,21 +1107,31 @@ void getDetailRescheduleAuditArea(int id)async{
     selectedYearFollowUp.value = DateTime.now().year;
   }
   
+  var selectedYearFindings = DateTime.now().year.obs;
   void getFindingDashboard()async {
     try {
-      final findings = await repository.getfindingsDashboard();
+      final findings = await repository.getfindingsDashboard(selectedYearFindings.value);
       findingsDashboard.assignAll(findings.data?.chart ??[]);
     } catch (e) {
       throw Exception(e);
     }
   }
+
+  void resetFilterDashboarFindings()async{
+    selectedYearFindings.value = DateTime.now().year;
+  }
   
+  var selectedYearNominal = DateTime.now().year.obs;
   void getNominalDashboard()async {
     try {
-      final nominal = await repository.getNominalsDashboard();
+      final nominal = await repository.getNominalsDashboard(selectedYearNominal.value);
       nominalDashboard.assignAll(nominal.data?.chart ??[]);
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  void resetFilterDashboarNominal()async{
+    selectedYearNominal.value = DateTime.now().year;
   }
 }

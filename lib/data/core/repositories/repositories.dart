@@ -190,8 +190,8 @@ abstract class Repositories {
 
   //dashboard
   Future<ResponseFollowUpDashBoard>getFollowUpDashboard(int? month, int? year);
-  Future<ResponseFindingsDashboard> getfindingsDashboard();
-  Future<ResponseNominalDashboard> getNominalsDashboard();
+  Future<ResponseFindingsDashboard> getfindingsDashboard(int? year);
+  Future<ResponseNominalDashboard> getNominalsDashboard(int? year);
 }
 
 class RepositoryImpl implements Repositories {
@@ -628,12 +628,12 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseFindingsDashboard> getfindingsDashboard() {
-    return apiService.getFindingsDashboard();
+  Future<ResponseFindingsDashboard> getfindingsDashboard(int? year) {
+    return apiService.getFindingsDashboard(year);
   }
   
   @override
-  Future<ResponseNominalDashboard> getNominalsDashboard() {
-    return apiService.getNominalDashboard();
+  Future<ResponseNominalDashboard> getNominalsDashboard(int? year) {
+    return apiService.getNominalDashboard(year);
   }
 }
