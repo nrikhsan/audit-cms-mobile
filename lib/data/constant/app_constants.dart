@@ -1,6 +1,5 @@
 class AppConstant{
 
-  static const String baseUrlProd = 'https://api-kka.cmsmaju.co.id/';
   static const String baseUrlDev = 'https://apidev-kka.cmsmaju.co.id/';
 
   //auth
@@ -51,8 +50,8 @@ class AppConstant{
   static const String generateClarification = 'api/clarification/generate';
   static const String getClarification = 'api/clarification';
   static const String detailClarification = 'api/clarification/';
-  static const String downloadClarification = '${baseUrlProd}api/clarification/download/';
-  static const String documentClarification = '${baseUrlProd}api/clarification/file/';
+  static const String downloadClarification = '${baseUrlDev}api/clarification/download/';
+  static const String documentClarification = '${baseUrlDev}api/clarification/file/';
   static const String inputClarification = 'api/clarification';
   static const String uploadClarification = 'api/clarification/upload';
   static const String inputIdentificationClarification = 'api/clarification/identification';
@@ -60,30 +59,35 @@ class AppConstant{
   //follow up
   static const String getFollowUp = 'api/followup';
   static const String inputFollowUp = 'api/followup';
-  static const String followUpDocument = '${baseUrlProd}api/followup/file/';
+  static const String followUpDocument = '${baseUrlDev}api/followup/file/';
   static const String detailFollowUp = 'api/followup/';
-  static const String downloadFollowUp = '${baseUrlProd}api/followup/download/';
+  static const String downloadFollowUp = '${baseUrlDev}api/followup/download/';
   static const String uploadFollowUp = 'api/followup/file';
 
   //kka
   static const String uploadKka = 'api/kka/upload';
   static const String getListKka = 'api/kka';
   static const String detailKka = 'api/kka/';
-  static const String downloadKKa = '${baseUrlProd}api/kka/download/';
+  static const String downloadKKa = '${baseUrlDev}api/kka/download/';
 
   //bap
   static const String getBap = 'api/bap';
   static const String detailBap = 'api/bap/';
-  static const String fileBap = '${baseUrlProd}api/bap/file/';
+  static const String fileBap = '${baseUrlDev}api/bap/file/';
   static const String uploadBap = 'api/bap/upload';
 
   //report
-  static const String downloadReportClarification = '${baseUrlProd}api/report/clarification';
-  static const String downloadReportLha = '${baseUrlProd}api/report/lha';
+  static const String downloadReportClarification = '${baseUrlDev}api/report/clarification';
+  static const String downloadReportLha = '${baseUrlDev}api/report/lha';
 
   //user profile
   static const String detailUser = 'api/profile';
   static const String editProfileUser = 'api/profile/change-profile';
   static const String changePassword = 'api/profile/change-password';
+
+  //dashboard
+  static const String followUpDashboard = 'api/dashboard-followup';
+  static const String findingDashboard = 'api/dashboard-found';
+  static const String nominalDashboard = 'api/dashboard-nominal';
   
 }

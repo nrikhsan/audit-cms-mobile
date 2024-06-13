@@ -49,6 +49,9 @@ import 'package:audit_cms/data/core/response/auditRegion/master/response_priorit
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
 import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
 import 'package:audit_cms/data/core/service/api_service.dart';
 import '../response/auth/response_auth.dart';
@@ -184,6 +187,11 @@ abstract class Repositories {
   Future<ResponseMessage>uploadBapAuditRegion(String filePath, int? bapId);
   Future<ResponseBapAuditRegion>getBapAuditRegion(int page, String startDate, String endDate);
   Future<ResponseDetailBapAuditRegion>getDetailBapAuditRegion(int? id);
+
+  //dashboard
+  Future<ResponseFollowUpDashBoard>getFollowUpDashboard(int? month, int? year);
+  Future<ResponseFindingsDashboard> getfindingsDashboard();
+  Future<ResponseNominalDashboard> getNominalsDashboard();
 }
 
 class RepositoryImpl implements Repositories {
@@ -612,5 +620,20 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseMessage> deletCaseLha(int? lhaDetailId) {
     return apiService.deleteCaseLha(lhaDetailId);
+  }
+  
+  @override
+  Future<ResponseFollowUpDashBoard>getFollowUpDashboard(int? month, int? year) {
+    return apiService.getFollowUpDashboard(month, year);
+  }
+  
+  @override
+  Future<ResponseFindingsDashboard> getfindingsDashboard() {
+    return apiService.getFindingsDashboard();
+  }
+  
+  @override
+  Future<ResponseNominalDashboard> getNominalsDashboard() {
+    return apiService.getNominalDashboard();
   }
 }

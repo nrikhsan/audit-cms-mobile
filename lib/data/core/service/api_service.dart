@@ -50,6 +50,9 @@ import 'package:audit_cms/data/core/response/auditRegion/report/response_report_
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
 import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
@@ -733,6 +736,57 @@ class ApiService {
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseMessage.fromJson(response.data);
     } on DioException  catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
+
+  //dashboard follow up
+  Future<ResponseFollowUpDashBoard>getFollowUpDashboard(int? month, int? year)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json'
+    };
+    try {
+      final response = await dio.get(AppConstant.followUpDashboard, queryParameters: {'month': month, 'year': year});
+      return ResponseFollowUpDashBoard.fromJson(response.data);
+    } on DioException catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
+
+  //dashboard finding
+  Future<ResponseFindingsDashboard>getFindingsDashboard()async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json'
+    };
+    try {
+      final response = await dio.get(AppConstant.findingDashboard);
+      return ResponseFindingsDashboard.fromJson(response.data);
+    } on DioException catch (e) {
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
+
+  //dashboard nominal
+  Future<ResponseNominalDashboard>getNominalDashboard()async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json'
+    };
+    try {
+      final response = await dio.get(AppConstant.nominalDashboard);
+      return ResponseNominalDashboard.fromJson(response.data);
+    } on DioException catch (e) {
       final messageError = e.response?.data['message'];
       snackBarMessageRed('Gagal', messageError);
       throw Exception(e);

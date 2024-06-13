@@ -26,7 +26,12 @@ import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_deta
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
+import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
@@ -130,6 +135,11 @@ class ControllerAuditArea extends GetxController{
   var isLoading = true.obs;
   var message = ''.obs;
 
+  //dashboard
+  final RxList<ChartFollowUp>followUpDashboard = <ChartFollowUp>[].obs;
+  final RxList<ChartFindings>findingsDashboard = <ChartFindings>[].obs;
+  final RxList<ChartNominal>nominalDashboard = <ChartNominal>[].obs;
+
   @override
   void onInit(){
     pagingControllerMainSchedule.addPageRequestListener(loadMainSchedule);
@@ -146,6 +156,9 @@ class ControllerAuditArea extends GetxController{
     loadPenalty();
     loadBranchForFilterDataAuditArea();
     loadRecommendation();
+    getFollowUpDashboard();
+    getFindingDashboard();
+    getNominalDashboard();
     super.onInit();
   }
 
@@ -1050,6 +1063,66 @@ void getDetailRescheduleAuditArea(int id)async{
       getDetailUserAuditArea();
     } catch (error) {
       throw Exception(error);
+    }
+  }
+
+  //dashboard
+  var selectedMonthFollowUp = DateTime.now().month.obs;
+  var selectedYearFollowUp = DateTime.now().year.obs;
+  var months = List<int>.generate(12, (index) => index + 1);
+  var years = List<int>.generate(20, (index) => DateTime.now().year - 10 + index);
+  void getFollowUpDashboard()async{
+    try {
+      final followUp = await repository.getFollowUpDashboard(selectedMonthFollowUp.value, selectedYearFollowUp.value);
+      followUpDashboard.assignAll(followUp.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  List<PieChartSectionData> get followUpDataDashboard => followUpDashboard.map((item) {
+    switch (item.status) {
+          case 'OPEN':
+            return PieChartSectionData(
+              color: CustomColors.blue,
+              value: item.total?.toDouble(),
+              title: '${item.total} temuan',
+              radius: 80,
+              titleStyle: CustomStyles.textMediumWhite10Px
+            );
+          case 'CLOSE':
+            return PieChartSectionData(
+              color: CustomColors.red,
+              value: item.total?.toDouble(),
+              title: '${item.total} temuan',
+              radius: 80,
+              titleStyle: CustomStyles.textMediumWhite10Px
+            );
+          default:
+            throw Error();
+        }
+  }).toList();
+
+  void resetFilterDashboarFollowUp()async{
+    selectedMonthFollowUp.value = DateTime.now().month;
+    selectedYearFollowUp.value = DateTime.now().year;
+  }
+  
+  void getFindingDashboard()async {
+    try {
+      final findings = await repository.getfindingsDashboard();
+      findingsDashboard.assignAll(findings.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+  
+  void getNominalDashboard()async {
+    try {
+      final nominal = await repository.getNominalsDashboard();
+      nominalDashboard.assignAll(nominal.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

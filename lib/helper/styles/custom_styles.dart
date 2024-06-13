@@ -89,6 +89,12 @@ class CustomStyles {
       color: CustomColors.white
   );
 
+  static TextStyle textMediumWhite10Px = const TextStyle(
+      fontFamily: 'RobotoMedium',
+      fontSize: 10,
+      color: CustomColors.white
+  );
+
   static TextStyle textMedium13Px = const TextStyle(
       fontFamily: 'RobotoMedium',
       fontSize: 13,
