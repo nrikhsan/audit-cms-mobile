@@ -468,7 +468,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.green),
                                 onPressed: () async {
-                                  print(detail.fileName);
+
                                   showDialogPdfClarificationPdfAuditRegion(detail.fileName);
                                 },
                                 child: Text('Lihat',
@@ -538,7 +538,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                 if (await requestPermission(Permission.storage) == true) {
-                  downloadFileClarification('${AppConstant.downloadReportClarification}$fileName');
+                  downloadFileClarification('${AppConstant.downloadClarification}$fileName');
                 } else {
                   showSnackbarPermission(context);
                 }
