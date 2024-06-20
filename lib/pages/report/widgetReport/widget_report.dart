@@ -125,6 +125,48 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
       }
 }
 
+void downloadReportSopCategory(int? month, int? year, String url) async {
+  final Dio dio = Dio();
+  var dir = await DownloadsPathProvider.downloadsDirectory;
+    if (dir != null) {
+      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = 'laporan_kategori_SOP_$timestamp.pdf';
+      String savePath = dir.path + "/$saveName";
+      print(savePath);
+
+      final token = await TokenManager.getToken();
+      dio.options.headers = {'Authorization': 'Bearer $token'};
+      try {
+        await dio.download(
+          url,
+          savePath,
+          queryParameters: {
+            'month': month,
+            'year': year
+          },
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              print((received / total * 100).toStringAsFixed(0) + "%");
+            }
+          },
+        );
+        snackBarMessageGreen('Berhasil', '$saveName berhasil di unduh');
+      } catch (error) {
+        if (error is DioError) {
+          if (error.response != null) {
+            print('Server responded with error: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          } else {
+            print('Dio error: $error');
+          }
+        } else {
+          print('Error: $error');
+        }
+        snackBarMessageRed('Gagal', 'Terjadi kesalahan saat mengunduh laporan');
+      }
+    }
+}
+
 //sudah di fixing
 void downloadReportClarificationAuditRegion(String url, TextEditingController startDateController, TextEditingController endDateController) async {
   final Dio dio = Dio();

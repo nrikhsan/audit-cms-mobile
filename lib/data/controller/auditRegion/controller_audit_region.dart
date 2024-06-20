@@ -27,6 +27,7 @@ import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_total_dashboard.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -112,6 +113,8 @@ class ControllerAuditRegion extends GetxController {
   final RxList<ChartFollowUp>followUpDashboard = <ChartFollowUp>[].obs;
   final RxList<ChartFindings>findingsDashboard = <ChartFindings>[].obs;
   final RxList<ChartNominal>nominalDashboard = <ChartNominal>[].obs;
+  var summary = Rxn<Summary>();
+  var rangkings = Rxn<Rankings>();
 
   ControllerAuditRegion(this.repositories);
 
@@ -132,6 +135,8 @@ class ControllerAuditRegion extends GetxController {
     getFollowUpDashboard();
     getFindingDashboard();
     getNominalDashboard();
+    getSummary();
+    getRangking();
     super.onInit();
   }
 
@@ -877,5 +882,30 @@ void getDetailUserAuditRegion() async {
 
   void resetFilterDashboarNominal()async{
     selectedYearNominal.value = DateTime.now().year;
+  }
+
+  var selectedMonthTotal = DateTime.now().month.obs;
+  var selectedYearTotal = DateTime.now().year.obs;
+  void getSummary()async{
+    try {
+      final totalDashboard = await repositories.getTotalDashboard(selectedMonthTotal.value, selectedYearTotal.value);
+      summary.value = totalDashboard.data?.summary;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void resetFilterDashboarTotal()async{
+    selectedMonthTotal.value = DateTime.now().month;
+    selectedYearTotal.value = DateTime.now().year;
+  }
+
+  void getRangking()async {
+    try {
+      final ranking = await repositories.getTotalDashboard(selectedMonthTotal.value, selectedYearTotal.value);
+      rangkings.value = ranking.data?.rankings;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

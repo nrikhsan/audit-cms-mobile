@@ -34,6 +34,12 @@ class CustomStyles {
       color: CustomColors.black
   );
 
+  static TextStyle textBoldBlue18Px = const TextStyle(
+      fontFamily: 'RobotoBold',
+      fontSize: 18,
+      color: CustomColors.blue
+  );
+
   static TextStyle textBoldGreen13Px = const TextStyle(
       fontFamily: 'RobotoBold',
       fontSize: 13,

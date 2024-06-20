@@ -52,6 +52,7 @@ import 'package:audit_cms/data/core/response/auditRegion/schedules/response_spec
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_total_dashboard.dart';
 import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
 import 'package:audit_cms/data/core/service/api_service.dart';
 import '../response/auth/response_auth.dart';
@@ -192,6 +193,7 @@ abstract class Repositories {
   Future<ResponseFollowUpDashBoard>getFollowUpDashboard(int? month, int? year);
   Future<ResponseFindingsDashboard> getfindingsDashboard(int? year);
   Future<ResponseNominalDashboard> getNominalsDashboard(int? year);
+  Future<ResponseTotalDashboard> getTotalDashboard(int? month, int? year);
 }
 
 class RepositoryImpl implements Repositories {
@@ -635,5 +637,10 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseNominalDashboard> getNominalsDashboard(int? year) {
     return apiService.getNominalDashboard(year);
+  }
+  
+  @override
+  Future<ResponseTotalDashboard> getTotalDashboard(int? month, int? year) {
+    return apiService.getTotalDashboard(month, year);
   }
 }

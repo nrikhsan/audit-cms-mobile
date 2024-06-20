@@ -89,5 +89,7 @@ class AppConstant{
   static const String followUpDashboard = 'api/dashboard-followup';
   static const String findingDashboard = 'api/dashboard-found';
   static const String nominalDashboard = 'api/dashboard-nominal';
+  static const String totalDashboard = 'api/dashboard-total';
+  static const String downloadSopCategory = 'api/dashboard-sop';
   
 }

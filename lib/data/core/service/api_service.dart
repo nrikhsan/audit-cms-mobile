@@ -53,6 +53,7 @@ import 'package:audit_cms/data/core/response/auditRegion/schedules/response_spec
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_total_dashboard.dart';
 import 'package:audit_cms/data/core/response/responseMessage/response_message.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
 import 'package:dio/dio.dart';
@@ -793,7 +794,22 @@ class ApiService {
     }
   }
 
-
+  //dashboard total
+  Future<ResponseTotalDashboard>getTotalDashboard(int? month, int? year)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json'
+    };
+    try {
+      final response = await dio.get(AppConstant.totalDashboard,  queryParameters: {'month': month, 'year': year});
+      return ResponseTotalDashboard.fromJson(response.data);
+    } on DioException catch (e){
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
 
   //audit region
   //main schedules

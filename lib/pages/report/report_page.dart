@@ -29,7 +29,8 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(length: 2, 
+    return DefaultTabController(
+      length: 3, 
     child: Scaffold(
       appBar: AppBar(
             backgroundColor: CustomColors.white,
@@ -51,6 +52,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
               tabs: const [
                 Tab(text: 'Laporan klarifikasi'),
                 Tab(text: 'Laporan LHA'),
+                Tab(text: 'Kategori SOP'),
               ],
             ),
           ),
@@ -259,6 +261,14 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
             ),
           ),
         ),
+
+        Scaffold(
+          body: Column(
+            children: [
+              
+            ],
+          ),
+        )
 
       ]))
     );
