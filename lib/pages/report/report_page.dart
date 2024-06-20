@@ -1,5 +1,6 @@
 import 'package:audit_cms/data/constant/app_constants.dart';
 import 'package:audit_cms/data/controller/auditArea/controller_audit_area.dart';
+import 'package:audit_cms/data/controller/auditRegion/controller_audit_region.dart';
 import 'package:audit_cms/helper/styles/custom_styles.dart';
 import 'package:audit_cms/pages/report/widgetReport/widget_report.dart';
 import 'package:audit_cms/pages/widget/widget_snackbar_message_and_alert.dart';
@@ -7,6 +8,7 @@ import 'package:audit_cms/permission/permission_handler.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //audit area
@@ -26,6 +28,8 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
   final TextEditingController branchController = TextEditingController();
 
   final TextEditingController branchEditingController = TextEditingController();
+  int? month;
+  int? year;
 
   @override
   Widget build(BuildContext context) {
@@ -263,10 +267,78 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
         ),
 
         Scaffold(
-          body: Column(
-            children: [
-              
-            ],
+          backgroundColor: CustomColors.white,
+          body: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Obx(() => DropdownButton<int>(
+                          value: controllerAuditArea.selectedMonthSop.value,
+                          items: controllerAuditArea.months.map((int month) {
+                            return DropdownMenuItem<int>(
+                              value: month,
+                              child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controllerAuditArea.selectedMonthSop.value = newValue!;
+                          },
+                        )),
+                  ),
+            
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Obx(() => DropdownButton<int>(
+                          value: controllerAuditArea.selectedYearSop.value,
+                          items: controllerAuditArea.years.map((int year) {
+                            return DropdownMenuItem<int>(
+                              value: year,
+                              child: Text(year.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controllerAuditArea.selectedYearSop.value = newValue!;
+                          },
+                        )),
+                  ),
+
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditArea.resetFilterDownloadSop();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+                ],
+              ),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue),
+                      onPressed: ()async {
+                        if (await requestPermission(Permission.storage) == true) {
+                          downloadReportSopCategory(controllerAuditArea.selectedMonthSop.value, controllerAuditArea.selectedYearSop.value, AppConstant.downloadSopCategory);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                      },
+                      child: Text('Download laporan kategori SOP',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+
+            ]),
           ),
         )
 
@@ -290,11 +362,12 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
   final TextEditingController startDateControllerLha = TextEditingController();
   final TextEditingController endDateControllerLha = TextEditingController();
   final TextEditingController branchController = TextEditingController();
+  final ControllerAuditRegion controllerAuditRegion = Get.put(ControllerAuditRegion(Get.find()));
 
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(length: 2, 
+    return DefaultTabController(length: 3, 
     child: Scaffold(
       appBar: AppBar(
             backgroundColor: CustomColors.white,
@@ -316,6 +389,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
               tabs: const [
                 Tab(text: 'Laporan klarifikasi'),
                 Tab(text: 'Laporan LHA'),
+                Tab(text: 'Kategori SOP'),
               ],
             ),
           ),
@@ -441,6 +515,83 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
             ),
           ),
         ),
+
+
+        Scaffold(
+          backgroundColor: CustomColors.white,
+          body: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Obx(() => DropdownButton<int>(
+                          value: controllerAuditRegion.selectedMonthSop.value,
+                          items: controllerAuditRegion.months.map((int month) {
+                            return DropdownMenuItem<int>(
+                              value: month,
+                              child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controllerAuditRegion.selectedMonthSop.value = newValue!;
+                          },
+                        )),
+                  ),
+            
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Obx(() => DropdownButton<int>(
+                          value: controllerAuditRegion.selectedYearSop.value,
+                          items: controllerAuditRegion.years.map((int year) {
+                            return DropdownMenuItem<int>(
+                              value: year,
+                              child: Text(year.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controllerAuditRegion.selectedYearSop.value = newValue!;
+                          },
+                        )),
+                  ),
+
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditRegion.resetFilterDownloadSop();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+                ],
+              ),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: CustomStyles.customRoundedButton,
+                          backgroundColor: CustomColors.blue),
+                      onPressed: ()async {
+                        if (await requestPermission(Permission.storage) == true) {
+                          downloadReportSopCategory(controllerAuditRegion.selectedMonthSop.value, controllerAuditRegion.selectedYearSop.value, AppConstant.downloadSopCategory);
+                        } else {
+                          showSnackbarPermission(context);
+                        }
+                      },
+                      child: Text('Download laporan kategori SOP',
+                          style: CustomStyles.textMediumWhite15Px)
+                      )
+                    ),
+
+            ]),
+          ),
+        )
 
       ]))
     );

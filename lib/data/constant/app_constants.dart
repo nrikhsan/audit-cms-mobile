@@ -90,6 +90,6 @@ class AppConstant{
   static const String findingDashboard = 'api/dashboard-found';
   static const String nominalDashboard = 'api/dashboard-nominal';
   static const String totalDashboard = 'api/dashboard-total';
-  static const String downloadSopCategory = 'api/dashboard-sop';
+  static const String downloadSopCategory = '${baseUrlDev}api/dashboard-sop';
   
 }

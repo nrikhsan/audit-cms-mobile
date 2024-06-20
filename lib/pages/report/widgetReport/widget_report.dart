@@ -130,7 +130,7 @@ void downloadReportSopCategory(int? month, int? year, String url) async {
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_kategori_SOP_$timestamp.pdf';
+      String saveName = 'laporan_kategori_SOP_$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 

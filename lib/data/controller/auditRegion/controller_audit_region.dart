@@ -817,6 +817,15 @@ void getDetailUserAuditRegion() async {
   //dashboard
   var months = List<int>.generate(12, (index) => index + 1);
   var years = List<int>.generate(20, (index) => DateTime.now().year - 10 + index);
+
+  var selectedMonthSop = DateTime.now().month.obs;
+  var selectedYearSop = DateTime.now().year.obs;
+
+  void resetFilterDownloadSop()async{
+    selectedMonthSop.value = DateTime.now().month;
+    selectedYearSop.value = DateTime.now().year;
+  }
+  
   var selectedMonthFollowUp = DateTime.now().month.obs;
   var selectedYearFollowUp = DateTime.now().year.obs;
   void getFollowUpDashboard()async{
