@@ -113,6 +113,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
         controllerAuditArea.getNominalDashboard();
         controllerAuditArea.getSummary();
         controllerAuditArea.getRangking();
+        controllerAuditArea.getDivisionDashboard();
       },
       child: Scaffold(
         backgroundColor: CustomColors.white,
@@ -370,6 +371,9 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
           const SizedBox(height: 20),
           ItemDashboardFollowUp(controllerAuditArea: controllerAuditArea),
 
+          //dashboard division
+          ItemDivisionDashboardAuditArea(controllerAuditArea: controllerAuditArea),
+
           //dashboard findings
           ItemDashboardFindings(controllerAuditArea: controllerAuditArea),  
 
@@ -470,6 +474,7 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
         controllerAuditRegion.getFollowUpDashboard();
         controllerAuditRegion.getFindingDashboard();
         controllerAuditRegion.getNominalDashboard();
+        controllerAuditRegion.getDivisionDashboard();
         controllerAuditRegion.getSummary();
         controllerAuditRegion.getRangking();
       },
@@ -725,6 +730,9 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
             visible: selectedDashboard == 3 ? true : false,
             child: Obx(() => dashboardRangkingsFollowUpAuditRegion(controllerAuditRegion))
           ),
+
+          //dashboard division
+          ItemDivisionDashboardAuditRegion(controllerAuditRegion: controllerAuditRegion),
           
           //dashboard finding status
           ItemDashboardFollowUpAuditRegion(controllerAuditRegion: controllerAuditRegion),

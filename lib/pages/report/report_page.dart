@@ -56,7 +56,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
               tabs: const [
                 Tab(text: 'Laporan klarifikasi'),
                 Tab(text: 'Laporan LHA'),
-                Tab(text: 'Kategori SOP'),
+                Tab(text: 'Laporan temuan'),
               ],
             ),
           ),
@@ -266,6 +266,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
           ),
         ),
 
+        //3. Laporan temuan
         Scaffold(
           backgroundColor: CustomColors.white,
           body: Padding(
@@ -328,12 +329,12 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadReportSopCategory(controllerAuditArea.selectedMonthSop.value, controllerAuditArea.selectedYearSop.value, AppConstant.downloadSopCategory);
+                          downloadReportFinding(controllerAuditArea.selectedMonthSop.value, controllerAuditArea.selectedYearSop.value, AppConstant.downloadSopCategory);
                         } else {
                           showSnackbarPermission(context);
                         }
                       },
-                      child: Text('Download laporan kategori SOP',
+                      child: Text('Download laporan temuan',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     ),
@@ -389,7 +390,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
               tabs: const [
                 Tab(text: 'Laporan klarifikasi'),
                 Tab(text: 'Laporan LHA'),
-                Tab(text: 'Kategori SOP'),
+                Tab(text: 'Laporan temuan'),
               ],
             ),
           ),
@@ -516,7 +517,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
           ),
         ),
 
-
+        //3. Laporan temuan
         Scaffold(
           backgroundColor: CustomColors.white,
           body: Padding(
@@ -579,12 +580,12 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadReportSopCategory(controllerAuditRegion.selectedMonthSop.value, controllerAuditRegion.selectedYearSop.value, AppConstant.downloadSopCategory);
+                          downloadReportFinding(controllerAuditRegion.selectedMonthSop.value, controllerAuditRegion.selectedYearSop.value, AppConstant.downloadSopCategory);
                         } else {
                           showSnackbarPermission(context);
                         }
                       },
-                      child: Text('Download laporan kategori SOP',
+                      child: Text('Download laporan temuan',
                           style: CustomStyles.textMediumWhite15Px)
                       )
                     ),

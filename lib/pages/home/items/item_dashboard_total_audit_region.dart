@@ -300,13 +300,13 @@ Widget dashboardRangkingsTopSixAuditRegion(ControllerAuditRegion controllerAudit
         title: index < 3 ? Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('${index +6}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+            Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
             const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
           ],
         ) : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${index +6}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+              Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
               const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
             ],
           ),

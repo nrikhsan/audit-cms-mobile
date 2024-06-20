@@ -26,6 +26,7 @@ import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_deta
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_division_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
@@ -140,6 +141,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<ChartFollowUp>followUpDashboard = <ChartFollowUp>[].obs;
   final RxList<ChartFindings>findingsDashboard = <ChartFindings>[].obs;
   final RxList<ChartNominal>nominalDashboard = <ChartNominal>[].obs;
+  final RxList<ChartDivision>divisionDashboard = <ChartDivision>[].obs;
   var summary = Rxn<Summary>();
   var rangkings = Rxn<Rankings>();
 
@@ -161,6 +163,7 @@ class ControllerAuditArea extends GetxController{
     getFollowUpDashboard();
     getFindingDashboard();
     getNominalDashboard();
+    getDivisionDashboard();
     getSummary();
     getRangking();
     super.onInit();
@@ -1172,5 +1175,21 @@ void getDetailRescheduleAuditArea(int id)async{
     } catch (e) {
       throw Exception(e);
     }
+  }
+  
+  var selectedMonthDivision = DateTime.now().month.obs;
+  var selectedYearDivision = DateTime.now().year.obs;
+  void getDivisionDashboard()async {
+    try {
+      final division = await repository.getDivisionDashboard(selectedMonthDivision.value, selectedYearDivision.value);
+      divisionDashboard.assignAll(division.data?.chart ??[]);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void resetFilterDashboarDivision()async{
+    selectedMonthDivision.value = DateTime.now().month;
+    selectedYearDivision.value = DateTime.now().year;
   }
 }

@@ -23,7 +23,7 @@ class _ItemDashboardFollowUpAuditRegionState extends State<ItemDashboardFollowUp
         const SizedBox(height: 20),
           Container(
             margin: const EdgeInsets.only(left: 15),
-            child:Text('Tindak lanjut', style: CustomStyles.textBold18Px)),
+            child:Text('Tindak lanjut', style: CustomStyles.textBold15Px)),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -165,7 +165,7 @@ class _ItemDashboardFindingsAuditRegionState extends State<ItemDashboardFindings
         const SizedBox(height: 30),
             Container(
             margin: const EdgeInsets.only(left: 15),
-            child:Text('Jumlah temuan audit', style: CustomStyles.textBold18Px)),
+            child:Text('Jumlah temuan audit', style: CustomStyles.textBold15Px)),
             const SizedBox(height: 20),
 
             Row(
@@ -359,7 +359,7 @@ class _ItemDashboardNominalAuditRegionState extends State<ItemDashboardNominalAu
         const SizedBox(height: 30),
             Container(
             margin: const EdgeInsets.only(left: 15),
-            child:Text('Nominal temuan audit', style: CustomStyles.textBold18Px)),
+            child:Text('Nominal temuan audit', style: CustomStyles.textBold15Px)),
             const SizedBox(height: 20),
 
             Row(
@@ -535,6 +535,196 @@ class _ItemDashboardNominalAuditRegionState extends State<ItemDashboardNominalAu
               ),
             ),
       ],
+    );
+  }
+}
+
+class ItemDivisionDashboardAuditRegion extends StatefulWidget {
+  final ControllerAuditRegion controllerAuditRegion;
+  const ItemDivisionDashboardAuditRegion({super.key, required this.controllerAuditRegion});
+
+  @override
+  State<ItemDivisionDashboardAuditRegion> createState() => _ItemDivisionDashboardAuditRegionState();
+}
+
+class _ItemDivisionDashboardAuditRegionState extends State<ItemDivisionDashboardAuditRegion> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 30),
+            Container(
+            margin: const EdgeInsets.only(left: 15),
+            child:Text('Jumlah temuan per divisi', style: CustomStyles.textBold15Px)),
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: widget.controllerAuditRegion.selectedMonthDivision.value,
+                        items: widget.controllerAuditRegion.months.map((int month) {
+                          return DropdownMenuItem<int>(
+                            value: month,
+                            child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          widget.controllerAuditRegion.selectedMonthDivision.value = newValue!;
+                        },
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: widget.controllerAuditRegion.selectedYearDivision.value,
+                        items: widget.controllerAuditRegion.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          widget.controllerAuditRegion.selectedYearDivision.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        widget.controllerAuditRegion.getDivisionDashboard();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        widget.controllerAuditRegion.resetFilterDashboarDivision();
+                        widget.controllerAuditRegion.getDivisionDashboard();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+            
+            const SizedBox(height: 30),
+            AspectRatio(
+              aspectRatio: 1.2,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 20),
+                child: Obx(() {
+                  if (widget.controllerAuditRegion.divisionDashboard.isEmpty) {
+                    return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+                  } else {
+                    
+                    return LineChart(
+                    LineChartData(
+                      titlesData: FlTitlesData(
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta){
+                              int index = value.toInt();
+                              if (index >= 0 && index < widget.controllerAuditRegion.divisionDashboard.length) {
+                                  return Text('${widget.controllerAuditRegion.divisionDashboard[index].cases}', style: CustomStyles.textRegular12Px);
+                              }
+                              return const Text('');
+                            }
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 33,
+                            getTitlesWidget: (value, meta) {
+                              if (value % 10 == 0) {
+                                return Text('${value.toInt()}', style: CustomStyles.textRegular12Px);
+                              }
+                              return Container();
+                            }),
+                        ),
+                      ),
+                      gridData: const FlGridData(show: true),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                        color: const Color(0xff37434d),
+                        width: 1,
+                      )),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                              for (var i = 0; i < widget.controllerAuditRegion.divisionDashboard.length; i++)
+                                FlSpot(
+                                  i.toDouble(),
+                                  widget.controllerAuditRegion.divisionDashboard[i].total!.toDouble(),
+                                )
+                            ],
+                          barWidth: 2,
+                          color: CustomColors.green,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            color: CustomColors.green.withOpacity(0.5),
+                          ),
+                          
+                            showingIndicators: List.generate(widget.controllerAuditRegion.divisionDashboard.length, (index) => index),
+                          ),
+                      ],
+                      
+                      minX: 0,
+                      maxX: widget.controllerAuditRegion.divisionDashboard.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: (widget.controllerAuditRegion.divisionDashboard.isNotEmpty
+                        ? widget.controllerAuditRegion.divisionDashboard
+                            .map((e) => e.total)
+                            .reduce((a, b) => a! > b! ? a : b)!
+                            .toDouble() + 10
+                        : 10),
+                      lineTouchData: LineTouchData(
+                          touchTooltipData: LineTouchTooltipData(
+                            getTooltipItems: (touchedSpots) {
+                              return touchedSpots.map((touchedSpot) {
+                                final textStyle = CustomStyles.textMediumWhite13Px;
+                                return LineTooltipItem(
+                                  'Total temuan pada divisi ${widget.controllerAuditRegion.divisionDashboard[touchedSpot.spotIndex].cases} sebanyak\n${widget.controllerAuditRegion.divisionDashboard[touchedSpot.spotIndex].total}',
+                                  textStyle,
+                                );
+                              }).toList();
+                            },
+                          ),
+                          handleBuiltInTouches: true,
+                        ),
+                    ),
+                  );
+                  }
+                }),
+              ),
+            ),
+      ]
     );
   }
 }

@@ -50,6 +50,7 @@ import 'package:audit_cms/data/core/response/auditRegion/report/response_report_
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_reschedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_division_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
@@ -804,6 +805,23 @@ class ApiService {
     try {
       final response = await dio.get(AppConstant.totalDashboard,  queryParameters: {'month': month, 'year': year});
       return ResponseTotalDashboard.fromJson(response.data);
+    } on DioException catch (e){
+      final messageError = e.response?.data['message'];
+      snackBarMessageRed('Gagal', messageError);
+      throw Exception(e);
+    }
+  }
+
+  //dashboard division
+  Future<ResponseDivisionDashboard>getDivisionDashboard(int? month, int? year)async{
+    final token = await TokenManager.getToken();
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json'
+    };
+    try {
+      final response = await dio.get(AppConstant.divisionDashboard, queryParameters: {'month': month, 'year': year});
+      return ResponseDivisionDashboard.fromJson(response.data);
     } on DioException catch (e){
       final messageError = e.response?.data['message'];
       snackBarMessageRed('Gagal', messageError);

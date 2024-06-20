@@ -49,6 +49,7 @@ import 'package:audit_cms/data/core/response/auditRegion/master/response_priorit
 import 'package:audit_cms/data/core/response/auditRegion/report/response_report_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_main_schedule_audit_region.dart';
 import 'package:audit_cms/data/core/response/auditRegion/schedules/response_special_schedule_audit_region.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_division_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_nominal_dashboard.dart';
@@ -194,6 +195,7 @@ abstract class Repositories {
   Future<ResponseFindingsDashboard> getfindingsDashboard(int? year);
   Future<ResponseNominalDashboard> getNominalsDashboard(int? year);
   Future<ResponseTotalDashboard> getTotalDashboard(int? month, int? year);
+  Future<ResponseDivisionDashboard>getDivisionDashboard(int? month, int? year);
 }
 
 class RepositoryImpl implements Repositories {
@@ -642,5 +644,10 @@ class RepositoryImpl implements Repositories {
   @override
   Future<ResponseTotalDashboard> getTotalDashboard(int? month, int? year) {
     return apiService.getTotalDashboard(month, year);
+  }
+  
+  @override
+  Future<ResponseDivisionDashboard> getDivisionDashboard(int? month, int? year) {
+    return apiService.getDivisionDashboard(month, year);
   }
 }

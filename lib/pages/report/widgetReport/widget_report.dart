@@ -125,12 +125,15 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
       }
 }
 
-void downloadReportSopCategory(int? month, int? year, String url) async {
+void downloadReportFinding(int? month, int? year, String url) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_kategori_SOP_$timestamp.xlsx';
+      DateTime time = DateTime.now();
+      int month = time.month;
+      var year = DateTime.now().year;
+      String saveName = 'LAPORAN-TEMUAN-BULAN-$month-TAHUN-$year-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
