@@ -263,82 +263,100 @@ Widget dashboardTotalWidgetAuditRegion(ControllerAuditRegion controllerAuditRegi
 }
 
 Widget dashboardRangkingsTopFiveAuditRegion(ControllerAuditRegion controllerAuditRegion){
-  return ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: controllerAuditRegion.rangkings.value?.clarification?.top?.length,
-    itemBuilder: (_, index){
-      final rangking = controllerAuditRegion.rangkings.value?.clarification?.top;
-      return ListTile(
-        title: index < 3 ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-            const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
-          ],
-        ) : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-              const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
-            ],
-          ),
-        subtitle: const Divider(),
+  return Obx((){
+    if (controllerAuditRegion.rangkings.value == null) {
+      return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controllerAuditRegion.rangkings.value?.clarification?.top?.length,
+        itemBuilder: (_, index){
+          final rangking = controllerAuditRegion.rangkings.value?.clarification?.top;
+          return ListTile(
+            title: index < 3 ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
+              ],
+            ) : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                  const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
+                ],
+              ),
+            subtitle: const Divider(),
+          );
+        },
       );
-    },
-  );
+    }
+  });
 }
 
 Widget dashboardRangkingsTopSixAuditRegion(ControllerAuditRegion controllerAuditRegion){
-  return ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: controllerAuditRegion.rangkings.value?.clarification?.bottom?.length,
-    itemBuilder: (_, index){
-      final rangking = controllerAuditRegion.rangkings.value?.clarification?.bottom;
-      return ListTile(
-        title: index < 3 ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-            const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
-          ],
-        ) : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-              const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
-            ],
-          ),
-        subtitle: const Divider(),
+  return Obx((){
+    if (controllerAuditRegion.rangkings.value == null) {
+      return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controllerAuditRegion.rangkings.value?.clarification?.bottom?.length,
+        itemBuilder: (_, index){
+          final rangking = controllerAuditRegion.rangkings.value?.clarification?.bottom;
+          return ListTile(
+            title: index < 3 ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
+              ],
+            ) : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                  const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
+                ],
+              ),
+            subtitle: const Divider(),
+          );
+        },
       );
-    },
-  );
+    }
+  });
 }
 
 Widget dashboardRangkingsFollowUpAuditRegion(ControllerAuditRegion controllerAuditRegion){
-  return ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: controllerAuditRegion.rangkings.value?.followUp?.length,
-    itemBuilder: (_, index){
-      final rangking = controllerAuditRegion.rangkings.value?.followUp;
-      return ListTile(
-        title: index < 3 ? Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-            const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
-          ],
-        ) : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
-              const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
-            ],
-          ),
-        subtitle: const Divider(),
-      );
-    },
-  );
+  return Obx((){
+    if (controllerAuditRegion.rangkings.value == null) {
+      return Center(child: Text('Tidak ada data', style: CustomStyles.textMedium15Px));
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controllerAuditRegion.rangkings.value?.followUp?.length,
+        itemBuilder: (_, index){
+          final rangking = controllerAuditRegion.rangkings.value?.followUp;
+          return ListTile(
+            title: index < 3 ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                const Icon(Icons.sentiment_very_satisfied_outlined, color: CustomColors.green, size: 25)
+              ],
+            ) : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${index +1}. ${rangking?[index].name}', style: CustomStyles.textMedium15Px),
+                  const Icon(Icons.sentiment_dissatisfied_rounded, color: CustomColors.red, size: 25)
+                ],
+              ),
+            subtitle: const Divider(),
+          );
+        },
+      ); 
+    }
+  });
 }

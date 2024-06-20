@@ -214,8 +214,7 @@ class _DetailMainSchedulePageAuditAreaState
                                                 if (await requestPermission(
                                                         Permission.storage) ==
                                                     true) {
-                                                  downloadKKaAuditArea(
-                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                  downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}', '${detail.user?.fullname}');
                                                 } else {
                                                   showSnackbarPermission(
                                                       context);
@@ -591,8 +590,7 @@ class _DetailSpecialSchedulePageAuditAreaState
                                                 if (await requestPermission(
                                                         Permission.storage) ==
                                                     true) {
-                                                  downloadKKaAuditArea(
-                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                  downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}', '${detail.user?.fullname}');
                                                 } else {
                                                   showSnackbarPermission(
                                                       context);
@@ -956,8 +954,7 @@ class _DetailReschedulePageAuditAreaState
                                                 if (await requestPermission(
                                                         Permission.storage) ==
                                                     true) {
-                                                  downloadKKaAuditArea(
-                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                  downloadKKaAuditArea('${AppConstant.downloadKKa}${kka.filename}', '${detail.user?.fullname}');
                                                 } else {
                                                   showSnackbarPermission(
                                                       context);
@@ -1298,7 +1295,7 @@ class _DetailMainScheduleAuditRegionState
                                                         Permission.storage) ==
                                                     true) {
                                                   downloadKKaAuditRegion(
-                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                      '${AppConstant.downloadKKa}${kka.filename}', '${detail.user?.fullname}');
                                                 } else {
                                                   showSnackbarPermission(
                                                       context);
@@ -1693,7 +1690,7 @@ class _DetailSpecialScheduleAuditRegionState
                                                         Permission.storage) ==
                                                     true) {
                                                   downloadKKaAuditRegion(
-                                                      '${AppConstant.downloadKKa}${kka.filename}');
+                                                      '${AppConstant.downloadKKa}${kka.filename}', '${detail.user?.fullname}');
                                                 } else {
                                                   showSnackbarPermission(
                                                       context);

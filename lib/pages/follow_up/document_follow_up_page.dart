@@ -66,7 +66,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                         snackBarMessageRed('Gagal', 'File tidak tersedia');
                                       } else {
                                           if (await requestPermission(Permission.storage) == true) {
-                                          downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
+                                          downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}', widget.fileName!);
                                         } else {
                                           showSnackbarPermission(context);
                                         }
@@ -103,7 +103,7 @@ class _DocumentFollowUpPageState extends State<DocumentFollowUpPage> {
                                         ),
                                         onPressed: () async{
                                           if (await requestPermission(Permission.storage) == true) {
-                                            downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}');
+                                            downloadFollowUpFile('${AppConstant.downloadFollowUp}${widget.fileName}', widget.fileName!);
                                           } else {
                                             showSnackbarPermission(context);
                                           }

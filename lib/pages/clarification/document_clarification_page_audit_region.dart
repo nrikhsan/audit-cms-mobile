@@ -82,7 +82,7 @@ class _DocumentClarificationAuditAreaState extends State<DocumentClarificationAu
                           backgroundColor: CustomColors.blue),
                       onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadFileClarificationAuditArea('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditArea);
+                          downloadFileClarificationAuditArea('${AppConstant.downloadClarification}${widget.fileName}', '${widget.fileName}',controllerAuditArea);
 
                            setState(() {
                               isUploadButtonEnabled = true;
@@ -185,7 +185,7 @@ class _DocumentClarificationPageAuditRegionState
                           backgroundColor: CustomColors.blue),
                       onPressed:() async{
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion);
+                          downloadFileClarificationAuditRegion('${AppConstant.downloadClarification}${widget.fileName}', controllerAuditRegion, widget.fileName!);
                           setState(() {
                             isUploadButtonEnabled = true;
                           });

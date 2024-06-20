@@ -119,7 +119,7 @@ class _KkaDetailAuditAreaState extends State<KkaDetailAuditArea> {
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
                                   if (await requestPermission(Permission.storage) == true) {
-                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${detailKka.filename}');
+                                    downloadKKaAuditArea('${AppConstant.downloadKKa}${detailKka.filename}', '${detailKka.user?.fullname}');
                                   } else {
                                     showSnackbarPermission(context);
                                   }
@@ -248,7 +248,7 @@ class _KkaDetailAuditRegionState extends State<KkaDetailAuditRegion> {
                                     shape: CustomStyles.customRoundedButton),
                                 onPressed: () async {
                                   if (await requestPermission(Permission.storage) == true) {
-                                    downloadKKaAuditRegion('${AppConstant.downloadKKa}${detailKka.filename}');
+                                    downloadKKaAuditRegion('${AppConstant.downloadKKa}${detailKka.filename}', '${detailKka.user?.fullname}');
                                   } else {
                                     showSnackbarPermission(context);
                                   }

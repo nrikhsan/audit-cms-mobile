@@ -388,12 +388,12 @@ void showFilterKkaAuditRegion(BuildContext context, TextEditingController startD
   }
 
 //sudah di fixing
-void downloadKKaAuditArea(String url) async {
+void downloadKKaAuditArea(String url, String name) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_kka$timestamp.xlsx';
+      String saveName = 'KERTAS-KERJA-AUDIT-$name-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
 
       final token = await TokenManager.getToken();
@@ -426,12 +426,12 @@ void downloadKKaAuditArea(String url) async {
 }
 
 // sudah di fixing
-void downloadKKaAuditRegion(String url) async {
+void downloadKKaAuditRegion(String url, String name) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_kka$timestamp.xlsx';
+      String saveName = 'KERTAS-KERJA-AUDIT-$name-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
 
       final token = await TokenManager.getToken();

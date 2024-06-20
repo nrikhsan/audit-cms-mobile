@@ -538,7 +538,7 @@ class _DetailClarificationAuditRegionState extends State<DetailClarificationAudi
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                 if (await requestPermission(Permission.storage) == true) {
-                  downloadFileClarification('${AppConstant.downloadClarification}$fileName');
+                  downloadFileClarification('${AppConstant.downloadClarification}$fileName', fileName!);
                 } else {
                   showSnackbarPermission(context);
                 }

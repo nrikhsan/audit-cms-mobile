@@ -353,18 +353,18 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
           //dashboard rankings clarification
           Visibility(
             visible: selectedDashboard == 1 ? true : false,
-            child: Obx(() => dashboardRangkingsTopFive(controllerAuditArea))
+            child: dashboardRangkingsTopFive(controllerAuditArea)
           ),
 
           Visibility(
             visible: selectedDashboard == 2 ? true : false,
-            child: Obx(() => dashboardRangkingsTopSix(controllerAuditArea))
+            child: dashboardRangkingsTopSix(controllerAuditArea)
           ),
 
           //dashboard rangkings followUp
           Visibility(
             visible: selectedDashboard == 3 ? true : false,
-            child: Obx(() => dashboardRangkingsFollowUp(controllerAuditArea))
+            child: dashboardRangkingsFollowUp(controllerAuditArea)
           ),
 
           //dashboard finding status
@@ -717,18 +717,18 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
           //dashboard rankings clarification
           Visibility(
             visible: selectedDashboard == 1 ? true : false,
-            child: Obx(() => dashboardRangkingsTopFiveAuditRegion(controllerAuditRegion))
+            child: dashboardRangkingsTopFiveAuditRegion(controllerAuditRegion)
           ),
 
           Visibility(
             visible: selectedDashboard == 2 ? true : false,
-            child: Obx(() => dashboardRangkingsTopSixAuditRegion(controllerAuditRegion))
+            child: dashboardRangkingsTopSixAuditRegion(controllerAuditRegion)
           ),
 
           //dashboard rangkings followUp
           Visibility(
             visible: selectedDashboard == 3 ? true : false,
-            child: Obx(() => dashboardRangkingsFollowUpAuditRegion(controllerAuditRegion))
+            child: dashboardRangkingsFollowUpAuditRegion(controllerAuditRegion)
           ),
 
           //dashboard division

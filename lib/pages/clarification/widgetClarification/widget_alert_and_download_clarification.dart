@@ -448,7 +448,7 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                 if (await requestPermission(Permission.storage) == true) {
-                  downloadFileClarification('${AppConstant.downloadClarification}$fileName');
+                  downloadFileClarification('${AppConstant.downloadClarification}$fileName', fileName);
                 } else {
                   showSnackbarPermission(context);
                 }
@@ -460,12 +460,12 @@ void showDialogPdfClarificationPdfAuditArea(BuildContext context, String title, 
 }
 
 // sudah di fixing
-void downloadFileClarification(String url) async {
+void downloadFileClarification(String url, String fileName) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'klarifikasi_$timestamp.pdf';
+      // String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = '$fileName';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
@@ -500,12 +500,12 @@ void downloadFileClarification(String url) async {
 }
 
 //sudah di fixing
-void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion controllerAuditRegion) async {
+void downloadFileClarificationAuditRegion(String url, ControllerAuditRegion controllerAuditRegion, String fileName) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'klarifikasi_$timestamp.pdf';
+      // String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = '$fileName';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
@@ -544,12 +544,12 @@ Future<String?>getToken()async{
   return await TokenManager.getToken();
 }
 
-void downloadFileClarificationAuditArea(String url, ControllerAuditArea controllerAuditArea) async {
+void downloadFileClarificationAuditArea(String url, String fileName, ControllerAuditArea controllerAuditArea) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'klarifikasi_$timestamp.pdf';
+      // String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = fileName;
       String savePath = dir.path + "/$saveName";
       print(savePath);
 

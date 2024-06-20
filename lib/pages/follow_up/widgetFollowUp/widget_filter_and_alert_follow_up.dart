@@ -443,12 +443,12 @@ void showAlertFollowUpAuditArea(BuildContext context, int? id) {
   }
 
   // sudah di fixing
-  void downloadFollowUpFile(String url) async {
+  void downloadFollowUpFile(String url, String fileName) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'tindak_lanjut_$timestamp.pdf';
+      // String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = fileName;
       String savePath = dir.path + "/$saveName";
 
       final token = await TokenManager.getToken();
@@ -590,7 +590,7 @@ showDialogPdfFileDetailFollowUp(BuildContext context, String title, String fileN
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                if (await requestPermission(Permission.storage) == true) {
-                  downloadFollowUpFile('${AppConstant.downloadFollowUp}$fileName');
+                  downloadFollowUpFile('${AppConstant.downloadFollowUp}$fileName', fileName);
                }else{
                 showSnackbarPermission(context);
                }

@@ -308,7 +308,7 @@ class _DetailFollowUpAuditRegionState extends State<DetailFollowUpAuditRegion> {
                       const SizedBox(height: 15),
                       Text('Perihal :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
-                      Text('${followUp.description}', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
+                      Text(followUp.description ?? '-', style: CustomStyles.textRegular13Px, textAlign: TextAlign.justify),
                     
                       const SizedBox(height: 15),
                       Text('File tindak lanjut :',

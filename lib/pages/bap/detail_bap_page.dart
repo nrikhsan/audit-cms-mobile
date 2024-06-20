@@ -121,7 +121,7 @@ class _DetailBapPageAuditAreaState extends State<DetailBapPageAuditArea> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditRegion(context, 'File BAP', '${AppConstant.fileBap}$fileBap');
+                                  showDialogPdfBapAuditArea(context, 'File BAP', '${AppConstant.fileBap}$fileBap', fileBap);
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],
@@ -275,7 +275,7 @@ class _DetailBapAuditRegionState extends State<DetailBapAuditRegion> {
                                     shape: CustomStyles.customRoundedButton,
                                     backgroundColor: CustomColors.blue),
                                 onPressed: () async {
-                                  showDialogPdfBapAuditRegion(context, 'File BAP', '${AppConstant.fileBap}$fileBap');
+                                  showDialogPdfBapAuditRegion(context, 'File BAP', '${AppConstant.fileBap}$fileBap', fileBap);
                                 },
                                 child: Text('Lihat', style: CustomStyles.textMediumWhite15Px))
                           ],

@@ -9,17 +9,17 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // sudah difixing
-void downloadFileDetailBap(String url) async {
+void downloadFileDetailBap(String url, String fileName) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
-      String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'bap_$timestamp.pdf';
+      // String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      String saveName = '$fileName';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
@@ -52,7 +52,7 @@ void downloadFileDetailBap(String url) async {
     }
 }
 
-void showDialogPdfBapAuditArea(BuildContext context, String title, String url) async {
+void showDialogPdfBapAuditArea(BuildContext context, String title, String url, String fileName) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -101,7 +101,7 @@ void showDialogPdfBapAuditArea(BuildContext context, String title, String url) a
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                 if (await requestPermission(Permission.storage) == true) {
-                  downloadFileDetailBap(url);
+                  downloadFileDetailBap(url, fileName);
                 } else {
                   showSnackbarPermission(context);
                 }
@@ -116,7 +116,7 @@ Future<String?>getToken()async{
   return await TokenManager.getToken();
 }
 
-void showDialogPdfBapAuditRegion(BuildContext context, String title, String url) async {
+void showDialogPdfBapAuditRegion(BuildContext context, String title, String url, String fileName) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -165,7 +165,7 @@ void showDialogPdfBapAuditRegion(BuildContext context, String title, String url)
                   backgroundColor: CustomColors.blue),
               onPressed: () async {
                 if (await requestPermission(Permission.storage) == true) {
-                  downloadFileDetailBap(url);
+                  downloadFileDetailBap(url, fileName);
                 } else {
                   showSnackbarPermission(context);
                 }

@@ -44,7 +44,7 @@ void downloadReportClarificationAuditArea(String url, int? branchId, TextEditing
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_klairifkasi_$timestamp.xlsx';
+      String saveName = 'LAPORAN-KLARIFIKASI-${startDateController.text} SD ${endDateController.text}-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
@@ -88,7 +88,7 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
   var dir = await DownloadsPathProvider.downloadsDirectory;
       if (dir != null) {
         String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-        String saveName = 'laporan_lha_$timestamp.pdf';
+        String saveName = 'LAPORAN-LHA-${startDateController.text} SD ${endDateController.text}-$timestamp.pdf';
         String savePath = dir.path + "/$saveName";
         print(savePath);
 
@@ -130,9 +130,6 @@ void downloadReportFinding(int? month, int? year, String url) async {
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      DateTime time = DateTime.now();
-      int month = time.month;
-      var year = DateTime.now().year;
       String saveName = 'LAPORAN-TEMUAN-BULAN-$month-TAHUN-$year-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
       print(savePath);
@@ -176,7 +173,7 @@ void downloadReportClarificationAuditRegion(String url, TextEditingController st
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_klairifkasi_$timestamp.xlsx';
+      String saveName = 'LAPORAN-KLARIFIKASI-${startDateController.text} SD ${endDateController.text}-$timestamp.xlsx';
       String savePath = dir.path + "/$saveName";
 
       final token = await TokenManager.getToken();
@@ -218,7 +215,7 @@ void downloadReportLhaAuditRegion(String url, TextEditingController startDateCon
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {
       String timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-      String saveName = 'laporan_lha_$timestamp.pdf';
+      String saveName = 'LAPORAN-LHA-${startDateController.text} SD ${endDateController.text}-$timestamp.pdf';
       String savePath = dir.path + "/$saveName";
       print(savePath);
 
