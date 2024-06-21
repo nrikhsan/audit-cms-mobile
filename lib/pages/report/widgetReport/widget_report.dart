@@ -125,7 +125,7 @@ void downloadReportLhaAuditArea(String url, TextEditingController startDateContr
       }
 }
 
-void downloadReportFinding(int? month, int? year, String url) async {
+void downloadReportDashboardClarification(int? month, int? year, String url) async {
   final Dio dio = Dio();
   var dir = await DownloadsPathProvider.downloadsDirectory;
     if (dir != null) {

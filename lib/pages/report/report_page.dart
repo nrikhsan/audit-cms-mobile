@@ -279,7 +279,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Obx(() => DropdownButton<int>(
-                          value: controllerAuditArea.selectedMonthSop.value,
+                          value: controllerAuditArea.selectedMonthDashboardClarification.value,
                           items: controllerAuditArea.months.map((int month) {
                             return DropdownMenuItem<int>(
                               value: month,
@@ -287,7 +287,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                             );
                           }).toList(),
                           onChanged: (newValue) {
-                            controllerAuditArea.selectedMonthSop.value = newValue!;
+                            controllerAuditArea.selectedMonthDashboardClarification.value = newValue!;
                           },
                         )),
                   ),
@@ -295,7 +295,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Obx(() => DropdownButton<int>(
-                          value: controllerAuditArea.selectedYearSop.value,
+                          value: controllerAuditArea.selectedYearDashboardClarification.value,
                           items: controllerAuditArea.years.map((int year) {
                             return DropdownMenuItem<int>(
                               value: year,
@@ -303,7 +303,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                             );
                           }).toList(),
                           onChanged: (newValue) {
-                            controllerAuditArea.selectedYearSop.value = newValue!;
+                            controllerAuditArea.selectedYearDashboardClarification.value = newValue!;
                           },
                         )),
                   ),
@@ -312,7 +312,7 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                   SizedBox(
                     child: IconButton(
                       onPressed: (){
-                        controllerAuditArea.resetFilterDownloadSop();
+                        controllerAuditArea.resetFilterDownloadDashboardClarification();
                     }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
                   ),
                 )
@@ -329,7 +329,8 @@ class _ReportPageAuditAreaState extends State<ReportPageAuditArea> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadReportFinding(controllerAuditArea.selectedMonthSop.value, controllerAuditArea.selectedYearSop.value, AppConstant.downloadSopCategory);
+                          downloadReportDashboardClarification(controllerAuditArea.selectedMonthDashboardClarification.value, 
+                          controllerAuditArea.selectedYearDashboardClarification.value, AppConstant.downloadDashboardClarification);
                         } else {
                           showSnackbarPermission(context);
                         }
@@ -530,7 +531,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Obx(() => DropdownButton<int>(
-                          value: controllerAuditRegion.selectedMonthSop.value,
+                          value: controllerAuditRegion.selectedMonthDashboardClarification.value,
                           items: controllerAuditRegion.months.map((int month) {
                             return DropdownMenuItem<int>(
                               value: month,
@@ -538,7 +539,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                             );
                           }).toList(),
                           onChanged: (newValue) {
-                            controllerAuditRegion.selectedMonthSop.value = newValue!;
+                            controllerAuditRegion.selectedMonthDashboardClarification.value = newValue!;
                           },
                         )),
                   ),
@@ -546,7 +547,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Obx(() => DropdownButton<int>(
-                          value: controllerAuditRegion.selectedYearSop.value,
+                          value: controllerAuditRegion.selectedYearDashboardClarification.value,
                           items: controllerAuditRegion.years.map((int year) {
                             return DropdownMenuItem<int>(
                               value: year,
@@ -554,7 +555,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                             );
                           }).toList(),
                           onChanged: (newValue) {
-                            controllerAuditRegion.selectedYearSop.value = newValue!;
+                            controllerAuditRegion.selectedYearDashboardClarification.value = newValue!;
                           },
                         )),
                   ),
@@ -563,7 +564,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                   SizedBox(
                     child: IconButton(
                       onPressed: (){
-                        controllerAuditRegion.resetFilterDownloadSop();
+                        controllerAuditRegion.resetFilterDownloadDashboardClarification();
                     }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
                   ),
                 )
@@ -580,7 +581,7 @@ class _ReportPageAuditRegionState extends State<ReportPageAuditRegion> {
                           backgroundColor: CustomColors.blue),
                       onPressed: ()async {
                         if (await requestPermission(Permission.storage) == true) {
-                          downloadReportFinding(controllerAuditRegion.selectedMonthSop.value, controllerAuditRegion.selectedYearSop.value, AppConstant.downloadSopCategory);
+                          downloadReportDashboardClarification(controllerAuditRegion.selectedMonthDashboardClarification.value, controllerAuditRegion.selectedYearDashboardClarification.value, AppConstant.downloadDashboardClarification);
                         } else {
                           showSnackbarPermission(context);
                         }

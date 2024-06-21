@@ -6,6 +6,7 @@ import 'package:audit_cms/pages/clarification/clarification_page.dart';
 import 'package:audit_cms/pages/follow_up/follow_up_page.dart';
 import 'package:audit_cms/pages/home/items/item_dashboard_audit_area.dart';
 import 'package:audit_cms/pages/home/items/item_dashboard_item_audit_region.dart';
+import 'package:audit_cms/pages/home/items/item_dashboard_sop.dart';
 import 'package:audit_cms/pages/home/items/item_dashboard_total_audit_area.dart';
 import 'package:audit_cms/pages/home/items/item_dashboard_total_audit_region.dart';
 import 'package:audit_cms/pages/kka/kka_page.dart';
@@ -114,6 +115,7 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
         controllerAuditArea.getSummary();
         controllerAuditArea.getRangking();
         controllerAuditArea.getDivisionDashboard();
+        controllerAuditArea.getDashboardSop();
       },
       child: Scaffold(
         backgroundColor: CustomColors.white,
@@ -255,6 +257,67 @@ class _HomePageAuditAreaState extends State<HomePageAuditArea> {
             margin: const EdgeInsets.only(left: 15),
             child: Text('Dashboard', style: CustomStyles.textBold18Px),
           ),
+
+          //SOP
+          Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        value: controllerAuditArea.selectedMonthSop.value,
+                        items: controllerAuditArea.months.map((int month) {
+                          return DropdownMenuItem<int>(
+                            value: month,
+                            child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditArea.selectedMonthSop.value = newValue!;
+                        },
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditArea.selectedYearSop.value,
+                        items: controllerAuditArea.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditArea.selectedYearSop.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditArea.getDashboardSop();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditArea.resetFilterDashboarSop();
+                        controllerAuditArea.getDashboardSop();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+          dashboardSopAuditArea(controllerAuditArea),
 
             Row(
               children: [
@@ -477,6 +540,7 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
         controllerAuditRegion.getDivisionDashboard();
         controllerAuditRegion.getSummary();
         controllerAuditRegion.getRangking();
+        controllerAuditRegion.getDashboardSop();
       },
       child: Scaffold(
        backgroundColor: CustomColors.white,
@@ -618,6 +682,67 @@ class _HomePageAuditRegionState extends State<HomePageAuditRegion> {
             margin: const EdgeInsets.only(left: 15),
             child: Text('Dashboard', style: CustomStyles.textBold18Px),
           ),
+
+          //SOP
+          Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        value: controllerAuditRegion.selectedMonthSop.value,
+                        items: controllerAuditRegion.months.map((int month) {
+                          return DropdownMenuItem<int>(
+                            value: month,
+                            child: Text(DateFormat.MMMM().format(DateTime(0, month))),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedMonthSop.value = newValue!;
+                        },
+                      )),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Obx(() => DropdownButton<int>(
+                        
+                        value: controllerAuditRegion.selectedYearSop.value,
+                        items: controllerAuditRegion.years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          controllerAuditRegion.selectedYearSop.value = newValue!;
+                        },
+                      )),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: 30,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.blue,
+                        shape: CustomStyles.customRoundedButton
+                      ),
+                      onPressed: (){
+                        controllerAuditRegion.getDashboardSop();
+                    }, child: Text('Filter data', style: CustomStyles.textMediumWhite13Px,)
+                  ),
+                ),
+                const SizedBox(width: 5),
+                SizedBox(
+                    child: IconButton(
+                      onPressed: (){
+                        controllerAuditRegion.resetFilterDashboarSop();
+                        controllerAuditRegion.getDashboardSop();
+                    }, icon: const Icon(Icons.refresh_rounded, color: CustomColors.red, size: 25),
+                  ),
+                )
+              ],
+            ),
+          dashboardSopAuditRegion(controllerAuditRegion),
 
             //dashboard finding status
             Row(

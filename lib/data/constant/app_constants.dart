@@ -91,6 +91,7 @@ class AppConstant{
   static const String nominalDashboard = 'api/dashboard-nominal';
   static const String totalDashboard = 'api/dashboard-total';
   static const String divisionDashboard = 'api/dashboard-divisi';
-  static const String downloadSopCategory = '${baseUrlDev}api/dashboard-clarification';
+  static const String downloadDashboardClarification = '${baseUrlDev}api/dashboard-clarification';
+  static const String dashboardSop = 'api/dashboard-sop';
   
 }

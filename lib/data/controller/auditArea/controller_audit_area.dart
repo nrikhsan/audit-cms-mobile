@@ -26,6 +26,7 @@ import 'package:audit_cms/data/core/response/auditArea/userPorfile/response_deta
 import 'package:audit_cms/data/core/response/auditArea/kka/response_kka_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditArea/schedules/response_reschedule_audit_area.dart';
 import 'package:audit_cms/data/core/response/auditRegion/clarification/response_input_identification.dart';
+import 'package:audit_cms/data/core/response/dashboard/response_dashboard_sop.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_division_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_finding_dashboard.dart';
 import 'package:audit_cms/data/core/response/dashboard/response_follow_up_dashboard.dart';
@@ -142,6 +143,7 @@ class ControllerAuditArea extends GetxController{
   final RxList<ChartFindings>findingsDashboard = <ChartFindings>[].obs;
   final RxList<ChartNominal>nominalDashboard = <ChartNominal>[].obs;
   final RxList<ChartDivision>divisionDashboard = <ChartDivision>[].obs;
+  final RxList<ChartSop>chartSop = <ChartSop>[].obs;
   var summary = Rxn<Summary>();
   var rangkings = Rxn<Rankings>();
 
@@ -166,6 +168,7 @@ class ControllerAuditArea extends GetxController{
     getDivisionDashboard();
     getSummary();
     getRangking();
+    getDashboardSop();
     super.onInit();
   }
 
@@ -1077,12 +1080,12 @@ void getDetailRescheduleAuditArea(int id)async{
   var months = List<int>.generate(12, (index) => index + 1);
   var years = List<int>.generate(20, (index) => DateTime.now().year - 10 + index);
 
-  var selectedMonthSop = DateTime.now().month.obs;
-  var selectedYearSop = DateTime.now().year.obs;
+  var selectedMonthDashboardClarification = DateTime.now().month.obs;
+  var selectedYearDashboardClarification = DateTime.now().year.obs;
 
-  void resetFilterDownloadSop()async{
-    selectedMonthSop.value = DateTime.now().month;
-    selectedYearSop.value = DateTime.now().year;
+  void resetFilterDownloadDashboardClarification()async{
+    selectedMonthDashboardClarification.value = DateTime.now().month;
+    selectedYearDashboardClarification.value = DateTime.now().year;
   }
 
   var selectedMonthFollowUp = DateTime.now().month.obs;
@@ -1191,5 +1194,22 @@ void getDetailRescheduleAuditArea(int id)async{
   void resetFilterDashboarDivision()async{
     selectedMonthDivision.value = DateTime.now().month;
     selectedYearDivision.value = DateTime.now().year;
+  }
+
+  var selectedMonthSop = DateTime.now().month.obs;
+  var selectedYearSop = DateTime.now().year.obs;
+  
+  void getDashboardSop()async{
+    try {
+      final sop = await repository.getDashboardSop(selectedMonthSop.value, selectedYearSop.value);
+      chartSop.assignAll(sop.data?.chart ?? []);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void resetFilterDashboarSop()async{
+    selectedMonthSop.value = DateTime.now().month;
+    selectedYearSop.value = DateTime.now().year;
   }
 }
