@@ -38,6 +38,23 @@ Widget formInputRegarding(
   );
 }
 
+Widget formInputAuditeeLeader(
+    TextEditingController auditeeLeaderController) {
+  return TextField(
+    controller: auditeeLeaderController,
+    cursorColor: CustomColors.blue,
+    decoration: InputDecoration(
+        labelStyle: CustomStyles.textMediumGrey15Px,
+        labelText: 'Masukan audeeti leader...',
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: CustomColors.grey))),
+  );
+}
+
 Widget formInputExplanationPenalty(
     TextEditingController explanationPenaltyController) {
   return TextField(

@@ -23,6 +23,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
   final TextEditingController realizationController = TextEditingController();
   final TextEditingController regardingController = TextEditingController();
   final TextEditingController charCossController = TextEditingController();
+  final TextEditingController auditeeLeaderController = TextEditingController();
   DataListPenaltyAuditArea? penalty;
   int? givePenalty;
 
@@ -55,6 +56,11 @@ class _InputFollowUpState extends State<InputFollowUp> {
               Text('Auditor :', style: CustomStyles.textBold15Px),
               const SizedBox(height: 5),   
               Text('${widget.auditor} :', style: CustomStyles.textMedium13Px),
+
+              const SizedBox(height: 15),
+              Text('Auditee leader :', style: CustomStyles.textMedium15Px),
+              const SizedBox(height: 15),
+              formInputAuditeeLeader(auditeeLeaderController),
               
               const SizedBox(height: 15),
               Text('Perihal :', style: CustomStyles.textMedium15Px),
@@ -111,6 +117,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
               ): const SizedBox()
                 ],
               ),
+
 
               const SizedBox(height: 20),
               Row(
@@ -177,10 +184,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       snackBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
                       if (charCoss != null) {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, charCoss, regardingController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeLeaderController.text, charCoss, regardingController.text);
                         Get.back();
                       } else {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, 0, regardingController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeLeaderController.text, 0, regardingController.text);
                         Get.back();
                       }
                       regardingController.clear();

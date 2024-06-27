@@ -639,7 +639,7 @@ class ApiService {
     }
   }
 
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, num charCoss, String desc)async{
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String auditeeLeader, num charCoss, String desc)async{
     final token = await TokenManager.getToken();
     dio.options.headers = {
       'Authorization': 'Bearer $token',
@@ -647,7 +647,7 @@ class ApiService {
     };
     try {
       final responseInputFollowUp = await dio.post(AppConstant.inputFollowUp,
-      data: {'followup_id': followUpId, 'penalty_id': penaltyId, 'charging_costs': charCoss, 'description': desc});
+      data: {'followup_id': followUpId, 'penalty_id': penaltyId, 'auditee_leader': auditeeLeader,'charging_costs': charCoss, 'description': desc});
       final messageSucces = responseInputFollowUp.data['message'];
       snackBarMessageGreen('Berhasil', messageSucces);
       return ResponseInputFollowUp.fromJson(responseInputFollowUp.data);

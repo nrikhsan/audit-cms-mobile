@@ -265,8 +265,8 @@ class RepositoryImpl implements Repositories {
   }
   
   @override
-  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, num charCoss, String desc){
-    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, charCoss, desc);
+  Future<ResponseInputFollowUp>inputFollowUpAuditArea(int followUpId, List<int>? penaltyId, String auditeeLeader,num charCoss, String desc){
+    return apiService.inputFollowUpAuditArea(followUpId, penaltyId, auditeeLeader, charCoss, desc);
   }
 
   @override
