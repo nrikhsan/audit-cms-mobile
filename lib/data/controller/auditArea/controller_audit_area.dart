@@ -986,9 +986,10 @@ void getDetailRescheduleAuditArea(int id)async{
 
   RxList<int>penaltyIdList = RxList<int>();
 
-  void inputFollowUpAuditArea(int followUpId, String auditeeLeader, num charCoss, String desc)async{
+  void inputFollowUpAuditArea(int followUpId, String auditteeName, String auditeePosition, 
+  String auditeeNip, String auditeeLeader, String auditeeLeader2, num charCoss, String desc)async{
     try{
-      await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, auditeeLeader, charCoss, desc);
+      await repository.inputFollowUpAuditArea(followUpId, penaltyIdList, auditteeName, auditeePosition, auditeeNip, auditeeLeader, auditeeLeader2, charCoss, desc);
       pagingControllerFollowUp.refresh();
       penaltyIdList.clear();
     }catch(error){

@@ -38,14 +38,14 @@ Widget formInputRegarding(
   );
 }
 
-Widget formInputAuditeeLeader(
-    TextEditingController auditeeLeaderController) {
+Widget formInputAuditee(
+    TextEditingController auditeeLeaderController, String labelText) {
   return TextField(
     controller: auditeeLeaderController,
     cursorColor: CustomColors.blue,
     decoration: InputDecoration(
         labelStyle: CustomStyles.textMediumGrey15Px,
-        labelText: 'Masukan audeeti leader...',
+        labelText: labelText,
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: CustomColors.grey)),

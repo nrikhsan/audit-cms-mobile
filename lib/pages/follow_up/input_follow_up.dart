@@ -24,8 +24,14 @@ class _InputFollowUpState extends State<InputFollowUp> {
   final TextEditingController regardingController = TextEditingController();
   final TextEditingController charCossController = TextEditingController();
   final TextEditingController auditeeLeaderController = TextEditingController();
+  final TextEditingController auditeeNameController = TextEditingController();
+  final TextEditingController auditeePositionController = TextEditingController();
+  final TextEditingController auditeeNipController = TextEditingController();
+  final TextEditingController auditeeLeader2Controller = TextEditingController();
+
   DataListPenaltyAuditArea? penalty;
   int? givePenalty;
+  int? auditeeLeader2;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +64,53 @@ class _InputFollowUpState extends State<InputFollowUp> {
               Text('${widget.auditor} :', style: CustomStyles.textMedium13Px),
 
               const SizedBox(height: 15),
+              Text('NIP auditee :', style: CustomStyles.textMedium15Px),
+              const SizedBox(height: 15),
+              formInputAuditee(auditeeNipController, 'Masukan NIP auditee...'),
+
+              const SizedBox(height: 15),
+              Text('Nama auditee :', style: CustomStyles.textMedium15Px),
+              const SizedBox(height: 15),
+              formInputAuditee(auditeeNameController, 'Masukan nama auditee...'),
+
+              const SizedBox(height: 15),
+              Text('Posisi auditee :', style: CustomStyles.textMedium15Px),
+              const SizedBox(height: 15),
+              formInputAuditee(auditeePositionController, 'Masukan posisi auditee...'),
+
+              const SizedBox(height: 15),
               Text('Auditee leader :', style: CustomStyles.textMedium15Px),
               const SizedBox(height: 15),
-              formInputAuditeeLeader(auditeeLeaderController),
+              formInputAuditee(auditeeLeaderController, 'Masukan auditee leader...'),
+
+              const SizedBox(height: 15),
+              Text('Auditee leader ke 2 : ', style: CustomStyles.textBold15Px),
+              const SizedBox(height: 15),
+
+              Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: List.generate(
+                  2, (index){
+                    return ChoiceChip( 
+                      label: Text(index == 0 ? 'Tidak ada' : 'Ada', style: CustomStyles.textMedium15Px), 
+                      selected: auditeeLeader2 == index,
+                      onSelected: (bool selected){
+                        setState((){
+                          auditeeLeader2 = selected ? index: null;
+                          if (auditeeLeader2 == 0 || auditeeLeader2 == null) {
+                            auditeeLeader2Controller.clear();
+                          }
+                        });
+                      },
+                    );
+                  }
+                ).toList()
+              ),
+
+              const SizedBox(height: 15),
+              if(auditeeLeader2 == 1)
+              formInputAuditee(auditeeLeader2Controller, 'Masukan auditee leader ke 2...'),
               
               const SizedBox(height: 15),
               Text('Perihal :', style: CustomStyles.textMedium15Px),
@@ -95,7 +145,6 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       onChanged: (value)async{
                         setState(() {
                          penalty = value;
-
                         });
                       }
                     ),
@@ -115,9 +164,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                   formInputcharCossPenalty(charCossController, symbol: 'Rp'),
                 ],
               ): const SizedBox()
-                ],
-              ),
-
+            ]),
 
               const SizedBox(height: 20),
               Row(
@@ -151,7 +198,7 @@ class _InputFollowUpState extends State<InputFollowUp> {
                         Text('${penaltyName.name}', style: CustomStyles.textMedium15Px),
                         IconButton(
                           onPressed: (){
-                          if (controllerAuditArea.penaltyIdList[index] == 5) {
+                          if(controllerAuditArea.penaltyIdList[index] == 5) {
                             controllerAuditArea.penaltyIdList.removeAt(index);
                             charCossController.clear();
                           } else {
@@ -184,10 +231,10 @@ class _InputFollowUpState extends State<InputFollowUp> {
                       snackBarMessageRed('Gagal', 'List tindak lanjut tidak boleh kosong');
                     } else {
                       if (charCoss != null) {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeLeaderController.text, charCoss, regardingController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeNameController.text, auditeePositionController.text, auditeeNipController.text, auditeeLeaderController.text, auditeeLeader2Controller.text, charCoss, regardingController.text);
                         Get.back();
                       } else {
-                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeLeaderController.text, 0, regardingController.text);
+                        controllerAuditArea.inputFollowUpAuditArea(widget.followUpId, auditeeNameController.text, auditeePositionController.text, auditeeNipController.text, auditeeLeaderController.text, auditeeLeader2Controller.text, 0, regardingController.text);
                         Get.back();
                       }
                       regardingController.clear();
