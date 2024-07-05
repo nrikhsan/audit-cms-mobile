@@ -83,7 +83,7 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
 
                       
                       Visibility(
-                        visible: followUp.auditeeLeader2 == null ? false : true,
+                        visible: followUp.auditeeLeader2 == '' || followUp.auditeeLeader2 == null ? false : true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -287,10 +287,9 @@ class _DetailFollowUpAuditRegionState extends State<DetailFollowUpAuditRegion> {
                       const SizedBox(height: 5),
                       Text(followUp.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
-
                       
                       Visibility(
-                        visible: followUp.auditeeLeader2 == null ? false : true,
+                        visible: followUp.auditeeLeader2 == '' ? false : true,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
