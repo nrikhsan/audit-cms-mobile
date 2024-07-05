@@ -60,6 +60,32 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      Text('NIP :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.nip ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Nama auditee :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.auditeeName ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Posisi/jabatan :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.position ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Atasan :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('\u2022 ${followUp.auditeeLeader ?? 'Tidak ada'}\n\u2022 ${followUp.auditeeLeader2 ?? 'Tidak ada'}', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${followUp.user!.fullname}', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
                       Text('Kode Tindak lanjut :',
                           style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
@@ -69,11 +95,6 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
                       Text('Status :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
                       Text('${followUp.status}',
-                          style: CustomStyles.textRegular13Px),
-                      const SizedBox(height: 15),
-                      Text('Auditor :', style: CustomStyles.textBold15Px),
-                      const SizedBox(height: 5),
-                      Text('${followUp.user!.fullname}',
                           style: CustomStyles.textRegular13Px),
                       
                       const SizedBox(height: 15),
@@ -233,21 +254,43 @@ class _DetailFollowUpAuditRegionState extends State<DetailFollowUpAuditRegion> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      Text('NIP :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.nip ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Nama auditee :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.auditeeName ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Posisi/jabatan :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text(followUp.position ?? '-', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Atasan :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('\u2022 ${followUp.auditeeLeader ?? 'Tidak ada'}\n\u2022 ${followUp.auditeeLeader2 ?? 'Tidak ada'}', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+
+                      Text('Auditor :', style: CustomStyles.textBold15Px),
+                      const SizedBox(height: 5),
+                      Text('${followUp.user!.fullname}', style: CustomStyles.textRegular13Px),
+                      const SizedBox(height: 15),
+                      
                       Text('Kode Tindak lanjut :',
                           style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
                       Text('${followUp.code}',
                           style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
+
                       Text('Status :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
-                      Text('${followUp.status}',
-                          style: CustomStyles.textRegular13Px),
+                      Text('${followUp.status}', style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
-                      Text('Auditor :', style: CustomStyles.textBold15Px),
-                      const SizedBox(height: 5),
-                      Text('${followUp.user!.fullname}',
-                          style: CustomStyles.textRegular13Px),
                       
                       const SizedBox(height: 15),
                       Text('Tanggal klarifikasi :',

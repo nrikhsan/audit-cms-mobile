@@ -55,6 +55,11 @@ class DataDetailFollowUp {
   List<Penalty>? penalty;
   Clarification? clarification;
   String? code;
+  String? auditeeName;
+  String? position;
+  String? nip;
+  String? auditeeLeader;
+  String? auditeeLeader2;
   int? chargingCosts;
   String? description;
   String? note;
@@ -72,6 +77,11 @@ class DataDetailFollowUp {
       this.penalty,
       this.clarification,
       this.code,
+      this.auditeeName,
+      this.position,
+      this.nip,
+      this.auditeeLeader,
+      this.auditeeLeader2,
       this.chargingCosts,
       this.description,
       this.note,
@@ -97,6 +107,11 @@ class DataDetailFollowUp {
         ? Clarification.fromJson(json['clarification'])
         : null;
     code = json['code'];
+    auditeeName = json['auditee_name'];
+    position = json['auditee_position'];
+    nip = json['auditee_nip'];
+    auditeeLeader = json['auditee_leader'];
+    auditeeLeader2 = json['auditee_leader_2'];
     chargingCosts = json['charging_costs'];
     description = json['description'];
     note = json['note'];
@@ -129,6 +144,11 @@ class DataDetailFollowUp {
       data['clarification'] = clarification!.toJson();
     }
     data['code'] = code;
+    data['auditee_name'] = auditeeName;
+    data['auditee_position'] = position;
+    data['auditee_nip'] = nip;
+    data['auditee_leader'] = auditeeLeader;
+    data['auditee_leader_2'] = auditeeLeader2;
     data['charging_costs'] = chargingCosts;
     data['description'] = description;
     data['note'] = note;
