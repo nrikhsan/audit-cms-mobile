@@ -78,8 +78,21 @@ class _DetailFollowUpPageAuditAreaState extends State<DetailFollowUpPageAuditAre
 
                       Text('Atasan :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
-                      Text('\u2022 ${followUp.auditeeLeader ?? 'Tidak ada'}\n\u2022 ${followUp.auditeeLeader2 ?? 'Tidak ada'}', style: CustomStyles.textRegular13Px),
+                      Text(followUp.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
+
+                      
+                      Visibility(
+                        visible: followUp.auditeeLeader2 == null ? false : true,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Atasan ke 2 :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(followUp.auditeeLeader2 ?? '-', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 15),
+                        ],
+                      )),
 
                       Text('Auditor :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
@@ -272,8 +285,21 @@ class _DetailFollowUpAuditRegionState extends State<DetailFollowUpAuditRegion> {
 
                       Text('Atasan :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
-                      Text('\u2022 ${followUp.auditeeLeader ?? 'Tidak ada'}\n\u2022 ${followUp.auditeeLeader2 ?? 'Tidak ada'}', style: CustomStyles.textRegular13Px),
+                      Text(followUp.auditeeLeader ?? '-', style: CustomStyles.textRegular13Px),
                       const SizedBox(height: 15),
+
+                      
+                      Visibility(
+                        visible: followUp.auditeeLeader2 == null ? false : true,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Atasan ke 2 :', style: CustomStyles.textBold15Px),
+                          const SizedBox(height: 5),
+                          Text(followUp.auditeeLeader2 ?? '-', style: CustomStyles.textRegular13Px),
+                          const SizedBox(height: 15),
+                        ],
+                      )),
 
                       Text('Auditor :', style: CustomStyles.textBold15Px),
                       const SizedBox(height: 5),
